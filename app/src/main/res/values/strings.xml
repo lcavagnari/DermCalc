@@ -1,3 +1,85 @@
 <resources>
     <string name="app_name">DermCalc</string>
+
+    <!-- Navbar -->
+    <string name="nav_home">Home</string>
+    <string name="nav_tools">Tools</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Home -->
+    <string name="home_welcome">Welcome, %1$s</string>
+    <string name="home_no_calculations">No calculations yet</string>
+    <string name="home_see_all">See all</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title">Enter your details</string>
+    <string name="onboarding_first_name">First name</string>
+    <string name="onboarding_last_name">Last name</string>
+    <string name="onboarding_birth_date">Date of birth</string>
+    <string name="onboarding_sex">Sex</string>
+    <string name="onboarding_sex_male">Male</string>
+    <string name="onboarding_sex_female">Female</string>
+    <string name="onboarding_confirm">Confirm</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_save">Save changes</string>
+
+    <!-- Tools -->
+    <string name="tools_title">Tools</string>
+    <string name="tools_bmi">BMI</string>
+    <string name="tools_bsa">BSA</string>
+    <string name="tools_pasi">PASI</string>
+    <string name="tools_easi">EASI</string>
+
+    <!-- BMI -->
+    <string name="bmi_title">BMI Calculator</string>
+    <string name="bmi_weight">Weight (kg)</string>
+    <string name="bmi_height">Height (cm)</string>
+    <string name="bmi_calculate">Calculate</string>
+    <string name="bmi_underweight">Underweight</string>
+    <string name="bmi_normal">Normal weight</string>
+    <string name="bmi_overweight">Overweight</string>
+    <string name="bmi_obese">Obese</string>
+
+    <!-- BSA -->
+    <string name="bsa_title">BSA Calculator</string>
+    <string name="bsa_head">Head</string>
+    <string name="bsa_trunk_front">Anterior trunk</string>
+    <string name="bsa_trunk_back">Posterior trunk</string>
+    <string name="bsa_arm_right">Right arm</string>
+    <string name="bsa_arm_left">Left arm</string>
+    <string name="bsa_leg_right">Right leg</string>
+    <string name="bsa_leg_left">Left leg</string>
+    <string name="bsa_genitals">Genitals</string>
+
+    <!-- PASI / EASI shared -->
+    <string name="score_erythema">Erythema</string>
+    <string name="score_induration">Induration</string>
+    <string name="score_desquamation">Desquamation</string>
+    <string name="score_area">Area</string>
+    <string name="score_edema">Edema/Papulation</string>
+    <string name="score_excoriation">Excoriation</string>
+    <string name="score_lichenification">Lichenification</string>
+    <string name="score_next">Next</string>
+    <string name="score_back">Back</string>
+    <string name="score_save">Save</string>
+    <string name="score_severity_mild">Mild</string>
+    <string name="score_severity_moderate">Moderate</string>
+    <string name="score_severity_severe">Severe</string>
+
+    <!-- PASI districts -->
+    <string name="district_head">Head</string>
+    <string name="district_upper_limbs">Upper limbs</string>
+    <string name="district_trunk">Trunk</string>
+    <string name="district_lower_limbs">Lower limbs</string>
+
+    <!-- History -->
+    <string name="history_title">History</string>
+    <string name="history_delete">Delete</string>
+
+    <!-- Errors -->
+    <string name="error_required_field">Required field</string>
+    <string name="error_invalid_value">Invalid value</string>
+    <string name="error_save_failed">Failed to save</string>
 </resources>
