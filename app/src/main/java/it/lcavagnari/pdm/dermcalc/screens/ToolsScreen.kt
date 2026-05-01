@@ -20,7 +20,7 @@ fun ToolsScreen(navController: NavHostController) {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Tools",
+            text = "Calculators",
             fontSize = 18.sp,
             color = Color.Gray,
             fontWeight = FontWeight.Bold,
