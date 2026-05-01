@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DermCalc</string>
 
     <!-- Navbar -->
     <string name="nav_home">Home</string>
-    <string name="nav_tools">Strumenti</string>
+    <string name="nav_tools">Calcolatori</string>
     <string name="nav_profile">Profilo</string>
 
     <!-- Home -->
@@ -24,7 +23,7 @@
 
     <!-- Profile -->
     <string name="profile_title">Profilo</string>
-    <string name="profile_save">Salva modifiche</string>
+    <string name="profile_save">Salva</string>
 
     <!-- Tools -->
     <string name="tools_title">Strumenti</string>
