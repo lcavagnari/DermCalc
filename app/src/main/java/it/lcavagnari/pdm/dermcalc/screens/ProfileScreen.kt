@@ -12,9 +12,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun ProfileRoute(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize()
             .wrapContentSize(Alignment.Center)
