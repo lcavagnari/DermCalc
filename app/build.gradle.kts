@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "org.geeksforgeeks.demo"
+    namespace = "it.lcavagnari.pdm.dermcalc"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "org.geeksforgeeks.demo"
+        applicationId = "it.lcavagnari.pdm.dermcalc"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
