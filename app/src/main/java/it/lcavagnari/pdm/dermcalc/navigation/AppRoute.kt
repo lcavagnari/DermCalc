@@ -13,7 +13,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface AppRoute {
-    val name: String?
+    val name: String? get() = ""
+
+    val nameRes: Int? get() = null
     val route: String
     val icon: ImageVector? get() = null
 
@@ -22,8 +24,8 @@ sealed interface AppRoute {
 
 @Serializable
 data object HomeRoute : AppRoute {
-    override val name: String
-        get() = "Home"
+    override val nameRes: Int
+        get() = R.string.nav_home
     override val route: String
         get() = "home"
     override val iconRes: Int
@@ -32,8 +34,8 @@ data object HomeRoute : AppRoute {
 
 @Serializable
 data object ToolsRoute : AppRoute {
-    override val name: String
-        get() = "Tools"
+    override val nameRes: Int
+        get() = R.string.nav_tools
     override val route: String
         get() = "tools"
     override val icon: ImageVector
@@ -42,8 +44,8 @@ data object ToolsRoute : AppRoute {
 
 @Serializable
 data object ProfileRoute : AppRoute {
-    override val name: String
-        get() = "profile"
+    override val nameRes: Int
+        get() = R.string.nav_profile
     override val route: String
         get() = "profile"
     override val iconRes: Int

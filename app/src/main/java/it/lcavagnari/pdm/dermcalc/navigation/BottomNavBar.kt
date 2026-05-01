@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.navigation
 
+import android.content.res.Resources
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -48,7 +50,11 @@ fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) 
                         }
                     }
                 },
-                label = { Text(text = item.name?: "") },
+                label = {
+                    item.nameRes?.let {
+                        Text(text = stringResource(id = it))
+                    } ?: Text(text = item.name ?: "")
+                },
                 selected = isSelected,
                 onClick = {
                     navController.navigate(item) {
