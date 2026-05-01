@@ -1,19 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "it.lcavagnari.pdm.dermcalc"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    namespace = "org.geeksforgeeks.demo"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "it.lcavagnari.pdm.dermcalc"
+        applicationId = "org.geeksforgeeks.demo"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
