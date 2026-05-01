@@ -50,7 +50,7 @@ Both modes are supported. The theme adapts as follows:
 Dark mode is the intended experience. Light mode is fully functional for clinical environments where a dark screen is impractical.
 
 ## Roadmap
-- [ ] Phase 1 — Project setup, navigation scaffold, empty screens
+- [X] Phase 1 — Project setup, navigation scaffold, empty screens
 - [ ] Phase 2 — Onboarding flow and Room profile storage
 - [ ] Phase 3 — Profile screen (read + edit)
 - [ ] Phase 4 — Home screen (welcome, medical quote, history preview)
