@@ -20,7 +20,7 @@ fun HomeScreen(navController: NavHostController) {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Home",
+            text = "Nobody Expects the Home Screen inquistion!",
             fontSize = 18.sp,
             color = Color.Gray,
             fontWeight = FontWeight.Bold,
