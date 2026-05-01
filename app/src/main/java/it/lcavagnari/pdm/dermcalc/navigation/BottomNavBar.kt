@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -32,10 +33,20 @@ fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) 
 
             NavigationBarItem(
                 icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.name
-                    )
+                    if (item.iconRes != null) {
+                        Icon(
+                            painter = painterResource(id = item.iconRes!!),
+                            contentDescription = item.name,
+                            tint = Color.Unspecified
+                        )
+                    } else {
+                        item.icon?.let {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = item.name
+                            )
+                        }
+                    }
                 },
                 label = { Text(text = item.name?: "") },
                 selected = isSelected,
