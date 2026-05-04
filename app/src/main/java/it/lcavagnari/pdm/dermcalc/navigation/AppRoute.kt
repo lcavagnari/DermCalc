@@ -11,6 +11,11 @@ import androidx.compose.ui.res.painterResource
 import it.lcavagnari.pdm.dermcalc.R
 import kotlinx.serialization.Serializable
 
+/**
+ * Defines navigable destinations and metadata consumed by bottom navigation.
+ *
+ * Icons are provided by vectors or drawable assets.
+ */
 @Serializable
 sealed interface AppRoute {
     val name: String? get() = ""
@@ -22,6 +27,7 @@ sealed interface AppRoute {
     val iconRes: Int? get() = null
 }
 
+/** Home destination metadata for route graph and bottom navigation item. */
 @Serializable
 data object HomeRoute : AppRoute {
     override val nameRes: Int
@@ -32,6 +38,7 @@ data object HomeRoute : AppRoute {
         get() = R.drawable.ic_home_button
 }
 
+/** Tools destination metadata representing calculators and utility workflows. */
 @Serializable
 data object ToolsRoute : AppRoute {
     override val nameRes: Int
@@ -42,6 +49,7 @@ data object ToolsRoute : AppRoute {
         get() = Icons.Default.Build
 }
 
+/** Profile destination metadata used by navigation and tab rendering. */
 @Serializable
 data object ProfileRoute : AppRoute {
     override val nameRes: Int
@@ -52,4 +60,5 @@ data object ProfileRoute : AppRoute {
         get() = R.drawable.ic_profile_button
 }
 
+/** Static list consumed to render tabs in [BottomNavigationBar]. */
 val navItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)

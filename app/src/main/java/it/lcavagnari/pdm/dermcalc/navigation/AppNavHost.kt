@@ -10,6 +10,14 @@ import it.lcavagnari.pdm.dermcalc.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.screens.ToolsScreen
 
 @Composable
+/**
+ * Registers destination composables and wires type-safe route navigation.
+ *
+ * @param modifier Modifier applied to the underlying [NavHost].
+ * @param navController Controller managing back stack state transitions.
+ * @param startDestination Initial route loaded when graph starts.
+ * @return Unit.
+ */
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,

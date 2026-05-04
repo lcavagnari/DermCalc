@@ -17,7 +17,17 @@ import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 
+/**
+ * Hosts the root Compose scaffold and route graph.
+ *
+ * See app icon assets: app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml.
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * Initializes edge-to-edge UI and navigation-enabled application content.
+     *
+     * @param savedInstanceState Prior state bundle, or null on first launch.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,6 +54,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+/**
+ * Simple preview text composable used as starter template content.
+ *
+ * @param name Name rendered inside greeting text.
+ * @param modifier Modifier applied to the text node.
+ * @return Unit.
+ */
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
@@ -53,6 +70,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
+/**
+ * Design-time preview showing scaffold, bottom navigation, and start destination.
+ *
+ * @return Unit.
+ */
 fun GreetingPreview() {
     val navController = rememberNavController()
     Scaffold(

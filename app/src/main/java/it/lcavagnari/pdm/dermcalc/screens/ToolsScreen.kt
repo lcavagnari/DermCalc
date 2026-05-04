@@ -14,6 +14,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
+/**
+ * Displays calculator tools placeholder while feature modules are added.
+ *
+ * @param navController Controller available for future tools deep links.
+ * @return Unit.
+ */
 fun ToolsScreen(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize()
