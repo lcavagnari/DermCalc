@@ -34,6 +34,14 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
+/**
+ * Applies app typography and color scheme, supporting dynamic Android 12 theming.
+ *
+ * @param darkTheme Enables dark palette when true.
+ * @param dynamicColor Uses wallpaper-derived colors on supported devices.
+ * @param content Composable tree rendered within [MaterialTheme].
+ * @return Unit.
+ */
 fun DermCalcTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+

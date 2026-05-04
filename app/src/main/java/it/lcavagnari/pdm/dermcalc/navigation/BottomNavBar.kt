@@ -17,6 +17,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
+/**
+ * Renders bottom tabs and preserves per-destination back stack state.
+ *
+ * @param navController Controller used for tab navigation actions.
+ * @param appItems Routes rendered as bottom navigation entries.
+ * @return Unit.
+ */
 fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         containerColor = Color.White

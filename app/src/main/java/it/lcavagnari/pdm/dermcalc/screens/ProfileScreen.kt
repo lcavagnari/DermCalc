@@ -15,6 +15,12 @@ import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 
 @Composable
+/**
+ * Displays basic profile placeholder content centered on current screen.
+ *
+ * @param navController Controller available for future account flow routing.
+ * @return Unit.
+ */
 fun ProfileRoute(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize()
