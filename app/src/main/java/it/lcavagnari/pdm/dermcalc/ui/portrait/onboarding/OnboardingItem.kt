@@ -61,7 +61,7 @@ import it.lcavagnari.pdm.dermcalc.utils.today
 @Preview(showBackground = true)
 @Composable
 fun OnBoardItemPreview() {
-    OnBoardItem(onboardingScreens[1])
+    OnBoardItem(onboardingScreens[4])
 }
 
 @Composable
@@ -176,7 +176,7 @@ fun OnBoardItem(page: OnboardingScreen) {
 
                 is HeightInput -> {
                     SingleChoiceSegmentedButtonRow(
-                        modifier = Modifier.padding(top = 20.dp),
+                        modifier = Modifier.padding(top = 30.dp),
                     ) {
                         HeightMeasurements.entries.forEachIndexed { index, measurement ->
                             SegmentedButton(
@@ -198,6 +198,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                     }
 
                     HeightInputPicker(
+                        modifier = Modifier.padding(bottom = 40.dp),
                         field = field,
                         onMetricChanged = { height -> onBoardingModel.updateHeightMetric(height) },
                         onImperialChanged = { height ->
@@ -218,9 +219,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                 }
 
                 is WeightInput -> {
-                    SingleChoiceSegmentedButtonRow(
-                        modifier = Modifier.padding(top = 20.dp),
-                    ) {
+                    SingleChoiceSegmentedButtonRow() {
                         WeightMeasurements.entries.forEachIndexed { index, measurement ->
                             SegmentedButton(
                                 selected = measurement == (if (field.isKilos) WeightMeasurements.Kilos else WeightMeasurements.Pounds),
@@ -241,7 +240,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                     }
 
                     WeightInputPicker(
-                        modifier = Modifier.padding(bottom = 20.dp),
+                        modifier = Modifier.padding(bottom = 30.dp),
                         field = field,
                         onKilosChanged = { weight -> onBoardingModel.updateWeightKilos(weight) },
                         onPoundsChanged = { weight -> onBoardingModel.updateWeightPounds(weight) }
@@ -342,6 +341,7 @@ fun WeightInputPicker(
             if (field.isKilos) "%.2f".format(it) + " kg" else "%.2f".format(field.kilosToPounds(it)) + " lb"
         } ?: "",
         onValueChange = {},
+        modifier = modifier,
         readOnly = true,
         label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
         placeholder = { Text("Select Weight") },
@@ -354,7 +354,6 @@ fun WeightInputPicker(
             }
         },
         interactionSource = interactionSource,
-        modifier = modifier.padding(top = 20.dp),
         shape = RoundedCornerShape(17.dp),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
@@ -428,7 +427,7 @@ fun HeightInputPicker(
             }
         },
         interactionSource = interactionSource,
-        modifier = modifier.padding(top = 20.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(17.dp),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
