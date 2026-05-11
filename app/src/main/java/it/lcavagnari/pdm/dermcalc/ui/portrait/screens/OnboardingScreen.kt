@@ -18,6 +18,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -170,7 +171,7 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
         ) {
             Icon(
                 modifier = Modifier.size(20.dp),
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back button",
                 tint = MaterialTheme.colorScheme.surfaceDim
             )
@@ -196,7 +197,7 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
         Icon(
             modifier = modifier.size(20.dp),
-            imageVector = Icons.Default.ArrowBack,
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Back button",
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -213,11 +214,11 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 
 @Composable
 private fun StepIndicator(
-    modifier: Modifier = Modifier.fillMaxWidth(),
+    modifier: Modifier = Modifier,
     totalSteps: Int, currentStep: Int
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
