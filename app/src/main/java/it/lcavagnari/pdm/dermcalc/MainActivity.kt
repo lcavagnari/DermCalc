@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
             val configuration = LocalConfiguration.current
             val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
 
-            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+            if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
                 MainPortraitActivity(Modifier, onboardingModel)
 
             else MainLandscapeActivity(onboardingModel)

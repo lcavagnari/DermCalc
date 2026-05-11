@@ -2,6 +2,7 @@ package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,18 +12,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -87,7 +87,7 @@ val onboardingScreens = listOf(
         description = "Please provide all the required information to personalize your experience.",
         inputFieldIds = listOf("height", "weight"),
         imageRes = Icons.Default.AccountCircle,
-        imageSize = 190.dp
+        imageSize = 180.dp
     )
 )
 
@@ -119,17 +119,28 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
             // Tapping anywhere outside a text field clears focus and dismisses the keyboard.
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
     ) {
+
+        // Contenuto pagina
         OnboardingPager(
             pagerState,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(bottom = 30.dp),
             userScrollEnabled = isBtnEnabled
         )
 
+        // Bottone "indietro"
+        if (!isBtnEnabled)
+            GoBackButton(modifier = Modifier.padding(bottom = 5.dp)) {
+                if (pagerState.currentPage > 0)
+                    coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+            }
+
+        // Indicatore pagina
         StepIndicator(
             totalSteps = onboardingScreens.size,
             currentStep = pagerState.currentPage
         )
 
+        // Bottone "Avanti"
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -150,9 +161,24 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
 
 
 @Composable
+private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Box(
+        modifier = modifier.clickable(onClick = onClick)
+    ) {
+        Icon(
+            modifier = modifier.size(20.dp),
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = "Back button",
+        )
+
+        Text("Go Back", modifier = modifier,)
+    }
+}
+
+@Composable
 private fun StepIndicator(
-    totalSteps: Int, currentStep: Int,
-    modifier: Modifier = Modifier.fillMaxWidth()
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    totalSteps: Int, currentStep: Int
 ) {
     Row(
         modifier = modifier,
