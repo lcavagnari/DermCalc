@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Main scale body -->
+    <path
+        android:pathData="M6,3H18C19.66,3 21,4.34 21,6V18C21,19.66 19.66,21 18,21H6C4.34,21 3,19.66 3,18V6C3,4.34 4.34,3 6,3Z"
+        android:strokeWidth="2"
+        android:strokeColor="#000000" />
+
+    <!-- Display screen area -->
+    <path
+        android:pathData="M8,6H16C16.55,6 17,6.45 17,7V9C17,9.55 16.55,10 16,10H8C7.45,10 7,9.55 7,9V7C7,6.45 7.45,6 8,6Z"
+        android:strokeWidth="2"
+        android:strokeColor="#000000" />
+
+    <!-- Digital reading line -->
+    <path
+        android:pathData="M9,8H15"
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:strokeLineCap="round" />
+
+    <!-- Grip/Texture lines -->
+    <path
+        android:pathData="M6,14H18M6,17H18"
+        android:strokeWidth="1"
+        android:strokeColor="#000000"
+        android:strokeLineCap="round" />
+</vector>
