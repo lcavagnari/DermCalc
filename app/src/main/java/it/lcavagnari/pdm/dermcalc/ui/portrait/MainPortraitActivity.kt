@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,7 +22,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+
 
 /**
  * Hosts the root Compose scaffold and route graph.
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
     /**
      * Initializes edge-to-edge UI and navigation-enabled application content.
      *
-     * @param savedInstanceState Prior state bundle, or null on first launch.
+     * @param savedInstanceState Prior to state bundle, or null on first launch.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,6 @@ class MainActivity : ComponentActivity() {
         /**
          * Simple preview text composable used as starter template content.
          *
-         * @param name Name rendered inside greeting text.
          * @param modifier Modifier applied to the text node.
          * @return Unit.
          */
@@ -92,6 +90,8 @@ fun Greeting(modifier: Modifier = Modifier, onboardingModel: OnboardingModel) {
     }
 }
 
+
+private val vm = OnboardingModel()
 /**
  * Design-time preview showing scaffold, bottom navigation, and start destination.
  *
@@ -100,5 +100,5 @@ fun Greeting(modifier: Modifier = Modifier, onboardingModel: OnboardingModel) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    Greeting(onboardingModel = OnboardingModel())
+    Greeting(onboardingModel = vm)
 }
