@@ -69,6 +69,7 @@ dependencies {
     // new
 
     implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.kotlinx.datetime)
 }

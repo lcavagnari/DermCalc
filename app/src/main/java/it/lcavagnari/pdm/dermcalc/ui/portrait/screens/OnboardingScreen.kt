@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -238,6 +242,39 @@ private fun StepIndicator(
                         else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
                     )
                     .animateContentSize(),
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
+    Row() {
+        // Language change button
+        Box(
+            modifier = Modifier.fillMaxWidth().clickable(onClick = onLangClick),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            Icon(
+                modifier = Modifier.size(20.dp),
+                imageVector = Icons.Outlined.Language,
+                contentDescription = "Language",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        // Theme change button
+        Box(
+            modifier = Modifier.fillMaxWidth().clickable(onClick = onThemeClick),
+            contentAlignment = Alignment.TopEnd
+        ) {
+
+            Icon(
+                modifier = Modifier.size(20.dp),
+                imageVector = if(isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+                contentDescription = "Dark/Light mode",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
