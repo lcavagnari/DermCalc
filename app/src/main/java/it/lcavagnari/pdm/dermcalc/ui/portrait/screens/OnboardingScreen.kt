@@ -109,7 +109,13 @@ fun OnboardingPreview() {
 }
 
 @Composable
-fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () -> Unit) {
+fun OnboardingScreen(
+    pagerState: PagerState,
+    modifier: Modifier,
+    onFinish: () -> Unit,
+    onLangClick: () -> Unit = {},
+    onThemeClick: () -> Unit = {}
+) {
     val coroutineScope = rememberCoroutineScope()
     val onBoardingModel: OnboardingModel = viewModel()
     val focusManager = LocalFocusManager.current
@@ -126,6 +132,8 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
             // Tapping anywhere outside a text field clears focus and dismisses the keyboard.
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
     ) {
+
+        TopTrayButtons(onLangClick, onThemeClick)
 
         // Contenuto pagina
         OnboardingPager(
@@ -247,14 +255,15 @@ private fun StepIndicator(
     }
 }
 
-
 @Composable
 private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
-    Row() {
-        // Language change button
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
         Box(
-            modifier = Modifier.fillMaxWidth().clickable(onClick = onLangClick),
-            contentAlignment = Alignment.TopEnd
+            modifier = Modifier.size(36.dp).clickable(onClick = onLangClick),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = Modifier.size(20.dp),
@@ -263,16 +272,13 @@ private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-
-        // Theme change button
         Box(
-            modifier = Modifier.fillMaxWidth().clickable(onClick = onThemeClick),
-            contentAlignment = Alignment.TopEnd
+            modifier = Modifier.size(36.dp).clickable(onClick = onThemeClick),
+            contentAlignment = Alignment.Center
         ) {
-
             Icon(
                 modifier = Modifier.size(20.dp),
-                imageVector = if(isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+                imageVector = if (isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
                 contentDescription = "Dark/Light mode",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
