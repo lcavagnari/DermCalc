@@ -19,7 +19,7 @@ class OnboardingModel : ViewModel() {
         listOf<InputField>(
             TextInput(id = "full-name", label = "Full name"),
             DateInput(id = "date-of-birth", label = "Date of birth"),
-            SexInput(id = "sex", label = "Sex"),
+            SexInput(id = "sex", label = "Sex", value = Sex.Other),
             HeightInput(id = "height", label = "Height", isMetric = true),
             WeightInput(id = "weight", label = "Weight", isKilos = true)
         )

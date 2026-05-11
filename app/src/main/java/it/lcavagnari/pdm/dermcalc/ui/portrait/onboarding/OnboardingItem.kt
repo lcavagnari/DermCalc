@@ -171,7 +171,7 @@ fun OnBoardItem(page: OnboardingScreen) {
 
                     if (!field.isValid && field.isRequired && field.value != null)
                         errorMessage = "Please specify your gender from those supported."
-                    else if (field.value != null) successMessage = "Thank you for sharing."
+                    else if (field.isRequired && field.value != null) successMessage = "Thank you for sharing."
                 }
 
                 is HeightInput -> {

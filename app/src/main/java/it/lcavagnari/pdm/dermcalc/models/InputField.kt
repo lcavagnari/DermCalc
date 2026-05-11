@@ -61,6 +61,7 @@ data class SexInput(
     override val id: String,
     override val label: String,
     override val isValid: Boolean = false,
+    override val isRequired: Boolean = false,
 
     override val value: Sex? = null
 
