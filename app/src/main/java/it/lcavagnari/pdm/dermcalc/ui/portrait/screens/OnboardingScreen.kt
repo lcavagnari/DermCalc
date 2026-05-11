@@ -116,6 +116,19 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
     val isBtnEnabled = onBoardingModel.isPageInputValid(currentScreen.inputFieldIds, fields)
 
     Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            modifier = Modifier.size(20.dp).padding(start = 10.dp),
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = "Swipe back",
+            tint = MaterialTheme.colorScheme.surfaceDim
+        )
+    }
+
+    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
@@ -162,24 +175,7 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
     }
 
     Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Box(
-            modifier = Modifier.padding(start = 10.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(20.dp),
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back button",
-                tint = MaterialTheme.colorScheme.surfaceDim
-            )
-        }
-    }
-
-    Column(
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Center
     ) {
