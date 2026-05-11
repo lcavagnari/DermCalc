@@ -1,15 +1,19 @@
 package it.lcavagnari.pdm.dermcalc
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.Orientation.Vertical
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
@@ -17,6 +21,7 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
+import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 
 /**
@@ -34,48 +39,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val configuration = LocalConfiguration.current
             val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
-            MainPortraitActivity(Modifier, onboardingModel)
-        }
-    }
-}
 
-@Composable
-        /**
-         * Simple preview text composable used as starter template content.
-         *
-         * @param name Name rendered inside greeting text.
-         * @param modifier Modifier applied to the text node.
-         * @return Unit.
-         */
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                MainPortraitActivity(Modifier, onboardingModel)
 
-@Preview(showBackground = true)
-@Composable
-        /**
-         * Design-time preview showing scaffold, bottom navigation, and start destination.
-         *
-         * @return Unit.
-         */
-fun GreetingPreview() {
-    val navController = rememberNavController()
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            BottomNavigationBar(
-                navController = navController,
-                appItems = navItems
-            )
+            else MainLandscapeActivity(onboardingModel)
         }
-    ) { innerPadding ->
-        AppNavHost(
-            navController = navController,
-            modifier = Modifier.padding(innerPadding)
-        )
     }
 }
