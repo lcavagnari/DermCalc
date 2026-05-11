@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.portrait.ui.MainActivity
 
 /**
  * Hosts the root Compose scaffold and route graph.
@@ -32,35 +32,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DermCalcTheme {
-                val navController = rememberNavController()
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                        BottomNavigationBar(
-                            navController = navController,
-                            appItems = navItems
-                        )
-                    }
-                ) { innerPadding ->
-                    AppNavHost(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MainActivity().onCreate(savedInstanceState)
         }
     }
 }
 
 @Composable
-/**
- * Simple preview text composable used as starter template content.
- *
- * @param name Name rendered inside greeting text.
- * @param modifier Modifier applied to the text node.
- * @return Unit.
- */
+        /**
+         * Simple preview text composable used as starter template content.
+         *
+         * @param name Name rendered inside greeting text.
+         * @param modifier Modifier applied to the text node.
+         * @return Unit.
+         */
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
@@ -70,11 +54,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-/**
- * Design-time preview showing scaffold, bottom navigation, and start destination.
- *
- * @return Unit.
- */
+        /**
+         * Design-time preview showing scaffold, bottom navigation, and start destination.
+         *
+         * @return Unit.
+         */
 fun GreetingPreview() {
     val navController = rememberNavController()
     Scaffold(
