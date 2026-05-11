@@ -11,10 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
+import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
+import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 
 /**
  * Hosts the root Compose scaffold and route graph.
@@ -31,7 +34,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainActivity().onCreate(savedInstanceState)
+            val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
+            MainPortraitActivity(Modifier, onboardingModel)
         }
     }
 }

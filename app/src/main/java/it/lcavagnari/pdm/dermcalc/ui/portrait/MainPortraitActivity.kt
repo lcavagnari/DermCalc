@@ -1,10 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait
 
-import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -14,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
@@ -24,26 +19,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 
 
-/**
- * Hosts the root Compose scaffold and route graph.
- *
- * See app icon assets: app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml.
- */
-class MainActivity : ComponentActivity() {
-    /**
-     * Initializes edge-to-edge UI and navigation-enabled application content.
-     *
-     * @param savedInstanceState Prior to state bundle, or null on first launch.
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
-            Greeting(onboardingModel = onboardingModel)
-        }
-    }
-}
 
 @Composable
         /**
@@ -52,7 +27,7 @@ class MainActivity : ComponentActivity() {
          * @param modifier Modifier applied to the text node.
          * @return Unit.
          */
-fun Greeting(modifier: Modifier = Modifier, onboardingModel: OnboardingModel) {
+public fun MainPortraitActivity(modifier: Modifier = Modifier, onboardingModel: OnboardingModel) {
     val hasSeenOnboarding by onboardingModel.hasSeenOnboarding.collectAsState()
     val navController = rememberNavController()
     val pagerState = rememberPagerState(pageCount = { onboardingScreens.size })
@@ -99,6 +74,6 @@ private val vm = OnboardingModel()
  */
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    Greeting(onboardingModel = vm)
+fun MainPortraitActivityPreview() {
+    MainPortraitActivity(onboardingModel = vm)
 }
