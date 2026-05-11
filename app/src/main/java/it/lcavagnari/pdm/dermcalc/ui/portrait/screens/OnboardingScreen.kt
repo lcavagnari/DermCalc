@@ -116,19 +116,6 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
     val isBtnEnabled = onBoardingModel.isPageInputValid(currentScreen.inputFieldIds, fields)
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            modifier = Modifier.size(20.dp).padding(start = 10.dp),
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Swipe back",
-            tint = MaterialTheme.colorScheme.surfaceDim
-        )
-    }
-
-    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
@@ -174,17 +161,32 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            modifier = Modifier.size(20.dp),
-            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = "Swipe forward",
-            tint = MaterialTheme.colorScheme.surfaceDim
-        )
+    if (isBtnEnabled) {
+        if (pagerState.currentPage > 0) Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                modifier = Modifier.padding(start = 12.dp).size(32.dp),
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Swipe back",
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+            )
+        }
+
+        if (!isLastIndex) Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                modifier = Modifier.padding(end = 12.dp).size(32.dp),
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = "Swipe forward",
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+            )
+        }
     }
 }
 
