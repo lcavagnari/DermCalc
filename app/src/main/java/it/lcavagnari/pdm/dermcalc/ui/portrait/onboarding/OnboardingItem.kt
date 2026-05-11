@@ -37,7 +37,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
@@ -82,7 +81,8 @@ fun OnBoardItem(page: OnboardingScreen) {
                 imageVector = page.imageRes,
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                modifier = Modifier.size(page.imageSize?: 280.dp)
+                modifier = Modifier
+                    .size(page.imageSize ?: 280.dp)
                     .padding(bottom = 30.dp)
             )
 
@@ -171,7 +171,8 @@ fun OnBoardItem(page: OnboardingScreen) {
 
                     if (!field.isValid && field.isRequired && field.value != null)
                         errorMessage = "Please specify your gender from those supported."
-                    else if (field.isRequired && field.value != null) successMessage = "Thank you for sharing."
+                    else if (field.isRequired && field.value != null) successMessage =
+                        "Thank you for sharing."
                 }
 
                 is HeightInput -> {
@@ -219,7 +220,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                 }
 
                 is WeightInput -> {
-                    SingleChoiceSegmentedButtonRow() {
+                    SingleChoiceSegmentedButtonRow {
                         WeightMeasurements.entries.forEachIndexed { index, measurement ->
                             SegmentedButton(
                                 selected = measurement == (if (field.isKilos) WeightMeasurements.Kilos else WeightMeasurements.Pounds),

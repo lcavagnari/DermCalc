@@ -138,7 +138,9 @@ fun OnboardingScreen(
         // Contenuto pagina
         OnboardingPager(
             pagerState,
-            modifier = Modifier.weight(1f).padding(bottom = 30.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(bottom = 30.dp),
             userScrollEnabled = isBtnEnabled
         )
 
@@ -180,7 +182,9 @@ fun OnboardingScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                modifier = Modifier.padding(start = 12.dp).size(32.dp),
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(32.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Swipe back",
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
@@ -193,7 +197,9 @@ fun OnboardingScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                modifier = Modifier.padding(end = 12.dp).size(32.dp),
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .size(32.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Swipe forward",
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
@@ -206,8 +212,9 @@ fun OnboardingScreen(
 @Composable
 private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
-        modifier = modifier.clickable(onClick = onClick)
-                    .fillMaxWidth(),
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .fillMaxWidth(),
         contentAlignment = Alignment.TopStart
     ) {
         Icon(
@@ -217,7 +224,8 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        Text("Go Back ...",
+        Text(
+            "Go Back ...",
             modifier = modifier.padding(start = 25.dp),
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -262,7 +270,9 @@ private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
         horizontalArrangement = Arrangement.End
     ) {
         Box(
-            modifier = Modifier.size(40.dp).padding(end = 15.dp)
+            modifier = Modifier
+                .size(40.dp)
+                .padding(end = 15.dp)
                 .clickable(onClick = onLangClick),
             contentAlignment = Alignment.Center
         ) {
@@ -274,7 +284,10 @@ private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
             )
         }
         Box(
-            modifier = Modifier.size(36.dp).padding(end = 5.dp).clickable(onClick = onThemeClick),
+            modifier = Modifier
+                .size(36.dp)
+                .padding(end = 5.dp)
+                .clickable(onClick = onThemeClick),
             contentAlignment = Alignment.Center
         ) {
             Icon(
