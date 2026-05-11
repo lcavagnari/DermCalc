@@ -36,6 +36,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -129,7 +131,7 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
 
         // Bottone "indietro"
         if (!isBtnEnabled)
-            GoBackButton(modifier = Modifier.padding(bottom = 5.dp)) {
+            GoBackButton(modifier = Modifier.padding(bottom = 7.dp, start = 5.dp)) {
                 if (pagerState.currentPage > 0)
                     coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
             }
@@ -157,6 +159,31 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
             Text(if (isLastIndex) "Start" else "Next")
         }
     }
+
+    Column(
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier.padding(start = 10.dp),
+            contentAlignment = Alignment.CenterVertically as Alignment
+        ) {
+            Icon(
+                modifier = Modifier.size(20.dp),
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Back button",
+                tint = MaterialTheme.colorScheme.surfaceDim
+            )
+        }
+    }
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("1234")
+    }
 }
 
 
@@ -164,14 +191,23 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
 private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
         modifier = modifier.clickable(onClick = onClick)
+                    .fillMaxWidth(),
+        contentAlignment = Alignment.TopStart
     ) {
         Icon(
             modifier = modifier.size(20.dp),
             imageVector = Icons.Default.ArrowBack,
             contentDescription = "Back button",
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        Text("Go Back", modifier = modifier,)
+        Text("Go Back ...",
+            modifier = modifier.padding(start = 25.dp),
+            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.SemiBold,
+            fontStyle = FontStyle.Italic
+        )
     }
 }
 
