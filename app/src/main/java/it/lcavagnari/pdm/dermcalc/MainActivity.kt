@@ -23,6 +23,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
 import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 
 /**
  * Hosts the root Compose scaffold and route graph.
@@ -42,10 +43,12 @@ class MainActivity : ComponentActivity() {
             val configuration = LocalConfiguration.current
             val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
 
-            if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-                MainPortraitActivity(Modifier, onboardingModel)
+            DermCalcTheme {
+                if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
+                    MainPortraitActivity(Modifier, onboardingModel)
 
-            else MainLandscapeActivity(onboardingModel)
+                else MainLandscapeActivity(onboardingModel)
+            }
         }
     }
 }
