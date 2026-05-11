@@ -19,6 +19,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
@@ -166,7 +167,7 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
     ) {
         Box(
             modifier = Modifier.padding(start = 10.dp),
-            contentAlignment = Alignment.CenterVertically as Alignment
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = Modifier.size(20.dp),
@@ -182,7 +183,12 @@ fun OnboardingScreen(pagerState: PagerState, modifier: Modifier, onFinish: () ->
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("1234")
+        Icon(
+            modifier = Modifier.size(20.dp),
+            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+            contentDescription = "Swipe forward",
+            tint = MaterialTheme.colorScheme.surfaceDim
+        )
     }
 }
 
