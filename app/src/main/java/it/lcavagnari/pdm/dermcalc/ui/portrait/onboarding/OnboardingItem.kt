@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
@@ -59,7 +61,7 @@ import it.lcavagnari.pdm.dermcalc.utils.today
 @Preview(showBackground = true)
 @Composable
 fun OnBoardItemPreview() {
-    OnBoardItem(onboardingScreens[4])
+    OnBoardItem(onboardingScreens[1])
 }
 
 @Composable
@@ -74,9 +76,19 @@ fun OnBoardItem(page: OnboardingScreen) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        page.imageRes?.let { image ->
+
+        if (page.imageRes != null) {
             Image(
-                imageVector = image,
+                imageVector = page.imageRes,
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                modifier = Modifier.size(page.imageSize?: 280.dp)
+                    .padding(bottom = 30.dp)
+            )
+
+        } else if (page.imageDrawable != null) {
+            Image(
+                painter = painterResource(page.imageDrawable),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
@@ -85,6 +97,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                     .padding(bottom = 30.dp)
             )
         }
+
 
         Text(
             text = page.title,
@@ -262,6 +275,8 @@ fun OnBoardItem(page: OnboardingScreen) {
                 )
             }
         }
+
+        if (page.description == null) return
 
         Text(
             text = page.description,

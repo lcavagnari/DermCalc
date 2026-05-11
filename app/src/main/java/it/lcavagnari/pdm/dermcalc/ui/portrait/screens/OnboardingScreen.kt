@@ -16,7 +16,10 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -32,17 +35,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
 import kotlinx.coroutines.launch
 
 data class OnboardingScreen(
     val title: String,
-    val description: String,
+    val description: String? = null,
+
     val imageRes: ImageVector? = null,
+    val imageDrawable: Int? = null,
+    val imageSize: Dp? = 280.dp,
+
     val inputFieldIds: List<String> = emptyList(),
 
     @Deprecated("Use inputFieldIds instead", ReplaceWith("inputFieldIds"), DeprecationLevel.ERROR)
@@ -51,30 +61,33 @@ data class OnboardingScreen(
 
 val onboardingScreens = listOf(
     OnboardingScreen(
-        title = "Groceries at Your Fingertips",
-        description = "Discover nearby grocery stores and essentials in minutes.",
-        imageRes = Icons.Default.ShoppingCart
+        title = "Welcome to DermCalc",
+        imageDrawable = R.drawable.ic_ecg
     ),
     OnboardingScreen(
-        title = "Fresh Delivered, Hassle Free",
-        description = "Get fresh picks delivered fast, right when you need them.",
-        imageRes = Icons.Default.MailOutline
+        title = "Numbers that matter",
+        description = "BMI, BSA, PASI — sounds intimidating, but we'll walk you through it.",
+        imageRes = Icons.Default.Info
     ),
     OnboardingScreen(
-        title = "Shop Smart. Eat Fresh",
-        description = "Save time with smart ordering and healthy daily choices.",
-        imageRes = Icons.Default.CheckCircle
-    ),
+        title = "Always with you",
+        description = "Your history, your scores, your progress — right in your pocket.",
+        imageRes = Icons.Default.Favorite
 
+    ),
     OnboardingScreen(
-        title = "Tell us about yourself!",
-        description = "Please provide all the required information to personalize your experience.",
-        inputFieldIds = listOf("full-name", "date-of-birth", "sex")
+        title = "Let's get to know you!",
+        description = "A little info goes a long way toward making this truly yours.",
+        inputFieldIds = listOf("full-name", "date-of-birth", "sex"),
+        imageRes = Icons.Default.AccountCircle,
+        imageSize = 190.dp
     ),
     OnboardingScreen(
         title = "We require a little more information about you.",
         description = "Please provide all the required information to personalize your experience.",
         inputFieldIds = listOf("height", "weight"),
+        imageRes = Icons.Default.AccountCircle,
+        imageSize = 190.dp
     )
 )
 
@@ -83,7 +96,7 @@ val onboardingScreens = listOf(
 @Composable
 fun OnboardingPreview() {
     OnboardingScreen(
-        rememberPagerState(pageCount = { onboardingScreens.size }),
+        rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),
         modifier = Modifier.fillMaxSize(),
         onFinish = {})
 }
