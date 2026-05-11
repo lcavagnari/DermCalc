@@ -9,6 +9,7 @@
 /.idea/assetWizardSettings.xml
 /.idea/markdown.xml
 .DS_Store
+/.kotlin
 /build
 /captures
 .externalNativeBuild
