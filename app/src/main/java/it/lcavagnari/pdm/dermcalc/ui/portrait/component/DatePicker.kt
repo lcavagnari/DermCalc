@@ -1,0 +1,102 @@
+package it.lcavagnari.pdm.dermcalc.ui.portrait.component
+
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDate
+import it.lcavagnari.pdm.dermcalc.models.DateInput
+import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
+import it.lcavagnari.pdm.dermcalc.models.toLocalDate
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
+    var openPicker by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            if (interaction is PressInteraction.Release) openPicker = true
+        }
+    }
+
+    OutlinedTextField(
+        value = field.value?.toString() ?: "",
+        onValueChange = {},
+        readOnly = true,
+        label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
+        placeholder = { Text("DD / MM / YYYY") },
+        trailingIcon = {
+            IconButton(onClick = { openPicker = true }) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "Pick date"
+                )
+            }
+        },
+        interactionSource = interactionSource,
+        modifier = Modifier.padding(top = 20.dp),
+        shape = RoundedCornerShape(17.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary
+        ),
+    )
+
+    if (openPicker) {
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = field.value?.toEpochMillis()
+        )
+        DatePickerDialog(
+            onDismissRequest = { openPicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let { onDateSelected(it.toLocalDate()) }
+                        openPicker = false
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                ) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { openPicker = false },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) { Text("Cancel") }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+}
