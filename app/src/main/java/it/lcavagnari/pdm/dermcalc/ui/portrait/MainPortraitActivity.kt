@@ -44,7 +44,8 @@ public fun MainPortraitActivity(modifier: Modifier = Modifier, onboardingModel: 
             OnboardingScreen(
                 pagerState = pagerState,
                 modifier = modifier.padding(innerPadding),
-            ) { onboardingModel.finishOnboarding() }
+                onFinish = { onboardingModel.finishOnboarding() }
+            )
         }
 
 

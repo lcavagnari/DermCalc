@@ -262,25 +262,26 @@ private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
         horizontalArrangement = Arrangement.End
     ) {
         Box(
-            modifier = Modifier.size(36.dp).clickable(onClick = onLangClick),
+            modifier = Modifier.size(40.dp).padding(end = 15.dp)
+                .clickable(onClick = onLangClick),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(35.dp),
                 imageVector = Icons.Outlined.Language,
                 contentDescription = "Language",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         Box(
-            modifier = Modifier.size(36.dp).clickable(onClick = onThemeClick),
+            modifier = Modifier.size(36.dp).padding(end = 5.dp).clickable(onClick = onThemeClick),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(35.dp),
                 imageVector = if (isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
                 contentDescription = "Dark/Light mode",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.primary
             )
         }
     }
