@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.navigation
 
-import android.content.res.Resources
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,13 +16,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-/**
- * Renders bottom tabs and preserves per-destination back stack state.
- *
- * @param navController Controller used for tab navigation actions.
- * @param appItems Routes rendered as bottom navigation entries.
- * @return Unit.
- */
+        /**
+         * Renders bottom tabs and preserves per-destination back stack state.
+         *
+         * @param navController Controller used for tab navigation actions.
+         * @param appItems Routes rendered as bottom navigation entries.
+         * @return Unit.
+         */
 fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         containerColor = Color.White

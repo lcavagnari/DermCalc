@@ -1,11 +1,11 @@
 package it.lcavagnari.pdm.dermcalc.models
 
 import androidx.lifecycle.ViewModel
+import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.datetime.LocalDate
-import it.lcavagnari.pdm.dermcalc.utils.today
 
 class OnboardingModel : ViewModel() {
     // In-memory only — not persisted. Process death (force-kill) resets this to false

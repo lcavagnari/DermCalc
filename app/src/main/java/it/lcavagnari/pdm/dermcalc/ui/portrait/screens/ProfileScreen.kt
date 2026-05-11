@@ -12,18 +12,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 
 @Composable
-/**
- * Displays basic profile placeholder content centered on current screen.
- *
- * @param navController Controller available for future account flow routing.
- * @return Unit.
- */
+        /**
+         * Displays basic profile placeholder content centered on current screen.
+         *
+         * @param navController Controller available for future account flow routing.
+         * @return Unit.
+         */
 fun ProfileRoute(navController: NavHostController) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .wrapContentSize(Alignment.Center)
     ) {
         Text(

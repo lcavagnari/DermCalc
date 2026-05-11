@@ -54,13 +54,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-/**
- * Simple preview text composable used as starter template content.
- *
- * @param name Name rendered inside greeting text.
- * @param modifier Modifier applied to the text node.
- * @return Unit.
- */
+        /**
+         * Simple preview text composable used as starter template content.
+         *
+         * @param name Name rendered inside greeting text.
+         * @param modifier Modifier applied to the text node.
+         * @return Unit.
+         */
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
@@ -70,11 +70,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-/**
- * Design-time preview showing scaffold, bottom navigation, and start destination.
- *
- * @return Unit.
- */
+        /**
+         * Design-time preview showing scaffold, bottom navigation, and start destination.
+         *
+         * @return Unit.
+         */
 fun GreetingPreview() {
     val navController = rememberNavController()
     Scaffold(

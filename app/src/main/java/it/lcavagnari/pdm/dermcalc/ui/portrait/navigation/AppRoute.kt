@@ -1,13 +1,8 @@
 package it.lcavagnari.pdm.dermcalc.navigation
 
-import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import it.lcavagnari.pdm.dermcalc.R
 import kotlinx.serialization.Serializable
 

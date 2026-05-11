@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
-import it.lcavagnari.pdm.dermcalc.portrait.ui.MainActivity
 
 /**
  * Hosts the root Compose scaffold and route graph.

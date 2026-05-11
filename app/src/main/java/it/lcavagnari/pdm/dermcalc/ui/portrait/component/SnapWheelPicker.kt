@@ -136,7 +136,7 @@ private fun <T> DrawSnapWheel(
             state = scrollState,
             flingBehavior = rememberSnapFlingBehavior(scrollState)
         ) {
-            items(expandedSize, itemContent = { it ->
+            items(expandedSize, itemContent = {
                 val isDataItem = infinite || (it >= paddingCount && it < paddingCount + cycleSize)
                 val dataIndex = if (infinite) it % cycleSize else it - paddingCount
 
