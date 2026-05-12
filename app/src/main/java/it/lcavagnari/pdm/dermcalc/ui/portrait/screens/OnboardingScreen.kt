@@ -4,7 +4,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,6 +49,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 import kotlinx.coroutines.launch
 
 data class OnboardingScreen(
@@ -113,8 +114,7 @@ fun OnboardingScreen(
     pagerState: PagerState,
     modifier: Modifier,
     onFinish: () -> Unit,
-    onLangClick: () -> Unit = {},
-    onThemeClick: () -> Unit = {}
+    onLangClick: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val onBoardingModel: OnboardingModel = viewModel()
@@ -133,7 +133,7 @@ fun OnboardingScreen(
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
     ) {
 
-        TopTrayButtons(onLangClick, onThemeClick)
+        TopTrayButtons(onLangClick)
 
         // Contenuto pagina
         OnboardingPager(
@@ -264,7 +264,8 @@ private fun StepIndicator(
 }
 
 @Composable
-private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
+private fun TopTrayButtons(onLangClick: () -> Unit) {
+    val toggleDarkTheme = LocalToggleDarkTheme.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -287,12 +288,12 @@ private fun TopTrayButtons(onLangClick: () -> Unit, onThemeClick: () -> Unit) {
             modifier = Modifier
                 .size(36.dp)
                 .padding(end = 5.dp)
-                .clickable(onClick = onThemeClick),
+                .clickable(onClick = toggleDarkTheme),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = Modifier.size(35.dp),
-                imageVector = if (isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+                imageVector = if (LocalDarkTheme.current) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
                 contentDescription = "Dark/Light mode",
                 tint = MaterialTheme.colorScheme.primary
             )

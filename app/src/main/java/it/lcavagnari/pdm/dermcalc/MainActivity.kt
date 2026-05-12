@@ -5,13 +5,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.ViewModelProvider
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 
 /**
  * Hosts the root Compose scaffold and route graph.
@@ -30,11 +37,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             val configuration = LocalConfiguration.current
             val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
+            val systemDark = isSystemInDarkTheme()
+            var isDarkTheme by remember { mutableStateOf(systemDark) }
 
-            DermCalcTheme {
-                if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-                    MainPortraitActivity(Modifier, onboardingModel)
-                else MainLandscapeActivity(onboardingModel)
+            CompositionLocalProvider(LocalToggleDarkTheme provides { isDarkTheme = !isDarkTheme }) {
+                DermCalcTheme(darkTheme = isDarkTheme) {
+                    if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
+                        MainPortraitActivity(Modifier, onboardingModel)
+                    else MainLandscapeActivity(onboardingModel)
+                }
             }
         }
     }
