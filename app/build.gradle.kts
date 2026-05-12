@@ -3,8 +3,21 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.dependency.check)
 
     id("org.jetbrains.dokka") version "2.2.0"
+}
+
+dependencyCheck {
+    // Fail the build if any dependency has a CVSS score >= 7.0 (HIGH or CRITICAL).
+    failBuildOnCVSS = 7.0f
+    // Use NVD API key from environment variable to avoid rate-limiting on the NVD data feed.
+    nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
+    // Suppress known false positives or accepted risks.
+    suppressionFile = "dependency-check-suppressions.xml"
+    // Output the HTML report to the standard reports directory.
+    outputDirectory = "${project.buildDir}/reports"
+    formats = listOf("HTML")
 }
 
 android {
