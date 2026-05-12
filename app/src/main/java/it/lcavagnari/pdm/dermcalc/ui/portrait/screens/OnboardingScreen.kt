@@ -23,9 +23,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -147,7 +149,7 @@ fun OnboardingScreen(
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
     ) {
 
-        TopTrayButtons(onLangClick)
+        TopTrayButtons(onLangClick, onDebugClick = { onBoardingModel.finishOnboarding() })
 
         // Contenuto pagina
         OnboardingPager(
@@ -279,12 +281,26 @@ private fun StepIndicator(
 }
 
 @Composable
-private fun TopTrayButtons(onLangClick: () -> Unit) {
+private fun TopTrayButtons(onLangClick: () -> Unit, onDebugClick: () -> Unit = {}) {
     val toggleDarkTheme = LocalToggleDarkTheme.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .padding(end = 15.dp)
+                .clickable(onClick = onDebugClick),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier.size(35.dp),
+                imageVector = Icons.Outlined.BugReport,
+                contentDescription = "Debug",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
         Box(
             modifier = Modifier
                 .size(40.dp)
