@@ -9,12 +9,8 @@ import kotlinx.datetime.LocalDate
 
 /** ViewModel holding onboarding state and all user-input update operations. */
 class OnboardingModel : ViewModel() {
-    private val _hasSeenOnboarding = MutableStateFlow(false)
 
-    /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
-    val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
-
-    private val _fields = MutableStateFlow(
+    private val _inputFields = MutableStateFlow<List<InputField>>(
         listOf<InputField>(
             TextInput(id = "full-name", label = "Full name"),
             DateInput(id = "date-of-birth", label = "Date of birth"),
@@ -24,14 +20,24 @@ class OnboardingModel : ViewModel() {
         )
     )
     /** Ordered list of all onboarding [InputField] instances, updated in-place by the update methods. */
-    val fields: StateFlow<List<InputField>> = _fields.asStateFlow()
+    val fields: StateFlow<List<InputField>> = _inputFields.asStateFlow()
+
+    private val _hasSeenOnboarding = MutableStateFlow(false)
+
+    /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
+    val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
+
+    // Methods
 
     /** Marks onboarding as complete; causes [hasSeenOnboarding] to emit true. */
-    fun finishOnboarding() {
-        _hasSeenOnboarding.value = true
-    }
+    fun finishOnboarding() { _hasSeenOnboarding.value = true }
 
-    private fun getFieldById(id: String): InputField? = _fields.value.firstOrNull { it.id == id }
+    /**
+     * @param id - id of the [InputField] to retrieve.
+     * @return [InputField] instance with matching [id] or null.
+     */
+    private fun getFieldById(id: String): InputField? = _inputFields.value.firstOrNull { it.id == id }
+
 
     /**
      * Returns true when every required field in [fieldIds] has a valid value.
@@ -40,9 +46,9 @@ class OnboardingModel : ViewModel() {
      * @param fields - snapshot of fields to validate against. Defaults to the current [fields] state.
      * @return Boolean - true if all required fields are valid, or [fieldIds] is empty.
      */
-    fun isPageInputValid(
+    fun isFieldsInputValid(
         fieldIds: List<String>,
-        fields: List<InputField> = _fields.value
+        fields: List<InputField> = _inputFields.value
     ): Boolean {
         if (fieldIds.isEmpty()) return true
         return fieldIds.all { id ->
@@ -59,7 +65,7 @@ class OnboardingModel : ViewModel() {
      */
     fun updateName(value: String) {
         val isValid = value.trim().split("\\s+".toRegex()).filter { it.isNotBlank() }.size >= 2
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is TextInput && field.id == "full-name")
                 field.copy(value = value, isValid = if (field.isRequired) isValid else true)
             else field
@@ -76,7 +82,7 @@ class OnboardingModel : ViewModel() {
         val today = today().date
         val epoch = LocalDate(1900, 1, 1)
         val isValid = value > epoch && value <= today
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is DateInput && field.id == "date-of-birth")
                 field.copy(value = value, isValid = if (field.isRequired) isValid else true)
             else field
@@ -89,7 +95,7 @@ class OnboardingModel : ViewModel() {
      * @param value - selected [Sex] enum value.
      */
     fun updateSex(value: Sex) {
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is SexInput && field.id == "sex")
                 field.copy(value = value, isValid = true)
             else field
@@ -102,7 +108,7 @@ class OnboardingModel : ViewModel() {
      * @param value - selected height unit system.
      */
     fun updateMeasurements(value: HeightMeasurements) {
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is HeightInput && field.id == "height")
                 field.copy(isMetric = value == HeightMeasurements.Metric)
             else field
@@ -115,7 +121,7 @@ class OnboardingModel : ViewModel() {
      * @param value - selected weight unit system.
      */
     fun updateMeasurements(value: WeightMeasurements) {
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is WeightInput && field.id == "weight")
                 field.copy(isKilos = value == WeightMeasurements.Kilos)
             else field
@@ -131,7 +137,7 @@ class OnboardingModel : ViewModel() {
     fun updateHeightMetric(cm: Int) {
         val isValid = cm in 50..272
 
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is HeightInput && field.id == "height")
                 field.copy(value = cm.toDouble(), isValid = if (field.isRequired) isValid else true)
             else field
@@ -145,7 +151,7 @@ class OnboardingModel : ViewModel() {
      * @param inches - remaining inches component.
      */
     fun updateHeightImperial(feet: Int, inches: Int) {
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is HeightInput && field.id == "height") {
                 val cm = field.feetInchesToCm(feet, inches)
                 field.copy(
@@ -164,7 +170,7 @@ class OnboardingModel : ViewModel() {
     fun updateWeightKilos(kilos: Int) {
         val isValid = kilos in 20..300
 
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is WeightInput && field.id == "weight") {
                 field.copy(
                     value = kilos.toDouble(),
@@ -182,7 +188,7 @@ class OnboardingModel : ViewModel() {
     fun updateWeightPounds(pounds: Int) {
         val isValid = pounds in 44..661
 
-        _fields.value = _fields.value.map { field ->
+        _inputFields.value = _inputFields.value.map { field ->
             if (field is WeightInput && field.id == "weight") {
                 field.copy(
                     value = pounds / 2.2046,

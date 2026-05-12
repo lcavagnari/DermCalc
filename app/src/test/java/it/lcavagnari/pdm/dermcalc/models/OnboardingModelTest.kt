@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Unit tests for [OnboardingModel] — all update methods and [OnboardingModel.isPageInputValid].
+ * Unit tests for [OnboardingModel] — all update methods and [OnboardingModel.isFieldsInputValid].
  *
  * OnboardingModel is a plain class here; no Android framework is needed for these tests
  * because none of the logic under test touches Android APIs.
@@ -279,26 +279,26 @@ class OnboardingModelTest {
 
     @Test
     fun `isPageInputValid returns true for empty fieldIds`() {
-        assertTrue(model.isPageInputValid(emptyList()))
+        assertTrue(model.isFieldsInputValid(emptyList()))
     }
 
     @Test
     fun `isPageInputValid returns false when required field is not valid`() {
         // full-name is required and starts invalid
-        assertFalse(model.isPageInputValid(listOf("full-name")))
+        assertFalse(model.isFieldsInputValid(listOf("full-name")))
     }
 
     @Test
     fun `isPageInputValid returns true after valid name is entered`() {
         model.updateName("Mario Rossi")
-        assertTrue(model.isPageInputValid(listOf("full-name")))
+        assertTrue(model.isFieldsInputValid(listOf("full-name")))
     }
 
     @Test
     fun `isPageInputValid returns false when only one of two required fields is valid`() {
         model.updateName("Mario Rossi") // valid
         // height still invalid
-        assertFalse(model.isPageInputValid(listOf("full-name", "height")))
+        assertFalse(model.isFieldsInputValid(listOf("full-name", "height")))
     }
 
     @Test
@@ -306,12 +306,12 @@ class OnboardingModelTest {
         model.updateName("Mario Rossi")
         model.updateDateOfBirth(LocalDate(1990, 6, 15))
         // sex is not required, so no update needed
-        assertTrue(model.isPageInputValid(listOf("full-name", "date-of-birth", "sex")))
+        assertTrue(model.isFieldsInputValid(listOf("full-name", "date-of-birth", "sex")))
     }
 
     @Test
     fun `isPageInputValid returns false for unknown field id`() {
-        assertFalse(model.isPageInputValid(listOf("non-existent-id")))
+        assertFalse(model.isFieldsInputValid(listOf("non-existent-id")))
     }
 
     @Test
@@ -319,7 +319,7 @@ class OnboardingModelTest {
         val customFields = listOf(
             TextInput(id = "full-name", label = "Full name", value = "Test", isValid = true)
         )
-        assertTrue(model.isPageInputValid(listOf("full-name"), customFields))
+        assertTrue(model.isFieldsInputValid(listOf("full-name"), customFields))
     }
 
     @Test
