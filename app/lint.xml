@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lint rules configuration for DermCalc.
+  Enables specific security-relevant rules and sets them to error severity
+  so that abortOnError applies to them.
+-->
+<lint>
+    <!-- Hardcoded android:debuggable="true" in a release build is a security risk. -->
+    <issue id="HardcodedDebugMode" severity="error" />
+
+    <!-- Writing world-readable files exposes app data to other apps. -->
+    <issue id="SetWorldReadable" severity="error" />
+
+    <!-- Writing world-writable files allows other apps to tamper with data. -->
+    <issue id="SetWorldWritable" severity="error" />
+
+    <!-- Native libraries stored outside the standard location can be tampered with. -->
+    <issue id="UnsafeNativeCodeLocation" severity="error" />
+
+    <!--
+      android:allowBackup="true" allows ADB backup of app data, which may
+      expose sensitive information on unencrypted or compromised devices.
+    -->
+    <issue id="AllowBackup" severity="error" />
+
+    <!-- Exported BroadcastReceivers without permission checks are accessible to any app. -->
+    <issue id="ExportedReceiver" severity="error" />
+
+    <!-- Exported ContentProviders without permission checks leak data to any app. -->
+    <issue id="ExportedContentProvider" severity="error" />
+</lint>
