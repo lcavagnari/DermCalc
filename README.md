@@ -47,6 +47,7 @@ Both modes are supported. The theme adapts as follows:
 | Severity: moderate | amber | yellow |
 | Severity: severe | red | red |
 
+
 Dark mode is the intended experience. Light mode is fully functional for clinical environments where a dark screen is impractical.
 
 ## Roadmap
