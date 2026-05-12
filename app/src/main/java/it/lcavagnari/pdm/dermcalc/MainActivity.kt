@@ -21,15 +21,14 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 
 /**
- * Hosts the root Compose scaffold and route graph.
- *
- * See app icon assets: app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml.
+ * Root activity. Detects orientation and delegates rendering to either
+ * [MainPortraitActivity] or [MainLandscapeActivity].
  */
 class MainActivity : ComponentActivity() {
     /**
-     * Initializes edge-to-edge UI and navigation-enabled application content.
+     * Initializes edge-to-edge UI, wires the theme toggle, and sets the root Compose content.
      *
-     * @param savedInstanceState Prior state bundle, or null on first launch.
+     * @param savedInstanceState - prior state bundle, or null on first launch.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -44,6 +44,17 @@ import androidx.compose.ui.window.DialogProperties
 import kotlin.math.abs
 
 
+/**
+ * Configuration for a single scrollable column inside [SnapWheelPickerDialog].
+ *
+ * @property height - total height of the wheel composable. Defaults to 260.dp.
+ * @property visibleItemCount - number of items visible at once. Must be odd; bumped up if even.
+ * @property infinite - whether the list wraps around infinitely.
+ * @property initialValue - item shown at the centre on first composition.
+ * @property items - full list of selectable items.
+ * @property onValueChanged - callback invoked with the centred item on every scroll settle.
+ * @constructor Create empty Snap wheel
+ */
 data class SnapWheel<T>(
     val height: Dp = 260.dp,
     val visibleItemCount: Int = 5,

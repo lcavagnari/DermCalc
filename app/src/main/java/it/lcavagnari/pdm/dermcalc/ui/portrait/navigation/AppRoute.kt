@@ -7,9 +7,13 @@ import it.lcavagnari.pdm.dermcalc.R
 import kotlinx.serialization.Serializable
 
 /**
- * Defines navigable destinations and metadata consumed by bottom navigation.
+ * Sealed interface for type-safe navigation destinations, carrying metadata for the bottom navigation bar.
  *
- * Icons are provided by vectors or drawable assets.
+ * @property name - display name string (empty string default, prefer [nameRes]).
+ * @property nameRes - string resource id for the destination label.
+ * @property route - unique route string registered with the nav graph.
+ * @property icon - optional vector icon for the bottom nav item.
+ * @property iconRes - optional drawable resource id for the bottom nav icon.
  */
 @Serializable
 sealed interface AppRoute {

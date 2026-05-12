@@ -7,14 +7,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.datetime.LocalDate
 
+/** ViewModel holding onboarding state and all user-input update operations. */
 class OnboardingModel : ViewModel() {
-    // In-memory only — not persisted. Process death (force-kill) resets this to false
-    // and the user will see onboarding again on next launch.
     private val _hasSeenOnboarding = MutableStateFlow(false)
+
+    /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
     val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
 
-    // Single source of truth for every onboarding field across all pages.
-    // Pages reference fields by id; adding a new field here makes it available to any page.
     private val _fields = MutableStateFlow(
         listOf<InputField>(
             TextInput(id = "full-name", label = "Full name"),
@@ -24,14 +23,23 @@ class OnboardingModel : ViewModel() {
             WeightInput(id = "weight", label = "Weight", isKilos = true)
         )
     )
+    /** Ordered list of all onboarding [InputField] instances, updated in-place by the update methods. */
     val fields: StateFlow<List<InputField>> = _fields.asStateFlow()
 
+    /** Marks onboarding as complete; causes [hasSeenOnboarding] to emit true. */
     fun finishOnboarding() {
         _hasSeenOnboarding.value = true
     }
 
     private fun getFieldById(id: String): InputField? = _fields.value.firstOrNull { it.id == id }
 
+    /**
+     * Returns true when every required field in [fieldIds] has a valid value.
+     *
+     * @param fieldIds - list of field ids for the current onboarding page.
+     * @param fields - snapshot of fields to validate against. Defaults to the current [fields] state.
+     * @return Boolean - true if all required fields are valid, or [fieldIds] is empty.
+     */
     fun isPageInputValid(
         fieldIds: List<String>,
         fields: List<InputField> = _fields.value
@@ -43,7 +51,12 @@ class OnboardingModel : ViewModel() {
         }
     }
 
-    // Valid when the value contains at least two whitespace-separated words.
+    /**
+     * Updates the full name field.
+     * Valid when the value contains at least two whitespace-separated words.
+     *
+     * @param value - full name string entered by the user.
+     */
     fun updateName(value: String) {
         val isValid = value.trim().split("\\s+".toRegex()).filter { it.isNotBlank() }.size >= 2
         _fields.value = _fields.value.map { field ->
@@ -53,7 +66,12 @@ class OnboardingModel : ViewModel() {
         }
     }
 
-    // Valid when the date is after 1900-01-01 and not in the future.
+    /**
+     * Updates the date of birth field.
+     * Valid when the date is after 1900-01-01 and not in the future.
+     *
+     * @param value - date of birth selected by the user.
+     */
     fun updateDateOfBirth(value: LocalDate) {
         val today = today().date
         val epoch = LocalDate(1900, 1, 1)
@@ -65,6 +83,11 @@ class OnboardingModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the sex field.
+     *
+     * @param value - selected [Sex] enum value.
+     */
     fun updateSex(value: Sex) {
         _fields.value = _fields.value.map { field ->
             if (field is SexInput && field.id == "sex")
@@ -73,6 +96,11 @@ class OnboardingModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the height unit system.
+     *
+     * @param value - selected height unit system.
+     */
     fun updateMeasurements(value: HeightMeasurements) {
         _fields.value = _fields.value.map { field ->
             if (field is HeightInput && field.id == "height")
@@ -81,6 +109,11 @@ class OnboardingModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the weight unit system.
+     *
+     * @param value - selected weight unit system.
+     */
     fun updateMeasurements(value: WeightMeasurements) {
         _fields.value = _fields.value.map { field ->
             if (field is WeightInput && field.id == "weight")
@@ -90,8 +123,12 @@ class OnboardingModel : ViewModel() {
     }
 
 
+    /**
+     * Updates the metric height field. Valid range 50–272 cm.
+     *
+     * @param cm - height in centimetres.
+     */
     fun updateHeightMetric(cm: Int) {
-        // Valid range: 50–272 cm (shortest/tallest recorded human heights).
         val isValid = cm in 50..272
 
         _fields.value = _fields.value.map { field ->
@@ -101,6 +138,12 @@ class OnboardingModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the imperial height field. Converts feet and inches to centimetres before storing.
+     *
+     * @param feet - whole feet component.
+     * @param inches - remaining inches component.
+     */
     fun updateHeightImperial(feet: Int, inches: Int) {
         _fields.value = _fields.value.map { field ->
             if (field is HeightInput && field.id == "height") {
@@ -113,8 +156,12 @@ class OnboardingModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the weight field in kilograms. Valid range 20–300 kg.
+     *
+     * @param kilos - weight in kilograms.
+     */
     fun updateWeightKilos(kilos: Int) {
-        // Reasonable human weight range: 20-300 kg.
         val isValid = kilos in 20..300
 
         _fields.value = _fields.value.map { field ->
@@ -127,8 +174,12 @@ class OnboardingModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the weight field in pounds. Converts to kg before storing. Valid range 44–661 lb.
+     *
+     * @param pounds - weight in pounds.
+     */
     fun updateWeightPounds(pounds: Int) {
-        // 20 kg = 44.092 lb, 300 kg = 661.38 lb → rounded range 44..661
         val isValid = pounds in 44..661
 
         _fields.value = _fields.value.map { field ->

@@ -20,12 +20,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 
 
 @Composable
-/**
- * Simple preview text composable used as starter template content.
- *
- * @param modifier Modifier applied to the text node.
- * @return Unit.
- */
 fun MainPortraitActivity(modifier: Modifier = Modifier, onboardingModel: OnboardingModel) {
     val hasSeenOnboarding by onboardingModel.hasSeenOnboarding.collectAsState()
     val navController = rememberNavController()
@@ -68,11 +62,6 @@ fun MainPortraitActivity(modifier: Modifier = Modifier, onboardingModel: Onboard
 
 private val vm = OnboardingModel()
 
-/**
- * Design-time preview showing scaffold, bottom navigation, and start destination.
- *
- * @return Unit.
- */
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {

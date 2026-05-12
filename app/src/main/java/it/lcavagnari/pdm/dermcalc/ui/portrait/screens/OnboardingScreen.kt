@@ -53,6 +53,18 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 import kotlinx.coroutines.launch
 
+/**
+ * Represents a single page in the onboarding flow.
+ *
+ * @property title - text displayed as the page heading.
+ * @property description - optional subtitle shown below the title.
+ * @property imageRes - optional vector icon displayed on the page.
+ * @property imageDrawable - optional drawable resource id for the page image.
+ * @property imageSize - size applied to the image composable. Defaults to 280.dp.
+ * @property inputFieldIds - ids of [InputField] instances rendered on this page.
+ * @property inputFieldId - deprecated. use [inputFieldIds] instead.
+ * @constructor Create empty Onboarding screen
+ */
 data class OnboardingScreen(
     val title: String,
     val description: String? = null,
