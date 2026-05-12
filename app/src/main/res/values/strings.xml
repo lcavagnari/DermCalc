@@ -9,7 +9,7 @@
 
     <!-- Navigation -->
     <string name="nav_home">Home</string>
-    <string name="nav_login">Login</string>
+    <string name="nav_profile">Profile</string>
 
     <!-- Onboarding screens -->
     <string name="onboarding_1_title">Groceries at Your Fingertips</string>
@@ -55,4 +55,5 @@
     <!-- Height display -->
     <string name="height_display_metric" translatable="false">%d cm</string>
     <string name="height_display_imperial" translatable="false">%.0f ft</string>
+    <string name="nav_tools">Tools</string>
 </resources>

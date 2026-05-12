@@ -8,7 +8,7 @@
 
     <!-- Navigation -->
     <string name="nav_home">Accueil</string>
-    <string name="nav_login">Connexion</string>
+    <string name="nav_profile">Profil</string>
 
     <!-- Onboarding screens -->
     <string name="onboarding_1_title">Les courses à portée de main</string>
@@ -49,6 +49,7 @@
     <string name="success_name">Ravi de vous rencontrer, %s !</string>
     <string name="success_sex">Merci d\'avoir partagé.</string>
     <string name="age_display">(%d ans)</string>
+    <string name="nav_tools">Outils</string>
 
     <!-- Height display -->
 </resources>

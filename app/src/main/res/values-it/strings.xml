@@ -7,8 +7,8 @@
     <string name="label_height">Altezza</string>
 
     <!-- Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_login">Accedi</string>
+    <string name="nav_home">Casa</string>
+    <string name="nav_profile">Profilo</string>
 
     <!-- Onboarding screens -->
     <string name="onboarding_1_title">La spesa a portata di mano</string>
@@ -49,6 +49,7 @@
     <string name="success_name">Piacere di conoscerti, %s!</string>
     <string name="success_sex">Grazie per aver condiviso.</string>
     <string name="age_display">(%d anni)</string>
+    <string name="nav_tools">Strumenti</string>
 
     <!-- Height display -->
 </resources>
