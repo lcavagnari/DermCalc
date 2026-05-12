@@ -1,85 +1,58 @@
 <resources>
     <string name="app_name" translatable="false">DermCalc</string>
 
-    <!-- Navbar -->
+    <!-- Field labels -->
+    <string name="label_full_name">Full name</string>
+    <string name="label_date_of_birth">Date of birth</string>
+    <string name="label_sex">Sex</string>
+    <string name="label_height">Height</string>
+
+    <!-- Navigation -->
     <string name="nav_home">Home</string>
-    <string name="nav_tools">Tools</string>
-    <string name="nav_profile">Profile</string>
+    <string name="nav_login">Login</string>
 
-    <!-- Home -->
-    <string name="home_welcome">Welcome, %1$s</string>
-    <string name="home_no_calculations">No calculations yet</string>
-    <string name="home_see_all">See all</string>
+    <!-- Onboarding screens -->
+    <string name="onboarding_1_title">Groceries at Your Fingertips</string>
+    <string name="onboarding_1_desc">Discover nearby grocery stores and essentials in minutes.</string>
+    <string name="onboarding_2_title">Fresh Delivered, Hassle Free</string>
+    <string name="onboarding_2_desc">Get fresh picks delivered fast, right when you need them.</string>
+    <string name="onboarding_3_title">Shop Smart. Eat Fresh</string>
+    <string name="onboarding_3_desc">Save time with smart ordering and healthy daily choices.</string>
+    <string name="onboarding_4_title">Tell us about yourself!</string>
+    <string name="onboarding_4_desc">Please provide all the required information to personalize your experience.</string>
+    <string name="onboarding_5_title">We require a little more information about you.</string>
+    <string name="onboarding_5_desc">FeeF.</string><!-- TODO: replace with real copy -->
 
-    <!-- Onboarding -->
-    <string name="onboarding_title">Enter your details</string>
-    <string name="onboarding_first_name">First name</string>
-    <string name="onboarding_last_name">Last name</string>
-    <string name="onboarding_birth_date">Date of birth</string>
-    <string name="onboarding_sex">Sex</string>
-    <string name="onboarding_sex_male">Male</string>
-    <string name="onboarding_sex_female">Female</string>
-    <string name="onboarding_confirm">Confirm</string>
+    <!-- Buttons -->
+    <string name="btn_next">Next</string>
+    <string name="btn_start">Start</string>
+    <string name="btn_ok" translatable="false">OK</string>
+    <string name="btn_cancel">Cancel</string>
 
-    <!-- Profile -->
-    <string name="profile_title">Profile</string>
-    <string name="profile_save">Save changes</string>
+    <!-- Pickers -->
+    <string name="picker_default_title">Scroll to pick a value</string>
+    <string name="picker_title_height">Select height</string>
 
-    <!-- Tools -->
-    <string name="tools_title">Tools</string>
-    <string name="tools_bmi">BMI</string>
-    <string name="tools_bsa">BSA</string>
-    <string name="tools_pasi">PASI</string>
-    <string name="tools_easi">EASI</string>
+    <!-- Placeholders -->
+    <string name="placeholder_date">DD / MM / YYYY</string>
+    <string name="placeholder_height">Insert Height</string>
 
-    <!-- BMI -->
-    <string name="bmi_title">BMI Calculator</string>
-    <string name="bmi_weight">Weight (kg)</string>
-    <string name="bmi_height">Height (cm)</string>
-    <string name="bmi_calculate">Calculate</string>
-    <string name="bmi_underweight">Underweight</string>
-    <string name="bmi_normal">Normal weight</string>
-    <string name="bmi_overweight">Overweight</string>
-    <string name="bmi_obese">Obese</string>
+    <!-- Accessibility (contentDescription) -->
+    <string name="cd_pick_date">Pick date</string>
+    <string name="cd_pick_height">Pick height</string>
 
-    <!-- BSA -->
-    <string name="bsa_title">BSA Calculator</string>
-    <string name="bsa_head">Head</string>
-    <string name="bsa_trunk_front">Anterior trunk</string>
-    <string name="bsa_trunk_back">Posterior trunk</string>
-    <string name="bsa_arm_right">Right arm</string>
-    <string name="bsa_arm_left">Left arm</string>
-    <string name="bsa_leg_right">Right leg</string>
-    <string name="bsa_leg_left">Left leg</string>
-    <string name="bsa_genitals">Genitals</string>
+    <!-- Validation: errors -->
+    <string name="error_name">Please insert your full legal name.</string>
+    <string name="error_date">Please pick a correct date.</string>
+    <string name="error_sex">Please specify your gender from those supported.</string>
+    <string name="error_height">Please specify your height.</string>
 
-    <!-- PASI / EASI shared -->
-    <string name="score_erythema">Erythema</string>
-    <string name="score_induration">Induration</string>
-    <string name="score_desquamation">Desquamation</string>
-    <string name="score_area">Area</string>
-    <string name="score_edema">Edema/Papulation</string>
-    <string name="score_excoriation">Excoriation</string>
-    <string name="score_lichenification">Lichenification</string>
-    <string name="score_next">Next</string>
-    <string name="score_back">Back</string>
-    <string name="score_save">Save</string>
-    <string name="score_severity_mild">Mild</string>
-    <string name="score_severity_moderate">Moderate</string>
-    <string name="score_severity_severe">Severe</string>
+    <!-- Validation: success / hints -->
+    <string name="success_name">Nice to meet you, %s!</string>
+    <string name="success_sex">Thank you for sharing.</string>
+    <string name="age_display">(%d years old)</string>
 
-    <!-- PASI districts -->
-    <string name="district_head">Head</string>
-    <string name="district_upper_limbs">Upper limbs</string>
-    <string name="district_trunk">Trunk</string>
-    <string name="district_lower_limbs">Lower limbs</string>
-
-    <!-- History -->
-    <string name="history_title">History</string>
-    <string name="history_delete">Delete</string>
-
-    <!-- Errors -->
-    <string name="error_required_field">Required field</string>
-    <string name="error_invalid_value">Invalid value</string>
-    <string name="error_save_failed">Failed to save</string>
+    <!-- Height display -->
+    <string name="height_display_metric" translatable="false">%d cm</string>
+    <string name="height_display_imperial" translatable="false">%.0f ft</string>
 </resources>
