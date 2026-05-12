@@ -34,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -125,7 +127,9 @@ fun OnBoardItem(page: OnboardingScreen) {
                     OutlinedTextField(
                         value = field.value,
                         onValueChange = { onBoardingModel.updateName(it) },
-                        modifier = Modifier.padding(top = 20.dp),
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .semantics { testTag = "input_full_name" },
                         label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
                         shape = RoundedCornerShape(17.dp),
                         colors = TextFieldDefaults.colors(
@@ -355,12 +359,15 @@ fun WeightInputPicker(
             if (field.isKilos) "%.2f".format(it) + " kg" else "%.2f".format(field.kilosToPounds(it)) + " lb"
         } ?: "",
         onValueChange = {},
-        modifier = modifier,
+        modifier = modifier.semantics { testTag = "input_weight" },
         readOnly = true,
         label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
         placeholder = { Text("Select Weight") },
         trailingIcon = {
-            IconButton(onClick = { openPicker = true }) {
+            IconButton(
+                onClick = { openPicker = true },
+                modifier = Modifier.semantics { testTag = "btn_open_weight_picker" }
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_weight_scale),
                     contentDescription = "Pick weight"
@@ -441,7 +448,10 @@ fun HeightInputPicker(
         label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
         placeholder = { Text("Insert Height") },
         trailingIcon = {
-            IconButton(onClick = { openPicker = true }) {
+            IconButton(
+                onClick = { openPicker = true },
+                modifier = Modifier.semantics { testTag = "btn_open_height_picker" }
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_tape_measure),
                     contentDescription = "Pick height"
@@ -449,7 +459,7 @@ fun HeightInputPicker(
             }
         },
         interactionSource = interactionSource,
-        modifier = modifier,
+        modifier = modifier.semantics { testTag = "input_height" },
         shape = RoundedCornerShape(17.dp),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,

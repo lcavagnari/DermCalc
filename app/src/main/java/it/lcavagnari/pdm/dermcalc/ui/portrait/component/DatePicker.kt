@@ -26,6 +26,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.models.DateInput
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
@@ -57,7 +59,10 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
         label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
         placeholder = { Text("DD / MM / YYYY") },
         trailingIcon = {
-            IconButton(onClick = { openPicker = true }) {
+            IconButton(
+                onClick = { openPicker = true },
+                modifier = Modifier.semantics { testTag = "btn_open_date_picker" }
+            ) {
                 Icon(
                     imageVector = Icons.Default.DateRange,
                     contentDescription = "Pick date"
@@ -65,7 +70,9 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
             }
         },
         interactionSource = interactionSource,
-        modifier = Modifier.padding(top = 20.dp),
+        modifier = Modifier
+            .padding(top = 20.dp)
+            .semantics { testTag = "input_date_of_birth" },
         shape = RoundedCornerShape(17.dp),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
@@ -86,6 +93,7 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
                         datePickerState.selectedDateMillis?.let { onDateSelected(it.toLocalDate()) }
                         openPicker = false
                     },
+                    modifier = Modifier.semantics { testTag = "btn_confirm_date" },
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = MaterialTheme.colorScheme.onPrimary,
                         containerColor = MaterialTheme.colorScheme.onPrimaryContainer

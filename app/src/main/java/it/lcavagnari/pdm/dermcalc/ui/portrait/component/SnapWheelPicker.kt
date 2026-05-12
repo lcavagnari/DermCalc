@@ -36,6 +36,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -261,6 +263,7 @@ fun SnapWheelPickerDialog(
 
                         OutlinedButton(
                             onClick = { onConfirm(selectedValues.toList()) },
+                            modifier = Modifier.semantics { testTag = "btn_confirm_picker" },
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = MaterialTheme.colorScheme.onPrimary,
                                 containerColor = MaterialTheme.colorScheme.onPrimaryContainer
