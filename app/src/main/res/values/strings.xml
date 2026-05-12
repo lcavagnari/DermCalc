@@ -6,22 +6,23 @@
     <string name="label_date_of_birth">Date of birth</string>
     <string name="label_sex">Sex</string>
     <string name="label_height">Height</string>
+    <string name="label_weight">Weight</string>
 
     <!-- Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_profile">Profile</string>
+    <string name="nav_tools">Tools</string>
 
     <!-- Onboarding screens -->
-    <string name="onboarding_1_title">Groceries at Your Fingertips</string>
-    <string name="onboarding_1_desc">Discover nearby grocery stores and essentials in minutes.</string>
-    <string name="onboarding_2_title">Fresh Delivered, Hassle Free</string>
-    <string name="onboarding_2_desc">Get fresh picks delivered fast, right when you need them.</string>
-    <string name="onboarding_3_title">Shop Smart. Eat Fresh</string>
-    <string name="onboarding_3_desc">Save time with smart ordering and healthy daily choices.</string>
-    <string name="onboarding_4_title">Tell us about yourself!</string>
-    <string name="onboarding_4_desc">Please provide all the required information to personalize your experience.</string>
+    <string name="onboarding_1_title">Welcome to DermCalc</string>
+    <string name="onboarding_2_title">Numbers that matter</string>
+    <string name="onboarding_2_desc">BMI, BSA, PASI — sounds intimidating, but we\'ll walk you through it.</string>
+    <string name="onboarding_3_title">Always with you</string>
+    <string name="onboarding_3_desc">Your history, your scores, your progress — right in your pocket.</string>
+    <string name="onboarding_4_title">Let\'s get to know you!</string>
+    <string name="onboarding_4_desc">A little info goes a long way toward making this truly yours.</string>
     <string name="onboarding_5_title">We require a little more information about you.</string>
-    <string name="onboarding_5_desc">FeeF.</string><!-- TODO: replace with real copy -->
+    <string name="onboarding_5_desc">Please provide all the required information to personalize your experience.</string>
 
     <!-- Buttons -->
     <string name="btn_next">Next</string>
@@ -32,20 +33,24 @@
     <!-- Pickers -->
     <string name="picker_default_title">Scroll to pick a value</string>
     <string name="picker_title_height">Select height</string>
+    <string name="picker_title_weight">Select weight</string>
 
     <!-- Placeholders -->
     <string name="placeholder_date">DD / MM / YYYY</string>
     <string name="placeholder_height">Insert Height</string>
+    <string name="placeholder_weight">Select Weight</string>
 
     <!-- Accessibility (contentDescription) -->
     <string name="cd_pick_date">Pick date</string>
     <string name="cd_pick_height">Pick height</string>
+    <string name="cd_pick_weight">Pick weight</string>
 
     <!-- Validation: errors -->
     <string name="error_name">Please insert your full legal name.</string>
     <string name="error_date">Please pick a correct date.</string>
     <string name="error_sex">Please specify your gender from those supported.</string>
-    <string name="error_height">Please specify your height.</string>
+    <string name="error_height">Please double check your height.</string>
+    <string name="error_weight">Please double check your weight.</string>
 
     <!-- Validation: success / hints -->
     <string name="success_name">Nice to meet you, %s!</string>
@@ -54,6 +59,9 @@
 
     <!-- Height display -->
     <string name="height_display_metric" translatable="false">%d cm</string>
-    <string name="height_display_imperial" translatable="false">%.0f ft</string>
-    <string name="nav_tools">Tools</string>
+    <string name="height_display_imperial" translatable="false">%1$d ft %2$d in</string>
+
+    <!-- Weight display -->
+    <string name="weight_display_metric" translatable="false">%.2f kg</string>
+    <string name="weight_display_imperial" translatable="false">%.2f lb</string>
 </resources>
