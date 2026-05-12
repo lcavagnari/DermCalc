@@ -287,6 +287,8 @@ private fun TopTrayButtons(onLangClick: () -> Unit, onDebugClick: () -> Unit = {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
+
+        // TODO: Remove this button before release, you dumb cu-
         Box(
             modifier = Modifier
                 .size(40.dp)
