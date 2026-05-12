@@ -32,6 +32,12 @@ import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
 import kotlinx.datetime.LocalDate
 
+/**
+ * Read-only date field that opens a Material3 [DatePickerDialog] on tap, bridging [kotlinx.datetime.LocalDate] to the epoch-millisecond API.
+ *
+ * @param field - the [DateInput] field supplying the current value and label.
+ * @param onDateSelected - callback invoked with the chosen [kotlinx.datetime.LocalDate] on confirm.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {

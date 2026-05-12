@@ -13,13 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
+/**
+ * Displays calculator tools placeholder while feature modules are added.
+ *
+ * @param navController - controller available for future tools deep links.
+ */
 @Composable
-        /**
-         * Displays calculator tools placeholder while feature modules are added.
-         *
-         * @param navController Controller available for future tools deep links.
-         * @return Unit.
-         */
 fun ToolsScreen(navController: NavHostController) {
     Column(
         modifier = Modifier

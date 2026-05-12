@@ -13,13 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
+/**
+ * Displays placeholder home content centered within available screen space.
+ *
+ * @param navController - controller available for future home navigation actions.
+ */
 @Composable
-        /**
-         * Displays placeholder home content centered within available screen space.
-         *
-         * @param navController Controller available for future home navigation actions.
-         * @return Unit.
-         */
 fun HomeScreen(navController: NavHostController) {
     Column(
         modifier = Modifier

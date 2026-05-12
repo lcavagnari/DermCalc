@@ -11,6 +11,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 
 
+/**
+ * Horizontal pager that renders one [OnBoardItem] per onboarding page.
+ *
+ * @param pagerState - state object controlling the current page and scroll position.
+ * @param modifier - modifier applied to the underlying [HorizontalPager].
+ * @param userScrollEnabled - whether the user can swipe between pages. Defaults to true.
+ */
 @Composable
 fun OnboardingPager(pagerState: PagerState, modifier: Modifier, userScrollEnabled: Boolean = true) {
     HorizontalPager(

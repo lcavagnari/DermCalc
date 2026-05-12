@@ -9,7 +9,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
+/** Composition local carrying the current dark-theme flag; read by any composable in the tree. */
 val LocalDarkTheme = compositionLocalOf { false }
+/** Composition local carrying the callback that toggles dark mode; provided by [DermCalcTheme]. */
 val LocalToggleDarkTheme = compositionLocalOf<() -> Unit> { {} }
 
 private val DarkColorScheme = darkColorScheme(
@@ -52,6 +54,12 @@ private val LightColorScheme = lightColorScheme(
     outline = Color(0xFF8C8070),
 )
 
+/**
+ * Root Material3 theme that provides the colour scheme, typography, and dark-mode composition locals.
+ *
+ * @param darkTheme - whether to apply the dark colour scheme. Defaults to the system setting.
+ * @param content - the composable content rendered within the theme.
+ */
 @Composable
 fun DermCalcTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

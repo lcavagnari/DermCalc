@@ -10,16 +10,13 @@ import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 
 
-/**
- * Material3's DatePicker works in epoch milliseconds; the model uses kotlinx LocalDate.
- * These two functions bridge the two representations at the boundary.
- * @return Long — epoch milliseconds.
- */
+/** Converts this [LocalDate] to epoch milliseconds in UTC, for use with Material3 date APIs. @return Long - epoch milliseconds. */
 @OptIn(ExperimentalTime::class)
 fun LocalDate.toEpochMillis(): Long {
     return atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()
 }
 
+/** Converts epoch milliseconds to a [LocalDate] in UTC. @return LocalDate - the corresponding local date. */
 @OptIn(ExperimentalTime::class)
 fun Long.toLocalDate(): LocalDate {
     return Instant.fromEpochMilliseconds(this)
@@ -28,20 +25,20 @@ fun Long.toLocalDate(): LocalDate {
 }
 
 /**
- * Gender types.
+ * Biological sex of the patient.
  */
 @Serializable
 enum class Sex { Male, Female, Other }
 
 /**
- * Height measurements, Metric (Most of the world), Imperial(America and the UK).
+ * Unit system used to express height.
  */
 @Serializable
 enum class HeightMeasurements { Metric, Imperial }
 
 
 /**
- * Weight measurements, Pounds (America and the UK), Kilos (Most of the world).
+ * Unit system used to express weight.
  */
 @Serializable
 enum class WeightMeasurements { Kilos, Pounds }
@@ -49,7 +46,7 @@ enum class WeightMeasurements { Kilos, Pounds }
 /*   ---------    */
 
 /**
- * interface for all input types.
+ * Interface for all onboarding input types.
  *
  * @property id - unique identifier
  * @property label - label for the field
@@ -71,11 +68,7 @@ sealed interface InputField {
 /**
  * Text-based input, e.g. name, address, etc.
  *
- * @property id - unique identifier
- * @property label - label for the field
  * @property value - default value of the field, type-safe. Here an empty string.
- * @property isValid - whether the value in the field is valid or not, based on specific criteria. Defaults to false.
- * @property isRequired - whether a value is required or not. Defaults to true.
  *
  * @constructor Create empty Text input
  */
@@ -91,11 +84,7 @@ data class TextInput(
  * Sex/gender input, e.g. biological sex of the patient.
  * Supports three values: Male, Female, Other.
  *
- * @property id - unique identifier
- * @property label - label for the field
  * @property value - selected sex. Defaults to [Sex.Other].
- * @property isValid - whether the selected sex is valid or not. Defaults to false.
- * @property isRequired - whether a value is required or not. Defaults to false.
  *
  * @constructor Create empty Sex input
  */
@@ -114,11 +103,8 @@ data class SexInput(
  * Height input, e.g. user's height
  * Based on the metric for the tallest(272cm) and shortest(50cm) person ever lived.
  *
- * @property id - unique identifier
- * @property label - label for the field
  * @property value - height stored in centimetres. Defaults to null.
- * @property isValid - whether the height is within plausible bounds (50–272 cm). Defaults to false.
- * @property isRequired - whether a value is required or not. Defaults to true.
+ * @property isMetric - whether the user prefers metric units.
  *
  * @constructor Create empty Height input
  */
@@ -129,7 +115,6 @@ data class HeightInput(
     override val isRequired: Boolean = true,
     override val isValid: Boolean = false,
 
-    // Always stored as cm internally; imperial input is converted on the way in.
     override val value: Double? = null,
     val isMetric: Boolean = true
 
@@ -139,7 +124,7 @@ data class HeightInput(
      * Converts height cm to feet and inches.
      *
      * @param cm - height in cm.
-     * @return Pair<feet, Inches> - height in imperial system as Double.
+     * @return Pair<feet, inches> - height in imperial system as Double.
      */
     fun cmToFeetInches(cm: Double = value ?: 0.0): Pair<Double, Double> {
         val totalInches = cm / 2.54
@@ -151,7 +136,7 @@ data class HeightInput(
      *
      * @param feet - height in feet.
      * @param inches - remaining height in inches.
-     * @return height in centimetres as Double.
+     * @return Double - height in centimetres.
      */
     fun feetInchesToCm(feet: Int, inches: Int): Double =
         (feet * 12 + inches) * 2.54
@@ -160,11 +145,8 @@ data class HeightInput(
 /**
  * Weight input, e.g. user's weight.
  *
- * @property id - unique identifier
- * @property label - label for the field
  * @property value - weight stored in kilograms internally; pounds input is converted on the way in. Defaults to null.
- * @property isValid - whether the weight is valid or not, based on specific criteria. Defaults to false.
- * @property isRequired - whether a value is required or not. Defaults to true.
+ * @property isKilos - whether the user prefers kilograms.
  *
  * @constructor Create empty Weight input
  */
@@ -183,7 +165,7 @@ data class WeightInput(
      * Converts kilograms to pounds.
      *
      * @param kilos - weight in kg.
-     * @return weight in pounds as Double.
+     * @return Double - weight in pounds.
      */
     fun kilosToPounds(kilos: Double = value ?: 0.0): Double = kilos * 2.2046
 }
@@ -191,11 +173,7 @@ data class WeightInput(
 /**
  * Date input, e.g. date of birth.
  *
- * @property id - unique identifier
- * @property label - label for the field
  * @property value - selected date as [LocalDate], or null if no date has been picked yet.
- * @property isValid - whether the date is valid or not, based on specific criteria. Defaults to false.
- * @property isRequired - whether a value is required or not. Defaults to true.
  *
  * @constructor Create empty Date input
  */

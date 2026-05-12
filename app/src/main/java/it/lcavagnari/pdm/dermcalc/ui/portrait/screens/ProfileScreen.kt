@@ -13,13 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
+/**
+ * Displays basic profile placeholder content centered on current screen.
+ *
+ * @param navController - controller available for future account flow routing.
+ */
 @Composable
-        /**
-         * Displays basic profile placeholder content centered on current screen.
-         *
-         * @param navController Controller available for future account flow routing.
-         * @return Unit.
-         */
 fun ProfileRoute(navController: NavHostController) {
     Column(
         modifier = Modifier

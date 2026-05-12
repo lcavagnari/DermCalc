@@ -63,6 +63,11 @@ fun OnBoardItemPreview() {
     OnBoardItem(onboardingScreens[4])
 }
 
+/**
+ * Renders the content of a single onboarding page, dispatching field updates to [OnboardingModel].
+ *
+ * @param page - the [OnboardingScreen] descriptor for this page.
+ */
 @Composable
 fun OnBoardItem(page: OnboardingScreen) {
     val onBoardingModel: OnboardingModel = viewModel()
@@ -290,6 +295,14 @@ fun OnBoardItem(page: OnboardingScreen) {
     }
 }
 
+/**
+ * Outlined weight field that opens a [SnapWheelPickerDialog] on tap; switches between kg and lb wheels based on [WeightInput.isKilos].
+ *
+ * @param modifier - modifier applied to the [OutlinedTextField].
+ * @param field - the [WeightInput] field supplying current value and unit preference.
+ * @param onKilosChanged - callback invoked with the selected weight in whole kilograms.
+ * @param onPoundsChanged - callback invoked with the selected weight in whole pounds.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeightInputPicker(
@@ -365,6 +378,14 @@ fun WeightInputPicker(
 }
 
 
+/**
+ * Outlined height field that opens a [SnapWheelPickerDialog] on tap; uses one wheel for metric (cm) and two wheels for imperial (feet + inches).
+ *
+ * @param modifier - modifier applied to the [OutlinedTextField].
+ * @param field - the [HeightInput] field supplying current value and unit preference.
+ * @param onMetricChanged - callback invoked with the selected height in whole centimetres.
+ * @param onImperialChanged - callback invoked with a (feet, inches) pair.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeightInputPicker(
