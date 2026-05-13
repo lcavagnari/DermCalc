@@ -60,7 +60,7 @@ fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) 
                     }
                 },
                 label = {
-                    item.nameRes?.let {
+                    item.title?.let {
                         Text(text = stringResource(id = it))
                     } ?: Text(text = item.name ?: "")
                 },
