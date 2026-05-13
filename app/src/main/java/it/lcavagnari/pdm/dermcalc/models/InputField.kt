@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.models
 
 
+import androidx.annotation.StringRes
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -49,7 +50,7 @@ enum class WeightMeasurements { Kilos, Pounds }
  * Interface for all onboarding input types.
  *
  * @property id - unique identifier
- * @property label - label for the field
+ * @property label - string resource id for the field label, resolved at render time via [stringResource].
  * @property value - default value of the field, type-safe, allows to read the value generically without knowing the subtype.
  * @property isValid - whether the value in the field is valid or not, based on specific criteria. Defaults to false.
  * @property isRequired - whether a value is required or not. Defaults to true.
@@ -57,7 +58,7 @@ enum class WeightMeasurements { Kilos, Pounds }
 @Serializable
 sealed interface InputField {
     val id: String
-    val label: String
+    @get:StringRes val label: Int
     val isRequired: Boolean get() = true
     val isValid: Boolean get() = false
 
@@ -75,7 +76,7 @@ sealed interface InputField {
 @Serializable
 data class TextInput(
     override val id: String,
-    override val label: String,
+    @StringRes override val label: Int,
     override val value: String = "",
     override val isValid: Boolean = false
 ) : InputField
@@ -91,7 +92,7 @@ data class TextInput(
 @Serializable
 data class SexInput(
     override val id: String,
-    override val label: String,
+    @StringRes override val label: Int,
     override val isValid: Boolean = false,
     override val isRequired: Boolean = false,
 
@@ -111,7 +112,7 @@ data class SexInput(
 @Serializable
 data class HeightInput(
     override val id: String,
-    override val label: String,
+    @StringRes override val label: Int,
     override val isRequired: Boolean = true,
     override val isValid: Boolean = false,
 
@@ -153,7 +154,7 @@ data class HeightInput(
 @Serializable
 data class WeightInput(
     override val id: String,
-    override val label: String,
+    @StringRes override val label: Int,
     override val isRequired: Boolean = true,
     override val isValid: Boolean = false,
 
@@ -180,7 +181,7 @@ data class WeightInput(
 @Serializable
 data class DateInput(
     override val id: String,
-    override val label: String,
+    @StringRes override val label: Int,
     override val value: LocalDate? = null,
     override val isValid: Boolean = false
 ) : InputField
