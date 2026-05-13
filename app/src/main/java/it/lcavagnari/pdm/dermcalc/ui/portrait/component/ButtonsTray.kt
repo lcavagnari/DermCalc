@@ -51,13 +51,13 @@ fun TopTrayButtons(
 
     Box(
         modifier = modifier
-            .size(60.dp)
-            .padding(end = 15.dp)
+            .size(35.dp)
+            .padding(end = 5.dp)
             .clickable(onClick = onLangClick),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(20.dp).align(Alignment.Center),
             painter = painterResource(R.drawable.ic_lang_button),
             contentDescription = "Language",
             tint = iconTint
