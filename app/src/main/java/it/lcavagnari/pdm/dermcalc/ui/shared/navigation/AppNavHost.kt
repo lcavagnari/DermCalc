@@ -20,7 +20,7 @@ import it.lcavagnari.pdm.dermcalc.screens.ToolsScreen
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: AppRoute = HomeRoute
+    startDestination: AppRoute
 ) {
     NavHost(
         modifier = modifier,

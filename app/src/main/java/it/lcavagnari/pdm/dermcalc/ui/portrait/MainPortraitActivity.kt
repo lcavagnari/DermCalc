@@ -16,7 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
 import it.lcavagnari.pdm.dermcalc.ui.portrait.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
@@ -27,6 +29,7 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 fun MainPortraitActivity(
     modifier: Modifier = Modifier,
     onboardingModel: OnboardingModel,
+    startingDestination: AppRoute = HomeRoute,
     onToggleTheme: () -> Unit = {}
 ) {
     val hasSeenOnboarding by onboardingModel.hasSeenOnboarding.collectAsState()
@@ -66,7 +69,8 @@ fun MainPortraitActivity(
 
         AppNavHost(
             navController = navController,
-            modifier = modifier.padding(innerPadding)
+            modifier = modifier.padding(innerPadding),
+            startDestination = startingDestination,
         )
     }
 }
@@ -76,7 +80,6 @@ fun MainPortraitActivity(
 private val vm = OnboardingModel()
 
 @SuppressLint("NewApi")
-@RequiresApi(Build.VERSION_CODES.Q)
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
