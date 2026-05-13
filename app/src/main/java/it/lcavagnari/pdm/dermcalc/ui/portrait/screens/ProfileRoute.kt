@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -73,6 +72,9 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.toUpperCase
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
 import it.lcavagnari.pdm.dermcalc.ui.portrait.component.SnapWheel
@@ -151,7 +153,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
     ) {
-        inputFields.forEach { field ->
+        inputFields.forEachIndexed { index, field ->
             Log.d("ProfileScreen", field.toString())
             key(field.id) {
                 var showDialog by remember { mutableStateOf(false) }
@@ -161,16 +163,20 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = Modifier.padding(vertical = 10.dp, horizontal = 7.dp),
-                        text = stringResource(field.label),
+                        modifier = Modifier.padding(vertical = 5.dp, horizontal = 15.dp),
+                        text = stringResource(field.label).uppercase(getDefault()),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(Modifier.weight(1f))
 
                     Text(
                         modifier = Modifier.padding(10.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.SemiBold,
                         text = when (field) {
                             is TextInput -> field.value
                             is DateInput -> field.value?.toString()
@@ -198,9 +204,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                 if (field.isKilos) stringResource(R.string.weight_display_metric, it)
                                 else stringResource(R.string.weight_display_imperial, field.kilosToPounds(it))
                             } ?: ""
-                        },
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        }
                     )
 
                     IconButton(onClick = { showDialog = true }) {
@@ -398,8 +402,10 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                     }
                 }
 
-                HorizontalDivider(
-                    thickness = 4.dp,
+
+                if (index < inputFields.size) HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(0.84f).padding(start = 15.dp),
+                    thickness = 1.dp,
                     color = MaterialTheme.colorScheme.surface
                 )
             }
