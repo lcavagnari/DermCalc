@@ -128,4 +128,5 @@
     <string name="nav_profile_subtitle">Personal Details</string>
     <string name="btn_back">Go Back</string>
     <string name="profile_measure_preference">Unit of measurement</string>
+    <string name="profile_details">Details</string>
 </resources>

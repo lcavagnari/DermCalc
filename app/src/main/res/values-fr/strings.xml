@@ -121,4 +121,5 @@
     <string name="nav_profile_subtitle">Données personnelles</string>
     <string name="btn_back">Retour</string>
     <string name="profile_measure_preference">Unités de mesure</string>
+    <string name="profile_details">Détails</string>
 </resources>

@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,74 +69,29 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp),
-            shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.onPrimary,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
-        ) {
-            inputFields.forEach { field ->
-                Log.d("ProfileScreen", field.toString())
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier.padding(vertical = 10.dp, horizontal = 7.dp),
-                        text = stringResource(field.label),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
 
-                    Text(
-                        modifier = Modifier.padding(10.dp),
-                        text = when (field) {
-                            is TextInput -> field.value
-                            is DateInput -> field.value?.toString()
-                                ?: stringResource(R.string.placeholder_date)
+        Text(
+            stringResource(R.string.profile_details).uppercase(getDefault()),
+            modifier = Modifier.padding(top = 10.dp),
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary,
+            fontStyle = FontStyle.Italic
+        )
 
-                            is SexInput -> {
-                                stringResource(
-                                    when (field.value) {
-                                        Sex.Male -> R.string.sex_male
-                                        Sex.Female -> R.string.sex_female
-                                        Sex.Other -> R.string.sex_other
-                                        else -> R.string.sex_other
-                                    }
-                                )
-                            }
+        ProfileDetails(
+            modifier = Modifier.padding(top = 10.dp,bottom = 30.dp),
+            inputFields = inputFields
+        )
 
-                            is HeightInput -> field.value?.let {
-                                    if (field.isMetric) stringResource(R.string.height_display_metric, it.toInt())
-                                    else {
-                                        val (feet, inches) = field.cmToFeetInches(it)
-                                        stringResource(R.string.height_display_imperial, feet.toInt(), inches.toInt())
-                                    }
-                                } ?: ""
-                            is WeightInput -> field.value?.let {
-                                    if (field.isKilos) stringResource(R.string.weight_display_metric, it)
-                                    else stringResource(R.string.weight_display_imperial, field.kilosToPounds(it))
-                                } ?: ""
-                        },
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-                HorizontalDivider(
-                    thickness = 4.dp,
-                    color = MaterialTheme.colorScheme.surface
-                )
-            }
-
-        }
+        Text(
+            stringResource(R.string.profile_measure_preference).uppercase(getDefault()),
+            modifier = Modifier.padding(top = 10.dp),
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary,
+            fontStyle = FontStyle.Italic
+        )
 
         UnitOfMeasurement(
             inputFields,
@@ -159,18 +115,79 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
 }
 
 @Composable
+fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.onPrimary,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
+    ) {
+        inputFields.forEach { field ->
+            Log.d("ProfileScreen", field.toString())
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 7.dp),
+                    text = stringResource(field.label),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Text(
+                    modifier = Modifier.padding(10.dp),
+                    text = when (field) {
+                        is TextInput -> field.value
+                        is DateInput -> field.value?.toString()
+                            ?: stringResource(R.string.placeholder_date)
+
+                        is SexInput -> {
+                            stringResource(
+                                when (field.value) {
+                                    Sex.Male -> R.string.sex_male
+                                    Sex.Female -> R.string.sex_female
+                                    Sex.Other -> R.string.sex_other
+                                    else -> R.string.sex_other
+                                }
+                            )
+                        }
+
+                        is HeightInput -> field.value?.let {
+                            if (field.isMetric) stringResource(R.string.height_display_metric, it.toInt())
+                            else {
+                                val (feet, inches) = field.cmToFeetInches(it)
+                                stringResource(R.string.height_display_imperial, feet.toInt(), inches.toInt())
+                            }
+                        } ?: ""
+                        is WeightInput -> field.value?.let {
+                            if (field.isKilos) stringResource(R.string.weight_display_metric, it)
+                            else stringResource(R.string.weight_display_imperial, field.kilosToPounds(it))
+                        } ?: ""
+                    },
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            HorizontalDivider(
+                thickness = 4.dp,
+                color = MaterialTheme.colorScheme.surface
+            )
+        }
+
+    }
+}
+
+@Composable
 fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMeasurements) -> Unit, onUpdateWeight:(it: WeightMeasurements) -> Unit) {
     val heightInput: HeightInput = inputFields[3] as HeightInput
     val weightInput: WeightInput = inputFields[4] as WeightInput
-
-    Text(
-        stringResource(R.string.profile_measure_preference).uppercase(getDefault()),
-        modifier = Modifier.padding(top = 10.dp),
-        fontWeight = FontWeight.SemiBold,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.primary,
-        fontStyle = FontStyle.Italic
-    )
 
     Card(
         modifier = Modifier.fillMaxWidth()
