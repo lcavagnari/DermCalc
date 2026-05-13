@@ -15,7 +15,7 @@
     <!-- Unit options -->
     <string name="unit_metric">Metrico</string>
     <string name="unit_imperial">Imperiale</string>
-    <string name="unit_kilos">Chilogrammi</string>
+    <string name="unit_kilos">Chili</string>
     <string name="unit_pounds">Libbre</string>
 
     <!-- Navigation -->
@@ -120,4 +120,5 @@
     <string name="nav_tools_subtitle">Calcolatori</string>
     <string name="nav_profile_subtitle">Dati personali</string>
     <string name="btn_back">Torna indietro</string>
+    <string name="profile_measure_preference">Unità di misura</string>
 </resources>

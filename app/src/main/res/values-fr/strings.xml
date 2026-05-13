@@ -15,7 +15,7 @@
     <!-- Unit options -->
     <string name="unit_metric">Métrique</string>
     <string name="unit_imperial">Impérial</string>
-    <string name="unit_kilos">Kilos</string>
+    <string name="unit_kilos">Kilo</string>
     <string name="unit_pounds">Livres</string>
 
     <!-- Navigation -->
@@ -120,4 +120,5 @@
     <string name="nav_tools_subtitle">Calculatrices</string>
     <string name="nav_profile_subtitle">Données personnelles</string>
     <string name="btn_back">Retour</string>
+    <string name="profile_measure_preference">Unités de mesure</string>
 </resources>

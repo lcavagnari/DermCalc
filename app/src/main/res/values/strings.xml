@@ -127,4 +127,5 @@
     <string name="nav_tools_subtitle">Calculators</string>
     <string name="nav_profile_subtitle">Personal Details</string>
     <string name="btn_back">Go Back</string>
+    <string name="profile_measure_preference">Unit of measurement</string>
 </resources>
