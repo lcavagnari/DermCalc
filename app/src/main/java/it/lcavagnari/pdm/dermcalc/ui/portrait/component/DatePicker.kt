@@ -26,9 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.DateInput
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
@@ -56,8 +58,8 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
         value = field.value?.toString() ?: "",
         onValueChange = {},
         readOnly = true,
-        label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text("DD / MM / YYYY") },
+        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
+        placeholder = { Text(stringResource(R.string.placeholder_date)) },
         trailingIcon = {
             IconButton(
                 onClick = { openPicker = true },
@@ -65,7 +67,7 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Default.DateRange,
-                    contentDescription = "Pick date"
+                    contentDescription = stringResource(R.string.cd_pick_date)
                 )
             }
         },
@@ -98,7 +100,7 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
                         contentColor = MaterialTheme.colorScheme.onPrimary,
                         containerColor = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-                ) { Text("OK") }
+                ) { Text(stringResource(R.string.btn_ok)) }
             },
             dismissButton = {
                 TextButton(
@@ -107,7 +109,7 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
                         contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
                         containerColor = MaterialTheme.colorScheme.error
                     )
-                ) { Text("Cancel") }
+                ) { Text(stringResource(R.string.btn_cancel)) }
             }
         ) {
             DatePicker(state = datePickerState)

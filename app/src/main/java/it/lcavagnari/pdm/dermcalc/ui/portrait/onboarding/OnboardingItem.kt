@@ -34,12 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.DateInput
@@ -101,16 +103,17 @@ fun OnBoardItem(page: OnboardingScreen) {
                 modifier = Modifier
                     .height(300.dp)
                     .width(300.dp)
-                    .padding(bottom = 30.dp)
+                    .padding(bottom = 25.dp)
             )
         }
 
 
         Text(
-            text = page.title,
+            text = stringResource(page.title),
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp
         )
 
         var errorMessage: String?
@@ -130,7 +133,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .semantics { testTag = "input_full_name" },
-                        label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
+                        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
                         shape = RoundedCornerShape(17.dp),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -140,9 +143,9 @@ fun OnBoardItem(page: OnboardingScreen) {
                     )
 
                     if (!field.isValid && field.isRequired && field.value.isNotBlank())
-                        errorMessage = "Please insert your full legal name."
+                        errorMessage = stringResource(R.string.error_name)
                     else if (field.value.isNotBlank()) successMessage =
-                        "Nice to meet you, ${field.value}!"
+                        stringResource(R.string.success_name, field.value)
                 }
 
                 is DateInput -> {
@@ -152,9 +155,9 @@ fun OnBoardItem(page: OnboardingScreen) {
                     )
 
                     if (!field.isValid && field.isRequired && field.value != null)
-                        errorMessage = "Please pick a correct date."
+                        errorMessage = stringResource(R.string.error_date)
                     else if (field.value != null) successMessage =
-                        "(${today().year - field.value.year} years old)"
+                        stringResource(R.string.age_display, today().year - field.value.year)
                 }
 
                 is SexInput -> {
@@ -167,7 +170,11 @@ fun OnBoardItem(page: OnboardingScreen) {
                                 selected = field.value == sex,
                                 onClick = { onBoardingModel.updateSex(sex) },
                                 shape = SegmentedButtonDefaults.itemShape(index, Sex.entries.size),
-                                label = { Text(sex.name) },
+                                label = { Text(stringResource(when (sex) {
+                                    Sex.Male -> R.string.sex_male
+                                    Sex.Female -> R.string.sex_female
+                                    Sex.Other -> R.string.sex_other
+                                })) },
                                 colors = SegmentedButtonDefaults.colors(
                                     activeContainerColor = MaterialTheme.colorScheme.primary,
                                     activeContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -179,9 +186,9 @@ fun OnBoardItem(page: OnboardingScreen) {
                     }
 
                     if (!field.isValid && field.isRequired && field.value != null)
-                        errorMessage = "Please specify your gender from those supported."
+                        errorMessage = stringResource(R.string.error_sex)
                     else if (field.isRequired && field.value != null) successMessage =
-                        "Thank you for sharing."
+                        stringResource(R.string.success_sex)
                 }
 
                 is HeightInput -> {
@@ -196,7 +203,10 @@ fun OnBoardItem(page: OnboardingScreen) {
                                     index,
                                     HeightMeasurements.entries.size
                                 ),
-                                label = { Text(measurement.name) },
+                                label = { Text(stringResource(when (measurement) {
+                                    HeightMeasurements.Metric -> R.string.unit_metric
+                                    HeightMeasurements.Imperial -> R.string.unit_imperial
+                                })) },
                                 colors = SegmentedButtonDefaults.colors(
                                     activeContainerColor = MaterialTheme.colorScheme.primary,
                                     activeContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -220,11 +230,11 @@ fun OnBoardItem(page: OnboardingScreen) {
                     )
 
                     if (!field.isValid && field.isRequired && field.value != null) errorMessage =
-                        "Please double check your height."
+                        stringResource(R.string.error_height)
                     else if (field.value != null) successMessage = field.value.let {
-                        if (field.isMetric) "%.2f".format(it / 100) + " m"
+                        if (field.isMetric) stringResource(R.string.height_display_metric, it.toInt())
                         else field.cmToFeetInches(it)
-                            .let { (ft, inch) -> "${ft.toInt()} ft ${inch.toInt()} in" }
+                            .let { (ft, inch) -> stringResource(R.string.height_display_imperial, ft.toInt(), inch.toInt()) }
                     }
                 }
 
@@ -238,7 +248,10 @@ fun OnBoardItem(page: OnboardingScreen) {
                                     index,
                                     WeightMeasurements.entries.size
                                 ),
-                                label = { Text(measurement.name) },
+                                label = { Text(stringResource(when (measurement) {
+                                    WeightMeasurements.Kilos -> R.string.unit_kilos
+                                    WeightMeasurements.Pounds -> R.string.unit_pounds
+                                })) },
                                 colors = SegmentedButtonDefaults.colors(
                                     activeContainerColor = MaterialTheme.colorScheme.primary,
                                     activeContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -257,13 +270,10 @@ fun OnBoardItem(page: OnboardingScreen) {
                     )
 
                     if (!field.isValid && field.isRequired && field.value != null) errorMessage =
-                        "Please double check your weight."
+                        stringResource(R.string.error_weight)
                     else if (field.value != null) successMessage = field.value.let {
-                        if (field.isKilos) "%.2f".format(it) + " kg" else "%.3f".format(
-                            field.kilosToPounds(
-                                it
-                            )
-                        ) + " lb"
+                        if (field.isKilos) stringResource(R.string.weight_display_metric, it)
+                        else stringResource(R.string.weight_display_imperial, field.kilosToPounds(it))
                     }
                 }
             }
@@ -288,7 +298,7 @@ fun OnBoardItem(page: OnboardingScreen) {
         if (page.description == null) return
 
         Text(
-            text = page.description,
+            text = stringResource(page.description),
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 20.dp)
                 .wrapContentSize(Alignment.Center),
@@ -340,7 +350,7 @@ fun WeightInputPicker(
 
     if (openPicker) {
         SnapWheelPickerDialog(
-            title = "Select weight",
+            title = R.string.picker_title_weight,
             // One wheel for both kilos and pounds.
             // The dialog returns List<Any?>; values are cast back to Int at this call site,
             // not inside the dialog, so the dialog stays generic.
@@ -361,8 +371,8 @@ fun WeightInputPicker(
         onValueChange = {},
         modifier = modifier.semantics { testTag = "input_weight" },
         readOnly = true,
-        label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text("Select Weight") },
+        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
+        placeholder = { Text(stringResource(R.string.placeholder_weight)) },
         trailingIcon = {
             IconButton(
                 onClick = { openPicker = true },
@@ -370,7 +380,7 @@ fun WeightInputPicker(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_weight_scale),
-                    contentDescription = "Pick weight"
+                    contentDescription = stringResource(R.string.cd_pick_weight)
                 )
             }
         },
@@ -424,7 +434,7 @@ fun HeightInputPicker(
 
     if (openPicker) {
         SnapWheelPickerDialog(
-            title = "Select height",
+            title = R.string.picker_title_height,
             // Two wheels for imperial (feet + inches), one for metric (cm).
             // The dialog returns List<Any?>; values are cast back to Int at this call site,
             // not inside the dialog, so the dialog stays generic.
@@ -445,8 +455,8 @@ fun HeightInputPicker(
         } ?: "",
         onValueChange = {},
         readOnly = true,
-        label = { Text(field.label, style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text("Insert Height") },
+        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
+        placeholder = { Text(stringResource(R.string.placeholder_height)) },
         trailingIcon = {
             IconButton(
                 onClick = { openPicker = true },
@@ -454,7 +464,7 @@ fun HeightInputPicker(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_tape_measure),
-                    contentDescription = "Pick height"
+                    contentDescription = stringResource(R.string.cd_pick_height)
                 )
             }
         },
