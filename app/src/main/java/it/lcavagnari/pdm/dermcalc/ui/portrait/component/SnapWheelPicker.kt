@@ -38,7 +38,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import it.lcavagnari.pdm.dermcalc.R
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -85,7 +88,8 @@ private fun <T> DrawSnapWheel(
             else MaterialTheme.typography.labelMedium,
             color = if (isFocused) MaterialTheme.colorScheme.tertiary
             else MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.4f),
-            fontSize = if (isFocused) 30.sp else 15.sp
+            fontSize = if (isFocused) 30.sp else 15.sp,
+            softWrap = false
         )
     }
 ) {
@@ -172,7 +176,7 @@ private fun <T> DrawSnapWheel(
 @Composable
 fun SnapWheelPickerDialog(
     modifier: Modifier = Modifier,
-    title: String = "Scroll to pick a value",
+    @StringRes title: Int = R.string.picker_default_title,
     tonalElevation: Dp = DatePickerDefaults.TonalElevation,
     colors: DatePickerColors = DatePickerDefaults.colors(),
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
@@ -202,7 +206,7 @@ fun SnapWheelPickerDialog(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        title,
+                        stringResource(title),
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.titleLarge,
                     )
@@ -259,7 +263,7 @@ fun SnapWheelPickerDialog(
                                 contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
                                 containerColor = MaterialTheme.colorScheme.error
                             )
-                        ) { Text("Cancel") }
+                        ) { Text(stringResource(R.string.btn_cancel)) }
 
                         OutlinedButton(
                             onClick = { onConfirm(selectedValues.toList()) },
@@ -268,7 +272,7 @@ fun SnapWheelPickerDialog(
                                 contentColor = MaterialTheme.colorScheme.onPrimary,
                                 containerColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
-                        ) { Text("OK") }
+                        ) { Text(stringResource(R.string.btn_ok)) }
                     }
                 }
             }
