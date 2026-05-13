@@ -16,7 +16,7 @@ dependencyCheck {
     // Suppress known false positives or accepted risks.
     suppressionFile = "dependency-check-suppressions.xml"
     // Output the HTML report to the standard reports directory.
-    outputDirectory = "${project.buildDir}/reports"
+    outputDirectory = layout.buildDirectory.dir("reports").get().asFile.absolutePath
     formats = listOf("HTML")
 }
 
@@ -60,7 +60,7 @@ android {
         baseline = file("lint-baseline.xml")
         // Always generate the HTML report (useful for artifact upload in CI).
         htmlReport = true
-        htmlOutput = file("${project.buildDir}/reports/lint-results-debug.html")
+        htmlOutput = layout.buildDirectory.file("reports/lint-results-debug.html").get().asFile
     }
 }
 
