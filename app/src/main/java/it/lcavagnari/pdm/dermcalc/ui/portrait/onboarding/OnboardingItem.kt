@@ -355,6 +355,7 @@ fun WeightInputPicker(
             // The dialog returns List<Any?>; values are cast back to Int at this call site,
             // not inside the dialog, so the dialog stays generic.
             wheels = if (field.isKilos) weightPickerWheelsKilos else weightPickerWheelsPounds,
+            inputFieldLabels = listOf(R.string.label_weight),
             onDismiss = { openPicker = false },
             onConfirm = { values ->
                 if (field.isKilos) onKilosChanged(values[0] as Int)
@@ -439,6 +440,7 @@ fun HeightInputPicker(
             // The dialog returns List<Any?>; values are cast back to Int at this call site,
             // not inside the dialog, so the dialog stays generic.
             wheels = if (field.isMetric) heightPickerWheelsMetric else heightPickerWheelsImperial,
+            inputFieldLabels = if (field.isMetric) listOf(R.string.label_height) else emptyList(),
             onDismiss = { openPicker = false },
             onConfirm = { values ->
                 if (field.isMetric) onMetricChanged(values[0] as Int)

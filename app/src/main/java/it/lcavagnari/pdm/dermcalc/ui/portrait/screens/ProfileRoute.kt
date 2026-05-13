@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -123,7 +124,7 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
         )
     }
 
-    Column(
+    if (LocalDarkTheme.current) Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Bottom
@@ -133,7 +134,7 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
             painter = painterResource(id = R.drawable.ic_annoying_dog),
             contentDescription = "annoying dog",
             tint = Color.Unspecified
-        )
+        )   
     }
 }
 
@@ -359,6 +360,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                             SnapWheelPickerDialog(
                                 title = R.string.picker_title_height,
                                 wheels = if (field.isMetric) heightPickerWheelsMetric else heightPickerWheelsImperial,
+                                inputFieldLabels = if (field.isMetric) listOf(R.string.label_height) else emptyList(),
                                 onDismiss = { showDialog = false },
                                 onConfirm = { values ->
                                     if (field.isMetric) onboardingModel.updateHeightMetric(values[0] as Int)
@@ -384,6 +386,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                             SnapWheelPickerDialog(
                                 title = R.string.picker_title_weight,
                                 wheels = if (field.isKilos) weightPickerWheelsKilos else weightPickerWheelsPounds,
+                                inputFieldLabels = listOf(R.string.label_weight),
                                 onDismiss = { showDialog = false },
                                 onConfirm = { values ->
                                     if (field.isKilos) onboardingModel.updateWeightKilos(values[0] as Int)

@@ -13,10 +13,15 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.ViewCarousel
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -24,28 +29,37 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.annotation.StringRes
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import it.lcavagnari.pdm.dermcalc.R
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.res.stringResource
+import androidx.annotation.StringRes
 import kotlin.math.abs
 
 
@@ -181,13 +195,18 @@ fun SnapWheelPickerDialog(
     colors: DatePickerColors = DatePickerDefaults.colors(),
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
     wheels: List<SnapWheel<*>>,
+    @StringRes inputFieldLabels: List<Int> = emptyList(),
     onDismiss: () -> Unit,
     onConfirm: (List<Any?>) -> Unit
 ) {
-    // Dialog owns the selection state. Each wheel's onValueChanged is overridden below
-    // to write into this list, so onConfirm can return all current values at once.
     val selectedValues = remember {
         mutableStateListOf(*wheels.map { it.initialValue }.toTypedArray())
+    }
+
+    val hasInputMode = inputFieldLabels.size == wheels.size && inputFieldLabels.isNotEmpty()
+    var isInputMode by remember { mutableStateOf(false) }
+    val inputTexts = remember {
+        mutableStateListOf(*wheels.map { it.initialValue.toString() }.toTypedArray())
     }
 
     BasicAlertDialog(
@@ -205,45 +224,100 @@ fun SnapWheelPickerDialog(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        stringResource(title),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            stringResource(title),
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+                        if (hasInputMode) {
+                            IconButton(onClick = {
+                                isInputMode = !isInputMode
+                                if (isInputMode) {
+                                    wheels.forEachIndexed { i, _ ->
+                                        inputTexts[i] = selectedValues[i].toString()
+                                    }
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = if (isInputMode) Icons.Default.ViewCarousel
+                                        else Icons.Default.Keyboard,
+                                    contentDescription = if (isInputMode) "Switch to wheel"
+                                        else "Switch to text input",
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+                    }
                 }
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .padding(vertical = 8.dp),
-                    shape = MaterialTheme.shapes.large,
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
-                ) {
-                    Row(
+                if (isInputMode && hasInputMode) {
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(
-                            12.dp,
-                            Alignment.CenterHorizontally
-                        )
+                            .fillMaxWidth(0.9f)
+                            .padding(vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        wheels.forEachIndexed { index, config ->
-                            // Safe: T is erased at runtime; values stored in selectedValues
-                            // came from the same items list, so the cast holds.
-                            @Suppress("UNCHECKED_CAST")
-                            DrawSnapWheel(
-                                wheel = (config as SnapWheel<Any?>).copy(
-                                    onValueChanged = { selectedValues[index] = it }
-                                ),
-                                modifier = Modifier.wrapContentWidth()
+                        wheels.forEachIndexed { index, _ ->
+                            val items = wheels[index].items
+                            val minVal = (items.firstOrNull() as? Int) ?: 0
+                            val maxVal = (items.lastOrNull() as? Int) ?: 0
+                            OutlinedTextField(
+                                value = inputTexts[index],
+                                onValueChange = { raw ->
+                                    inputTexts[index] = raw
+                                    raw.toIntOrNull()?.let { intVal ->
+                                        if (intVal in minVal..maxVal) {
+                                            selectedValues[index] = intVal
+                                        }
+                                    }
+                                },
+                                label = { Text(stringResource(inputFieldLabels[index])) },
+                                singleLine = true,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                shape = RoundedCornerShape(17.dp),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = MaterialTheme.colorScheme.primary
+                                )
                             )
+                        }
+                    }
+                } else {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .padding(vertical = 8.dp),
+                        shape = MaterialTheme.shapes.large,
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.onPrimary,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(
+                                12.dp,
+                                Alignment.CenterHorizontally
+                            )
+                        ) {
+                            wheels.forEachIndexed { index, config ->
+                                @Suppress("UNCHECKED_CAST")
+                                DrawSnapWheel(
+                                    wheel = (config as SnapWheel<Any?>).copy(
+                                        onValueChanged = { selectedValues[index] = it }
+                                    ),
+                                    modifier = Modifier.wrapContentWidth()
+                                )
+                            }
                         }
                     }
                 }
