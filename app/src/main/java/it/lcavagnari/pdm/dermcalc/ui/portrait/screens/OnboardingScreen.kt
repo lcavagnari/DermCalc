@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,25 +12,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -58,8 +52,6 @@ import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.portrait.component.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -157,8 +149,15 @@ fun OnboardingScreen(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
-        ) { TopTrayButtons(showDebug = true, iconTint = MaterialTheme.colorScheme.secondary,
-                onLangClick = onLangClick, onDebugClick = { onBoardingModel.finishOnboarding() }, onToggleTheme = onToggleTheme) }
+        ) {
+            TopTrayButtons(
+                showDebug = true,
+                iconTint = MaterialTheme.colorScheme.secondary,
+                onLangClick = onLangClick,
+                onDebugClick = { onBoardingModel.finishOnboarding() },
+                onToggleTheme = onToggleTheme
+            )
+        }
 
         // Contenuto pagina
         OnboardingPager(
