@@ -1,10 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.component
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -28,6 +25,7 @@ fun TopTrayButtons(
     iconTint: Color = MaterialTheme.colorScheme.primary,
     showDebug: Boolean = false,
     onDebugClick: () -> Unit = {},
+    onToggleTheme: () -> Unit,
     onLangClick: () -> Unit) {
     val toggleDarkTheme = LocalToggleDarkTheme.current
 
@@ -66,14 +64,13 @@ fun TopTrayButtons(
 
     Box(
         modifier = modifier
-            .size(36.dp)
-            .padding(end = 5.dp)
-            .clickable(onClick = toggleDarkTheme),
+            .size(40.dp)
+            .clickable(onClick = { toggleDarkTheme() }),
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(35.dp),
-            imageVector = if (LocalDarkTheme.current) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+            modifier = Modifier.size(30.dp),
+            imageVector = if (LocalDarkTheme.current) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
             contentDescription = "Dark/Light mode",
             tint = iconTint
         )
