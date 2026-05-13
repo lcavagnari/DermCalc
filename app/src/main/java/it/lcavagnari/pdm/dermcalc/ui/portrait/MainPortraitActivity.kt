@@ -56,6 +56,10 @@ fun MainPortraitActivity(
 
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            Log.d("MainActivity", "BottomNavigationBar")
+            TopMenu(navController, onToggleTheme = onToggleTheme)
+        },
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
@@ -64,12 +68,10 @@ fun MainPortraitActivity(
         }
 
     ) { innerPadding ->
-        Log.d("MainActivity", "BottomNavigationBar")
-        TopMenu(navController, onToggleTheme = onToggleTheme)
-
         AppNavHost(
             navController = navController,
             modifier = modifier.padding(innerPadding),
+            onboardingModel = onboardingModel,
             startDestination = startingDestination,
         )
     }

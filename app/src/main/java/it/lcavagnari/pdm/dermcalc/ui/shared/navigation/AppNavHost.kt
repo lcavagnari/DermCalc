@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.screens.ToolsScreen
@@ -20,6 +21,7 @@ import it.lcavagnari.pdm.dermcalc.screens.ToolsScreen
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    onboardingModel: OnboardingModel,
     startDestination: AppRoute
 ) {
     NavHost(
@@ -37,7 +39,7 @@ fun AppNavHost(
         }
 
         composable<ProfileRoute> {
-            ProfileRoute(navController)
+            ProfileRoute(navController, onboardingModel)
         }
     }
 }
