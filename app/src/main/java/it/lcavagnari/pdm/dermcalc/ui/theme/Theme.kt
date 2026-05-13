@@ -24,6 +24,7 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = Color.White,
     surface = SurfaceDark,
     onSurface = Color.White,
+    surfaceVariant = SurfaceVariantDark,
     outline = Color.White // For the classic dialogue borders
 )
 
@@ -38,6 +39,7 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Color.Black,
     surface = SurfaceLight,
     onSurface = Color.Black,
+    surfaceVariant = SurfaceVariantLight,
     outline = Color.Black
 )
 

@@ -14,7 +14,7 @@ val Amber40 = Color(0xFFFF0000)    // Red accent
 // --- Surfaces (Stark Contrast) ---
 val BackgroundDark = Color(0xFF000000) // Pure Black
 val SurfaceDark = Color(0xFF000000)    // Keeping it flat
-val SurfaceVariantDark = Color(0xFF1A1A1A)
+val SurfaceVariantDark = Color(0xFF212121) // Subdued Shadow — pill indicator in dark mode
 
 val BackgroundLight = Color(0xFFFFFFFF)
 val SurfaceLight = Color(0xFFFFFFFF)

@@ -1,8 +1,11 @@
 package it.lcavagnari.pdm.dermcalc.navigation
 
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -28,7 +32,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         modifier = Modifier.semantics { testTag = "bottom_nav_bar" },
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.surface,
+        tonalElevation = 6.dp,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -64,6 +69,13 @@ fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) 
                         Text(text = stringResource(id = it))
                     } ?: Text(text = item.name ?: "")
                 },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurface
+                ),
                 selected = isSelected,
                 onClick = {
                     navController.navigate(item) {
