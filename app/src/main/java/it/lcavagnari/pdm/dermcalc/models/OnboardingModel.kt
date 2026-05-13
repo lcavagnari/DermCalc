@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.models
 
 import androidx.lifecycle.ViewModel
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,11 +13,11 @@ class OnboardingModel : ViewModel() {
 
     private val _inputFields = MutableStateFlow<List<InputField>>(
         listOf<InputField>(
-            TextInput(id = "full-name", label = "Full name"),
-            DateInput(id = "date-of-birth", label = "Date of birth"),
-            SexInput(id = "sex", label = "Sex", value = Sex.Other),
-            HeightInput(id = "height", label = "Height", isMetric = true),
-            WeightInput(id = "weight", label = "Weight", isKilos = true)
+            TextInput(id = "full-name", label = R.string.label_full_name),
+            DateInput(id = "date-of-birth", label = R.string.label_date_of_birth),
+            SexInput(id = "sex", label = R.string.label_sex, value = Sex.Other),
+            HeightInput(id = "height", label = R.string.label_height, isMetric = true),
+            WeightInput(id = "weight", label = R.string.label_weight, isKilos = true)
         )
     )
     /** Ordered list of all onboarding [InputField] instances, updated in-place by the update methods. */

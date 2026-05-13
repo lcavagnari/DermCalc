@@ -317,7 +317,7 @@ class OnboardingModelTest {
     @Test
     fun `isPageInputValid uses custom fields snapshot when provided`() {
         val customFields = listOf(
-            TextInput(id = "full-name", label = "Full name", value = "Test", isValid = true)
+            TextInput(id = "full-name", label = 0, value = "Test", isValid = true)
         )
         assertTrue(model.isFieldsInputValid(listOf("full-name"), customFields))
     }
