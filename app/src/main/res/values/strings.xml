@@ -8,10 +8,22 @@
     <string name="label_height">Height</string>
     <string name="label_weight">Weight</string>
 
+    <!-- Sex options -->
+    <string name="sex_male">Male</string>
+    <string name="sex_female">Female</string>
+    <string name="sex_other">Other</string>
+
+    <!-- Unit options -->
+    <string name="unit_metric">Metric</string>
+    <string name="unit_imperial">Imperial</string>
+    <string name="unit_kilos">Kilos</string>
+    <string name="unit_pounds">Pounds</string>
+
     <!-- Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_tools">Tools</string>
+
 
     <!-- Onboarding screens -->
     <string name="onboarding_1_title">Welcome to DermCalc</string>
@@ -21,7 +33,7 @@
     <string name="onboarding_3_desc">Your history, your scores, your progress — right in your pocket.</string>
     <string name="onboarding_4_title">Let\'s get to know you!</string>
     <string name="onboarding_4_desc">A little info goes a long way toward making this truly yours.</string>
-    <string name="onboarding_5_title">We require a little more information about you.</string>
+    <string name="onboarding_5_title">We require a little more informations</string>
     <string name="onboarding_5_desc">Please provide all the required information to personalize your experience.</string>
 
     <!-- Buttons -->
@@ -37,8 +49,8 @@
 
     <!-- Placeholders -->
     <string name="placeholder_date">DD / MM / YYYY</string>
-    <string name="placeholder_height">Insert Height</string>
-    <string name="placeholder_weight">Select Weight</string>
+    <string name="placeholder_height">Click to insert height</string>
+    <string name="placeholder_weight">Click to insert weight</string>
 
     <!-- Accessibility (contentDescription) -->
     <string name="cd_pick_date">Pick date</string>
@@ -64,4 +76,55 @@
     <!-- Weight display -->
     <string name="weight_display_metric" translatable="false">%.2f kg</string>
     <string name="weight_display_imperial" translatable="false">%.2f lb</string>
+
+    <string-array name="home_quotes">
+        <!-- MEDICINE — PHILOSOPHY & WISDOM -->
+
+        <item>\"First, do no harm.\" — Hippocrates</item>
+        <item>\"Let food be thy medicine, and medicine be thy food.\" — Hippocrates</item>
+        <item>\"The greatest medicine of all is to teach people how not to need it.\" — Hippocrates</item>
+        <item>\"Medicine is not only a science; it is also an art. It does not consist of compounding pills and plasters; it deals with the very processes of life.\" — Paracelsus</item>
+        <item>\"The good physician treats the disease; the great physician treats the patient who has the disease.\" — William Osler</item>
+        <item>\"The art of medicine consists of amusing the patient while nature cures the disease.\" — Voltaire</item>
+        <item>\"An ounce of prevention is worth a pound of cure.\" — Benjamin Franklin</item>
+        <item>\"In medicine, as in life, the smallest details make the greatest difference.\" — Unknown</item>
+
+        <!-- SKIN — PHILOSOPHY & AWARENESS -->
+
+        <item>\"The skin is the fingerprint of what is going on inside the body.\" — Dr. Georgiana Donadio</item>
+        <item>\"Healthy skin is a reflection of overall wellness.\" — Dr. Howard Murad</item>
+        <item>\"The skin is the body\'s largest organ, and yet the most neglected.\" — Unknown</item>
+        <item>\"Your skin is a reflection of your overall health — treat it accordingly.\" — Unknown</item>
+        <item>\"Listen to your skin. It speaks before the rest of your body does.\" — Unknown</item>
+        <item>\"A dermatologist sees what others overlook — the stories written on skin.\" — Unknown</item>
+        <item>\"Your skin tone is not a condition to fix — it is a heritage to celebrate.\" — Unknown</item>
+        <item>\"The skin has memory. What you do today, your skin will remember in ten years.\" — Unknown</item>
+
+        <!-- DERMATOLOGY — PRACTICAL TIPS -->
+
+        <item>\"Sunscreen is the closest thing we have to a fountain of youth.\" — Dr. Patricia Wexler</item>
+        <item>\"SPF every day, rain or shine — UV rays do not take days off.\" — Unknown</item>
+        <item>\"UV radiation is the primary driver of premature skin aging. Protect yourself daily, without exception.\" — American Academy of Dermatology</item>
+        <item>\"Never ignore a mole that changes shape, color, or size. Early detection of melanoma saves lives.\" — Unknown</item>
+        <item>\"Check your skin monthly. Detect changes early — it could save your life.\" — American Academy of Dermatology</item>
+        <item>\"Retinoids remain the gold standard in anti-aging dermatology — backed by decades of clinical evidence.\" — Unknown</item>
+        <item>\"Gentle cleansing twice daily is the foundation of every effective skincare routine.\" — Unknown</item>
+        <item>\"Moisturize, protect, repeat. The holy trinity of skincare.\" — Unknown</item>
+        <item>\"A consistent skincare routine is an act of long-term self-respect.\" — Unknown</item>
+        <item>\"Never sleep with makeup on. Your skin repairs and regenerates itself overnight — let it.\" — Unknown</item>
+
+        <!-- DERMATOLOGY — LIFESTYLE & HOLISTIC HEALTH -->
+
+        <item>\"Hydration is the secret to glowing skin — drink water, do not just apply it.\" — Unknown</item>
+        <item>\"Antioxidants in your diet protect your skin from the inside out. Eat your colours.\" — Unknown</item>
+        <item>\"Stress shows on your skin before it shows anywhere else. Managing your mind is managing your complexion.\" — Unknown</item>
+        <item>\"Sleep is the best skincare product you will never pay for.\" — Unknown</item>
+        <item>\"Smoking ages the skin faster than the sun. No serum can undo what cigarettes do.\" — Unknown</item>
+        <item>\"Take care of your skin. It represents you every single day, to everyone you meet.\" — Unknown</item>
+
+    </string-array>
+    <string name="nav_home_subtitle">Welcome</string>
+    <string name="nav_tools_subtitle">Calculators</string>
+    <string name="nav_profile_subtitle">Personal Details</string>
+    <string name="btn_back">Go Back</string>
 </resources>

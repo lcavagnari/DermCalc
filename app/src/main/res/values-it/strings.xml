@@ -5,22 +5,33 @@
     <string name="label_date_of_birth">Data di nascita</string>
     <string name="label_sex">Sesso</string>
     <string name="label_height">Altezza</string>
+    <string name="label_weight">Peso</string>
+
+    <!-- Sex options -->
+    <string name="sex_male">Maschio</string>
+    <string name="sex_female">Femmina</string>
+    <string name="sex_other">Altro</string>
+
+    <!-- Unit options -->
+    <string name="unit_metric">Metrico</string>
+    <string name="unit_imperial">Imperiale</string>
+    <string name="unit_kilos">Chilogrammi</string>
+    <string name="unit_pounds">Libbre</string>
 
     <!-- Navigation -->
     <string name="nav_home">Casa</string>
     <string name="nav_profile">Profilo</string>
 
     <!-- Onboarding screens -->
-    <string name="onboarding_1_title">La spesa a portata di mano</string>
-    <string name="onboarding_1_desc">Scopri i negozi di alimentari e i prodotti essenziali nelle vicinanze in pochi minuti.</string>
-    <string name="onboarding_2_title">Fresco consegnato, senza pensieri</string>
-    <string name="onboarding_2_desc">Ricevi prodotti freschi consegnati rapidamente, quando ne hai bisogno.</string>
-    <string name="onboarding_3_title">Acquista in modo intelligente. Mangia fresco</string>
-    <string name="onboarding_3_desc">Risparmia tempo con ordini intelligenti e scelte quotidiane salutari.</string>
+    <string name="onboarding_1_title">Benvenuti in DermCalc</string>
+    <string name="onboarding_2_title">I numeri che contano</string>
+    <string name="onboarding_2_desc">BMI, BSA, PASI — sembrano complicati, ma ti guidiamo passo dopo passo.</string>
+    <string name="onboarding_3_title">Sempre con te</string>
+    <string name="onboarding_3_desc">La tua storia, i tuoi punteggi, i tuoi progressi — sempre in tasca.</string>
     <string name="onboarding_4_title">Raccontaci di te!</string>
     <string name="onboarding_4_desc">Fornisci tutte le informazioni richieste per personalizzare la tua esperienza.</string>
-    <string name="onboarding_5_title">Abbiamo bisogno di qualche altra informazione su di te.</string>
-    <string name="onboarding_5_desc">FeeF.</string><!-- TODO: replace with real copy -->
+    <string name="onboarding_5_title">Abbiamo bisogno di qualche altra informazione</string>
+    <string name="onboarding_5_desc">Fornisci tutte le informazioni richieste per personalizzare la tua esperienza.</string>
 
     <!-- Buttons -->
     <string name="btn_next">Avanti</string>
@@ -32,24 +43,81 @@
     <string name="picker_title_height">Seleziona l\'altezza</string>
 
     <!-- Placeholders -->
+    <string name="picker_title_weight">Seleziona il tuo peso</string>
     <string name="placeholder_date">GG / MM / AAAA</string>
-    <string name="placeholder_height">Inserisci l\'altezza</string>
+    <string name="placeholder_height">Clicca per Inserisci l\'altezza</string>
 
     <!-- Accessibility (contentDescription) -->
+    <string name="placeholder_weight">Clicca per inserire il peso</string>
     <string name="cd_pick_date">Seleziona la data</string>
     <string name="cd_pick_height">Seleziona l\'altezza</string>
 
     <!-- Validation: errors -->
+    <string name="cd_pick_weight">Inserire il proprio peso</string>
     <string name="error_name">Inserisci il tuo nome legale completo.</string>
     <string name="error_date">Seleziona una data valida.</string>
     <string name="error_sex">Specifica il tuo genere tra quelli supportati.</string>
     <string name="error_height">Specifica la tua altezza.</string>
 
     <!-- Validation: success / hints -->
+    <string name="error_weight">Ricontrollare valore inserito</string>
     <string name="success_name">Piacere di conoscerti, %s!</string>
     <string name="success_sex">Grazie per aver condiviso.</string>
     <string name="age_display">(%d anni)</string>
     <string name="nav_tools">Strumenti</string>
 
     <!-- Height display -->
+    <!-- (Untranslatable) -->
+
+    <string-array name="home_quotes">
+
+        <!-- MEDICINE — PHILOSOPHY & WISDOM -->
+
+        <item>\"Prima di tutto, non nuocere.\" — Ippocrate</item>
+        <item>\"Fa\' che il cibo sia la tua medicina, e la medicina sia il tuo cibo.\" — Ippocrate</item>
+        <item>\"La medicina è la restaurazione dell\'armonia perduta degli elementi nel corpo umano.\" — Leonardo da Vinci</item>
+        <item>\"La medicina non è solo una scienza; è anche un\'arte. Non si tratta di comporre pillole e cerotti; tratta i processi stessi della vita.\" — Paracelso</item>
+        <item>\"Il buon medico cura la malattia; il grande medico cura il paziente che ha la malattia.\" — William Osler</item>
+        <item>\"L\'arte della medicina consiste nel distrarre il malato mentre la natura lo guarisce.\" — Voltaire</item>
+        <item>\"Prevenire è meglio che curare.\" — Proverbio italiano</item>
+        <item>\"In medicina, come nella vita, sono i piccoli dettagli a fare la più grande differenza.\" — Unknown</item>
+
+        <!-- SKIN — PHILOSOPHY & AWARENESS -->
+
+        <item>\"La pelle è l\'impronta digitale di ciò che accade all\'interno del corpo.\" — Dr. Georgiana Donadio</item>
+        <item>\"Una pelle sana è il riflesso del benessere generale.\" — Dr. Howard Murad</item>
+        <item>\"La pelle è il più grande organo del corpo, eppure il più trascurato.\" — Unknown</item>
+        <item>\"La tua pelle è il riflesso della tua salute globale — trattala di conseguenza.\" — Unknown</item>
+        <item>\"Ascolta la tua pelle. Parla prima che lo faccia il resto del tuo corpo.\" — Unknown</item>
+        <item>\"Il dermatologo vede ciò che gli altri trascurano — le storie scritte sulla pelle.\" — Unknown</item>
+        <item>\"La salute è la vera ricchezza; tutto il resto è soltanto ornamento.\" — Proverbio italiano</item>
+        <item>\"La pelle ha memoria. Ciò che fai oggi, la tua pelle lo ricorderà tra dieci anni.\" — Unknown</item>
+
+        <!-- DERMATOLOGY — PRACTICAL TIPS -->
+
+        <item>\"La crema solare è la cosa più vicina a una fontana della giovinezza che abbiamo.\" — Dr. Patricia Wexler</item>
+        <item>\"SPF ogni giorno, con sole o con pioggia — i raggi UV non vanno mai in vacanza.\" — Unknown</item>
+        <item>\"Le radiazioni UV sono la principale causa dell\'invecchiamento cutaneo prematuro. Proteggiti ogni giorno, senza eccezioni.\" — American Academy of Dermatology</item>
+        <item>\"Non ignorare mai un neo che cambia forma, colore o dimensione. La diagnosi precoce del melanoma salva vite.\" — Unknown</item>
+        <item>\"Controlla la tua pelle ogni mese. Individuare i cambiamenti in anticipo può salvarti la vita.\" — American Academy of Dermatology</item>
+        <item>\"I retinoidi rimangono il gold standard della dermatologia anti-invecchiamento — supportati da decenni di evidenze cliniche.\" — Unknown</item>
+        <item>\"Una detersione delicata due volte al giorno è la base di ogni routine skincare efficace.\" — Unknown</item>
+        <item>\"Idratare, proteggere, ripetere. La trinità sacra della cura della pelle.\" — Unknown</item>
+        <item>\"Una routine skincare costante è un atto di rispetto verso se stessi nel lungo periodo.\" — Unknown</item>
+        <item>\"Non andare mai a letto con il trucco. La tua pelle si ripara e si rigenera durante la notte — lasciala fare.\" — Unknown</item>
+
+        <!-- DERMATOLOGY — LIFESTYLE & HOLISTIC HEALTH -->
+
+        <item>\"L\'idratazione è il segreto di una pelle luminosa — bevi acqua, non limitarti ad applicarla.\" — Unknown</item>
+        <item>\"Gli antiossidanti nella tua dieta proteggono la pelle dall\'interno verso l\'esterno. Mangia i colori della natura.\" — Unknown</item>
+        <item>\"Lo stress si vede sulla pelle prima di manifestarsi altrove. Gestire la mente significa prendersi cura del proprio incarnato.\" — Unknown</item>
+        <item>\"Il sonno è il miglior prodotto skincare che non pagherai mai.\" — Unknown</item>
+        <item>\"Il fumo invecchia la pelle più velocemente del sole. Nessun siero può annullare ciò che fanno le sigarette.\" — Unknown</item>
+        <item>\"Prenditi cura della tua pelle. Ti rappresenta ogni giorno, davanti a ogni persona che incontri.\" — Unknown</item>
+
+    </string-array>
+    <string name="nav_home_subtitle">Benvenuto</string>
+    <string name="nav_tools_subtitle">Calcolatori</string>
+    <string name="nav_profile_subtitle">Dati personali</string>
+    <string name="btn_back">Torna indietro</string>
 </resources>

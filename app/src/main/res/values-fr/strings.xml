@@ -5,22 +5,33 @@
     <string name="label_date_of_birth">Date de naissance</string>
     <string name="label_sex">Sexe</string>
     <string name="label_height">Taille</string>
+    <string name="label_weight">Poids</string>
+
+    <!-- Sex options -->
+    <string name="sex_male">Homme</string>
+    <string name="sex_female">Femme</string>
+    <string name="sex_other">Autre</string>
+
+    <!-- Unit options -->
+    <string name="unit_metric">Métrique</string>
+    <string name="unit_imperial">Impérial</string>
+    <string name="unit_kilos">Kilos</string>
+    <string name="unit_pounds">Livres</string>
 
     <!-- Navigation -->
     <string name="nav_home">Accueil</string>
     <string name="nav_profile">Profil</string>
 
     <!-- Onboarding screens -->
-    <string name="onboarding_1_title">Les courses à portée de main</string>
-    <string name="onboarding_1_desc">Découvrez les épiceries et les essentiels à proximité en quelques minutes.</string>
-    <string name="onboarding_2_title">Frais livré, sans tracas</string>
-    <string name="onboarding_2_desc">Recevez des produits frais livrés rapidement, exactement quand vous en avez besoin.</string>
-    <string name="onboarding_3_title">Achetez malin. Mangez frais</string>
-    <string name="onboarding_3_desc">Gagnez du temps grâce aux commandes intelligentes et aux choix sains au quotidien.</string>
+    <string name="onboarding_1_title">Bienvenue dans DermCalc</string>
+    <string name="onboarding_2_title">Les chiffres qui comptent</string>
+    <string name="onboarding_2_desc">IMC, SCT, PASI — intimidant au premier abord, mais nous vous guidons pas à pas.</string>
+    <string name="onboarding_3_title">Toujours avec vous</string>
+    <string name="onboarding_3_desc">Votre historique, vos scores, vos progrès — toujours dans votre poche.</string>
     <string name="onboarding_4_title">Parlez-nous de vous !</string>
     <string name="onboarding_4_desc">Veuillez fournir toutes les informations requises pour personnaliser votre expérience.</string>
-    <string name="onboarding_5_title">Nous avons besoin d\'un peu plus d\'informations sur vous.</string>
-    <string name="onboarding_5_desc">FeeF.</string><!-- TODO: replace with real copy -->
+    <string name="onboarding_5_title">Nous avons besoin d\'un peu plus d\'informations.</string>
+    <string name="onboarding_5_desc">Veuillez fournir toutes les informations requises pour personnaliser votre expérience.</string>
 
     <!-- Buttons -->
     <string name="btn_next">Suivant</string>
@@ -32,24 +43,81 @@
     <string name="picker_title_height">Sélectionner la taille</string>
 
     <!-- Placeholders -->
+    <string name="picker_title_weight">Sélectionnez le poids</string>
     <string name="placeholder_date">JJ / MM / AAAA</string>
-    <string name="placeholder_height">Saisir la taille</string>
+    <string name="placeholder_height">Cliquez ici pour saisir la hauteur</string>
 
     <!-- Accessibility (contentDescription) -->
+    <string name="placeholder_weight">Cliquez ici pour saisir le poids</string>
     <string name="cd_pick_date">Choisir une date</string>
     <string name="cd_pick_height">Choisir la taille</string>
 
     <!-- Validation: errors -->
+    <string name="cd_pick_weight">Indiquez votre poids</string>
     <string name="error_name">Veuillez saisir votre nom légal complet.</string>
     <string name="error_date">Veuillez sélectionner une date correcte.</string>
     <string name="error_sex">Veuillez préciser votre genre parmi ceux pris en charge.</string>
     <string name="error_height">Veuillez préciser votre taille.</string>
 
     <!-- Validation: success / hints -->
+    <string name="error_weight">Veuillez vérifier votre poids.</string>
     <string name="success_name">Ravi de vous rencontrer, %s !</string>
     <string name="success_sex">Merci d\'avoir partagé.</string>
     <string name="age_display">(%d ans)</string>
     <string name="nav_tools">Outils</string>
 
     <!-- Height display -->
+    <!-- (Untranslatable) -->
+
+    <string-array name="home_quotes">
+
+        <!-- MEDICINE — PHILOSOPHY & WISDOM -->
+
+        <item>\"Avant tout, ne pas nuire.\" — Hippocrate</item>
+        <item>\"Que ton aliment soit ta médecine, et que ta médecine soit ton aliment.\" — Hippocrate</item>
+        <item>\"La chance ne favorise que les esprits préparés.\" — Louis Pasteur</item>
+        <item>\"La médecine n\'est pas seulement une science ; c\'est aussi un art. Elle ne consiste pas à composer des pilules et des pansements ; elle traite les processus mêmes de la vie.\" — Paracelse</item>
+        <item>\"Le bon médecin traite la maladie ; le grand médecin traite le patient qui a la maladie.\" — William Osler</item>
+        <item>\"L\'art de la médecine consiste à distraire le malade pendant que la nature le guérit.\" — Voltaire</item>
+        <item>\"Mieux vaut prévenir que guérir.\" — Benjamin Franklin</item>
+        <item>\"En médecine, comme dans la vie, ce sont les petits détails qui font la plus grande différence.\" — Unknown</item>
+
+        <!-- SKIN — PHILOSOPHY & AWARENESS -->
+
+        <item>\"La peau est l\'empreinte digitale de ce qui se passe à l\'intérieur du corps.\" — Dr. Georgiana Donadio</item>
+        <item>\"Une peau saine est le reflet d\'un bien-être global.\" — Dr. Howard Murad</item>
+        <item>\"La peau est le plus grand organe du corps, et pourtant le plus négligé.\" — Unknown</item>
+        <item>\"Votre peau est le miroir de votre santé globale — traitez-la en conséquence.\" — Unknown</item>
+        <item>\"Écoutez votre peau. Elle parle avant que le reste de votre corps ne le fasse.\" — Unknown</item>
+        <item>\"Le dermatologue voit ce que les autres ignorent — les histoires inscrites sur la peau.\" — Unknown</item>
+        <item>\"La beauté commence au moment où vous décidez d\'être vous-même.\" — Coco Chanel</item>
+        <item>\"La peau a une mémoire. Ce que vous faites aujourd\'hui, votre peau s\'en souviendra dans dix ans.\" — Unknown</item>
+
+        <!-- DERMATOLOGY — PRACTICAL TIPS -->
+
+        <item>\"La crème solaire est ce qui s\'approche le plus de la fontaine de jouvence.\" — Dr. Patricia Wexler</item>
+        <item>\"SPF chaque jour, qu\'il pleuve ou qu\'il vente — les rayons UV ne prennent jamais de congé.\" — Unknown</item>
+        <item>\"Les rayons UV sont la principale cause du vieillissement cutané prématuré. Protégez-vous chaque jour, sans exception.\" — Académie Américaine de Dermatologie</item>
+        <item>\"Ne négligez jamais un grain de beauté qui change de forme, de couleur ou de taille. La détection précoce du mélanome sauve des vies.\" — Unknown</item>
+        <item>\"Examinez votre peau chaque mois. Détecter les changements tôt peut vous sauver la vie.\" — Académie Américaine de Dermatologie</item>
+        <item>\"Les rétinoïdes restent la référence absolue en dermatologie anti-âge — soutenus par des décennies de preuves cliniques.\" — Unknown</item>
+        <item>\"Un nettoyage doux deux fois par jour est le fondement de toute routine de soins efficace.\" — Unknown</item>
+        <item>\"Hydrater, protéger, recommencer. La sainte trinité du soin de la peau.\" — Unknown</item>
+        <item>\"Une routine de soins régulière est un acte de respect envers soi-même sur le long terme.\" — Unknown</item>
+        <item>\"Ne vous endormez jamais avec du maquillage. Votre peau se répare et se régénère la nuit — laissez-la faire.\" — Unknown</item>
+
+        <!-- DERMATOLOGY — LIFESTYLE & HOLISTIC HEALTH -->
+
+        <item>\"L\'hydratation est le secret d\'une peau lumineuse — buvez de l\'eau, ne vous contentez pas d\'en appliquer.\" — Unknown</item>
+        <item>\"Les antioxydants dans votre alimentation protègent votre peau de l\'intérieur vers l\'extérieur. Mangez en couleurs.\" — Unknown</item>
+        <item>\"Le stress se voit sur votre peau avant de se voir ailleurs. Gérer votre esprit, c\'est prendre soin de votre teint.\" — Unknown</item>
+        <item>\"Le sommeil est le meilleur produit de soin que vous n\'achèterez jamais.\" — Unknown</item>
+        <item>\"Le tabac vieillit la peau plus vite que le soleil. Aucun sérum ne peut défaire ce que font les cigarettes.\" — Unknown</item>
+        <item>\"Prenez soin de votre peau. Elle vous représente chaque jour, auprès de chaque personne que vous rencontrez.\" — Unknown</item>
+
+    </string-array>
+    <string name="nav_home_subtitle">Bienvenue</string>
+    <string name="nav_tools_subtitle">Calculatrices</string>
+    <string name="nav_profile_subtitle">Données personnelles</string>
+    <string name="btn_back">Retour</string>
 </resources>
