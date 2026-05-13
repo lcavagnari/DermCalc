@@ -54,6 +54,28 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.utils.today
 
 import java.util.Locale.getDefault
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.key
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
+import it.lcavagnari.pdm.dermcalc.models.toLocalDate
+import it.lcavagnari.pdm.dermcalc.ui.portrait.component.SnapWheel
+import it.lcavagnari.pdm.dermcalc.ui.portrait.component.SnapWheelPickerDialog
 
 /**
  * Displays basic profile placeholder content centered on current screen.
@@ -81,7 +103,8 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
 
         ProfileDetails(
             modifier = Modifier.padding(top = 10.dp,bottom = 30.dp),
-            inputFields = inputFields
+            inputFields = inputFields,
+            onboardingModel = onboardingModel
         )
 
         Text(
@@ -114,8 +137,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>) {
+fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, onboardingModel: OnboardingModel) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
@@ -128,59 +152,255 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>) 
     ) {
         inputFields.forEach { field ->
             Log.d("ProfileScreen", field.toString())
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 7.dp),
-                    text = stringResource(field.label),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+            key(field.id) {
+                var showDialog by remember { mutableStateOf(false) }
 
-                Text(
-                    modifier = Modifier.padding(10.dp),
-                    text = when (field) {
-                        is TextInput -> field.value
-                        is DateInput -> field.value?.toString()
-                            ?: stringResource(R.string.placeholder_date)
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier.padding(vertical = 10.dp, horizontal = 7.dp),
+                        text = stringResource(field.label),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
 
-                        is SexInput -> {
-                            stringResource(
-                                when (field.value) {
-                                    Sex.Male -> R.string.sex_male
-                                    Sex.Female -> R.string.sex_female
-                                    Sex.Other -> R.string.sex_other
-                                    else -> R.string.sex_other
+                    Spacer(Modifier.weight(1f))
+
+                    Text(
+                        modifier = Modifier.padding(10.dp),
+                        text = when (field) {
+                            is TextInput -> field.value
+                            is DateInput -> field.value?.toString()
+                                ?: stringResource(R.string.placeholder_date)
+
+                            is SexInput -> {
+                                stringResource(
+                                    when (field.value) {
+                                        Sex.Male -> R.string.sex_male
+                                        Sex.Female -> R.string.sex_female
+                                        Sex.Other -> R.string.sex_other
+                                        else -> R.string.sex_other
+                                    }
+                                )
+                            }
+
+                            is HeightInput -> field.value?.let {
+                                if (field.isMetric) stringResource(R.string.height_display_metric, it.toInt())
+                                else {
+                                    val (feet, inches) = field.cmToFeetInches(it)
+                                    stringResource(R.string.height_display_imperial, feet.toInt(), inches.toInt())
+                                }
+                            } ?: ""
+                            is WeightInput -> field.value?.let {
+                                if (field.isKilos) stringResource(R.string.weight_display_metric, it)
+                                else stringResource(R.string.weight_display_imperial, field.kilosToPounds(it))
+                            } ?: ""
+                        },
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    IconButton(onClick = { showDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit ${field.id}",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
+                if (showDialog) {
+                    when (field) {
+                        is TextInput -> {
+                            AlertDialog(
+                                onDismissRequest = { showDialog = false },
+                                title = { Text(stringResource(field.label)) },
+                                text = {
+                                    OutlinedTextField(
+                                        value = field.value,
+                                        onValueChange = { onboardingModel.updateName(it) },
+                                        label = { Text(stringResource(field.label)) },
+                                        singleLine = true,
+                                        shape = RoundedCornerShape(17.dp),
+                                        colors = TextFieldDefaults.colors(
+                                            focusedContainerColor = Color.Transparent,
+                                            unfocusedContainerColor = Color.Transparent,
+                                            focusedIndicatorColor = MaterialTheme.colorScheme.primary
+                                        )
+                                    )
+                                },
+                                confirmButton = {
+                                    OutlinedButton(
+                                        onClick = { showDialog = false },
+                                        enabled = field.isValid,
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                        )
+                                    ) { Text(stringResource(R.string.btn_ok)) }
+                                },
+                                dismissButton = {
+                                    OutlinedButton(
+                                        onClick = { showDialog = false },
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            containerColor = MaterialTheme.colorScheme.error
+                                        )
+                                    ) { Text(stringResource(R.string.btn_cancel)) }
                                 }
                             )
                         }
 
-                        is HeightInput -> field.value?.let {
-                            if (field.isMetric) stringResource(R.string.height_display_metric, it.toInt())
-                            else {
-                                val (feet, inches) = field.cmToFeetInches(it)
-                                stringResource(R.string.height_display_imperial, feet.toInt(), inches.toInt())
+                        is DateInput -> {
+                            val datePickerState = rememberDatePickerState(
+                                initialSelectedDateMillis = field.value?.toEpochMillis()
+                            )
+                            LaunchedEffect(datePickerState.selectedDateMillis) {
+                                datePickerState.selectedDateMillis?.let {
+                                    onboardingModel.updateDateOfBirth(it.toLocalDate())
+                                }
                             }
-                        } ?: ""
-                        is WeightInput -> field.value?.let {
-                            if (field.isKilos) stringResource(R.string.weight_display_metric, it)
-                            else stringResource(R.string.weight_display_imperial, field.kilosToPounds(it))
-                        } ?: ""
-                    },
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                            DatePickerDialog(
+                                onDismissRequest = { showDialog = false },
+                                confirmButton = {
+                                    OutlinedButton(
+                                        onClick = { showDialog = false },
+                                        enabled = field.isValid,
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                        )
+                                    ) { Text(stringResource(R.string.btn_ok)) }
+                                },
+                                dismissButton = {
+                                    OutlinedButton(
+                                        onClick = { showDialog = false },
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            containerColor = MaterialTheme.colorScheme.error
+                                        )
+                                    ) { Text(stringResource(R.string.btn_cancel)) }
+                                }
+                            ) {
+                                DatePicker(state = datePickerState)
+                            }
+                        }
+
+                        is SexInput -> {
+                            var selectedSex by remember(field.id) { mutableStateOf(field.value ?: Sex.Other) }
+                            AlertDialog(
+                                onDismissRequest = { showDialog = false },
+                                title = { Text(stringResource(field.label)) },
+                                text = {
+                                    SingleChoiceSegmentedButtonRow {
+                                        Sex.entries.forEachIndexed { index, sex ->
+                                            SegmentedButton(
+                                                selected = selectedSex == sex,
+                                                onClick = { selectedSex = sex },
+                                                shape = SegmentedButtonDefaults.itemShape(index, Sex.entries.size),
+                                                label = { Text(stringResource(when (sex) {
+                                                    Sex.Male -> R.string.sex_male
+                                                    Sex.Female -> R.string.sex_female
+                                                    Sex.Other -> R.string.sex_other
+                                                })) },
+                                                colors = SegmentedButtonDefaults.colors(
+                                                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                                                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                                                    inactiveContainerColor = Color.Transparent,
+                                                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                                )
+                                            )
+                                        }
+                                    }
+                                },
+                                confirmButton = {
+                                    OutlinedButton(
+                                        onClick = {
+                                            onboardingModel.updateSex(selectedSex)
+                                            showDialog = false
+                                        },
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                        )
+                                    ) { Text(stringResource(R.string.btn_ok)) }
+                                },
+                                dismissButton = {
+                                    OutlinedButton(
+                                        onClick = { showDialog = false },
+                                        colors = ButtonDefaults.outlinedButtonColors(
+                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            containerColor = MaterialTheme.colorScheme.error
+                                        )
+                                    ) { Text(stringResource(R.string.btn_cancel)) }
+                                }
+                            )
+                        }
+
+                        is HeightInput -> {
+                            val heightPickerWheelsMetric = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (50..272).toList(),
+                                    initialValue = field.value?.toInt() ?: 170
+                                )
+                            )
+                            val heightPickerWheelsImperial = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (1..8).toList(),
+                                    initialValue = field.value?.let { field.cmToFeetInches(it).first.toInt() } ?: 5
+                                ),
+                                SnapWheel(
+                                    items = (0..11).toList(),
+                                    initialValue = field.value?.let { field.cmToFeetInches(it).second.toInt() } ?: 0
+                                )
+                            )
+                            SnapWheelPickerDialog(
+                                title = R.string.picker_title_height,
+                                wheels = if (field.isMetric) heightPickerWheelsMetric else heightPickerWheelsImperial,
+                                onDismiss = { showDialog = false },
+                                onConfirm = { values ->
+                                    if (field.isMetric) onboardingModel.updateHeightMetric(values[0] as Int)
+                                    else onboardingModel.updateHeightImperial(values[0] as Int, values[1] as Int)
+                                    showDialog = false
+                                }
+                            )
+                        }
+
+                        is WeightInput -> {
+                            val weightPickerWheelsKilos = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (20..300).toList(),
+                                    initialValue = field.value?.toInt()?.coerceIn(20, 300) ?: 70
+                                )
+                            )
+                            val weightPickerWheelsPounds = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (44..661).toList(),
+                                    initialValue = field.value?.let { field.kilosToPounds(it).toInt().coerceIn(44, 661) } ?: 154
+                                )
+                            )
+                            SnapWheelPickerDialog(
+                                title = R.string.picker_title_weight,
+                                wheels = if (field.isKilos) weightPickerWheelsKilos else weightPickerWheelsPounds,
+                                onDismiss = { showDialog = false },
+                                onConfirm = { values ->
+                                    if (field.isKilos) onboardingModel.updateWeightKilos(values[0] as Int)
+                                    else onboardingModel.updateWeightPounds(values[0] as Int)
+                                    showDialog = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+                HorizontalDivider(
+                    thickness = 4.dp,
+                    color = MaterialTheme.colorScheme.surface
                 )
             }
-
-            HorizontalDivider(
-                thickness = 4.dp,
-                color = MaterialTheme.colorScheme.surface
-            )
         }
-
     }
 }
 

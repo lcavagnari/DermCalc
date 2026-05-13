@@ -63,7 +63,7 @@ import kotlin.math.abs
 data class SnapWheel<T>(
     val height: Dp = 260.dp,
     val visibleItemCount: Int = 5,
-    val infinite: Boolean = true,
+    val infinite: Boolean = false,
     val initialValue: T,
     val items: List<T>,
     val onValueChanged: (T) -> Unit = {},
