@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -42,6 +44,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontStyle
@@ -52,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.ui.portrait.component.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
@@ -70,8 +75,8 @@ import kotlinx.coroutines.launch
  * @constructor Create empty Onboarding screen
  */
 data class OnboardingScreen(
-    val title: String,
-    val description: String? = null,
+    @StringRes val title: Int,
+    @StringRes val description: Int? = null,
 
     val imageRes: ImageVector? = null,
     val imageDrawable: Int? = null,
@@ -85,30 +90,29 @@ data class OnboardingScreen(
 
 val onboardingScreens = listOf(
     OnboardingScreen(
-        title = "Welcome to DermCalc",
+        title = R.string.onboarding_1_title,
         imageDrawable = R.drawable.ic_ecg
     ),
     OnboardingScreen(
-        title = "Numbers that matter",
-        description = "BMI, BSA, PASI — sounds intimidating, but we'll walk you through it.",
+        title = R.string.onboarding_2_title,
+        description = R.string.onboarding_2_desc,
         imageRes = Icons.Default.Info
     ),
     OnboardingScreen(
-        title = "Always with you",
-        description = "Your history, your scores, your progress — right in your pocket.",
+        title = R.string.onboarding_3_title,
+        description = R.string.onboarding_3_desc,
         imageRes = Icons.Default.Favorite
-
     ),
     OnboardingScreen(
-        title = "Let's get to know you!",
-        description = "A little info goes a long way toward making this truly yours.",
+        title = R.string.onboarding_4_title,
+        description = R.string.onboarding_4_desc,
         inputFieldIds = listOf("full-name", "date-of-birth", "sex"),
         imageRes = Icons.Default.AccountCircle,
         imageSize = 190.dp
     ),
     OnboardingScreen(
-        title = "We require a little more information about you.",
-        description = "Please provide all the required information to personalize your experience.",
+        title = R.string.onboarding_5_title,
+        description = R.string.onboarding_5_desc,
         inputFieldIds = listOf("height", "weight"),
         imageRes = Icons.Default.AccountCircle,
         imageSize = 180.dp
@@ -129,8 +133,9 @@ fun OnboardingPreview() {
 fun OnboardingScreen(
     pagerState: PagerState,
     modifier: Modifier,
-    onFinish: () -> Unit,
-    onLangClick: () -> Unit = {}
+    onToggleTheme: () -> Unit = {},
+    onLangClick: () -> Unit = {},
+    onFinish: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val onBoardingModel: OnboardingModel = viewModel()
@@ -139,7 +144,7 @@ fun OnboardingScreen(
 
     val currentScreen = onboardingScreens[pagerState.currentPage]
     val isLastIndex = pagerState.currentPage == onboardingScreens.lastIndex
-    val isBtnEnabled = onBoardingModel.isPageInputValid(currentScreen.inputFieldIds, fields)
+    val isBtnEnabled = onBoardingModel.isFieldsInputValid(currentScreen.inputFieldIds, fields)
 
     Column(
         modifier = modifier
@@ -149,7 +154,11 @@ fun OnboardingScreen(
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
     ) {
 
-        TopTrayButtons(onLangClick, onDebugClick = { onBoardingModel.finishOnboarding() })
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) { TopTrayButtons(showDebug = true, iconTint = MaterialTheme.colorScheme.secondary,
+                onLangClick = onLangClick, onDebugClick = { onBoardingModel.finishOnboarding() }, onToggleTheme = onToggleTheme) }
 
         // Contenuto pagina
         OnboardingPager(
@@ -188,7 +197,7 @@ fun OnboardingScreen(
                 }
             }
         ) {
-            Text(if (isLastIndex) "Start" else "Next")
+            Text(stringResource(if (isLastIndex) R.string.btn_start else R.string.btn_next))
         }
     }
 
@@ -201,8 +210,8 @@ fun OnboardingScreen(
             Icon(
                 modifier = Modifier
                     .padding(start = 12.dp)
-                    .size(32.dp),
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    .size(26.dp),
+                painter = painterResource(id = R.drawable.ic_swipe_left),
                 contentDescription = "Swipe back",
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
             )
@@ -216,8 +225,8 @@ fun OnboardingScreen(
             Icon(
                 modifier = Modifier
                     .padding(end = 12.dp)
-                    .size(32.dp),
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    .size(26.dp),
+                painter = painterResource(id = R.drawable.ic_swipe_right),
                 contentDescription = "Swipe forward",
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
             )
@@ -231,19 +240,19 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .clickable(onClick = onClick)
-            .fillMaxWidth(),
+            .wrapContentSize(),
         contentAlignment = Alignment.TopStart
     ) {
         Icon(
-            modifier = modifier.size(20.dp),
+            modifier = Modifier.size(20.dp),
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Back button",
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Text(
-            "Go Back ...",
-            modifier = modifier.padding(start = 25.dp),
+            text = stringResource(R.string.btn_back),
+            modifier = Modifier.padding(start = 25.dp),
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.SemiBold,
@@ -275,60 +284,6 @@ private fun StepIndicator(
                         else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
                     )
                     .animateContentSize(),
-            )
-        }
-    }
-}
-
-@Composable
-private fun TopTrayButtons(onLangClick: () -> Unit, onDebugClick: () -> Unit = {}) {
-    val toggleDarkTheme = LocalToggleDarkTheme.current
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End
-    ) {
-
-        // TODO: Remove this button before release, you dumb cu-
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .padding(end = 15.dp)
-                .clickable(onClick = onDebugClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(35.dp),
-                imageVector = Icons.Outlined.BugReport,
-                contentDescription = "Debug",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .padding(end = 15.dp)
-                .clickable(onClick = onLangClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(35.dp),
-                imageVector = Icons.Outlined.Language,
-                contentDescription = "Language",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .padding(end = 5.dp)
-                .clickable(onClick = toggleDarkTheme),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(35.dp),
-                imageVector = if (LocalDarkTheme.current) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
-                contentDescription = "Dark/Light mode",
-                tint = MaterialTheme.colorScheme.primary
             )
         }
     }
