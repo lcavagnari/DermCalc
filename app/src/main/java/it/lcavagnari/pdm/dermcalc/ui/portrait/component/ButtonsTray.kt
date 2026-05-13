@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 
@@ -55,8 +57,8 @@ fun TopTrayButtons(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(35.dp),
-            imageVector = Icons.Outlined.Language,
+            modifier = Modifier.size(30.dp),
+            painter = painterResource(R.drawable.ic_lang_button),
             contentDescription = "Language",
             tint = iconTint
         )
