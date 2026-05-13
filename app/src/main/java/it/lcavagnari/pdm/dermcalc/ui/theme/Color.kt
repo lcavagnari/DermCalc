@@ -2,28 +2,25 @@ package it.lcavagnari.pdm.dermcalc.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// --- Dark-theme accents (high luminance — readable on near-black backgrounds) ---
-val Yellow80 = Color(0xFFFFE033)   // bright yellow — dark theme primary
-val Gold80 = Color(0xFFD4B060)     // warm gold — dark theme secondary
-val Amber80 = Color(0xFFFFB830)    // amber — dark theme tertiary
+// --- High-Contrast Undertale-inspired M3 Palette ---
+val Yellow80 = Color(0xFFFFFF00)   // Pure Determination Gold
+val Gold80 = Color(0xFFE2E2E2)     // Light Grey for UI
+val Amber80 = Color(0xFFFF0000)    // Soul Red
 
-// --- Light-theme accents (medium luminance — readable on white/off-white backgrounds) ---
-val Yellow40 = Color(0xFF8C6B00)   // muted yellow-gold — light theme primary
-val Gold40 = Color(0xFF6B5C00)     // dark gold — light theme secondary
-val Amber40 = Color(0xFF8A5300)    // dark amber — light theme tertiary
+val Yellow40 = Color(0xFF8C6B00)   // Muted Gold for Light Mode
+val Gold40 = Color(0xFF000000)     // Pure Black for Light Mode
+val Amber40 = Color(0xFFFF0000)    // Red accent
 
-// --- Dark scheme surfaces ---
-val BackgroundDark = Color(0xFF1A1A1A)
-val SurfaceDark = Color(0xFF2C2C2C)
-val SurfaceVariantDark = Color(0xFF3A3A3A)
+// --- Surfaces (Stark Contrast) ---
+val BackgroundDark = Color(0xFF000000) // Pure Black
+val SurfaceDark = Color(0xFF000000)    // Keeping it flat
+val SurfaceVariantDark = Color(0xFF1A1A1A)
 
-// --- Light scheme surfaces ---
-val BackgroundLight = Color(0xFFFAFAF5)
+val BackgroundLight = Color(0xFFFFFFFF)
 val SurfaceLight = Color(0xFFFFFFFF)
-val SurfaceVariantLight = Color(0xFFF0EDE0)
+val SurfaceVariantLight = Color(0xFFE0E0E0)
 
-// --- Severity indicators (consumed directly by result card composables) ---
-val SeverityMild = Color(0xFF4CAF50)
-val SeverityModerate = Color(0xFFF59300)       // amber — light mode
-val SeverityModerateOnDark = Color(0xFFFFD600) // yellow — dark mode
-val SeveritySevere = Color(0xFFE53935)
+// --- Severity indicators ---
+val SeverityMild = Color(0xFF00FF00)       // Green (Spared)
+val SeverityModerate = Color(0xFFFFFF00)   // Yellow (Talk)
+val SeveritySevere = Color(0xFFFF0000)     // Red (Fight)
