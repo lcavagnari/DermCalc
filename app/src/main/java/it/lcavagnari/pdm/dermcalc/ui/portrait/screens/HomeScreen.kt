@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -47,9 +49,10 @@ import it.lcavagnari.pdm.dermcalc.models.Quote
 @Composable
 fun HomeScreen(navController: NavHostController, quoteModel: QuoteModel) {
     Column(
-        modifier = Modifier.padding(start = 15.dp, top = 15.dp),
+        modifier = Modifier.fillMaxSize()
+            .padding(top = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(0.9f).height(80.dp),
@@ -79,7 +82,7 @@ fun HomeScreen(navController: NavHostController, quoteModel: QuoteModel) {
         }
 
         QuoteCard(
-            modifier = Modifier.fillMaxWidth(0.9f),
+            modifier = Modifier,
             quoteModel = quoteModel
         )
 
@@ -117,16 +120,17 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
     val quote: Quote = quoteModel.homeQuote.collectAsState().value
 
     Card(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(0.9f),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.onPrimary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.onPrimary)
     ) {
         Column(
-            modifier = Modifier.padding(vertical = 20.dp, horizontal = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
+            modifier = Modifier.padding(vertical = 15.dp, horizontal = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             //horizontalAlignment = Alignment.Start
         ) {
             Text(
@@ -168,7 +172,7 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
 @Composable
 fun HomeScreenPreview() {
     val app = LocalContext.current.applicationContext as Application
-val vm = remember { OnboardingModel(app).also {
+    val vm = remember { OnboardingModel(app).also {
         it.finishOnboarding(); it.updateName("Asriel ")
     }}
 
