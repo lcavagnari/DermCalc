@@ -1,5 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.models
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.utils.today
@@ -9,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.datetime.LocalDate
 
 /** ViewModel holding onboarding state and all user-input update operations. */
-class OnboardingModel : ViewModel() {
+class OnboardingModel(application: Application) : AndroidViewModel(application) {
 
     private val _inputFields = MutableStateFlow<List<InputField>>(
         listOf<InputField>(
