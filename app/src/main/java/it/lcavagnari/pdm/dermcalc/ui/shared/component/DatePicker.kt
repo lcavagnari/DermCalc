@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.component
+package it.lcavagnari.pdm.dermcalc.ui.shared.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -37,10 +37,10 @@ import it.lcavagnari.pdm.dermcalc.models.toLocalDate
 import kotlinx.datetime.LocalDate
 
 /**
- * Read-only date field that opens a Material3 [DatePickerDialog] on tap, bridging [kotlinx.datetime.LocalDate] to the epoch-millisecond API.
+ * Read-only date field that opens a Material3 [DatePickerDialog] on tap, bridging [LocalDate] to the epoch-millisecond API.
  *
  * @param field - the [DateInput] field supplying the current value and label.
- * @param onDateSelected - callback invoked with the chosen [kotlinx.datetime.LocalDate] on confirm.
+ * @param onDateSelected - callback invoked with the chosen [LocalDate] on confirm.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

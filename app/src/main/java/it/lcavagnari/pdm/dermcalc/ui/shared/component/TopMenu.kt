@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.component
+package it.lcavagnari.pdm.dermcalc.ui.shared.component
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -31,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
@@ -39,7 +40,7 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
+fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick:() -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     Log.d("TopMenu", "-".repeat(50))
@@ -48,7 +49,6 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
     Log.d("TopMenu", "navController: ${navController.currentBackStackEntryAsState().value?.destination?.route}")
     Log.d("TopMenu", "HomeRoute: ${HomeRoute.route}")
     Log.d("TopMenu", "-".repeat(50))
-
 
     val title: Int = when(currentDestination?.route) {
         ToolsRoute.route -> R.string.nav_tools
@@ -121,18 +121,12 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                     .padding(end = 12.dp, bottom = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(15.dp, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically
-            ) { TopTrayButtons(iconTint = MaterialTheme.colorScheme.onSecondary, onToggleTheme = onToggleTheme ) {} }
+            ) { TopTrayButtons(
+                iconTint = MaterialTheme.colorScheme.onSecondary,
+                onToggleTheme = onToggleTheme,
+                onDebugClick = onDebugClick,
+                showDebug = true
+            ) {} }
         }
     }
-}
-
-private val vm = OnboardingModel()
-
-@SuppressLint("NewApi", "RestrictedApi")
-@RequiresApi(Build.VERSION_CODES.Q)
-@Preview(showBackground = true)
-@Composable
-fun MenuPreview() {
-    vm.finishOnboarding()
-    MainPortraitActivity(onboardingModel = vm)
 }
