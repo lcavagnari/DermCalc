@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
@@ -33,6 +34,7 @@ import it.lcavagnari.pdm.dermcalc.ui.shared.component.TopMenu
 fun MainPortraitActivity(
     modifier: Modifier = Modifier,
     onboardingModel: OnboardingModel,
+    toolsModel: ToolsModel,
     quoteModel: QuoteModel,
     startingDestination: AppRoute = HomeRoute,
     onToggleTheme: () -> Unit = {}
@@ -66,7 +68,7 @@ fun MainPortraitActivity(
             TopMenu(
                 navController,
                 onToggleTheme = onToggleTheme,
-                onDebugClick = { quoteModel.randomQuote() }
+                onDebugClick = { quoteModel.updateQuote() }
             )
         },
         bottomBar = {
@@ -81,6 +83,7 @@ fun MainPortraitActivity(
             navController = navController,
             modifier = modifier.padding(innerPadding),
             onboardingModel = onboardingModel,
+            toolsModel = toolsModel,
             quoteModel = quoteModel,
             startDestination = startingDestination,
         )
@@ -96,6 +99,7 @@ fun MainPortraitActivity(
 fun MainPortraitActivityPreview() {
     val app = LocalContext.current.applicationContext as Application
     val vm = remember { OnboardingModel(app).also { it.finishOnboarding() } }
-    val qm = remember { QuoteModel(app).also { it.randomQuote() } }
-    MainPortraitActivity(quoteModel = qm, onboardingModel = vm)
+    val qm = remember { QuoteModel(app).also { it.updateQuote() } }
+    val tm = remember { ToolsModel(app) }
+    MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
 }

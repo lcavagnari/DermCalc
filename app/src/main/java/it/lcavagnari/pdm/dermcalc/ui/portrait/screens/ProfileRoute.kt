@@ -75,6 +75,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
 import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheel
@@ -160,11 +161,11 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         inputFields.forEachIndexed { index, field ->
@@ -539,7 +540,8 @@ fun ProfileScreenPreview() {
         it.updateWeightKilos(67)
     } }
 
-    val qm = remember { QuoteModel(app) }.also { it.randomQuote() }
+    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
+    val tm = remember { ToolsModel(app) }
 
-    MainPortraitActivity(onboardingModel = vm, quoteModel = qm, startingDestination = ProfileRouteDest)
+    MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm, startingDestination = ProfileRouteDest)
 }
