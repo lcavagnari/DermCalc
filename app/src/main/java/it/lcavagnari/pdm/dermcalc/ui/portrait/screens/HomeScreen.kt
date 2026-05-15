@@ -40,6 +40,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Quote
+import it.lcavagnari.pdm.dermcalc.ui.shared.component.BorderedCard
+import it.lcavagnari.pdm.dermcalc.ui.shared.component.BorderSide
 
 /**
  * Displays placeholder home content centered within available screen space.
@@ -119,8 +121,11 @@ fun HomeScreen(navController: NavHostController, quoteModel: QuoteModel) {
 fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
     val quote: Quote = quoteModel.homeQuote.collectAsState().value
 
-    Card(
+    BorderedCard(
         modifier = modifier.fillMaxWidth(0.9f),
+        borderSide = BorderSide.Left,
+        borderStrokeWidth = 4.dp,
+        cornerRadius = 12.dp,
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimary
@@ -134,16 +139,18 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
             //horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = quote.value,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium,
+                text = quote.value.replace("\"",""),
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.secondary,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Start,
                 fontStyle = FontStyle.Italic
             )
 
             Box(
-                modifier = Modifier.fillMaxWidth().padding(top = 2.dp, end = 5.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .wrapContentWidth(Alignment.End)
+                    .padding(top = 2.dp, end = 5.dp),
                 contentAlignment = Alignment.BottomEnd
             ) {
                 if (quote.author.isNullOrBlank()) Text(
@@ -152,7 +159,8 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Start,
-                    fontStyle = FontStyle.Italic
+                    fontStyle = FontStyle.Italic,
+                    maxLines = 2
 
                 ) else Text(
                     text = quote.author,
