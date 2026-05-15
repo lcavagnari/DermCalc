@@ -90,7 +90,7 @@ data class SnapWheel<T>(
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun <T> DrawSnapWheel(
+fun <T> DrawSnapWheel(
     modifier: Modifier = Modifier,
     wheel: SnapWheel<T>,
     itemContent: @Composable (item: T, isFocused: Boolean) -> Unit = { item, isFocused ->
