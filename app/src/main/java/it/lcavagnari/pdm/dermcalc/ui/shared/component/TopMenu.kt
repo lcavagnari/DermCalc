@@ -70,7 +70,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(1/7f),
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(1/8f),
         shape = MaterialTheme.shapes.extraSmall,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
