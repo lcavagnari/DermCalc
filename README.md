@@ -54,7 +54,7 @@ Dark mode is the intended experience. Light mode is fully functional for clinica
 - [X] Phase 1 — Project setup, navigation scaffold, empty screens
 - [X] Phase 2 — Onboarding flow and Room profile storage
 - [X] Phase 3 — Profile screen (read + edit)
-- [ ] Phase 4 — Home screen (welcome, medical quote, history preview)
+- [X] Phase 4 — Home screen (welcome, medical quote, history preview)
 - [ ] Phase 5 — BMI calculator end-to-end
 - [ ] Phase 6 — BSA calculator
 - [ ] Phase 7 — PASI multi-step calculator
