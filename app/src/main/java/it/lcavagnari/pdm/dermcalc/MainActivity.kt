@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,12 +39,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
             val quoteModel = ViewModelProvider(this)[QuoteModel::class.java]
+            LaunchedEffect(Unit) { quoteModel.randomQuote() }
 
             val configuration = LocalConfiguration.current
             val systemDark = isSystemInDarkTheme()
             var isDarkTheme by remember { mutableStateOf(systemDark) }
-
-
 
             DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
                 if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
