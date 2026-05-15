@@ -15,19 +15,23 @@ data class Quote(
 )
 
 class QuoteModel(application: Application) : AndroidViewModel(application) {
+    private val _quotes = getApplication<Application>().resources.getStringArray(R.array.home_quotes)
+
     private val _homeQuote = MutableStateFlow(Quote("", ""))
     val homeQuote: StateFlow<Quote> = _homeQuote.asStateFlow()
 
-    fun updateQuote(quote: Quote) { _homeQuote.value = quote }
+    fun updateQuote() {
+        val full = _quotes.random()
+        val lastEmDash = full.lastIndexOf(" — ")
 
-    fun randomQuote() {
-        val resources = getApplication<Application>().resources
-        val quotes = resources.getStringArray(R.array.home_quotes)
-        val quoteRaw = quotes.random().split(" — ")
-        _homeQuote.value = Quote(
-            value = quoteRaw[0],
-            author = if (quoteRaw.size > 1 && quoteRaw[1].isNotBlank()
-                            && quoteRaw[1] != "Unknown") quoteRaw[1] else null
-        )
+        if (lastEmDash != -1) {
+            _homeQuote.value = Quote(
+                value = full.substring(0, lastEmDash),
+                author = full.substring(lastEmDash + 3).let { a ->
+                    if (a.isNotBlank() && a != "Unknown") a else null
+                }
+            )
+
+        } else _homeQuote.value = Quote(value = full, author = null)
     }
 }

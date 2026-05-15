@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 
 /**
  * Displays calculator tools placeholder while feature modules are added.
@@ -19,7 +20,7 @@ import androidx.navigation.NavHostController
  * @param navController - controller available for future tools deep links.
  */
 @Composable
-fun ToolsScreen(navController: NavHostController) {
+fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()

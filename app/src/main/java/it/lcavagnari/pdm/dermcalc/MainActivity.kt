@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.ViewModelProvider
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
@@ -38,8 +39,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
+            val toolsModel = ViewModelProvider(this)[ToolsModel::class.java]
+
             val quoteModel = ViewModelProvider(this)[QuoteModel::class.java]
-            LaunchedEffect(Unit) { quoteModel.randomQuote() }
+            LaunchedEffect(Unit) { quoteModel.updateQuote() }
 
             val configuration = LocalConfiguration.current
             val systemDark = isSystemInDarkTheme()
@@ -47,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
             DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
                 if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-                    MainPortraitActivity(Modifier, onboardingModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })
+                    MainPortraitActivity(Modifier, onboardingModel, toolsModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })
                 else MainLandscapeActivity(onboardingModel)
             }
         }
