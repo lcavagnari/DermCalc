@@ -5,7 +5,11 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -148,6 +152,9 @@ fun HomeScreen(
             DateTimeUnit.WEEK).atTime(LocalTime.fromSecondOfDay(0))))
         toolsModel.addResult(BmiResult(weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(10,
             DateTimeUnit.MONTH).atTime(LocalTime.fromSecondOfDay(0))))
+        toolsModel.addResult(BmiResult(weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(1,
+            DateTimeUnit.YEAR).atTime(LocalTime.fromSecondOfDay(0))))
+        toolsModel.addResult(BmiResult(weightKg = 78.0, heightCm = 175.0, score = 25.5, timestamp = today()))
     }
 
     val formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM", Locale.getDefault())
@@ -155,7 +162,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 20.dp),
+            .padding(top = 20.dp, bottom = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
     ) {
@@ -195,7 +202,7 @@ fun HomeScreen(
 
         HistoryCard(
             toolsModel = toolsModel,
-            onShowAll = { navController.navigate(ToolsRoute) }
+            onShowAll = { }
         )
     }
 }
@@ -259,12 +266,14 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryCard(toolsModel: ToolsModel, onShowAll: () -> Unit) {
     val results = toolsModel.toolsResult.collectAsState().value
     val now = remember { today() }
     val displayResults = results.takeLast(MAX_HISTORY_VISIBLE)
     val hasMore = results.size > MAX_HISTORY_VISIBLE
+    val scrollState = rememberLazyListState()
 
     Card(
         modifier = Modifier.fillMaxWidth(0.9f),
@@ -299,20 +308,44 @@ fun HistoryCard(toolsModel: ToolsModel, onShowAll: () -> Unit) {
                     )
                 }
             } else {
-                displayResults.forEachIndexed { index, result ->
-                    HistoryResultRow(result = result, now = now)
-                    if (index < displayResults.lastIndex || hasMore) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(462.dp),
+                    state = scrollState,
+                    flingBehavior = rememberSnapFlingBehavior(scrollState)
+                ) {
+                    items(displayResults.size) { index ->
+                        HistoryResultRow(result = displayResults[index], now = now)
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 2.dp),
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
                     }
-                }
-                if (hasMore) {
-                    ShowAllRow(onClick = onShowAll)
+                    if (hasMore) {
+                        item { ShowAllRow(onClick = onShowAll) }
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ShowAllRow(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 10.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(R.string.history_show_all),
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
 
@@ -381,22 +414,5 @@ private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): Str
     }
 }
 
-@Composable
-private fun ShowAllRow(onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 10.dp),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(R.string.history_show_all),
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-}
 
 
