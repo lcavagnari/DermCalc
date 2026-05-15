@@ -6,7 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.screens.HomeScreen
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.screens.ToolsScreen
 
@@ -22,7 +23,8 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onboardingModel: OnboardingModel,
-    startDestination: AppRoute
+    startDestination: AppRoute,
+    quoteModel: QuoteModel
 ) {
     NavHost(
         modifier = modifier,
@@ -30,7 +32,7 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
         composable<HomeRoute> {
-            HomeScreen(navController)
+            HomeScreen(navController, quoteModel)
 
         }
 

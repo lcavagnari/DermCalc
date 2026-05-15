@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.navigation
 
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -29,7 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
  * @param appItems - routes rendered as bottom navigation entries.
  */
 @Composable
-fun BottomNavigationBar(navController: NavController, appItems: List<AppRoute>) {
+fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         modifier = Modifier.semantics { testTag = "bottom_nav_bar" },
         containerColor = MaterialTheme.colorScheme.surface,

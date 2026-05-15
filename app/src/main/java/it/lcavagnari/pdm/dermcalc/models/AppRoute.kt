@@ -64,5 +64,5 @@ data object ProfileRoute : AppRoute {
         get() = R.drawable.ic_profile_button
 }
 
-/** Static list consumed to render tabs in [BottomNavigationBar]. */
+/** Static list consumed to render tabs in [NavigationBar]. */
 val navItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
