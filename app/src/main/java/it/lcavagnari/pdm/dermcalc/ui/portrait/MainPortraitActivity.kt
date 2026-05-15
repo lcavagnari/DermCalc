@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -11,24 +12,28 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BottomNavigationBar
+import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
-import it.lcavagnari.pdm.dermcalc.ui.portrait.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
+import it.lcavagnari.pdm.dermcalc.ui.shared.component.TopMenu
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun MainPortraitActivity(
     modifier: Modifier = Modifier,
     onboardingModel: OnboardingModel,
+    quoteModel: QuoteModel,
     startingDestination: AppRoute = HomeRoute,
     onToggleTheme: () -> Unit = {}
 ) {
@@ -58,10 +63,14 @@ fun MainPortraitActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             Log.d("MainActivity", "BottomNavigationBar")
-            TopMenu(navController, onToggleTheme = onToggleTheme)
+            TopMenu(
+                navController,
+                onToggleTheme = onToggleTheme,
+                onDebugClick = { quoteModel.randomQuote() }
+            )
         },
         bottomBar = {
-            BottomNavigationBar(
+            NavigationBar(
                 navController = navController,
                 appItems = navItems
             )
@@ -72,6 +81,7 @@ fun MainPortraitActivity(
             navController = navController,
             modifier = modifier.padding(innerPadding),
             onboardingModel = onboardingModel,
+            quoteModel = quoteModel,
             startDestination = startingDestination,
         )
     }
@@ -79,12 +89,13 @@ fun MainPortraitActivity(
 
 
 // Preview
-private val vm = OnboardingModel()
 
 @SuppressLint("NewApi")
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
-    vm.finishOnboarding()
-    MainPortraitActivity(onboardingModel = vm)
+    val app = LocalContext.current.applicationContext as Application
+    val vm = remember { OnboardingModel(app).also { it.finishOnboarding() } }
+    val qm = remember { QuoteModel(app).also { it.randomQuote() } }
+    MainPortraitActivity(quoteModel = qm, onboardingModel = vm)
 }
