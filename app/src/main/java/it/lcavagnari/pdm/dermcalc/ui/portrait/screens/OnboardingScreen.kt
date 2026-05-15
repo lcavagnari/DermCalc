@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.ui.portrait.component.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.shared.component.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
 import kotlinx.coroutines.launch
 

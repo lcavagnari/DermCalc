@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.screens
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -28,8 +29,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -73,17 +74,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.toUpperCase
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
-import it.lcavagnari.pdm.dermcalc.ui.portrait.component.SnapWheel
-import it.lcavagnari.pdm.dermcalc.ui.portrait.component.SnapWheelPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheel
+import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheelPickerDialog
 
 /**
- * Displays basic profile placeholder content centered on current screen.
+ * Displayes the profile tab in the app's main screen.
+ * This tab allows the user to inspect his personal data and edit them accordingly
+ * All input and sanitisation relies on the [InputField] interface's validation logic, located in [OnboardingModel]
+ * The user data is saved into the [OnboardingModel] field list.
  *
  * @param navController - controller available for future account flow routing.
+ * @param onboardingModel - Singleton instance of the Onboarding ViewModel holding the user's data
  */
 @Composable
 fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingModel) {
@@ -140,6 +144,16 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
     }
 }
 
+/**
+ * Drawer for the Profile details card
+ *
+ * TODO: Replace [onboardingModel] pass with parameter function call.
+ * @param modifier Special modifications to the card
+ * @param inputFields List of fields required during the onboarding process
+ * @param onboardingModel TODO: to remove
+ *
+ * @return Drawn and formatted user profile card.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, onboardingModel: OnboardingModel) {
@@ -402,7 +416,6 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                     }
                 }
 
-
                 if (index < inputFields.size) HorizontalDivider(
                     modifier = Modifier.fillMaxWidth(0.84f).padding(start = 15.dp),
                     thickness = 1.dp,
@@ -413,6 +426,17 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
     }
 }
 
+/**
+ * Unit of measurement preference menu.
+ * Allows the user to change its preference in unit of measurement for height and weight
+ *
+ * @param inputFields List of fields required during onboarding
+ * @param onUpdateHeight parameter function run on update of height preference
+ * @receiver
+ *
+ * @param onUpdateWeight parameter function run on update of weight preference
+ * @receiver
+ */
 @Composable
 fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMeasurements) -> Unit, onUpdateWeight:(it: WeightMeasurements) -> Unit) {
     val heightInput: HeightInput = inputFields[3] as HeightInput
@@ -506,12 +530,16 @@ fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMe
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    val vm = remember { OnboardingModel().also { it.finishOnboarding() } }
+    val app = LocalContext.current.applicationContext as Application
+    val vm = remember { OnboardingModel(app).also {
+        it.finishOnboarding()
+        it.updateName("Asriel ")
+        it.updateDateOfBirth(today().date)
+        it.updateHeightMetric(172)
+        it.updateWeightKilos(67)
+    } }
 
-    vm.updateName("Asriel ")
-    vm.updateDateOfBirth(today().date)
-    vm.updateHeightMetric(172)
-    vm.updateWeightKilos(67)
+    val qm = remember { QuoteModel(app) }.also { it.randomQuote() }
 
-    MainPortraitActivity(onboardingModel = vm, startingDestination = ProfileRouteDest)
+    MainPortraitActivity(onboardingModel = vm, quoteModel = qm, startingDestination = ProfileRouteDest)
 }
