@@ -252,8 +252,8 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         onClick = { showDialog = false },
                                         enabled = field.isValid,
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                            containerColor = MaterialTheme.colorScheme.primary
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -285,8 +285,8 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         onClick = { showDialog = false },
                                         enabled = field.isValid,
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                            containerColor = MaterialTheme.colorScheme.primary
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -338,8 +338,8 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                             showDialog = false
                                         },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                                            containerColor = MaterialTheme.colorScheme.primary
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },

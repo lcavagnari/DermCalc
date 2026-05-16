@@ -19,14 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
@@ -54,13 +54,14 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
         else -> R.drawable.ic_ecg
     }
 
-    val dark = LocalDarkTheme.current
     val soulColor = when (currentDestination?.route) {
         HomeRoute.route, ToolsRoute.route -> MaterialTheme.colorScheme.primary
         ProfileRoute.route -> Soul.Kindness.color
         else -> soulForRoute(currentDestination?.route).color
     }
-    val onSoulColor = if (soulColor == MaterialTheme.colorScheme.primary && dark) androidx.compose.ui.graphics.Color.Black else androidx.compose.ui.graphics.Color.White
+    // Use luminance to pick legible text: bright soul backgrounds (gold, green, cyan, orange)
+    // need black; dark backgrounds (blue, purple, red, dark amber) take white.
+    val onSoulColor = if (soulColor.luminance() > 0.18f) Color.Black else Color.White
 
     Card(
         modifier  = Modifier.fillMaxWidth(),
