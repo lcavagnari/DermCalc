@@ -28,6 +28,9 @@ import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
@@ -97,16 +100,17 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 modifier            = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                // JetBrains Mono titleLarge (20sp SemiBold). Press Start 2P at any size
-                // failed the guide's primary "legibility above all" principle on real
-                // devices. The type scale assigns titleLarge to "section headers" — a
-                // top-bar title is exactly that.
+                // VT323 (PixelSoft) at 22sp — the "determination mono" / terminal-style
+                // pixel font. Keeps the Undertale aesthetic but is legible at chrome
+                // sizes, unlike Press Start 2P.
                 Text(
-                    text     = stringResource(title),
-                    style    = MaterialTheme.typography.titleLarge,
-                    color    = onSoulColor,
-                    maxLines = 1,
-                    softWrap = false
+                    text       = stringResource(title),
+                    fontFamily = PixelSoft,
+                    fontSize   = 22.sp,
+                    fontWeight = FontWeight.Normal,
+                    color      = onSoulColor,
+                    maxLines   = 1,
+                    softWrap   = false,
                 )
                 subtitle?.let {
                     Text(
