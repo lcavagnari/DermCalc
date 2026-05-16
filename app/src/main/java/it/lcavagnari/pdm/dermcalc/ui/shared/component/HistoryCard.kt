@@ -42,10 +42,19 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.LocalDateTime
 
+// Maximum number of results shown before a "Show all" row appears.
 private const val MAX_HISTORY_VISIBLE = 4
 
+/** Clinical severity tier used to determine score badge color. */
 private enum class Severity { Mild, Moderate, Severe }
 
+/**
+ * Maps a [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
+ * - PASI: < 10 Mild, < 20 Moderate, else Severe
+ * - EASI: < 7 Mild, < 21 Moderate, else Severe
+ * - BMI: < 18.5 Severe, < 25 Mild, < 30 Moderate, else Severe
+ * - BSA: < 10 Mild, < 30 Moderate, else Severe
+ */
 private fun ToolResult.severity(): Severity = when (this) {
     is PasiResult -> when {
         score < 10.0 -> Severity.Mild
@@ -70,12 +79,23 @@ private fun ToolResult.severity(): Severity = when (this) {
     }
 }
 
+/** Maps severity to a traffic-light color (green / amber / red). */
 private fun Severity.color(): Color = when (this) {
     Severity.Mild -> Color(0xFF4CAF50)
     Severity.Moderate -> Color(0xFFFFA726)
     Severity.Severe -> Color(0xFFEF5350)
 }
 
+/**
+ * Card that displays the most recent [ToolResult] entries from [toolsModel].
+ *
+ * Shows up to [MAX_HISTORY_VISIBLE] rows in a snap-fling [LazyColumn]. When more results
+ * exist than the visible limit, a "Show all" row is appended and [onShowAll] is invoked on tap.
+ *
+ * @param modifier - modifier applied to the outer [Card].
+ * @param toolsModel - view model providing the [ToolResult] list via a [StateFlow].
+ * @param onShowAll - callback invoked when the user taps the "Show all" row.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryCard(
@@ -163,6 +183,12 @@ private fun ShowAllRow(onClick: () -> Unit) {
     }
 }
 
+/**
+ * Single row inside [HistoryCard] showing the score badge, tool name, severity label, and timestamp.
+ *
+ * @param result - the [ToolResult] to display.
+ * @param now - the current date/time used as the reference point for [relativeTimestamp].
+ */
 @Composable
 private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val severity = result.severity()
@@ -209,6 +235,14 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     }
 }
 
+/**
+ * Produces a human-readable relative label for [timestamp] compared to [now].
+ *
+ * Returns "Today at HH:MM" for same-day results, then falls back to days, weeks, months, or years ago.
+ *
+ * @param timestamp - the date/time of the recorded result.
+ * @param now - the current date/time used as the reference point.
+ */
 @Composable
 private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): String {
     val todayDate = now.date

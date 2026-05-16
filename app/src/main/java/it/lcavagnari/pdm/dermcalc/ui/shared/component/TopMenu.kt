@@ -38,6 +38,14 @@ import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 
 
+/**
+ * Top app bar that displays the current destination title, subtitle, and icon,
+ * with theme-toggle and debug action buttons in the trailing tray.
+ *
+ * @param navController - controller used to observe the current back-stack destination.
+ * @param onToggleTheme - callback invoked when the user taps the theme-toggle button.
+ * @param onDebugClick - callback invoked when the user taps the debug button.
+ */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick:() -> Unit = {}) {
@@ -50,12 +58,14 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
     Log.d("TopMenu", "HomeRoute: ${HomeRoute.route}")
     Log.d("TopMenu", "-".repeat(50))
 
+    // Resolve the title string resource for the current destination.
     val title: Int = when(currentDestination?.route) {
         ToolsRoute.route -> R.string.nav_tools
         ProfileRoute.route -> R.string.nav_profile
         else -> R.string.app_name
     }
 
+    // Resolve the optional subtitle string resource for the current destination.
     val subtitle: Int? = when(currentDestination?.route) {
         HomeRoute.route -> R.string.nav_home_subtitle
         ToolsRoute.route -> R.string.nav_tools_subtitle
@@ -63,6 +73,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
         else -> null
     }
 
+    // Resolve the leading icon drawable for the current destination.
     val icon = when(currentDestination?.route) {
         ToolsRoute.route -> R.drawable.ic_tools_calculator
         ProfileRoute.route -> R.drawable.ic_profile_button

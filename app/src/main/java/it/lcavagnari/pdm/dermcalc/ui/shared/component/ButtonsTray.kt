@@ -21,6 +21,16 @@ import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 
+/**
+ * Row of icon buttons displayed in the trailing area of [TopMenu] and the onboarding screen.
+ *
+ * @param modifier - modifier applied to each icon box.
+ * @param iconTint - tint color applied to all icons.
+ * @param showDebug - whether the debug bug-report icon is visible.
+ * @param onDebugClick - callback invoked when the debug icon is tapped.
+ * @param onToggleTheme - callback invoked when the theme-toggle icon is tapped.
+ * @param onLangClick - callback invoked when the language icon is tapped.
+ */
 @Composable
 fun TopTrayButtons(
     modifier: Modifier = Modifier,
