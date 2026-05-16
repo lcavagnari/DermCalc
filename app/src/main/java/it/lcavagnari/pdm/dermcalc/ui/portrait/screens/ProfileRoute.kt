@@ -82,7 +82,7 @@ import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheel
 import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheelPickerDialog
 
 /**
- * Displayes the profile tab in the app's main screen.
+ * Displays the profile tab in the app's main screen.
  * This tab allows the user to inspect his personal data and edit them accordingly
  * All input and sanitisation relies on the [InputField] interface's validation logic, located in [OnboardingModel]
  * The user data is saved into the [OnboardingModel] field list.
@@ -149,11 +149,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
  * Drawer for the Profile details card
  *
  * TODO: Replace [onboardingModel] pass with parameter function call.
- * @param modifier Special modifications to the card
- * @param inputFields List of fields required during the onboarding process
- * @param onboardingModel TODO: to remove
- *
- * @return Drawn and formatted user profile card.
+ * @param modifier - Special modifications to the card
+ * @param inputFields - List of fields required during the onboarding process
+ * @param onboardingModel - TODO: to remove
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -431,12 +429,9 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
  * Unit of measurement preference menu.
  * Allows the user to change its preference in unit of measurement for height and weight
  *
- * @param inputFields List of fields required during onboarding
- * @param onUpdateHeight parameter function run on update of height preference
- * @receiver
- *
- * @param onUpdateWeight parameter function run on update of weight preference
- * @receiver
+ * @param inputFields - List of fields required during onboarding
+ * @param onUpdateHeight - parameter function run on update of height preference
+ * @param onUpdateWeight - parameter function run on update of weight preference
  */
 @Composable
 fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMeasurements) -> Unit, onUpdateWeight:(it: WeightMeasurements) -> Unit) {

@@ -79,6 +79,9 @@ fun HomeScreenPreview() {
  * Displays placeholder home content centered within available screen space.
  *
  * @param navController - controller available for future home navigation actions.
+ * @param quoteModel - view model providing the currently displayed quote.
+ * @param onboardingModel - view model providing user profile fields for the welcome message.
+ * @param toolsModel - view model providing the stored tool results for [HistoryCard].
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -91,6 +94,7 @@ fun HomeScreen(
     val fullNameField: TextInput = onboardingModel.fields.collectAsState().value[0] as TextInput
     val welcomeMessage = stringResource(R.string.nav_home_subtitle)+ ", " +fullNameField.value.split(' ')[0]
 
+    // TODO: Remove seed data before release.
     LaunchedEffect(Unit) {
         toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
         toolsModel.addResult(BmiResult(weightKg = 85.0, heightCm = 175.0, score = 27.8, timestamp = today().date.minus(3,
@@ -158,6 +162,15 @@ fun HomeScreen(
 }
 
 
+/**
+ * Card displaying the current dermatology quote from [quoteModel].
+ *
+ * Shows the quote body in italic and the author right-aligned below it.
+ * When no author is available, a tip prompt is shown instead.
+ *
+ * @param modifier - modifier applied to the [BorderedCard].
+ * @param quoteModel - view model providing the [Quote] to display.
+ */
 @Composable
 fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
     val quote: Quote = quoteModel.homeQuote.collectAsState().value

@@ -80,6 +80,7 @@ data class OnboardingScreen(
     val inputFieldId: String? = null
 )
 
+// Static page descriptors; index matches HorizontalPager page index.
 val onboardingScreens = listOf(
     OnboardingScreen(
         title = R.string.onboarding_1_title,
@@ -121,6 +122,18 @@ fun OnboardingPreview() {
         onFinish = {})
 }
 
+/**
+ * Full-screen onboarding flow that steps the user through a multi-page [HorizontalPager].
+ *
+ * Navigation between pages is controlled by [pagerState]. The Next/Start button is only
+ * enabled when all required fields on the current page pass validation.
+ *
+ * @param pagerState - state object controlling the current page and scroll position.
+ * @param modifier - modifier applied to the root [Column].
+ * @param onToggleTheme - callback threaded through to [TopTrayButtons] for theme switching.
+ * @param onLangClick - callback threaded through to [TopTrayButtons] for language switching.
+ * @param onFinish - callback invoked when the user completes the final onboarding page.
+ */
 @Composable
 fun OnboardingScreen(
     pagerState: PagerState,
@@ -159,7 +172,7 @@ fun OnboardingScreen(
             )
         }
 
-        // Contenuto pagina
+        // Page content
         OnboardingPager(
             pagerState,
             modifier = Modifier
@@ -168,20 +181,20 @@ fun OnboardingScreen(
             userScrollEnabled = isBtnEnabled
         )
 
-        // Bottone "indietro"
+        // Back button — only shown when input is not yet valid
         if (!isBtnEnabled)
             GoBackButton(modifier = Modifier.padding(bottom = 7.dp, start = 5.dp)) {
                 if (pagerState.currentPage > 0)
                     coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
             }
 
-        // Indicatore pagina
+        // Step indicator dots
         StepIndicator(
             totalSteps = onboardingScreens.size,
             currentStep = pagerState.currentPage
         )
 
-        // Bottone "Avanti"
+        // Next / Start button
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -234,6 +247,12 @@ fun OnboardingScreen(
 }
 
 
+/**
+ * Back arrow with label, navigating the user to the previous onboarding page.
+ *
+ * @param modifier - modifier applied to the root [Box].
+ * @param onClick - callback invoked when the button is tapped.
+ */
 @Composable
 private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
@@ -260,6 +279,13 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     }
 }
 
+/**
+ * Row of dots indicating the current page position within the onboarding flow.
+ *
+ * @param modifier - modifier applied to the root [Row].
+ * @param totalSteps - total number of onboarding pages.
+ * @param currentStep - zero-based index of the currently visible page.
+ */
 @Composable
 private fun StepIndicator(
     modifier: Modifier = Modifier,
