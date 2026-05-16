@@ -8,9 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 
@@ -28,10 +26,9 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
     ) {
         Text(
             text = "Calculators",
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }

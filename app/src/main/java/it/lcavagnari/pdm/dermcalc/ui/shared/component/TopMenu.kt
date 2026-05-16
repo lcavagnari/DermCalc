@@ -56,8 +56,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
 
     val dark = LocalDarkTheme.current
     val soulColor = when (currentDestination?.route) {
-        HomeRoute.route -> MaterialTheme.colorScheme.primary
-        ToolsRoute.route -> Soul.Justice.color
+        HomeRoute.route, ToolsRoute.route -> MaterialTheme.colorScheme.primary
         ProfileRoute.route -> Soul.Kindness.color
         else -> soulForRoute(currentDestination?.route).color
     }

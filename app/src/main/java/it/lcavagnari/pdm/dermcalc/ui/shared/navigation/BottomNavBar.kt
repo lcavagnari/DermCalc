@@ -41,8 +41,7 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
 
         val dark = LocalDarkTheme.current
         val currentSoul = when (currentDestination?.route) {
-            HomeRoute.route -> MaterialTheme.colorScheme.primary
-            ToolsRoute.route -> Soul.Justice.color
+            HomeRoute.route, ToolsRoute.route -> MaterialTheme.colorScheme.primary
             ProfileRoute.route -> Soul.Kindness.color
             else -> soulForRoute(currentDestination?.route).color
         }

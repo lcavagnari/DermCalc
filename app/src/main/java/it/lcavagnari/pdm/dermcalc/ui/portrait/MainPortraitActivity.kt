@@ -3,7 +3,6 @@ package it.lcavagnari.pdm.dermcalc.ui.portrait
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -54,14 +53,6 @@ fun MainPortraitActivity(
     val navController = rememberNavController()
     val pagerState = rememberPagerState(pageCount = { onboardingScreens.size })
 
-    // TODO: Remove before release.
-    Log.d("MainActivity", "-".repeat(50))
-    Log.d(
-        "MainActivity",
-        "hasSeenOnboarding: ${onboardingModel.hasSeenOnboarding.collectAsState().value}"
-    )
-    Log.d("MainActivity", "-".repeat(50))
-
     // Show the onboarding flow until the user completes all pages.
     if (!hasSeenOnboarding) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -77,8 +68,6 @@ fun MainPortraitActivity(
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            // TODO: Remove before release.
-            Log.d("MainActivity", "BottomNavigationBar")
             TopMenu(
                 navController,
                 onToggleTheme = onToggleTheme,

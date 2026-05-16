@@ -29,10 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.BsaResult
@@ -110,17 +108,16 @@ fun HistoryCard(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f)
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
             Text(
                 text = stringResource(R.string.home_history_title).uppercase(),
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.labelLarge,
                 color = Soul.Justice.color,
-                fontSize = 15.sp,
                 modifier = Modifier.padding(bottom = 6.dp)
             )
 
@@ -173,9 +170,8 @@ private fun ShowAllRow(onClick: () -> Unit) {
     ) {
         Text(
             text = stringResource(R.string.history_show_all),
+            style = MaterialTheme.typography.labelLarge,
             color = Soul.Justice.color,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.SemiBold
         )
     }
 }
@@ -215,20 +211,23 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    text       = scoreText,
-                    color      = onColor,
-                    fontWeight = FontWeight.Bold,
-                    fontSize   = 14.sp
+                    text  = scoreText,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = onColor,
                 )
             }
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(text = result.name, fontWeight = FontWeight.Bold, fontSize = 15.sp)
             Text(
-                text = "$severityLabel · $timestamp",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                text  = result.name,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text  = "$severityLabel · $timestamp",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

@@ -3,7 +3,6 @@ package it.lcavagnari.pdm.dermcalc.screens
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -161,13 +160,12 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         inputFields.forEachIndexed { index, field ->
-            Log.d("ProfileScreen", field.toString())
             key(field.id) {
                 var showDialog by remember { mutableStateOf(false) }
 
@@ -254,8 +252,8 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         onClick = { showDialog = false },
                                         enabled = field.isValid,
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            containerColor = MaterialTheme.colorScheme.primaryContainer
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -263,7 +261,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                     OutlinedButton(
                                         onClick = { showDialog = false },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            contentColor = MaterialTheme.colorScheme.onError,
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) { Text(stringResource(R.string.btn_cancel)) }
@@ -287,8 +285,8 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         onClick = { showDialog = false },
                                         enabled = field.isValid,
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            containerColor = MaterialTheme.colorScheme.primaryContainer
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -296,7 +294,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                     OutlinedButton(
                                         onClick = { showDialog = false },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            contentColor = MaterialTheme.colorScheme.onError,
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) { Text(stringResource(R.string.btn_cancel)) }
@@ -340,8 +338,8 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                             showDialog = false
                                         },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            containerColor = MaterialTheme.colorScheme.primaryContainer
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -349,7 +347,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                     OutlinedButton(
                                         onClick = { showDialog = false },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            contentColor = MaterialTheme.colorScheme.onError,
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) { Text(stringResource(R.string.btn_cancel)) }
