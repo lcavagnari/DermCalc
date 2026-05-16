@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
@@ -154,6 +155,9 @@ fun OnboardingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            // Reserve space for the system status bar before the 16dp content padding
+            // so the tray buttons aren't hidden under the clock / notch.
+            .statusBarsPadding()
             .padding(16.dp)
             // Tapping anywhere outside a text field clears focus and dismisses the keyboard.
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
