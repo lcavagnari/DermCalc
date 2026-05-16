@@ -83,12 +83,12 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 // Soul color fills behind the system status bar; content sits below it
                 // so icons/text/buttons stay tappable and readable.
                 .statusBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment     = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                modifier           = Modifier.size(32.dp),
+                modifier           = Modifier.size(28.dp),
                 painter            = painterResource(icon),
                 contentDescription = null,
                 tint               = onSoulColor
@@ -97,9 +97,11 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 modifier            = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
+                // Press Start 2P at displayMedium (18sp) — larger pixels render each
+                // glyph distinctly. displaySmall (15sp) was unreadable on-device.
                 Text(
                     text     = stringResource(title),
-                    style    = MaterialTheme.typography.displaySmall,
+                    style    = MaterialTheme.typography.displayMedium,
                     color    = onSoulColor,
                     maxLines = 1,
                     softWrap = false
@@ -108,7 +110,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                     Text(
                         text  = stringResource(it),
                         style = MaterialTheme.typography.labelMedium,
-                        color = onSoulColor.copy(alpha = 0.78f)
+                        color = onSoulColor.copy(alpha = 0.85f)
                     )
                 }
             }
