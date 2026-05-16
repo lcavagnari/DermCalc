@@ -42,12 +42,14 @@ class MainActivity : ComponentActivity() {
             val toolsModel = ViewModelProvider(this)[ToolsModel::class.java]
 
             val quoteModel = ViewModelProvider(this)[QuoteModel::class.java]
+            // Seed the initial quote; updateQuote() is not called on init.
             LaunchedEffect(Unit) { quoteModel.updateQuote() }
 
             val configuration = LocalConfiguration.current
             val systemDark = isSystemInDarkTheme()
             var isDarkTheme by remember { mutableStateOf(systemDark) }
 
+            // Delegate to portrait or landscape layout based on current orientation.
             DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
                 if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
                     MainPortraitActivity(Modifier, onboardingModel, toolsModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })

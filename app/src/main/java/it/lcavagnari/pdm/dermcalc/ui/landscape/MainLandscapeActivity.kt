@@ -20,6 +20,14 @@ import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 
+/**
+ * Stub composable displayed when the device is in landscape orientation.
+ *
+ * Shows an unsupported-orientation message and prompts the user to rotate the device.
+ * Landscape support is not yet implemented.
+ *
+ * @param onboardingModel - passed through for future use when landscape support is added.
+ */
 @Composable
 fun MainLandscapeActivity(onboardingModel: OnboardingModel) {
 

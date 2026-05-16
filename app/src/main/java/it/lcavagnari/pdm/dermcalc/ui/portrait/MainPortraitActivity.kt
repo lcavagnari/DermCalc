@@ -29,6 +29,17 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.shared.component.TopMenu
 
+/**
+ * Root portrait composable that observes onboarding state and renders either the onboarding
+ * flow or the main app scaffold with navigation.
+ *
+ * @param modifier - modifier applied to each scaffold's content slot.
+ * @param onboardingModel - view model providing onboarding state and field data.
+ * @param toolsModel - view model providing the list of stored [ToolResult] entries.
+ * @param quoteModel - view model providing the currently displayed quote.
+ * @param startingDestination - initial navigation destination shown after onboarding completes.
+ * @param onToggleTheme - callback threaded through to [TopMenu] and [OnboardingScreen].
+ */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun MainPortraitActivity(
@@ -43,6 +54,7 @@ fun MainPortraitActivity(
     val navController = rememberNavController()
     val pagerState = rememberPagerState(pageCount = { onboardingScreens.size })
 
+    // TODO: Remove before release.
     Log.d("MainActivity", "-".repeat(50))
     Log.d(
         "MainActivity",
@@ -50,6 +62,7 @@ fun MainPortraitActivity(
     )
     Log.d("MainActivity", "-".repeat(50))
 
+    // Show the onboarding flow until the user completes all pages.
     if (!hasSeenOnboarding) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OnboardingScreen(
@@ -64,6 +77,7 @@ fun MainPortraitActivity(
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
+            // TODO: Remove before release.
             Log.d("MainActivity", "BottomNavigationBar")
             TopMenu(
                 navController,
