@@ -97,11 +97,13 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 modifier            = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                // Press Start 2P at displayMedium (18sp) — larger pixels render each
-                // glyph distinctly. displaySmall (15sp) was unreadable on-device.
+                // JetBrains Mono titleLarge (20sp SemiBold). Press Start 2P at any size
+                // failed the guide's primary "legibility above all" principle on real
+                // devices. The type scale assigns titleLarge to "section headers" — a
+                // top-bar title is exactly that.
                 Text(
                     text     = stringResource(title),
-                    style    = MaterialTheme.typography.displayMedium,
+                    style    = MaterialTheme.typography.titleLarge,
                     color    = onSoulColor,
                     maxLines = 1,
                     softWrap = false
