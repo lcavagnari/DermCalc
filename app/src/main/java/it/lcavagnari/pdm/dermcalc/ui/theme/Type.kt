@@ -19,20 +19,23 @@ val ClinicalMono      = FontFamily(
     Font(R.font.jetbrains_mono_bold,     FontWeight.Bold)
 )
 
+// Determination Mono is the app-wide font. It ships with a single Regular weight,
+// so every style uses FontWeight.Normal — synthesized faux-bold on a pixel font
+// renders poorly. Hierarchy comes from size, casing, and color instead of weight.
 val Typography = Typography(
-    displayLarge   = TextStyle(fontFamily = PixelDisplay, fontWeight = FontWeight.Normal,   fontSize = 22.sp, lineHeight = 30.sp, letterSpacing = 0.02.em),
-    displayMedium  = TextStyle(fontFamily = PixelDisplay, fontWeight = FontWeight.Normal,   fontSize = 18.sp, lineHeight = 26.sp, letterSpacing = 0.02.em),
-    displaySmall   = TextStyle(fontFamily = PixelDisplay, fontWeight = FontWeight.Normal,   fontSize = 15.sp, lineHeight = 22.sp, letterSpacing = 0.02.em),
-    headlineLarge  = TextStyle(fontFamily = PixelSoft,    fontWeight = FontWeight.Normal,   fontSize = 36.sp, lineHeight = 40.sp),
-    headlineMedium = TextStyle(fontFamily = PixelSoft,    fontWeight = FontWeight.Normal,   fontSize = 32.sp, lineHeight = 36.sp),
-    headlineSmall  = TextStyle(fontFamily = PixelSoft,    fontWeight = FontWeight.Normal,   fontSize = 28.sp, lineHeight = 32.sp),
-    titleLarge     = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 28.sp),
-    titleMedium    = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.SemiBold, fontSize = 18.sp, lineHeight = 26.sp),
-    titleSmall     = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, lineHeight = 24.sp),
-    bodyLarge      = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.Normal,   fontSize = 16.sp, lineHeight = 26.sp),
-    bodyMedium     = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.Normal,   fontSize = 14.sp, lineHeight = 22.sp),
-    bodySmall      = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.Normal,   fontSize = 12.sp, lineHeight = 18.sp),
-    labelLarge     = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, lineHeight = 18.sp, letterSpacing = 0.06.em),
-    labelMedium    = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.Medium,   fontSize = 12.sp, lineHeight = 16.sp),
-    labelSmall     = TextStyle(fontFamily = ClinicalMono, fontWeight = FontWeight.Medium,   fontSize = 11.sp, lineHeight = 16.sp)
+    displayLarge   = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 22.sp, lineHeight = 30.sp, letterSpacing = 0.02.em),
+    displayMedium  = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 18.sp, lineHeight = 26.sp, letterSpacing = 0.02.em),
+    displaySmall   = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 15.sp, lineHeight = 22.sp, letterSpacing = 0.02.em),
+    headlineLarge  = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 36.sp, lineHeight = 40.sp),
+    headlineMedium = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 32.sp, lineHeight = 36.sp),
+    headlineSmall  = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 28.sp, lineHeight = 32.sp),
+    titleLarge     = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 20.sp, lineHeight = 28.sp),
+    titleMedium    = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 18.sp, lineHeight = 26.sp),
+    titleSmall     = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 24.sp),
+    bodyLarge      = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 26.sp),
+    bodyMedium     = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 14.sp, lineHeight = 22.sp),
+    bodySmall      = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 12.sp, lineHeight = 18.sp),
+    labelLarge     = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 13.sp, lineHeight = 18.sp, letterSpacing = 0.06.em),
+    labelMedium    = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 12.sp, lineHeight = 16.sp),
+    labelSmall     = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 11.sp, lineHeight = 16.sp)
 )

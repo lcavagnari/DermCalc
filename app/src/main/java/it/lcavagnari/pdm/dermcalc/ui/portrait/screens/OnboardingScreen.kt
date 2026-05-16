@@ -43,8 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -275,10 +273,8 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Text(
             text = stringResource(R.string.btn_back),
             modifier = Modifier.padding(start = 25.dp),
-            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.SemiBold,
-            fontStyle = FontStyle.Italic
         )
     }
 }

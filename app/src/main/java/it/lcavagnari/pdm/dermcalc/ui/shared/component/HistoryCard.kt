@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -213,10 +212,9 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    text       = scoreText,
-                    fontSize   = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color      = onColor,
+                    text     = scoreText,
+                    fontSize = 16.sp,
+                    color    = onColor,
                 )
             }
         }

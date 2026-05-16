@@ -32,8 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -102,10 +100,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
         Text(
             stringResource(R.string.profile_details).uppercase(getDefault()),
             modifier = Modifier.padding(top = 10.dp),
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary,
-            fontStyle = FontStyle.Italic
         )
 
         ProfileDetails(
@@ -117,10 +114,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
         Text(
             stringResource(R.string.profile_measure_preference).uppercase(getDefault()),
             modifier = Modifier.padding(top = 10.dp),
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary,
-            fontStyle = FontStyle.Italic
         )
 
         UnitOfMeasurement(
@@ -176,18 +172,16 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                     Text(
                         modifier = Modifier.padding(vertical = 5.dp, horizontal = 15.dp),
                         text = stringResource(field.label).uppercase(getDefault()),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(Modifier.weight(1f))
 
                     Text(
                         modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.SemiBold,
                         text = when (field) {
                             is TextInput -> field.value
                             is DateInput -> field.value?.toString()
