@@ -99,7 +99,7 @@ fun HistoryCard(
     toolsModel: ToolsModel,
     onShowAll: () -> Unit
 ) {
-    val results = toolsModel.toolsResult.collectAsState().value
+    val results = toolsModel.toolsResult.collectAsState().value.reversed()
     val now = remember { today() }
     val displayResults = results.takeLast(MAX_HISTORY_VISIBLE)
     val hasMore = results.size > MAX_HISTORY_VISIBLE

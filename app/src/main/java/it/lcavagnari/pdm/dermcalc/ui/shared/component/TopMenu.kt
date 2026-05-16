@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.R
@@ -105,7 +106,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 Text(
                     text       = stringResource(title),
                     fontFamily = DeterminationMono,
-                    fontSize   = 24.sp,
+                    fontSize   = 26.sp,
                     fontWeight = FontWeight.Normal,
                     color      = onSoulColor,
                     maxLines   = 1,
@@ -115,7 +116,8 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                     Text(
                         text  = stringResource(it),
                         style = MaterialTheme.typography.labelMedium,
-                        color = onSoulColor.copy(alpha = 0.85f)
+                        color = onSoulColor.copy(alpha = 0.85f),
+                        fontSize = 16.sp
                     )
                 }
             }

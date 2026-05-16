@@ -34,6 +34,7 @@ import it.lcavagnari.pdm.dermcalc.utils.today
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Quote
 import it.lcavagnari.pdm.dermcalc.models.TextInput
@@ -117,8 +118,12 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
     ) {
-        Card(
+        BorderedCard(
             modifier = Modifier.fillMaxWidth(0.9f),
+            borderSide = BorderSide.Right,
+            borderColor = MaterialTheme.colorScheme.primary,
+            borderStrokeWidth = 2.dp,
+            cornerRadius = 10.dp,
             elevation = CardDefaults.cardElevation(4.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -191,6 +196,7 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
                 text = quote.value,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
+                fontFamily = FontFamily.Serif,
                 fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Start,
             )
