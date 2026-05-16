@@ -12,6 +12,15 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Base type for all calculator results stored in [ToolsModel].
+ *
+ * Every subtype must pass [isValid] before [ToolsModel.addResult] will accept it.
+ *
+ * @property name - human-readable tool identifier (e.g. "PASI", "BMI").
+ * @property score - computed clinical score for this result.
+ * @property timestamp - date/time the result was recorded; defaults to the current instant via [today].
+ */
 @Serializable
 sealed interface ToolResult {
     val name: String
@@ -24,6 +33,12 @@ sealed interface ToolResult {
 
 
 
+/**
+ * PASI (Psoriasis Area and Severity Index) result.
+ *
+ * Symptom scores (erythema, induration, scaling) must each be in **0–4**.
+ * Area percentages (headArea, trunkArea, upperLimbsArea, lowerLimbsArea) must each be in **0–100**.
+ */
 @Serializable
 @SerialName("pasi")
 data class PasiResult(
@@ -59,6 +74,12 @@ data class PasiResult(
                 ).all { it in 0.0..100.0 }
 }
 
+/**
+ * EASI (Eczema Area and Severity Index) result.
+ *
+ * Symptom scores (erythema, induration, excoriation, lichenification) must each be in **0–3**.
+ * Area percentages (headArea, trunkArea, upperLimbsArea, lowerLimbsArea) must each be in **0–100**.
+ */
 @Serializable
 @SerialName("easi")
 data class EasiResult(
@@ -98,6 +119,11 @@ data class EasiResult(
                 ).all { it in 0.0..100.0 }
 }
 
+/**
+ * BMI (Body Mass Index) result.
+ *
+ * Both [weightKg] and [heightCm] must be strictly positive for [isValid] to return true.
+ */
 @Serializable
 @SerialName("bmi")
 data class BmiResult(
@@ -110,6 +136,11 @@ data class BmiResult(
     override fun isValid(): Boolean = weightKg > 0.0 && heightCm > 0.0
 }
 
+/**
+ * BSA (Body Surface Area) result.
+ *
+ * [affectedPercentage] must be in the range **0–100** for [isValid] to return true.
+ */
 @Serializable
 @SerialName("bsa")
 data class BsaResult(
@@ -121,16 +152,28 @@ data class BsaResult(
     override fun isValid(): Boolean = affectedPercentage in 0.0..100.0
 }
 
+/** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
 class ToolsModel(application: Application) : AndroidViewModel(application) {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
 
+    /**
+     * Validates and appends [result] to the stored list.
+     *
+     * @param result - the [ToolResult] to add; must pass [ToolResult.isValid].
+     * @return true if the result was added, false if validation failed.
+     */
     fun addResult(result: ToolResult): Boolean {
         if (!result.isValid()) return false
         _results.update { it + result }
         return true
     }
 
+    /**
+     * Removes [result] from the stored list by equality.
+     *
+     * @param result - the [ToolResult] instance to remove.
+     */
     fun deleteResult(result: ToolResult) {
         _results.update { current ->
             current.filter { it != result }
