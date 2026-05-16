@@ -105,7 +105,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 Text(
                     text       = stringResource(title),
                     fontFamily = DeterminationMono,
-                    fontSize   = 22.sp,
+                    fontSize   = 24.sp,
                     fontWeight = FontWeight.Normal,
                     color      = onSoulColor,
                     maxLines   = 1,
