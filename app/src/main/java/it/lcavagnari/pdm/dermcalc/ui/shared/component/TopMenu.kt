@@ -1,15 +1,11 @@
 package it.lcavagnari.pdm.dermcalc.ui.shared.component
 
-import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,121 +19,95 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
-
-/**
- * Top app bar that displays the current destination title, subtitle, and icon,
- * with theme-toggle and debug action buttons in the trailing tray.
- *
- * @param navController - controller used to observe the current back-stack destination.
- * @param onToggleTheme - callback invoked when the user taps the theme-toggle button.
- * @param onDebugClick - callback invoked when the user taps the debug button.
- */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick:() -> Unit = {}) {
+fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick: () -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
-    Log.d("TopMenu", "-".repeat(50))
-    Log.d("TopMenu", "currentDestination: ${currentDestination?.route}")
-    Log.d("TopMenu", "currentDestination: $currentDestination")
-    Log.d("TopMenu", "navController: ${navController.currentBackStackEntryAsState().value?.destination?.route}")
-    Log.d("TopMenu", "HomeRoute: ${HomeRoute.route}")
-    Log.d("TopMenu", "-".repeat(50))
-
-    // Resolve the title string resource for the current destination.
-    val title: Int = when(currentDestination?.route) {
+    val title: Int = when (currentDestination?.route) {
         ToolsRoute.route -> R.string.nav_tools
         ProfileRoute.route -> R.string.nav_profile
         else -> R.string.app_name
     }
 
-    // Resolve the optional subtitle string resource for the current destination.
-    val subtitle: Int? = when(currentDestination?.route) {
+    val subtitle: Int? = when (currentDestination?.route) {
         HomeRoute.route -> R.string.nav_home_subtitle
         ToolsRoute.route -> R.string.nav_tools_subtitle
         ProfileRoute.route -> R.string.nav_profile_subtitle
         else -> null
     }
 
-    // Resolve the leading icon drawable for the current destination.
-    val icon = when(currentDestination?.route) {
+    val icon = when (currentDestination?.route) {
         ToolsRoute.route -> R.drawable.ic_tools_calculator
         ProfileRoute.route -> R.drawable.ic_profile_button
         else -> R.drawable.ic_ecg
     }
 
+    val dark = LocalDarkTheme.current
+    val soulColor = when (currentDestination?.route) {
+        HomeRoute.route -> MaterialTheme.colorScheme.primary
+        ToolsRoute.route -> Soul.Justice.color
+        ProfileRoute.route -> Soul.Kindness.color
+        else -> soulForRoute(currentDestination?.route).color
+    }
+    val onSoulColor = if (soulColor == MaterialTheme.colorScheme.primary && dark) androidx.compose.ui.graphics.Color.Black else androidx.compose.ui.graphics.Color.White
+
     Card(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(1/8f),
-        shape = MaterialTheme.shapes.extraSmall,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+        modifier  = Modifier.fillMaxWidth(),
+        shape     = MaterialTheme.shapes.extraSmall,
+        colors    = CardDefaults.cardColors(containerColor = soulColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        border    = BorderStroke(1.dp, soulColor)
     ) {
-        Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(start = 15.dp, top = 22.dp),
-                contentAlignment = Alignment.TopStart
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment     = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Icon(
+                modifier           = Modifier.size(32.dp),
+                painter            = painterResource(icon),
+                contentDescription = null,
+                tint               = onSoulColor
+            )
+            Column(
+                modifier            = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                Icon(
-                    modifier = Modifier.size(40.dp),
-                    painter = painterResource(icon),
-                    contentDescription = "Back button",
-                    tint = MaterialTheme.colorScheme.onSecondary
+                Text(
+                    text     = stringResource(title),
+                    style    = MaterialTheme.typography.displaySmall,
+                    color    = onSoulColor,
+                    maxLines = 1,
+                    softWrap = false
                 )
-
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(start = 45.dp),
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
+                subtitle?.let {
                     Text(
-                        text = stringResource(title),
-                        modifier = Modifier,
-                        textAlign = TextAlign.Start,
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        style = MaterialTheme.typography.headlineMedium,
-                        maxLines = 1,
-                        fontWeight = FontWeight.Bold,
-                        softWrap = false,
+                        text  = stringResource(it),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = onSoulColor.copy(alpha = 0.78f)
                     )
-
-                    subtitle?.let {
-                        Text(
-                            text = stringResource(it),
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
                 }
             }
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(end = 12.dp, bottom = 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(15.dp, Alignment.End),
-                verticalAlignment = Alignment.CenterVertically
-            ) { TopTrayButtons(
-                iconTint = MaterialTheme.colorScheme.onSecondary,
+            TopTrayButtons(
+                iconTint      = onSoulColor,
                 onToggleTheme = onToggleTheme,
-                onDebugClick = onDebugClick,
-                showDebug = true
-            ) {} }
+                onDebugClick  = onDebugClick,
+                showDebug     = true
+            ) {}
         }
     }
 }

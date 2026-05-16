@@ -125,10 +125,10 @@ fun HomeScreen(
                 .height(80.dp),
             elevation = CardDefaults.cardElevation(4.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.secondary
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
             ),
-            border = BorderStroke(2.dp, MaterialTheme.colorScheme.primaryContainer)
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
         ) {
             Column(
                 modifier = Modifier.padding(all = 15.dp),
@@ -178,6 +178,7 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
     BorderedCard(
         modifier = modifier.fillMaxWidth(0.9f),
         borderSide = BorderSide.Left,
+        borderColor = MaterialTheme.colorScheme.tertiary,
         borderStrokeWidth = 4.dp,
         cornerRadius = 12.dp,
         shape = MaterialTheme.shapes.medium,

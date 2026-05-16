@@ -225,7 +225,7 @@ fun OnboardingScreen(
                     .size(26.dp),
                 painter = painterResource(id = R.drawable.ic_swipe_left),
                 contentDescription = "Swipe back",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -240,7 +240,7 @@ fun OnboardingScreen(
                     .size(26.dp),
                 painter = painterResource(id = R.drawable.ic_swipe_right),
                 contentDescription = "Swipe forward",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

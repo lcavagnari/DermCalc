@@ -10,9 +10,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
@@ -39,14 +40,16 @@ import it.lcavagnari.pdm.dermcalc.models.EasiResult
 import it.lcavagnari.pdm.dermcalc.models.PasiResult
 import it.lcavagnari.pdm.dermcalc.models.ToolResult
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.Severity
+import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.LocalDateTime
 
 // Maximum number of results shown before a "Show all" row appears.
 private const val MAX_HISTORY_VISIBLE = 4
 
-/** Clinical severity tier used to determine score badge color. */
-private enum class Severity { Mild, Moderate, Severe }
 
 /**
  * Maps a [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
@@ -79,12 +82,6 @@ private fun ToolResult.severity(): Severity = when (this) {
     }
 }
 
-/** Maps severity to a traffic-light color (green / amber / red). */
-private fun Severity.color(): Color = when (this) {
-    Severity.Mild -> Color(0xFF4CAF50)
-    Severity.Moderate -> Color(0xFFFFA726)
-    Severity.Severe -> Color(0xFFEF5350)
-}
 
 /**
  * Card that displays the most recent [ToolResult] entries from [toolsModel].
@@ -113,16 +110,16 @@ fun HistoryCard(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f)
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
             Text(
                 text = stringResource(R.string.home_history_title).uppercase(),
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = Soul.Justice.color,
                 fontSize = 15.sp,
                 modifier = Modifier.padding(bottom = 6.dp)
             )
@@ -145,7 +142,7 @@ fun HistoryCard(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(462.dp),
+                        .heightIn(max = 320.dp),
                     state = scrollState,
                     flingBehavior = rememberSnapFlingBehavior(scrollState)
                 ) {
@@ -176,7 +173,7 @@ private fun ShowAllRow(onClick: () -> Unit) {
     ) {
         Text(
             text = stringResource(R.string.history_show_all),
-            color = MaterialTheme.colorScheme.primary,
+            color = Soul.Justice.color,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold
         )
@@ -192,7 +189,9 @@ private fun ShowAllRow(onClick: () -> Unit) {
 @Composable
 private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val severity = result.severity()
-    val color = severity.color()
+    val dark    = LocalDarkTheme.current
+    val color   = severityColor(severity)
+    val onColor = if (!dark || severity == Severity.Severe) Color.White else Color.Black
     val severityLabel = when (severity) {
         Severity.Mild -> stringResource(R.string.severity_mild)
         Severity.Moderate -> stringResource(R.string.severity_moderate)
@@ -210,16 +209,16 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Card(
-            modifier = Modifier.size(56.dp),
-            colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.15f)),
-            border = BorderStroke(1.5.dp, color)
+            modifier = Modifier.size(48.dp),
+            shape    = RoundedCornerShape(10.dp),
+            colors   = CardDefaults.cardColors(containerColor = color)
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    text = scoreText,
-                    color = color,
+                    text       = scoreText,
+                    color      = onColor,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
+                    fontSize   = 14.sp
                 )
             }
         }
