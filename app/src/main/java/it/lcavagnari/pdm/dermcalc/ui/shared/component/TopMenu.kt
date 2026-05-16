@@ -30,7 +30,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
+import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
@@ -100,12 +100,11 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 modifier            = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                // VT323 (PixelSoft) at 22sp — the "determination mono" / terminal-style
-                // pixel font. Keeps the Undertale aesthetic but is legible at chrome
-                // sizes, unlike Press Start 2P.
+                // Determination Mono — the theme's actual title font. Pixel aesthetic
+                // with proper glyph spacing, readable at chrome sizes.
                 Text(
                     text       = stringResource(title),
-                    fontFamily = PixelSoft,
+                    fontFamily = DeterminationMono,
                     fontSize   = 22.sp,
                     fontWeight = FontWeight.Normal,
                     color      = onSoulColor,

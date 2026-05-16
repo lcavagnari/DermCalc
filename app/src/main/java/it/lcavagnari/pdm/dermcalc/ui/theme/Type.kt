@@ -9,9 +9,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 
-val PixelDisplay = FontFamily(Font(R.font.press_start_2p))
-val PixelSoft    = FontFamily(Font(R.font.vt323))
-val ClinicalMono = FontFamily(
+val PixelDisplay      = FontFamily(Font(R.font.press_start_2p))
+val PixelSoft         = FontFamily(Font(R.font.vt323))
+val DeterminationMono = FontFamily(Font(R.font.determination_mono))
+val ClinicalMono      = FontFamily(
     Font(R.font.jetbrains_mono_regular,  FontWeight.Normal),
     Font(R.font.jetbrains_mono_medium,   FontWeight.Medium),
     Font(R.font.jetbrains_mono_semibold, FontWeight.SemiBold),
