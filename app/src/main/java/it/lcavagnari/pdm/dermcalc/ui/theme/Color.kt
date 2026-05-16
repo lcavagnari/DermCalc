@@ -16,9 +16,9 @@ val BackgroundDark = Color(0xFF000000) // Pure Black
 val SurfaceDark = Color(0xFF000000)    // Keeping it flat
 val SurfaceVariantDark = Color(0xFF212121) // Subdued Shadow — pill indicator in dark mode
 
-val BackgroundLight = Color(0xFFFFFFFF)
-val SurfaceLight = Color(0xFFFFFFFF)
-val SurfaceVariantLight = Color(0xFFE0E0E0)
+val BackgroundLight = Color(0xFFFFFFFF) // Pure White
+val SurfaceLight = Color(0xFFFFFFFF)    // Pure White — keeping it flat
+val SurfaceVariantLight = Color(0xFFE0E0E0) // Light Grey — pill indicator in light mode
 
 // --- Severity indicators ---
 val SeverityMild = Color(0xFF00FF00)       // Green (Spared)
