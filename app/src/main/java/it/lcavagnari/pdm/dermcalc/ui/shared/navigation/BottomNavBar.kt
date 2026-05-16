@@ -19,7 +19,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
@@ -39,9 +38,11 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-        val dark = LocalDarkTheme.current
+        // HOME = gold primary (palette Determination at rest). TOOLS = red SOUL Determination
+        // (the launcher / "heart"). PROFILE = green Kindness. Each soul claims its own room.
         val currentSoul = when (currentDestination?.route) {
-            HomeRoute.route, ToolsRoute.route -> MaterialTheme.colorScheme.primary
+            HomeRoute.route -> MaterialTheme.colorScheme.primary
+            ToolsRoute.route -> Soul.Determination.color
             ProfileRoute.route -> Soul.Kindness.color
             else -> soulForRoute(currentDestination?.route).color
         }
