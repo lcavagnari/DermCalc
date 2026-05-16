@@ -38,11 +38,12 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-        // HOME = gold primary (palette Determination at rest). TOOLS = red SOUL Determination
-        // (the launcher / "heart"). PROFILE = green Kindness. Each soul claims its own room.
+        // HOME = red SOUL Determination (brand mark / launcher icon / heart). TOOLS = gold
+        // primary (palette Determination at rest; no calculator owns the screen).
+        // PROFILE = green Kindness. Each soul claims its own room.
         val currentSoul = when (currentDestination?.route) {
-            HomeRoute.route -> MaterialTheme.colorScheme.primary
-            ToolsRoute.route -> Soul.Determination.color
+            HomeRoute.route -> Soul.Determination.color
+            ToolsRoute.route -> MaterialTheme.colorScheme.primary
             ProfileRoute.route -> Soul.Kindness.color
             else -> soulForRoute(currentDestination?.route).color
         }

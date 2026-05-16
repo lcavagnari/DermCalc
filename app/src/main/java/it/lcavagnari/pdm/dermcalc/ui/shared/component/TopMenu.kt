@@ -54,14 +54,14 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
         else -> R.drawable.ic_ecg
     }
 
-    // Per the theme guide:
-    //   HOME  → palette Determination "at rest" (gold primary, the brand chrome)
-    //   TOOLS → SOUL Determination (red #E04848, the launcher / "heart")
+    // Per the theme guide (section 03 + 05):
+    //   HOME  → SOUL Determination (red #E04848, the brand mark / launcher icon / heart)
+    //   TOOLS → palette Determination "at rest" (gold primary; no calculator owns this screen)
     //   PROFILE → SOUL Kindness (green, self-care)
     // Each soul claims its own room — never share chrome between screens.
     val soulColor = when (currentDestination?.route) {
-        HomeRoute.route -> MaterialTheme.colorScheme.primary
-        ToolsRoute.route -> Soul.Determination.color
+        HomeRoute.route -> Soul.Determination.color
+        ToolsRoute.route -> MaterialTheme.colorScheme.primary
         ProfileRoute.route -> Soul.Kindness.color
         else -> soulForRoute(currentDestination?.route).color
     }
