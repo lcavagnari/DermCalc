@@ -213,7 +213,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
                     text     = scoreText,
-                    fontSize = 18.sp,
+                    fontSize = 19.sp,
                     color    = onColor,
                 )
             }
