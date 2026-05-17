@@ -12,13 +12,8 @@ pluginManagement {
     }
     resolutionStrategy {
         eachPlugin {
-            when (requested.id.id) {
-                "com.android.application" -> useModule("com.android.tools.build:gradle:${requested.version}")
-                "org.jetbrains.kotlin.android",
-                "org.jetbrains.kotlin.plugin.compose",
-                "org.jetbrains.kotlin.plugin.serialization" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
-                "com.google.devtools.ksp" -> useModule("com.google.devtools.ksp:symbol-processing-gradle-plugin:${requested.version}")
-                "org.owasp.dependencycheck" -> useModule("org.owasp:dependency-check-gradle:${requested.version}")
+            if (requested.id.id == "com.android.application") {
+                useModule("com.android.tools.build:gradle:${requested.version}")
             }
         }
     }
