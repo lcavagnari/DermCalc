@@ -63,7 +63,7 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                         Icon(
                             painter = painterResource(id = item.iconRes!!),
                             contentDescription = item.name,
-                                                    )
+                        )
                     } else {
                         item.icon?.let {
                             Icon(
