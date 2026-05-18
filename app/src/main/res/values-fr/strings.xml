@@ -148,4 +148,5 @@
         <item quantity="one">Il y a %d an</item>
         <item quantity="other">Il y a %d ans</item>
     </plurals>
+    <string name="tools_bmi_description">Body Mass Index</string>
 </resources>

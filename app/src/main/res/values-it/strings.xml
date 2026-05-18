@@ -148,4 +148,5 @@
         <item quantity="one">%d anno fa</item>
         <item quantity="other">%d anni fa</item>
     </plurals>
+    <string name="tools_bmi_description">Body Mass Index</string>
 </resources>
