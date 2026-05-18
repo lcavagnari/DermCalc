@@ -151,4 +151,5 @@
     </plurals>
     <string name="tools_bmi_description">Ind. Masse Corporelle</string>
     <string name="tools_quick">Ràpid</string>
+    <string name="tools_index">Calculatèur</string>
 </resources>
