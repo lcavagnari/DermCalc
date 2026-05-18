@@ -103,7 +103,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                modifier           = Modifier.size(28.dp),
+                modifier           = Modifier.size(35.dp),
                 painter            = painterResource(icon),
                 contentDescription = null,
                 tint               = soulColor
@@ -128,7 +128,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                         text  = stringResource(it),
                         style = MaterialTheme.typography.labelMedium,
                         color = soulColor.copy(alpha = 0.85f),
-                        fontSize = 16.sp
+                        fontSize = 18.sp
                     )
                 }
             }
