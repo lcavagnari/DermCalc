@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
@@ -193,6 +194,7 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
                 color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = FontFamily.Serif,
                 fontStyle = FontStyle.Italic,
+                fontSize = 16.sp,
                 textAlign = TextAlign.Start,
             )
 
@@ -209,12 +211,14 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
                     color = MaterialTheme.colorScheme.primary,
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.Start,
+                    fontSize = 18.sp,
                     maxLines = 2,
                 ) else Text(
                     text = quote.author,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.End,
+                    fontSize = 17.sp
                 )
             }
         }
