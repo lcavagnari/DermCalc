@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -46,7 +48,9 @@ import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 
 
 /**
@@ -65,6 +69,7 @@ data class ToolCard(
     @StringRes val title: Int,
     @StringRes val description: Int,
     val color: Color,
+    val onColor: Color = color.copy(alpha = 0.22f),
 
     val imageRes: ImageVector? = null,
     val imageDrawable: Int? = null,
@@ -101,6 +106,27 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
         )
     )
 
+    val index = listOf<ToolCard>(
+        ToolCard(
+            title = R.string.tools_pasi,
+            description = R.string.tools_pasi_description,
+            imageDrawable = R.drawable.ic_body_scan,
+            borderSide = BorderSide.Top,
+            color = SoulIntegrity,
+            districtNum = 4,
+            valueRange = Pair(0.0,72.0)
+        ),
+        ToolCard(
+            title = R.string.tools_easi,
+            description = R.string.tools_easi_description,
+            imageDrawable = R.drawable.ic_bsa_lungs,
+            borderSide = BorderSide.Top,
+            color = SoulPerseverance,
+            districtNum = 4,
+            valueRange = Pair(0.0,72.0)
+        )
+    )
+
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,7 +135,7 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
 
             Text(
                 text = stringResource(R.string.tools_quick).uppercase(),
-                modifier = Modifier.padding(top = 10.dp).fillMaxWidth(),
+                modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -121,13 +147,14 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
 
             Text(
                 text = stringResource(R.string.tools_index).uppercase(),
-                modifier = Modifier.weight(1f).padding(top = 10.dp).fillMaxWidth(),
+                modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary,
             )
-            IndexesCalculators {}
+
+            IndexesCalculators(toolsList = index)
     }
 }
 
@@ -149,36 +176,45 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
                 cornerRadius = 10.dp,
                 onClick = it.onClick
             ) {
-                Column(
-                    modifier = modifier.padding(10.dp).fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.Start
+                Row(
+                    modifier = modifier.padding(horizontal = 10.dp).fillMaxWidth()
                 ) {
                     if (it.imageRes != null) {
                         Icon(
                             modifier = Modifier.size(it.imageSize!!),
                             imageVector = it.imageRes,
-                            contentDescription = "Icon for "+stringResource(it.title)+" tool",
+                            contentDescription = "Icon for " + stringResource(it.title) + " tool",
                             tint = it.color
                         )
                     } else if (it.imageDrawable != null) {
                         Icon(
                             modifier = Modifier.size(it.imageSize!!),
                             painter = painterResource(it.imageDrawable),
-                            contentDescription = "Icon for "+it.title+" tool",
+                            contentDescription = "Icon for " + it.title + " tool",
                             tint = it.color
                         )
                     }
 
-                    Text(text = stringResource(it.title), fontWeight = FontWeight.SemiBold, maxLines = 1)
+                    Column(
+                        modifier = Modifier.padding(5.dp),
+                        verticalArrangement = Arrangement.spacedBy(5.dp,
+                            Alignment.CenterVertically
+                        ),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(it.title),
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1
+                        )
 
-                    Text(
-                        text = stringResource(it.description),
-                        modifier = Modifier.wrapContentWidth(Alignment.Start),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 16.sp,
-                        softWrap = false
-                    )
+                        Text(
+                            text = stringResource(it.description),
+                            modifier = Modifier.wrapContentWidth(Alignment.Start),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
         }
@@ -186,8 +222,106 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
 }
 
 @Composable
-fun IndexesCalculators(onToolSelect:() -> Unit) {
+fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
+    Column(
+        modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
+    ) {
+        toolsList.forEach {
 
+
+            BorderedCard(
+                modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
+                elevation = CardDefaults.cardElevation(6.dp),
+                border = BorderStroke(1.dp, it.color),
+                borderColor = it.color,
+                borderSide = it.borderSide,
+                borderStrokeWidth = 2.dp,
+                cornerRadius = 10.dp,
+                onClick = it.onClick
+            ) {
+                Row(
+                    modifier = modifier.padding(10.dp).fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Card(
+                        elevation = CardDefaults.cardElevation(6.dp),
+                        border = BorderStroke(1.dp, it.color),
+                        colors = CardDefaults.cardColors(containerColor = it.onColor)
+                    ) {
+                        if (it.imageRes != null) {
+                            Icon(
+                                modifier = Modifier.size(it.imageSize!!).padding(5.dp),
+                                imageVector = it.imageRes,
+                                contentDescription = "Icon for " + stringResource(it.title) + " tool",
+                                tint = it.color
+                            )
+                        } else if (it.imageDrawable != null) {
+                            Icon(
+                                modifier = Modifier.size(it.imageSize!!).padding(7.dp),
+                                painter = painterResource(it.imageDrawable),
+                                contentDescription = "Icon for " + it.title + " tool",
+                                tint = it.color
+                            )
+                        }
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterVertically)
+                    ) {
+                        Text(
+                            text = stringResource(it.title),
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1
+                        )
+
+                        Text(
+                            text = stringResource(it.description),
+                            modifier = Modifier.wrapContentWidth(Alignment.Start),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 16.sp
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 3.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
+                        ) {
+                            if(it.districtNum != null) Card(
+                                elevation = CardDefaults.cardElevation(6.dp),
+                                border = BorderStroke(1.dp, it.onColor),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = it.onColor,
+                                    contentColor = it.color
+                                )
+                            ) { Text(
+                                "${it.districtNum} ${stringResource(R.string.districts)}",
+                                modifier = Modifier.padding(horizontal = 5.dp),
+                                fontWeight = FontWeight.Thin,
+                                fontSize = 20.sp
+                            ) }
+
+                            if(it.valueRange != null) Card(
+                                elevation = CardDefaults.cardElevation(6.dp),
+                                border = BorderStroke(1.dp, it.onColor),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = it.onColor,
+                                    contentColor = it.color
+                                )
+                            ) { Text(
+                                "${it.valueRange.first.toInt()}-${it.valueRange.second.toInt()}",
+                                modifier = Modifier.padding(horizontal = 5.dp),
+                                fontWeight = FontWeight.Thin,
+                                fontSize = 20.sp
+                            ) }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @SuppressLint("NewApi")
