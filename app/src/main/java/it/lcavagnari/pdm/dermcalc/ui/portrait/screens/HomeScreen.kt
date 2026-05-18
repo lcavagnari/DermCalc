@@ -125,7 +125,7 @@ fun HomeScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.onSurface
             ),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 12.dp),
