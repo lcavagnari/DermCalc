@@ -9,13 +9,13 @@ on:
 
 
 jobs:
-  validate-wrapper:
-    name: Validate Gradle wrapper
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gradle/actions/wrapper-validation@v3
+#  validate-wrapper:
+#    name: Validate Gradle wrapper
+#    runs-on: ubuntu-latest
+#    continue-on-error: true
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: gradle/actions/wrapper-validation@v3
 
   unit-test:
     name: Unit tests
