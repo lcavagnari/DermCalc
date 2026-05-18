@@ -519,13 +519,13 @@ fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMe
 @Composable
 fun ProfileScreenPreview() {
     val app = LocalContext.current.applicationContext as Application
-    val vm = remember { OnboardingModel(app).also {
+    val vm = remember { OnboardingModel(app) }.also {
         it.finishOnboarding()
         it.updateName("Asriel ")
         it.updateDateOfBirth(today().date)
         it.updateHeightMetric(172)
         it.updateWeightKilos(67)
-    } }
+    }
 
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }

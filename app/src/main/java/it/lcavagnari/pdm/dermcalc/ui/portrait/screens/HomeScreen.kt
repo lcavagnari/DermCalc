@@ -1,9 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,22 +43,18 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
-import kotlinx.datetime.toJavaLocalDateTime
-import java.time.format.DateTimeFormatter
+
 import java.util.Locale
 
-@SuppressLint("NewApi")
-@RequiresApi(Build.VERSION_CODES.Q)
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     val app = LocalContext.current.applicationContext as Application
 
-    val qm = remember { QuoteModel(app).also { it.updateQuote() } }
-    val vm = remember { OnboardingModel(app).also {
-        it.finishOnboarding()
-        it.updateName("Asriel ")
-    } }
+    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
+    val vm = remember { OnboardingModel(app) }.also {
+        it.finishOnboarding(); it.updateName("Asriel ")
+    }
 
     val tm = remember { ToolsModel(app) }
 
@@ -80,7 +73,6 @@ fun HomeScreenPreview() {
  * @param onboardingModel - view model providing user profile fields for the welcome message.
  * @param toolsModel - view model providing the stored tool results for [HistoryCard].
  */
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -107,7 +99,12 @@ fun HomeScreen(
         toolsModel.addResult(BmiResult(weightKg = 78.0, heightCm = 175.0, score = 25.5, timestamp = today()))
     }
 
-    val formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM", Locale.getDefault())
+    val todayDate = today().date
+    val dateText = java.text.SimpleDateFormat("EEEE dd MMMM", Locale.getDefault()).format(
+        java.util.Calendar.getInstance().apply {
+            set(todayDate.year, todayDate.monthNumber - 1, todayDate.dayOfMonth)
+        }.time
+    )
 
     Column(
         modifier = Modifier
@@ -135,7 +132,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = today().toJavaLocalDateTime().format(formatter),
+                    text = dateText,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Start

@@ -1,9 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -39,7 +36,6 @@ import it.lcavagnari.pdm.dermcalc.ui.shared.component.TopMenu
  * @param startingDestination - initial navigation destination shown after onboarding completes.
  * @param onToggleTheme - callback threaded through to [TopMenu] and [OnboardingScreen].
  */
-@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun MainPortraitActivity(
     modifier: Modifier = Modifier,
@@ -96,13 +92,12 @@ fun MainPortraitActivity(
 
 // Preview
 
-@SuppressLint("NewApi")
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
     val app = LocalContext.current.applicationContext as Application
-    val vm = remember { OnboardingModel(app).also { it.finishOnboarding() } }
-    val qm = remember { QuoteModel(app).also { it.updateQuote() } }
+    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
+    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
     MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
 }

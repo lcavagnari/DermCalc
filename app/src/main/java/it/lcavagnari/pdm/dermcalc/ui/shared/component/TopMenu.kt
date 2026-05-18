@@ -1,7 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.shared.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +33,15 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
-@RequiresApi(Build.VERSION_CODES.Q)
+
+/**
+ * Top app bar that displays the current destination title, subtitle, and icon,
+ * with theme-toggle and debug action buttons in the trailing tray.
+ *
+ * @param navController - controller used to observe the current back-stack destination.
+ * @param onToggleTheme - callback invoked when the user taps the theme-toggle button.
+ * @param onDebugClick - callback invoked when the user taps the debug button.
+ */
 @Composable
 fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick: () -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
