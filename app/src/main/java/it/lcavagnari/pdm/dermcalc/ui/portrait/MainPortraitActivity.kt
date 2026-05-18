@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -24,6 +25,11 @@ import it.lcavagnari.pdm.dermcalc.navigation.navItems
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
+import it.lcavagnari.pdm.dermcalc.utils.today
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
 
 /**
  * Root portrait composable that observes onboarding state and renders either the onboarding
@@ -63,28 +69,18 @@ fun MainPortraitActivity(
 
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopMenu(
-                navController,
-                onToggleTheme = onToggleTheme,
-                onDebugClick = { quoteModel.updateQuote() }
-            )
-        },
-        bottomBar = {
-            NavigationBar(
-                navController = navController,
-                appItems = navItems
-            )
-        }
+        topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
+
+        bottomBar = { NavigationBar(navController = navController, appItems = navItems) }
 
     ) { innerPadding ->
         AppNavHost(
-            navController = navController,
             modifier = modifier.padding(innerPadding),
+            navController = navController,
+            startDestination = startingDestination,
             onboardingModel = onboardingModel,
             toolsModel = toolsModel,
             quoteModel = quoteModel,
-            startDestination = startingDestination,
         )
     }
 }
