@@ -61,7 +61,7 @@ import kotlinx.coroutines.launch
  * @property imageRes - optional vector icon displayed on the page.
  * @property imageDrawable - optional drawable resource id for the page image.
  * @property imageSize - size applied to the image composable. Defaults to 280.dp.
- * @property inputFieldIds - ids of [InputField] instances rendered on this page.
+ * @property inputFieldIds - ids of [it.lcavagnari.pdm.dermcalc.models.InputField] instances rendered on this page.
  * @property inputFieldId - deprecated. use [inputFieldIds] instead.
  * @constructor Create empty Onboarding screen
  */
@@ -122,7 +122,7 @@ fun OnboardingPreview() {
 }
 
 /**
- * Full-screen onboarding flow that steps the user through a multi-page [HorizontalPager].
+ * Full-screen onboarding flow that steps the user through a multi-page [androidx.compose.foundation.pager.HorizontalPager].
  *
  * Navigation between pages is controlled by [pagerState]. The Next/Start button is only
  * enabled when all required fields on the current page pass validation.

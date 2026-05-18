@@ -31,7 +31,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
  *
  * @param modifier - modifier applied to each scaffold's content slot.
  * @param onboardingModel - view model providing onboarding state and field data.
- * @param toolsModel - view model providing the list of stored [ToolResult] entries.
+ * @param toolsModel - view model providing the list of stored [it.lcavagnari.pdm.dermcalc.models.ToolResult] entries.
  * @param quoteModel - view model providing the currently displayed quote.
  * @param startingDestination - initial navigation destination shown after onboarding completes.
  * @param onToggleTheme - callback threaded through to [TopMenu] and [OnboardingScreen].

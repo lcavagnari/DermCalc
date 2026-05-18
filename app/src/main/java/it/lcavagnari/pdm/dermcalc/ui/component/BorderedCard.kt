@@ -139,7 +139,7 @@ private fun DrawScope.drawOneSidedBorder(
  * parameter is preserved — and adds [borderSide], [borderColor], [borderStrokeWidth],
  * and [cornerRadius] to control the one-sided border.
  *
- * The shape is forced to [RoundedCornerShape] using [cornerRadius] so that the
+ * The shape is forced to [androidx.compose.foundation.shape.RoundedCornerShape] using [cornerRadius] so that the
  * drawn border arcs align with the card corners.
  *
  * @param borderSide   Which edge gets the colored line (default [BorderSide.Right]).
