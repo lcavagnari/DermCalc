@@ -1,9 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.shared.component
 
-import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +43,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
  * @param onToggleTheme - callback invoked when the user taps the theme-toggle button.
  * @param onDebugClick - callback invoked when the user taps the debug button.
  */
-@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick:() -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
