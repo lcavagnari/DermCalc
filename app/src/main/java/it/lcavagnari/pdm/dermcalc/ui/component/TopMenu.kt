@@ -84,9 +84,13 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
     Card(
         modifier  = Modifier.fillMaxWidth(),
         shape     = MaterialTheme.shapes.extraSmall,
-        colors    = CardDefaults.cardColors(containerColor = soulColor),
+        colors    = CardDefaults.cardColors(
+            contentColor = soulColor,
+            //containerColor = soulColor
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        border    = BorderStroke(1.dp, soulColor)
+        border    = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Row(
             modifier = Modifier
@@ -102,7 +106,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 modifier           = Modifier.size(28.dp),
                 painter            = painterResource(icon),
                 contentDescription = null,
-                tint               = onSoulColor
+                tint               = soulColor
             )
             Column(
                 modifier            = Modifier.weight(1f),
@@ -115,7 +119,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                     fontFamily = DeterminationMono,
                     fontSize   = 27.sp,
                     fontWeight = FontWeight.Normal,
-                    color      = onSoulColor,
+                    color      = soulColor,
                     maxLines   = 1,
                     softWrap   = false,
                 )
@@ -123,13 +127,13 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                     Text(
                         text  = stringResource(it),
                         style = MaterialTheme.typography.labelMedium,
-                        color = onSoulColor.copy(alpha = 0.85f),
+                        color = soulColor.copy(alpha = 0.85f),
                         fontSize = 16.sp
                     )
                 }
             }
             TopTrayButtons(
-                iconTint = onSoulColor,
+                iconTint = soulColor,
                 onToggleTheme = onToggleTheme,
                 onDebugClick = onDebugClick,
                 showDebug = true
