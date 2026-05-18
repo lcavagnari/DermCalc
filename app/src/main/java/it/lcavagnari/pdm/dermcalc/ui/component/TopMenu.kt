@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.shared.component
+package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

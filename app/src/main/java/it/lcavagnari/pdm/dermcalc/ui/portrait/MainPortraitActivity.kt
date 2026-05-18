@@ -23,7 +23,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.navItems
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.TopMenu
+import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 
 /**
  * Root portrait composable that observes onboarding state and renders either the onboarding

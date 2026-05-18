@@ -53,9 +53,9 @@ import it.lcavagnari.pdm.dermcalc.models.SexInput
 import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.DateInputPicker
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheel
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheelPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.DateInputPicker
+import it.lcavagnari.pdm.dermcalc.ui.component.SnapWheel
+import it.lcavagnari.pdm.dermcalc.ui.component.SnapWheelPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.utils.today

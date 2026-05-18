@@ -36,9 +36,9 @@ import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.BorderSide
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.BorderedCard
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.HistoryCard
+import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
+import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
+import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalTime

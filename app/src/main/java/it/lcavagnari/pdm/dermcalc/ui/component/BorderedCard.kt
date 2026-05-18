@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.shared.component
+package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Card
@@ -28,7 +28,7 @@ enum class BorderSide { Left, Right, Top, Bottom }
 
 /**
  * Draw a one-sided border inside [DrawScope], respecting rounded corners.
- * Intended for use inside [androidx.compose.ui.draw.drawBehind].
+ * Intended for use inside [drawBehind].
  */
 private fun DrawScope.drawOneSidedBorder(
     cornerRadiusPx: Float,

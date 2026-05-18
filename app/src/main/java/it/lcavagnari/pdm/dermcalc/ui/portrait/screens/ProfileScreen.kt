@@ -76,8 +76,8 @@ import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheel
-import it.lcavagnari.pdm.dermcalc.ui.shared.component.SnapWheelPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.SnapWheel
+import it.lcavagnari.pdm.dermcalc.ui.component.SnapWheelPickerDialog
 
 /**
  * Displays the profile tab in the app's main screen.
