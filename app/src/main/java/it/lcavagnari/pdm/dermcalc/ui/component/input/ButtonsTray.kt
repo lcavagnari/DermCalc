@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.component
+package it.lcavagnari.pdm.dermcalc.ui.component.input
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -21,7 +21,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 
 /**
- * Row of icon buttons displayed in the trailing area of [TopMenu] and the onboarding screen.
+ * Row of icon buttons displayed in the trailing area of [it.lcavagnari.pdm.dermcalc.ui.component.TopMenu] and the onboarding screen.
  *
  * @param modifier - modifier applied to each icon box.
  * @param iconTint - tint color applied to all icons.

@@ -29,6 +29,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
@@ -128,10 +129,10 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
                 }
             }
             TopTrayButtons(
-                iconTint      = onSoulColor,
+                iconTint = onSoulColor,
                 onToggleTheme = onToggleTheme,
-                onDebugClick  = onDebugClick,
-                showDebug     = true
+                onDebugClick = onDebugClick,
+                showDebug = true
             ) {}
         }
     }

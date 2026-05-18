@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.component
+package it.lcavagnari.pdm.dermcalc.ui.component.input
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
