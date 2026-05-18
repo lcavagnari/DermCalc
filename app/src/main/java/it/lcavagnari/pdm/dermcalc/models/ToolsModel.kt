@@ -179,4 +179,8 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
             current.filter { it != result }
         }
     }
+
+    fun clearResult() {
+        _results.update { emptyList() }
+    }
 }
