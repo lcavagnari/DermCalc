@@ -9,8 +9,8 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
-import it.lcavagnari.pdm.dermcalc.screens.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.screens.ToolsScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
 
 /**
  * Registers destination composables and wires type-safe route navigation.

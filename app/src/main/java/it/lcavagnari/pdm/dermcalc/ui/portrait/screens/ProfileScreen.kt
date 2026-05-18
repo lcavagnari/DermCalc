@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.screens
+package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import android.annotation.SuppressLint
 import android.app.Application
