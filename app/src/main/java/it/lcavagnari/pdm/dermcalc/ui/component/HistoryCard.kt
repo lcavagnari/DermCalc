@@ -99,9 +99,9 @@ fun HistoryCard(
     toolsModel: ToolsModel,
     onShowAll: () -> Unit
 ) {
-    val results = toolsModel.toolsResult.collectAsState().value.reversed()
+    val results = toolsModel.toolsResult.collectAsState().value.sortedByDescending { it.timestamp }
     val now = remember { today() }
-    val displayResults = results.takeLast(MAX_HISTORY_VISIBLE)
+    val displayResults = results.take(MAX_HISTORY_VISIBLE)
     val hasMore = results.size > MAX_HISTORY_VISIBLE
     val scrollState = rememberLazyListState()
 
