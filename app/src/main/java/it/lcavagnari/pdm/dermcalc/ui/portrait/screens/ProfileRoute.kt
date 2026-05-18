@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.DateInput
@@ -181,6 +182,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                     Text(
                         modifier = Modifier.padding(10.dp),
                         style = MaterialTheme.typography.bodyMedium,
+                        fontSize = if (field is DateInput && field.value == null) 10.sp else MaterialTheme.typography.bodyMedium.fontSize,
                         color = MaterialTheme.colorScheme.onSurface,
                         text = when (field) {
                             is TextInput -> field.value
