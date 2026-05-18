@@ -126,6 +126,7 @@
     <string name="home_history_title">Storico Recente</string>
 
     <!-- History -->
+    <string name="tools_bsa_description">Regola Dei Nove</string>
     <string name="history_empty">Nessun risultato ancora. Usa i calcolatori per registrare il tuo primo punteggio.</string>
     <string name="history_show_all">Mostra tutti i risultati</string>
     <string name="severity_mild">Lieve</string>
@@ -148,5 +149,7 @@
         <item quantity="one">%d anno fa</item>
         <item quantity="other">%d anni fa</item>
     </plurals>
-    <string name="tools_bmi_description">Body Mass Index</string>
+    <string name="tools_bmi_description">Indice di Massa Corporea</string>
+    <string name="tools_quick">Rapidi</string>
+    <string name="tools_index">Calcolatori</string>
 </resources>
