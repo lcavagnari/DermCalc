@@ -48,8 +48,8 @@ data object ToolsRoute : AppRoute {
         get() = R.string.nav_tools
     override val route: String
         get() = "tools"
-    override val icon: ImageVector
-        get() = Icons.Default.Build
+    override val iconRes: Int
+        get() = R.drawable.ic_tools_calculator
 }
 
 /** Profile destination metadata used by navigation and tab rendering. */
