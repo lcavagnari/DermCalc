@@ -3,7 +3,6 @@ package it.lcavagnari.pdm.dermcalc.screens
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -33,11 +32,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.DateInput
@@ -103,10 +101,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
         Text(
             stringResource(R.string.profile_details).uppercase(getDefault()),
             modifier = Modifier.padding(top = 10.dp),
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary,
-            fontStyle = FontStyle.Italic
         )
 
         ProfileDetails(
@@ -118,10 +115,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
         Text(
             stringResource(R.string.profile_measure_preference).uppercase(getDefault()),
             modifier = Modifier.padding(top = 10.dp),
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary,
-            fontStyle = FontStyle.Italic
         )
 
         UnitOfMeasurement(
@@ -161,13 +157,12 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiaryContainer)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         inputFields.forEachIndexed { index, field ->
-            Log.d("ProfileScreen", field.toString())
             key(field.id) {
                 var showDialog by remember { mutableStateOf(false) }
 
@@ -178,18 +173,17 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                     Text(
                         modifier = Modifier.padding(vertical = 5.dp, horizontal = 15.dp),
                         text = stringResource(field.label).uppercase(getDefault()),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(Modifier.weight(1f))
 
                     Text(
                         modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = if (field is DateInput && field.value == null) 16.sp else MaterialTheme.typography.bodyMedium.fontSize,
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.SemiBold,
                         text = when (field) {
                             is TextInput -> field.value
                             is DateInput -> field.value?.toString()
@@ -255,7 +249,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         enabled = field.isValid,
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = MaterialTheme.colorScheme.onPrimary,
-                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                            containerColor = MaterialTheme.colorScheme.primary
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -263,7 +257,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                     OutlinedButton(
                                         onClick = { showDialog = false },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            contentColor = MaterialTheme.colorScheme.onError,
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) { Text(stringResource(R.string.btn_cancel)) }
@@ -288,7 +282,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         enabled = field.isValid,
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = MaterialTheme.colorScheme.onPrimary,
-                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                            containerColor = MaterialTheme.colorScheme.primary
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -296,7 +290,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                     OutlinedButton(
                                         onClick = { showDialog = false },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            contentColor = MaterialTheme.colorScheme.onError,
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) { Text(stringResource(R.string.btn_cancel)) }
@@ -341,7 +335,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                         },
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = MaterialTheme.colorScheme.onPrimary,
-                                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                            containerColor = MaterialTheme.colorScheme.primary
                                         )
                                     ) { Text(stringResource(R.string.btn_ok)) }
                                 },
@@ -349,7 +343,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                                     OutlinedButton(
                                         onClick = { showDialog = false },
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                                            contentColor = MaterialTheme.colorScheme.onError,
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) { Text(stringResource(R.string.btn_cancel)) }

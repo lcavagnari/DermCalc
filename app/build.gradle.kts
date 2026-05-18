@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.dependency.check)
 
     id("org.jetbrains.dokka") version "2.2.0"
+    alias(libs.plugins.kotlin.android)
 }
 
 dependencyCheck {
@@ -61,6 +62,9 @@ android {
         // Always generate the HTML report (useful for artifact upload in CI).
         htmlReport = true
         htmlOutput = layout.buildDirectory.file("reports/lint-results-debug.html").get().asFile
+    }
+    kotlinOptions {
+        jvmTarget = "11"
     }
 }
 

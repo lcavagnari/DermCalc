@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -20,6 +19,8 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
 /**
  * Renders bottom tabs and preserves per-destination back stack state.
@@ -37,6 +38,16 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
+        // HOME = red SOUL Determination (brand mark / launcher icon / heart). TOOLS = gold
+        // primary (palette Determination at rest; no calculator owns the screen).
+        // PROFILE = green Kindness. Each soul claims its own room.
+        val currentSoul = when (currentDestination?.route) {
+            HomeRoute.route -> Soul.Determination.color
+            ToolsRoute.route -> MaterialTheme.colorScheme.primary
+            ProfileRoute.route -> Soul.Kindness.color
+            else -> soulForRoute(currentDestination?.route).color
+        }
+
         appItems.forEach { item ->
             // Using an explicit when block with hasRoute<T>() ensures the compiler uses
             // the correct type-safe extension and avoids "restricted API" errors.
@@ -52,8 +63,7 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                         Icon(
                             painter = painterResource(id = item.iconRes!!),
                             contentDescription = item.name,
-                            tint = Color.Unspecified
-                        )
+                                                    )
                     } else {
                         item.icon?.let {
                             Icon(
@@ -69,11 +79,11 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                     } ?: Text(text = item.name ?: "")
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.primary,
-                    selectedTextColor = MaterialTheme.colorScheme.primary,
-                    indicatorColor = MaterialTheme.colorScheme.surfaceVariant,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSurface
+                    selectedIconColor = currentSoul,
+                    selectedTextColor = currentSoul,
+                    indicatorColor = currentSoul.copy(alpha = 0.22f),
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 selected = isSelected,
                 onClick = {

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
@@ -42,8 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -154,6 +153,9 @@ fun OnboardingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            // Reserve space for the system status bar before the 16dp content padding
+            // so the tray buttons aren't hidden under the clock / notch.
+            .statusBarsPadding()
             .padding(16.dp)
             // Tapping anywhere outside a text field clears focus and dismisses the keyboard.
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
@@ -225,7 +227,7 @@ fun OnboardingScreen(
                     .size(26.dp),
                 painter = painterResource(id = R.drawable.ic_swipe_left),
                 contentDescription = "Swipe back",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -240,7 +242,7 @@ fun OnboardingScreen(
                     .size(26.dp),
                 painter = painterResource(id = R.drawable.ic_swipe_right),
                 contentDescription = "Swipe forward",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -271,10 +273,8 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Text(
             text = stringResource(R.string.btn_back),
             modifier = Modifier.padding(start = 25.dp),
-            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.SemiBold,
-            fontStyle = FontStyle.Italic
         )
     }
 }
