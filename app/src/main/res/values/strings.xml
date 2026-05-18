@@ -132,10 +132,19 @@
     <string name="quote_tip">Tip</string>
     <string name="home_history_title">Recent History</string>
 
+    <string name="tools_quick">Quick</string>
+    <string name="tools_index">Calculators</string>
+
     <string name="tools_bmi" translatable="false">BMI</string>
     <string name="tools_bmi_description">Body Mass Index</string>
+
     <string name="tools_bsa" translatable="false">BSA</string>
     <string name="tools_bsa_description">Rule of Nines</string>
+
+    <string name="tools_pasi" translatable="false">PASI</string>
+    <string name="tools_pasi_description">Psoriasis Area&amp;Severity Index</string>
+    <string name="tools_easi" translatable="false">EASI</string>
+    <string name="tools_easi_description">Eczema Area&amp;Severity Index</string>
 
     <!-- History -->
     <string name="history_empty">No results yet. Use the calculators to record your first score.</string>
@@ -160,6 +169,5 @@
         <item quantity="one">%d year ago</item>
         <item quantity="other">%d years ago</item>
     </plurals>
-    <string name="tools_quick">Quick</string>
-    <string name="tools_index">Calculators</string>
+    <string name="districts">districts</string>
 </resources>
