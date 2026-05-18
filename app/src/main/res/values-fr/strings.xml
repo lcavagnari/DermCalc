@@ -127,6 +127,7 @@
 
     <!-- History -->
     <string name="tools_bsa_description">Règle Des Neuf</string>
+    <string name="tools_easi_description">Ind.de surface et de gravité de l\'eczéma</string>
     <string name="history_empty">Aucun résultat pour l\'instant. Utilisez les calculatrices pour enregistrer votre premier score.</string>
     <string name="history_show_all">Afficher tous les résultats</string>
     <string name="severity_mild">Léger</string>
@@ -149,7 +150,9 @@
         <item quantity="one">Il y a %d an</item>
         <item quantity="other">Il y a %d ans</item>
     </plurals>
-    <string name="tools_bmi_description">Ind. Masse Corporelle</string>
+    <string name="tools_bmi_description">Ind.de Masse Corporelle</string>
     <string name="tools_quick">Ràpid</string>
     <string name="tools_index">Calculatèur</string>
+    <string name="tools_pasi_description">Ind.de surface et de gravité du psoriasis</string>
+    <string name="districts">quartiers</string>
 </resources>
