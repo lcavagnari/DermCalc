@@ -39,6 +39,7 @@ class OnboardingValidationTest {
         composeRule.onNodeWithTag("input_full_name").performTextInput("Mario Rossi")
         composeRule.onNodeWithTag("btn_open_date_picker").performClick()
         // Select first "15" cell available in the calendar.
+        composeRule.waitUntil(5_000L) { composeRule.onAllNodesWithText("15").fetchSemanticsNodes().isNotEmpty() }
         composeRule.onAllNodesWithText("15")[0].performClick()
         composeRule.onNodeWithTag("btn_confirm_date").performClick()
         composeRule.onNodeWithTag("btn_next").performClick()

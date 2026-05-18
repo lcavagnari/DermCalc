@@ -59,6 +59,7 @@ class OnboardingHappyPathTest {
 
         // The calendar shows the current month; click any day cell that is selectable.
         // Day "15" is always present in every month — pick it.
+        composeRule.waitUntil(5_000L) { composeRule.onAllNodesWithText("15").fetchSemanticsNodes().isNotEmpty() }
         composeRule.onAllNodesWithText("15").onFirst().performClick()
 
         // Confirm the date selection.
