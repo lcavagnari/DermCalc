@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,7 +84,7 @@ fun HomeScreen(
     toolsModel: ToolsModel
 ) {
     val fullNameField: TextInput = onboardingModel.fields.collectAsState().value[0] as TextInput
-    val welcomeMessage = stringResource(R.string.nav_home_subtitle)+ ", " +fullNameField.value.split(' ')[0]
+    val welcomeMessage = stringResource(R.string.nav_home_subtitle)+ ", " +fullNameField.value.split(' ')[0]+'.'
 
     // TODO: Remove seed data before release.
     LaunchedEffect(Unit) {
@@ -142,6 +144,7 @@ fun HomeScreen(
                     text = welcomeMessage,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Start
                 )
             }
