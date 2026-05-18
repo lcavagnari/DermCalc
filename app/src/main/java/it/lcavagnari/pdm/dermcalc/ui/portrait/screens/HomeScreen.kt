@@ -64,8 +64,7 @@ fun HomeScreenPreview() {
         it.updateName("Asriel ")
     } }
 
-    val tm = remember { ToolsModel(app).also {
-    }}
+    val tm = remember { ToolsModel(app) }
 
 
     MainPortraitActivity(

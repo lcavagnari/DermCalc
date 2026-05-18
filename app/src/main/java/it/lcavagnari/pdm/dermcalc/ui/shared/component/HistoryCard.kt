@@ -89,7 +89,7 @@ private fun ToolResult.severity(): Severity = when (this) {
  * exist than the visible limit, a "Show all" row is appended and [onShowAll] is invoked on tap.
  *
  * @param modifier - modifier applied to the outer [Card].
- * @param toolsModel - view model providing the [ToolResult] list via a [StateFlow].
+ * @param toolsModel - view model providing the [ToolResult] list via a [kotlinx.coroutines.flow.StateFlow].
  * @param onShowAll - callback invoked when the user taps the "Show all" row.
  */
 @OptIn(ExperimentalFoundationApi::class)
