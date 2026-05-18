@@ -41,9 +41,11 @@ import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
+import kotlinx.datetime.number
 
 import java.util.Locale
 
@@ -103,7 +105,7 @@ fun HomeScreen(
     val todayDate = today().date
     val dateText = java.text.SimpleDateFormat("EEEE dd MMMM", Locale.getDefault()).format(
         java.util.Calendar.getInstance().apply {
-            set(todayDate.year, todayDate.monthNumber - 1, todayDate.dayOfMonth)
+            set(todayDate.year, todayDate.month.number - 1, todayDate.day)
         }.time
     )
 
