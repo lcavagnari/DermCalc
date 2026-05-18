@@ -8,6 +8,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:appCategory="accessibility"
         android:supportsRtl="true"
         android:theme="@style/Theme.DermCalc">
         <activity
@@ -22,5 +23,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
