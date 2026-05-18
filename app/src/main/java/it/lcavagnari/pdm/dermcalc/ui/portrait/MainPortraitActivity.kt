@@ -90,7 +90,7 @@ fun MainPortraitActivity(
 }
 
 
-// Preview
+//  Preview
 
 @Preview(showBackground = true)
 @Composable
