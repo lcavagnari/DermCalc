@@ -282,11 +282,14 @@ fun OnboardingScreen(
  */
 @Composable
 private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val dark = LocalDarkTheme.current
     Box(
         modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surface.copy(alpha = if (dark) 0f else 0.6f))
             .clickable(onClick = onClick)
-            .wrapContentSize(),
-        contentAlignment = Alignment.TopStart
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
         Icon(
             modifier = Modifier.size(20.dp),

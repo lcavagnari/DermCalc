@@ -36,9 +36,7 @@ fun OnboardingPager(pagerState: PagerState, modifier: Modifier, userScrollEnable
         val screen = onboardingScreens[page]
         Box(Modifier.fillMaxSize()) {
             Image(
-                painter = painterResource(
-                    if (dark) screen.backgroundDark else screen.backgroundLight
-                ),
+                painter = painterResource(if (dark) screen.backgroundDark else screen.backgroundLight),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
