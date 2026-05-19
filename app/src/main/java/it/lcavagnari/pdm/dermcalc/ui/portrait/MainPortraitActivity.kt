@@ -64,7 +64,9 @@ fun MainPortraitActivity(
 
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopMenu(navController, onToggleTheme = onToggleTheme)},
+        topBar = {
+            TopMenu(navController, onToggleTheme = onToggleTheme)
+        },
 
         bottomBar = {
             NavigationBar(
