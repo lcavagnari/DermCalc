@@ -122,16 +122,24 @@ fun OnboardingPreview() {
 }
 
 /**
- * Full-screen onboarding flow that steps the user through a multi-page [androidx.compose.foundation.pager.HorizontalPager].
+ * Full-screen onboarding flow over a multi-page [androidx.compose.foundation.pager.HorizontalPager].
  *
- * Navigation between pages is controlled by [pagerState]. The Next/Start button is only
- * enabled when all required fields on the current page pass validation.
+ * Layout (top → bottom):
+ * - Trailing [TopTrayButtons] row (language, theme-toggle, debug skip-to-finish).
+ * - [OnboardingPager] — fills remaining vertical space; each page rendered by [OnBoardItem].
+ * - [GoBackButton] — back arrow label; only visible when the current page's required fields
+ *   are not yet valid (i.e. the user cannot swipe forward yet).
+ * - [StepIndicator] — pill/circle dots tracking the current page position.
+ * - Next / Start [androidx.compose.material3.Button] — disabled until all required fields on the page pass validation.
  *
- * @param pagerState - state object controlling the current page and scroll position.
- * @param modifier - modifier applied to the root [Column].
- * @param onToggleTheme - callback threaded through to [TopTrayButtons] for theme switching.
- * @param onLangClick - callback threaded through to [TopTrayButtons] for language switching.
- * @param onFinish - callback invoked when the user completes the final onboarding page.
+ * Directional swipe-hint icons are overlaid at the vertical midpoint when the current page is
+ * valid and a swipe target exists (left hint if not page 0; right hint if not the last page).
+ *
+ * @param pagerState state object controlling the current page and scroll position.
+ * @param modifier modifier applied to the root [Column].
+ * @param onToggleTheme callback threaded through to [TopTrayButtons] for theme switching.
+ * @param onLangClick callback threaded through to [TopTrayButtons] for language switching.
+ * @param onFinish callback invoked when the user completes the final onboarding page.
  */
 @Composable
 fun OnboardingScreen(
@@ -252,8 +260,8 @@ fun OnboardingScreen(
 /**
  * Back arrow with label, navigating the user to the previous onboarding page.
  *
- * @param modifier - modifier applied to the root [Box].
- * @param onClick - callback invoked when the button is tapped.
+ * @param modifier modifier applied to the root [Box].
+ * @param onClick callback invoked when the button is tapped.
  */
 @Composable
 private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -282,9 +290,9 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 /**
  * Row of dots indicating the current page position within the onboarding flow.
  *
- * @param modifier - modifier applied to the root [Row].
- * @param totalSteps - total number of onboarding pages.
- * @param currentStep - zero-based index of the currently visible page.
+ * @param modifier modifier applied to the root [Row].
+ * @param totalSteps total number of onboarding pages.
+ * @param currentStep zero-based index of the currently visible page.
  */
 @Composable
 private fun StepIndicator(

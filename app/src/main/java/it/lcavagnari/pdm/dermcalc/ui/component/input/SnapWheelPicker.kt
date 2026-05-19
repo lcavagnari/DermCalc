@@ -186,16 +186,16 @@ fun <T> DrawSnapWheel(
 /**
  * Dialog containing one or more [DrawSnapWheel] columns, with an optional text-input mode.
  *
- * @param modifier - modifier applied to the [BasicAlertDialog].
- * @param title - string resource id for the dialog title.
- * @param tonalElevation - tonal elevation of the dialog surface.
- * @param colors - color scheme for the dialog, defaulting to [DatePickerDefaults.colors].
- * @param properties - dialog window properties; defaults to non-platform-width.
- * @param wheels - list of [SnapWheel] configurations, one per scrollable column.
- * @param inputFieldLabels - string resource ids for text-input field labels, one per wheel. When
+ * @param modifier modifier applied to the [BasicAlertDialog].
+ * @param title string resource id for the dialog title.
+ * @param tonalElevation tonal elevation of the dialog surface.
+ * @param colors color scheme for the dialog, defaulting to [DatePickerDefaults.colors].
+ * @param properties dialog window properties; defaults to non-platform-width.
+ * @param wheels list of [SnapWheel] configurations, one per scrollable column.
+ * @param inputFieldLabels string resource ids for text-input field labels, one per wheel. When
  *   this list has the same size as [wheels] and is non-empty, a keyboard toggle button appears.
- * @param onDismiss - callback invoked when the dialog is dismissed without confirming.
- * @param onConfirm - callback invoked with the list of currently selected values on confirm.
+ * @param onDismiss callback invoked when the dialog is dismissed without confirming.
+ * @param onConfirm callback invoked with the list of currently selected values on confirm.
  */
 @ExperimentalMaterial3Api
 @Composable

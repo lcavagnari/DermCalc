@@ -69,12 +69,17 @@ fun HomeScreenPreview() {
 }
 
 /**
- * Displays placeholder home content centered within available screen space.
+ * Home screen. Centered column of three stacked cards at 90% screen width.
  *
- * @param navController - controller available for future home navigation actions.
- * @param quoteModel - view model providing the currently displayed quote.
- * @param onboardingModel - view model providing user profile fields for the welcome message.
- * @param toolsModel - view model providing the stored tool results for [HistoryCard].
+ * Layout (top → bottom):
+ * - Date + first-name welcome greeting — [BorderedCard] with a right-side primary-color accent.
+ * - [QuoteCard] — italic dermatology quote with author attribution; left-side tertiary accent.
+ * - [HistoryCard] — snap-fling [androidx.compose.foundation.lazy.LazyColumn] of the most recent tool results.
+ *
+ * @param navController controller available for future home navigation actions.
+ * @param quoteModel view model providing the currently displayed quote.
+ * @param onboardingModel view model providing user profile fields for the welcome message.
+ * @param toolsModel view model providing the stored tool results for [HistoryCard].
  */
 @Composable
 fun HomeScreen(
@@ -167,8 +172,8 @@ fun HomeScreen(
  * Shows the quote body in italic and the author right-aligned below it.
  * When no author is available, a tip prompt is shown instead.
  *
- * @param modifier - modifier applied to the [BorderedCard].
- * @param quoteModel - view model providing the [Quote] to display.
+ * @param modifier modifier applied to the [BorderedCard].
+ * @param quoteModel view model providing the [Quote] to display.
  */
 @Composable
 fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {

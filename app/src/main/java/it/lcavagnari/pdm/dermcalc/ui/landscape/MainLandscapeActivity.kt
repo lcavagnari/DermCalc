@@ -26,7 +26,7 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
  * Shows an unsupported-orientation message and prompts the user to rotate the device.
  * Landscape support is not yet implemented.
  *
- * @param onboardingModel - passed through for future use when landscape support is added.
+ * @param onboardingModel passed through for future use when landscape support is added.
  */
 @Composable
 fun MainLandscapeActivity(onboardingModel: OnboardingModel) {

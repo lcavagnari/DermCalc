@@ -88,9 +88,9 @@ private fun ToolResult.severity(): Severity = when (this) {
  * Shows up to [MAX_HISTORY_VISIBLE] rows in a snap-fling [LazyColumn]. When more results
  * exist than the visible limit, a "Show all" row is appended and [onShowAll] is invoked on tap.
  *
- * @param modifier - modifier applied to the outer [Card].
- * @param toolsModel - view model providing the [ToolResult] list via a [kotlinx.coroutines.flow.StateFlow].
- * @param onShowAll - callback invoked when the user taps the "Show all" row.
+ * @param modifier modifier applied to the outer [Card].
+ * @param toolsModel view model providing the [ToolResult] list via a [kotlinx.coroutines.flow.StateFlow].
+ * @param onShowAll callback invoked when the user taps the "Show all" row.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -160,6 +160,11 @@ fun HistoryCard(
     }
 }
 
+/**
+ * Tappable row shown at the bottom of [HistoryCard] when there are more results than [MAX_HISTORY_VISIBLE].
+ *
+ * @param onClick callback invoked when the row is tapped.
+ */
 @Composable
 private fun ShowAllRow(onClick: () -> Unit) {
     Row(
@@ -180,8 +185,8 @@ private fun ShowAllRow(onClick: () -> Unit) {
 /**
  * Single row inside [HistoryCard] showing the score badge, tool name, severity label, and timestamp.
  *
- * @param result - the [ToolResult] to display.
- * @param now - the current date/time used as the reference point for [relativeTimestamp].
+ * @param result the [ToolResult] to display.
+ * @param now the current date/time used as the reference point for [relativeTimestamp].
  */
 @Composable
 private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
@@ -239,8 +244,8 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
  *
  * Returns "Today at HH:MM" for same-day results, then falls back to days, weeks, months, or years ago.
  *
- * @param timestamp - the date/time of the recorded result.
- * @param now - the current date/time used as the reference point.
+ * @param timestamp the date/time of the recorded result.
+ * @param now the current date/time used as the reference point.
  */
 @Composable
 private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): String {

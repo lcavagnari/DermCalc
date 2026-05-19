@@ -27,15 +27,20 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 
 /**
- * Root portrait composable that observes onboarding state and renders either the onboarding
- * flow or the main app scaffold with navigation.
+ * Root portrait composable. Switches between the onboarding flow and the main app shell
+ * based on [it.lcavagnari.pdm.dermcalc.models.OnboardingModel.hasSeenOnboarding].
  *
- * @param modifier - modifier applied to each scaffold's content slot.
- * @param onboardingModel - view model providing onboarding state and field data.
- * @param toolsModel - view model providing the list of stored [it.lcavagnari.pdm.dermcalc.models.ToolResult] entries.
- * @param quoteModel - view model providing the currently displayed quote.
- * @param startingDestination - initial navigation destination shown after onboarding completes.
- * @param onToggleTheme - callback threaded through to [TopMenu] and [OnboardingScreen].
+ * Two rendering paths:
+ * - `!hasSeenOnboarding` → bare [androidx.compose.material3.Scaffold] (no top/bottom bars) containing [OnboardingScreen].
+ * - `hasSeenOnboarding`  → [androidx.compose.material3.Scaffold] with [TopMenu] top bar,
+ *   [it.lcavagnari.pdm.dermcalc.navigation.NavigationBar] bottom bar, and [it.lcavagnari.pdm.dermcalc.AppNavHost] content.
+ *
+ * @param modifier modifier applied to each scaffold's content slot.
+ * @param onboardingModel view model providing onboarding state and field data.
+ * @param toolsModel view model providing the list of stored [it.lcavagnari.pdm.dermcalc.models.ToolResult] entries.
+ * @param quoteModel view model providing the currently displayed quote.
+ * @param startingDestination initial navigation destination shown after onboarding completes.
+ * @param onToggleTheme callback threaded through to [TopMenu] and [OnboardingScreen].
  */
 @Composable
 fun MainPortraitActivity(

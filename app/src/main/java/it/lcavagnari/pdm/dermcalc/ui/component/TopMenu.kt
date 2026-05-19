@@ -48,12 +48,23 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
 
 /**
- * Top app bar that displays the current destination title, subtitle, and icon,
- * with theme-toggle and debug action buttons in the trailing tray.
+ * Top app bar. A full-width [androidx.compose.material3.Card] whose chrome color tracks the active soul.
  *
- * @param navController - controller used to observe the current back-stack destination.
- * @param onToggleTheme - callback invoked when the user taps the theme-toggle button.
- * @param onDebugClick - callback invoked when the user taps the debug button.
+ * Layout (horizontal [Row]):
+ * - Leading icon — ECG logo on Home; destination icon on other screens. On calculator screens
+ *   the icon is clickable and pops the back stack to [it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute].
+ * - Title column — destination title (27sp) and optional subtitle (18sp), both in the soul color.
+ * - Trailing [it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons] — language, theme-toggle; debug button omitted at this call site.
+ *
+ * Soul-color assignment per destination:
+ * - Home → Determination (red)   · Tools  → Justice (gold)      · Profile → Kindness (green)
+ * - BMI  → Patience (cyan)       · BSA    → Bravery (orange)
+ * - PASI → Integrity (blue)      · EASI   → Perseverance (purple)
+ *
+ * Text and icon tint are chosen via luminance: bright soul backgrounds get black, dark ones get white.
+ *
+ * @param navController controller used to observe the current back-stack destination.
+ * @param onToggleTheme callback forwarded to [it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons].
  */
 @Composable
 fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {

@@ -80,13 +80,24 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheelPickerDialog
 
 /**
- * Displays the profile tab in the app's main screen.
- * This tab allows the user to inspect his personal data and edit them accordingly
- * All input and sanitisation relies on the [InputField] interface's validation logic, located in [OnboardingModel]
- * The user data is saved into the [OnboardingModel] field list.
+ * Profile tab. Lets the user view and edit every onboarding field after the initial setup.
  *
- * @param navController - controller available for future account flow routing.
- * @param onboardingModel - Singleton instance of the Onboarding ViewModel holding the user's data
+ * Layout (top → bottom):
+ * - "DETAILS" section label.
+ * - [ProfileDetails] card — one row per [InputField]: label, current value, and an edit [androidx.compose.material3.IconButton].
+ *   Tapping the button opens a field-specific inline dialog:
+ *     - [TextInput] → [androidx.compose.material3.AlertDialog] with an [androidx.compose.material3.OutlinedTextField].
+ *     - [DateInput] → [androidx.compose.material3.DatePickerDialog].
+ *     - [SexInput] → [androidx.compose.material3.AlertDialog] with a [androidx.compose.material3.SingleChoiceSegmentedButtonRow].
+ *     - [HeightInput] / [WeightInput] → [it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheelPickerDialog].
+ * - "MEASUREMENT PREFERENCE" section label.
+ * - [UnitOfMeasurement] card — segmented buttons for metric/imperial height and kg/lb weight.
+ * - Dark mode only: annoying-dog icon anchored to the bottom-end corner.
+ *
+ * All validation is delegated to [OnboardingModel] update methods; no local sanitisation.
+ *
+ * @param navController controller available for future account flow routing.
+ * @param onboardingModel view model holding and validating all user profile fields.
  */
 @Composable
 fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingModel) {
@@ -145,9 +156,9 @@ fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingMo
  * Drawer for the Profile details card
  *
  * TODO: Replace [onboardingModel] pass with parameter function call.
- * @param modifier - Special modifications to the card
- * @param inputFields - List of fields required during the onboarding process
- * @param onboardingModel - TODO: to remove
+ * @param modifier Special modifications to the card
+ * @param inputFields List of fields required during the onboarding process
+ * @param onboardingModel TODO: to remove
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -423,9 +434,9 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
  * Unit of measurement preference menu.
  * Allows the user to change its preference in unit of measurement for height and weight
  *
- * @param inputFields - List of fields required during onboarding
- * @param onUpdateHeight - parameter function run on update of height preference
- * @param onUpdateWeight - parameter function run on update of weight preference
+ * @param inputFields List of fields required during onboarding
+ * @param onUpdateHeight parameter function run on update of height preference
+ * @param onUpdateWeight parameter function run on update of weight preference
  */
 @Composable
 fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMeasurements) -> Unit, onUpdateWeight:(it: WeightMeasurements) -> Unit) {

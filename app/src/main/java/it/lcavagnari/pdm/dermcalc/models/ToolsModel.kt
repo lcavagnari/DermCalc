@@ -155,12 +155,13 @@ data class BsaResult(
 /** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
 class ToolsModel(application: Application) : AndroidViewModel(application) {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
+    /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
 
     /**
      * Validates and appends [result] to the stored list.
      *
-     * @param result - the [ToolResult] to add; must pass [ToolResult.isValid].
+     * @param result the [ToolResult] to add; must pass [ToolResult.isValid].
      * @return true if the result was added, false if validation failed.
      */
     fun addResult(result: ToolResult): Boolean {
@@ -172,7 +173,7 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
     /**
      * Removes [result] from the stored list by equality.
      *
-     * @param result - the [ToolResult] instance to remove.
+     * @param result the [ToolResult] instance to remove.
      */
     fun deleteResult(result: ToolResult) {
         _results.update { current ->
@@ -180,6 +181,7 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /** Removes all stored results. */
     fun clearResult() {
         _results.update { emptyList() }
     }

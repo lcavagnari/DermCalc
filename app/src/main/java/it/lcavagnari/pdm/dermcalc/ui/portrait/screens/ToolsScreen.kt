@@ -60,16 +60,15 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 
 
 /**
- * Represents a single page in the onboarding flow.
+ * Metadata for a single tool entry rendered in [ToolsScreen].
  *
- * @property title - text displayed as the page heading.
- * @property description - optional subtitle shown below the title.
- * @property imageRes - optional vector icon displayed on the page.
- * @property imageDrawable - optional drawable resource id for the page image.
- * @property imageSize - size applied to the image composable. Defaults to 280.dp.
- * @property inputFieldIds - ids of [it.lcavagnari.pdm.dermcalc.models.InputField] instances rendered on this page.
- * @property inputFieldId - deprecated. use [inputFieldIds] instead.
- * @constructor Create empty Onboarding screen
+ * @property description - string resource id for the tool's short description.
+ * @property color - soul color used for the card border, icon tint, and badge.
+ * @property route - navigation destination launched when the card is tapped.
+ * @property imageSize - size of the tool icon. Defaults to 40.dp.
+ * @property districtNum - number of body districts assessed, or null for tools that don't use districts.
+ * @property valueRange - min/max score range shown as a chip, or null if not applicable.
+ * @property borderSide - which edge of the card receives the colored accent border.
  */
 data class ToolCard(
     @StringRes val description: Int,
@@ -86,9 +85,19 @@ data class ToolCard(
 )
 
 /**
- * Displays calculator tools placeholder while feature modules are added.
+ * Tools tab. Two vertically stacked sections, each containing clickable [ToolCard] entries.
  *
- * @param navController - controller available for future tools deep links.
+ * Layout (top → bottom):
+ * - "QUICK" section header — single-value calculators (BMI, BSA) in an equal-width [Row]
+ *   via [QuickCalculators]; each card has a [BorderSide.Top] accent.
+ * - "INDEX" section header — multi-parameter index calculators (PASI, EASI) in a [Column]
+ *   via [IndexesCalculators]; each card has a [BorderSide.Left] accent plus district-count
+ *   and score-range chips in the bottom-right corner.
+ *
+ * Tapping any card navigates to its [AppRoute] destination via [navController].
+ *
+ * @param navController controller used to navigate to calculator screens on card tap.
+ * @param toolsModel view model forwarded to calculator screens (unused at this level).
  */
 @Composable
 fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
@@ -155,6 +164,13 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
     }
 }
 
+/**
+ * Row of quick-calculator [ToolCard] entries that each navigate to their destination on tap.
+ *
+ * @param modifier modifier applied to the root [Row].
+ * @param toolsList list of [ToolCard] descriptors to render.
+ * @param onClick callback invoked with the tapped card's [AppRoute].
+ */
 @Composable
 fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
     Row(
@@ -213,6 +229,13 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
     }
 }
 
+/**
+ * Column of index-calculator [ToolCard] entries with district count and score range chips.
+ *
+ * @param modifier modifier applied to the root [Column].
+ * @param toolsList list of [ToolCard] descriptors to render.
+ * @param onClick callback invoked with the tapped card's [AppRoute].
+ */
 @Composable
 fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
     Column(

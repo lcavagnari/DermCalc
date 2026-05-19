@@ -63,6 +63,7 @@ data object ProfileRoute : AppRoute {
 }
 
 
+/** BMI calculator destination metadata. */
 @Serializable
 @SerialName("bmitool")
 data object BMIToolRoute: AppRoute {
@@ -74,6 +75,7 @@ data object BMIToolRoute: AppRoute {
         get() = R.drawable.ic_body_mass_index
 }
 
+/** BSA (Body Surface Area) calculator destination metadata. */
 @Serializable
 @SerialName("bsatool")
 data object BSAToolRoute: AppRoute {
@@ -85,6 +87,7 @@ data object BSAToolRoute: AppRoute {
         get() = R.drawable.ic_bsa_lungs
 }
 
+/** PASI (Psoriasis Area and Severity Index) calculator destination metadata. */
 @Serializable
 @SerialName("pasitool")
 data object PASIToolRoute: AppRoute {
@@ -96,6 +99,7 @@ data object PASIToolRoute: AppRoute {
         get() = R.drawable.ic_body_scan
 }
 
+/** EASI (Eczema Area and Severity Index) calculator destination metadata. */
 @Serializable
 @SerialName("easitool")
 data object EASIToolRoute: AppRoute {

@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
     /**
      * Initializes edge-to-edge UI, wires the theme toggle, and sets the root Compose content.
      *
-     * @param savedInstanceState - prior state bundle, or null on first launch.
+     * @param savedInstanceState prior state bundle, or null on first launch.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

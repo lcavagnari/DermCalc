@@ -28,12 +28,12 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
 /**
  * Registers destination composables and wires type-safe route navigation.
  *
- * @param modifier - modifier applied to the underlying [NavHost].
- * @param navController - controller managing back stack state transitions.
- * @param onboardingModel - view model forwarded to destinations that need user profile data.
- * @param toolsModel - view model forwarded to destinations that display or modify tool results.
- * @param quoteModel - view model forwarded to the home screen for quote display.
- * @param startDestination - initial route loaded when graph starts.
+ * @param modifier modifier applied to the underlying [NavHost].
+ * @param navController controller managing back stack state transitions.
+ * @param onboardingModel view model forwarded to destinations that need user profile data.
+ * @param toolsModel view model forwarded to destinations that display or modify tool results.
+ * @param quoteModel view model forwarded to the home screen for quote display.
+ * @param startDestination initial route loaded when graph starts.
  */
 @Composable
 fun AppNavHost(

@@ -24,8 +24,8 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 /**
  * Renders bottom tabs and preserves per-destination back stack state.
  *
- * @param navController - controller used for tab navigation actions.
- * @param appItems - routes rendered as bottom navigation entries.
+ * @param navController controller used for tab navigation actions.
+ * @param appItems routes rendered as bottom navigation entries.
  */
 @Composable
 fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {

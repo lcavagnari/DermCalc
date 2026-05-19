@@ -39,8 +39,8 @@ import kotlinx.datetime.LocalDate
 /**
  * Read-only date field that opens a Material3 [DatePickerDialog] on tap, bridging [LocalDate] to the epoch-millisecond API.
  *
- * @param field - the [DateInput] field supplying the current value and label.
- * @param onDateSelected - callback invoked with the chosen [LocalDate] on confirm.
+ * @param field the [DateInput] field supplying the current value and label.
+ * @param onDateSelected callback invoked with the chosen [LocalDate] on confirm.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
