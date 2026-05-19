@@ -64,7 +64,7 @@ data object ProfileRoute : AppRoute {
 
 
 @Serializable
-@SerialName("bmi")
+@SerialName("bmitool")
 data object BMIToolRoute: AppRoute {
     override val title: Int
         get() = R.string.tools_bmi
@@ -86,7 +86,7 @@ data object BSAToolRoute: AppRoute {
 }
 
 @Serializable
-@SerialName("pasi")
+@SerialName("pasitool")
 data object PASIToolRoute: AppRoute {
     override val title: Int
         get() = R.string.tools_pasi
@@ -97,12 +97,11 @@ data object PASIToolRoute: AppRoute {
 }
 
 @Serializable
-@SerialName("easi")
 data object EASIToolRoute: AppRoute {
     override val title: Int
         get() = R.string.tools_easi
     override val route: String
         get() = "easitool"
     override val iconRes: Int
-        get() = R.drawable.ic_body_scan
+        get() = R.drawable.ic_allergies
 }
