@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -9,9 +10,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -20,6 +23,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -51,6 +55,7 @@ import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -68,6 +73,8 @@ import kotlinx.coroutines.launch
 data class OnboardingScreen(
     @StringRes val title: Int,
     @StringRes val description: Int? = null,
+    @DrawableRes val backgroundLight: Int,
+    @DrawableRes val backgroundDark: Int,
 
     val imageRes: ImageVector? = null,
     val imageDrawable: Int? = null,
@@ -83,31 +90,42 @@ data class OnboardingScreen(
 val onboardingScreens = listOf(
     OnboardingScreen(
         title = R.string.onboarding_1_title,
-        imageDrawable = R.drawable.ic_ecg
+        imageDrawable = R.drawable.ic_ecg,
+        backgroundLight = R.drawable.bg_onboarding1,
+        backgroundDark = R.drawable.bg_onboarding1_dark
+
     ),
     OnboardingScreen(
         title = R.string.onboarding_2_title,
         description = R.string.onboarding_2_desc,
-        imageRes = Icons.Default.Info
+        imageRes = Icons.Default.Info,
+        backgroundLight = R.drawable.bg_onboarding2,
+        backgroundDark = R.drawable.bg_onboarding2_dark
     ),
     OnboardingScreen(
         title = R.string.onboarding_3_title,
         description = R.string.onboarding_3_desc,
-        imageRes = Icons.Default.Favorite
+        imageRes = Icons.Default.Favorite,
+        backgroundLight = R.drawable.bg_onboarding3,
+        backgroundDark = R.drawable.bg_onboarding3_dark
     ),
     OnboardingScreen(
         title = R.string.onboarding_4_title,
         description = R.string.onboarding_4_desc,
         inputFieldIds = listOf("full-name", "date-of-birth", "sex"),
         imageRes = Icons.Default.AccountCircle,
-        imageSize = 190.dp
+        imageSize = 190.dp,
+        backgroundLight = R.drawable.bg_onboarding4,
+        backgroundDark = R.drawable.bg_onboarding3_dark
     ),
     OnboardingScreen(
         title = R.string.onboarding_5_title,
         description = R.string.onboarding_5_desc,
         inputFieldIds = listOf("height", "weight"),
         imageRes = Icons.Default.AccountCircle,
-        imageSize = 180.dp
+        imageSize = 180.dp,
+        backgroundLight = R.drawable.bg_onboarding4,
+        backgroundDark = R.drawable.bg_onboarding3_dark
     )
 )
 
@@ -124,19 +142,18 @@ fun OnboardingPreview() {
 /**
  * Full-screen onboarding flow over a multi-page [androidx.compose.foundation.pager.HorizontalPager].
  *
- * Layout (top → bottom):
+ * Layout: [OnboardingPager] fills the full screen as a background layer (edge-to-edge, including
+ * behind system bars). A chrome [Column] overlay is drawn on top, inset by status/nav bars:
  * - Trailing [TopTrayButtons] row (language, theme-toggle, debug skip-to-finish).
- * - [OnboardingPager] — fills remaining vertical space; each page rendered by [OnBoardItem].
- * - [GoBackButton] — back arrow label; only visible when the current page's required fields
- *   are not yet valid (i.e. the user cannot swipe forward yet).
+ * - [GoBackButton] — back arrow; only visible when the current page's required fields are invalid.
  * - [StepIndicator] — pill/circle dots tracking the current page position.
- * - Next / Start [androidx.compose.material3.Button] — disabled until all required fields on the page pass validation.
+ * - Next / Start [androidx.compose.material3.Button] — disabled until all required fields pass.
  *
  * Directional swipe-hint icons are overlaid at the vertical midpoint when the current page is
  * valid and a swipe target exists (left hint if not page 0; right hint if not the last page).
  *
  * @param pagerState state object controlling the current page and scroll position.
- * @param modifier modifier applied to the root [Column].
+ * @param modifier modifier applied to the root [Box].
  * @param onToggleTheme callback threaded through to [TopTrayButtons] for theme switching.
  * @param onLangClick callback threaded through to [TopTrayButtons] for language switching.
  * @param onFinish callback invoked when the user completes the final onboarding page.
@@ -158,100 +175,100 @@ fun OnboardingScreen(
     val isLastIndex = pagerState.currentPage == onboardingScreens.lastIndex
     val isBtnEnabled = onBoardingModel.isFieldsInputValid(currentScreen.inputFieldIds, fields)
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            // Reserve space for the system status bar before the 16dp content padding
-            // so the tray buttons aren't hidden under the clock / notch.
-            .statusBarsPadding()
-            .padding(16.dp)
-            // Tapping anywhere outside a text field clears focus and dismisses the keyboard.
-            .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
+            .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
     ) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            TopTrayButtons(
-                showDebug = true,
-                iconTint = MaterialTheme.colorScheme.secondary,
-                onLangClick = onLangClick,
-                onDebugClick = { onBoardingModel.finishOnboarding() },
-                onToggleTheme = onToggleTheme
-            )
-        }
-
-        // Page content
+        // Background + page content fills full screen, including behind system bars
         OnboardingPager(
             pagerState,
-            modifier = Modifier
-                .weight(1f)
-                .padding(bottom = 30.dp),
+            modifier = Modifier.fillMaxSize(),
             userScrollEnabled = isBtnEnabled
         )
 
-        // Back button — only shown when input is not yet valid
-        if (!isBtnEnabled)
-            GoBackButton(modifier = Modifier.padding(bottom = 7.dp, start = 5.dp)) {
-                if (pagerState.currentPage > 0)
-                    coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
-            }
-
-        // Step indicator dots
-        StepIndicator(
-            totalSteps = onboardingScreens.size,
-            currentStep = pagerState.currentPage
-        )
-
-        // Next / Start button
-        Button(
+        // Chrome overlay; insets applied here so background bleeds edge-to-edge
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
                 .padding(16.dp)
-                .semantics { testTag = if (isLastIndex) "btn_start" else "btn_next" },
-            enabled = isBtnEnabled,
-            onClick = {
-                if (!isLastIndex) {
-                    coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-                } else {
-                    onFinish()
-                }
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TopTrayButtons(
+                    showDebug = true,
+                    iconTint = MaterialTheme.colorScheme.secondary,
+                    onLangClick = onLangClick,
+                    onDebugClick = { onBoardingModel.finishOnboarding() },
+                    onToggleTheme = onToggleTheme
+                )
             }
-        ) {
-            Text(stringResource(if (isLastIndex) R.string.btn_start else R.string.btn_next))
-        }
-    }
 
-    if (isBtnEnabled) {
-        if (pagerState.currentPage > 0) Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .size(26.dp),
-                painter = painterResource(id = R.drawable.ic_swipe_left),
-                contentDescription = "Swipe back",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            Spacer(Modifier.weight(1f))
+
+            if (!isBtnEnabled)
+                GoBackButton(modifier = Modifier.padding(bottom = 7.dp, start = 5.dp)) {
+                    if (pagerState.currentPage > 0)
+                        coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+                }
+
+            StepIndicator(
+                totalSteps = onboardingScreens.size,
+                currentStep = pagerState.currentPage
             )
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .semantics { testTag = if (isLastIndex) "btn_start" else "btn_next" },
+                enabled = isBtnEnabled,
+                onClick = {
+                    if (!isLastIndex) {
+                        coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
+                    } else {
+                        onFinish()
+                    }
+                }
+            ) {
+                Text(stringResource(if (isLastIndex) R.string.btn_start else R.string.btn_next))
+            }
         }
 
-        if (!isLastIndex) Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                modifier = Modifier
-                    .padding(end = 12.dp)
-                    .size(26.dp),
-                painter = painterResource(id = R.drawable.ic_swipe_right),
-                contentDescription = "Swipe forward",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        if (isBtnEnabled) {
+            if (pagerState.currentPage > 0) Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .size(26.dp),
+                    painter = painterResource(id = R.drawable.ic_swipe_left),
+                    contentDescription = "Swipe back",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            if (!isLastIndex) Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .size(26.dp),
+                    painter = painterResource(id = R.drawable.ic_swipe_right),
+                    contentDescription = "Swipe forward",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }
