@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.
+package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +19,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.tools.BMIScreen
 
 
 /**
@@ -52,7 +53,7 @@ fun AppNavHost(
         composable<ToolsRoute> { ToolsScreen(navController, toolsModel) }
         composable<ProfileRoute> { ProfileRoute(navController, onboardingModel) }
 
-        composable<BMIToolRoute>  { ToolsScreen(navController, toolsModel) }
+        composable<BMIToolRoute>  { BMIScreen(navController, toolsModel) }
         composable<BSAToolRoute>  { ToolsScreen(navController, toolsModel) }
         composable<PASIToolRoute> { ToolsScreen(navController, toolsModel) }
         composable<EASIToolRoute> { ToolsScreen(navController, toolsModel) }
