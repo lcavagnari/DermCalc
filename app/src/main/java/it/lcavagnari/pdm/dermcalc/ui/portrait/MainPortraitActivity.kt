@@ -13,23 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppNavHost
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.navItems
+import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
-import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
-import it.lcavagnari.pdm.dermcalc.utils.today
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.atTime
-import kotlinx.datetime.minus
 
 /**
  * Root portrait composable that observes onboarding state and renders either the onboarding
@@ -69,9 +64,14 @@ fun MainPortraitActivity(
 
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
+        topBar = { TopMenu(navController, onToggleTheme = onToggleTheme)},
 
-        bottomBar = { NavigationBar(navController = navController, appItems = navItems) }
+        bottomBar = {
+            NavigationBar(
+                appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute),
+                navController = navController
+            )
+        }
 
     ) { innerPadding ->
         AppNavHost(
