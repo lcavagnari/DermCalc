@@ -29,6 +29,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
@@ -50,6 +51,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
     val title: Int = when (currentDestination?.route) {
         ToolsRoute.route -> R.string.nav_tools
         ProfileRoute.route -> R.string.nav_profile
+        BMIToolRoute.route -> R.string.tools_bmi
         else -> R.string.app_name
     }
 
