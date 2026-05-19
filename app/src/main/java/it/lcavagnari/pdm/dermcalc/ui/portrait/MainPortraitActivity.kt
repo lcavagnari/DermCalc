@@ -19,7 +19,7 @@ import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
+import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
