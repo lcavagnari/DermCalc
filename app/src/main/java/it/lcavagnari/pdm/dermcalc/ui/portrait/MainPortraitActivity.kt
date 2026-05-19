@@ -57,10 +57,10 @@ fun MainPortraitActivity(
 
     // Show the onboarding flow until the user completes all pages.
     if (!hasSeenOnboarding) {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
             OnboardingScreen(
                 pagerState = pagerState,
-                modifier = modifier.padding(innerPadding),
+                modifier = modifier,
                 onFinish = { onboardingModel.finishOnboarding() },
                 onToggleTheme = onToggleTheme
             )
