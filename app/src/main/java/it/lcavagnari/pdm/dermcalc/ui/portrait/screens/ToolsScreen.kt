@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +44,11 @@ import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
@@ -66,15 +72,12 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
  * @constructor Create empty Onboarding screen
  */
 data class ToolCard(
-    @StringRes val title: Int,
     @StringRes val description: Int,
-    val color: Color,
-    val onColor: Color = color.copy(alpha = 0.22f),
 
-    val imageRes: ImageVector? = null,
-    val imageDrawable: Int? = null,
+    val color: Color,
+
+    val route: AppRoute,
     val imageSize: Dp? = 40.dp,
-    val onClick:() -> Unit = {},
 
     val districtNum: Int? = null,
     val valueRange: Pair<Double, Double>? = null,
@@ -91,16 +94,14 @@ data class ToolCard(
 fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
     val quick = listOf<ToolCard>(
         ToolCard(
-            title = R.string.tools_bmi,
+            route = BMIToolRoute,
             description = R.string.tools_bmi_description,
-            imageDrawable = R.drawable.ic_body_mass_index,
             borderSide = BorderSide.Top,
             color = SoulPatience
         ),
         ToolCard(
-            title = R.string.tools_bsa,
+            route = BSAToolRoute,
             description = R.string.tools_bsa_description,
-            imageDrawable = R.drawable.ic_bsa_lungs,
             borderSide = BorderSide.Top,
             color = SoulBravery
         )
@@ -108,19 +109,17 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
 
     val index = listOf<ToolCard>(
         ToolCard(
-            title = R.string.tools_pasi,
+            route = PASIToolRoute,
             description = R.string.tools_pasi_description,
-            imageDrawable = R.drawable.ic_body_scan,
-            borderSide = BorderSide.Top,
+            borderSide = BorderSide.Left,
             color = SoulIntegrity,
             districtNum = 4,
             valueRange = Pair(0.0,72.0)
         ),
         ToolCard(
-            title = R.string.tools_easi,
+            route = EASIToolRoute,
             description = R.string.tools_easi_description,
-            imageDrawable = R.drawable.ic_bsa_lungs,
-            borderSide = BorderSide.Top,
+            borderSide = BorderSide.Left,
             color = SoulPerseverance,
             districtNum = 4,
             valueRange = Pair(0.0,72.0)
@@ -132,40 +131,40 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
     ) {
+        Text(
+            text = stringResource(R.string.tools_quick).uppercase(),
+            modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary,
+        )
 
-            Text(
-                text = stringResource(R.string.tools_quick).uppercase(),
-                modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary,
-            )
+        QuickCalculators(toolsList = quick) { navController.navigate(it) }
 
-            QuickCalculators(toolsList = quick)
+        Text(
+            text = stringResource(R.string.tools_index).uppercase(),
+            modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary,
+        )
 
-
-            Text(
-                text = stringResource(R.string.tools_index).uppercase(),
-                modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary,
-            )
-
-            IndexesCalculators(toolsList = index)
+        IndexesCalculators(toolsList = index) { navController.navigate(it) }
     }
 }
 
 @Composable
-fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
+fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
     Row(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
     ) {
         toolsList.forEach {
+            val destination = it.route
+
             BorderedCard(
                 modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
                 elevation = CardDefaults.cardElevation(6.dp),
@@ -174,23 +173,16 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
                 borderSide = it.borderSide,
                 borderStrokeWidth = 2.dp,
                 cornerRadius = 10.dp,
-                onClick = it.onClick
+                onClick = { onClick(destination) }
             ) {
                 Row(
                     modifier = modifier.padding(horizontal = 10.dp).fillMaxWidth()
                 ) {
-                    if (it.imageRes != null) {
+                    if (destination.iconRes != null) {
                         Icon(
                             modifier = Modifier.size(it.imageSize!!),
-                            imageVector = it.imageRes,
-                            contentDescription = "Icon for " + stringResource(it.title) + " tool",
-                            tint = it.color
-                        )
-                    } else if (it.imageDrawable != null) {
-                        Icon(
-                            modifier = Modifier.size(it.imageSize!!),
-                            painter = painterResource(it.imageDrawable),
-                            contentDescription = "Icon for " + it.title + " tool",
+                            painter = painterResource(destination.iconRes!!),
+                            contentDescription = "Icon for " + destination.title + " tool",
                             tint = it.color
                         )
                     }
@@ -203,7 +195,7 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
                         horizontalAlignment = Alignment.Start
                     ) {
                         Text(
-                            text = stringResource(it.title),
+                            text = stringResource(destination.title!!),
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1
                         )
@@ -222,14 +214,18 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
 }
 
 @Composable
-fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) {
+fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
     Column(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
+        val surface = MaterialTheme.colorScheme.surface
         toolsList.forEach {
-
+            val destination = it.route
+            val title = destination.title!!
+            val icon = destination.iconRes
+            val onColor = lerp(surface, it.color, 0.22f)
 
             BorderedCard(
                 modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
@@ -239,7 +235,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) 
                 borderSide = it.borderSide,
                 borderStrokeWidth = 2.dp,
                 cornerRadius = 10.dp,
-                onClick = it.onClick
+                onClick = { onClick(destination) }
             ) {
                 Row(
                     modifier = modifier.padding(10.dp).fillMaxWidth(),
@@ -249,20 +245,13 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) 
                     Card(
                         elevation = CardDefaults.cardElevation(6.dp),
                         border = BorderStroke(1.dp, it.color),
-                        colors = CardDefaults.cardColors(containerColor = it.onColor)
+                        colors = CardDefaults.cardColors(containerColor = onColor)
                     ) {
-                        if (it.imageRes != null) {
-                            Icon(
-                                modifier = Modifier.size(it.imageSize!!).padding(5.dp),
-                                imageVector = it.imageRes,
-                                contentDescription = "Icon for " + stringResource(it.title) + " tool",
-                                tint = it.color
-                            )
-                        } else if (it.imageDrawable != null) {
+                        if (icon != null) {
                             Icon(
                                 modifier = Modifier.size(it.imageSize!!).padding(7.dp),
-                                painter = painterResource(it.imageDrawable),
-                                contentDescription = "Icon for " + it.title + " tool",
+                                painter = painterResource(icon),
+                                contentDescription = "Icon for $title tool",
                                 tint = it.color
                             )
                         }
@@ -273,7 +262,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) 
                         verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterVertically)
                     ) {
                         Text(
-                            text = stringResource(it.title),
+                            text = stringResource(title),
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1
                         )
@@ -291,9 +280,9 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) 
                         ) {
                             if(it.districtNum != null) Card(
                                 elevation = CardDefaults.cardElevation(6.dp),
-                                border = BorderStroke(1.dp, it.onColor),
+                                border = BorderStroke(1.dp, onColor),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = it.onColor,
+                                    containerColor = onColor,
                                     contentColor = it.color
                                 )
                             ) { Text(
@@ -305,9 +294,9 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>) 
 
                             if(it.valueRange != null) Card(
                                 elevation = CardDefaults.cardElevation(6.dp),
-                                border = BorderStroke(1.dp, it.onColor),
+                                border = BorderStroke(1.dp, onColor),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = it.onColor,
+                                    containerColor = onColor,
                                     contentColor = it.color
                                 )
                             ) { Text(

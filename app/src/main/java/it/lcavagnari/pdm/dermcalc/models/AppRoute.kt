@@ -1,7 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.ui.graphics.vector.ImageVector
 import it.lcavagnari.pdm.dermcalc.R
 import kotlinx.serialization.SerialName
@@ -18,7 +16,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed interface AppRoute {
-    val name: String? get() = ""
     val title: Int? get() = null
 
     val icon: ImageVector? get() = null
@@ -26,6 +23,7 @@ sealed interface AppRoute {
 
     val route: String
 }
+
 
 /** Home destination metadata for route graph and bottom navigation item. */
 @Serializable
@@ -64,5 +62,47 @@ data object ProfileRoute : AppRoute {
         get() = R.drawable.ic_profile_button
 }
 
-/** Static list consumed to render tabs in [NavigationBar]. */
-val navItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+
+@Serializable
+@SerialName("bmitool")
+data object BMIToolRoute: AppRoute {
+    override val title: Int
+        get() = R.string.tools_bmi
+    override val route: String
+        get() = "bmitool"
+    override val iconRes: Int
+        get() = R.drawable.ic_body_mass_index
+}
+
+@Serializable
+@SerialName("bsatool")
+data object BSAToolRoute: AppRoute {
+    override val title: Int
+        get() = R.string.tools_bsa
+    override val route: String
+        get() = "bsatool"
+    override val iconRes: Int
+        get() = R.drawable.ic_bsa_lungs
+}
+
+@Serializable
+@SerialName("pasitool")
+data object PASIToolRoute: AppRoute {
+    override val title: Int
+        get() = R.string.tools_pasi
+    override val route: String
+        get() = "pasitool"
+    override val iconRes: Int
+        get() = R.drawable.ic_body_scan
+}
+
+@Serializable
+@SerialName("easitool")
+data object EASIToolRoute: AppRoute {
+    override val title: Int
+        get() = R.string.tools_easi
+    override val route: String
+        get() = "easitool"
+    override val iconRes: Int
+        get() = R.drawable.ic_allergies
+}

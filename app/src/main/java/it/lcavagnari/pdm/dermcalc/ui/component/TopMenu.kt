@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,9 +30,20 @@ import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulDetermination
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
 
@@ -44,12 +56,16 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
  * @param onDebugClick - callback invoked when the user taps the debug button.
  */
 @Composable
-fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick: () -> Unit = {}) {
+fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     val title: Int = when (currentDestination?.route) {
-        ToolsRoute.route -> R.string.nav_tools
-        ProfileRoute.route -> R.string.nav_profile
+        ToolsRoute.route    -> R.string.nav_tools
+        ProfileRoute.route  -> R.string.nav_profile
+        BMIToolRoute.route  -> R.string.tools_bmi
+        BSAToolRoute.route  -> R.string.tools_bsa
+        PASIToolRoute.route -> R.string.tools_pasi
+        EASIToolRoute.route -> R.string.tools_easi
         else -> R.string.app_name
     }
 
@@ -57,12 +73,17 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
         HomeRoute.route -> R.string.nav_home_subtitle
         ToolsRoute.route -> R.string.nav_tools_subtitle
         ProfileRoute.route -> R.string.nav_profile_subtitle
+        BMIToolRoute.route  -> R.string.tools_bmi_description
+        BSAToolRoute.route  -> R.string.tools_bsa_description
+        PASIToolRoute.route -> R.string.tools_pasi_description
+        EASIToolRoute.route -> R.string.tools_easi_description
         else -> null
     }
 
     val icon = when (currentDestination?.route) {
         ToolsRoute.route -> R.drawable.ic_tools_calculator
         ProfileRoute.route -> R.drawable.ic_profile_button
+        BMIToolRoute.route, BSAToolRoute.route, PASIToolRoute.route, EASIToolRoute.route -> R.drawable.ic_arrow_back
         else -> R.drawable.ic_ecg
     }
 
@@ -72,9 +93,13 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
     //   PROFILE → SOUL Kindness (green, self-care)
     // Each soul claims its own room — never share chrome between screens.
     val soulColor = when (currentDestination?.route) {
-        HomeRoute.route -> Soul.Determination.color
-        ToolsRoute.route -> MaterialTheme.colorScheme.primary
-        ProfileRoute.route -> Soul.Kindness.color
+        HomeRoute.route     -> SoulDetermination
+        ToolsRoute.route    -> SoulJustice
+        ProfileRoute.route  -> SoulKindness
+        BMIToolRoute.route  -> SoulPatience
+        BSAToolRoute.route  -> SoulBravery
+        PASIToolRoute.route -> SoulIntegrity
+        EASIToolRoute.route -> SoulPerseverance
         else -> soulForRoute(currentDestination?.route).color
     }
     // Use luminance to pick legible text: bright soul backgrounds (gold, green, cyan, orange)
@@ -103,7 +128,14 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                modifier           = Modifier.size(35.dp),
+                modifier           = Modifier.size(35.dp).clickable {
+                    when (currentDestination?.route) {
+                        BMIToolRoute.route, BSAToolRoute.route,
+                        PASIToolRoute.route, EASIToolRoute.route ->
+                            navController.popBackStack(ToolsRoute.route, false)
+                        else -> {}
+                    }
+                },
                 painter            = painterResource(icon),
                 contentDescription = null,
                 tint               = soulColor
@@ -134,9 +166,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
             }
             TopTrayButtons(
                 iconTint = soulColor,
-                onToggleTheme = onToggleTheme,
-                onDebugClick = onDebugClick,
-                showDebug = true
+                onToggleTheme = onToggleTheme
             ) {}
         }
     }

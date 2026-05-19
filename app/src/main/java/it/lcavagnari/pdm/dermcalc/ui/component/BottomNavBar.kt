@@ -61,22 +61,18 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                     if (item.iconRes != null) {
                         Icon(
                             painter = painterResource(id = item.iconRes!!),
-                            contentDescription = item.name,
+                            contentDescription = item.route,
                         )
                     } else {
                         item.icon?.let {
                             Icon(
                                 imageVector = it,
-                                contentDescription = item.name
+                                contentDescription = item.route
                             )
                         }
                     }
                 },
-                label = {
-                    item.title?.let {
-                        Text(text = stringResource(id = it))
-                    } ?: Text(text = item.name ?: "")
-                },
+                label = { Text(text = item.title?.let { stringResource(it) } ?: "") },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = currentSoul,
                     selectedTextColor = currentSoul,

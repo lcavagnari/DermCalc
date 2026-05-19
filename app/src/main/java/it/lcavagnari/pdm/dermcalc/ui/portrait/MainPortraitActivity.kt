@@ -20,7 +20,8 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
-import it.lcavagnari.pdm.dermcalc.navigation.navItems
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
@@ -63,9 +64,16 @@ fun MainPortraitActivity(
 
     } else Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
+        topBar = {
+            TopMenu(navController, onToggleTheme = onToggleTheme)
+        },
 
-        bottomBar = { NavigationBar(navController = navController, appItems = navItems) }
+        bottomBar = {
+            NavigationBar(
+                appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute),
+                navController = navController
+            )
+        }
 
     ) { innerPadding ->
         AppNavHost(
