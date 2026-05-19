@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -74,7 +75,6 @@ data class ToolCard(
     @StringRes val description: Int,
 
     val color: Color,
-    val onColor: Color = color.copy(alpha = 0.22f),
 
     val route: AppRoute,
     val imageSize: Dp? = 40.dp,
@@ -111,7 +111,7 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
         ToolCard(
             route = PASIToolRoute,
             description = R.string.tools_pasi_description,
-            borderSide = BorderSide.Top,
+            borderSide = BorderSide.Left,
             color = SoulIntegrity,
             districtNum = 4,
             valueRange = Pair(0.0,72.0)
@@ -119,7 +119,7 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
         ToolCard(
             route = EASIToolRoute,
             description = R.string.tools_easi_description,
-            borderSide = BorderSide.Top,
+            borderSide = BorderSide.Left,
             color = SoulPerseverance,
             districtNum = 4,
             valueRange = Pair(0.0,72.0)
@@ -220,10 +220,12 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
+        val surface = MaterialTheme.colorScheme.surface
         toolsList.forEach {
             val destination = it.route
             val title = destination.title!!
             val icon = destination.iconRes
+            val onColor = lerp(surface, it.color, 0.22f)
 
             BorderedCard(
                 modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
@@ -243,7 +245,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
                     Card(
                         elevation = CardDefaults.cardElevation(6.dp),
                         border = BorderStroke(1.dp, it.color),
-                        colors = CardDefaults.cardColors(containerColor = it.onColor)
+                        colors = CardDefaults.cardColors(containerColor = onColor)
                     ) {
                         if (icon != null) {
                             Icon(
@@ -278,9 +280,9 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
                         ) {
                             if(it.districtNum != null) Card(
                                 elevation = CardDefaults.cardElevation(6.dp),
-                                border = BorderStroke(1.dp, it.onColor),
+                                border = BorderStroke(1.dp, onColor),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = it.onColor,
+                                    containerColor = onColor,
                                     contentColor = it.color
                                 )
                             ) { Text(
@@ -292,9 +294,9 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
 
                             if(it.valueRange != null) Card(
                                 elevation = CardDefaults.cardElevation(6.dp),
-                                border = BorderStroke(1.dp, it.onColor),
+                                border = BorderStroke(1.dp, onColor),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = it.onColor,
+                                    containerColor = onColor,
                                     contentColor = it.color
                                 )
                             ) { Text(
