@@ -36,7 +36,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     fun finishOnboarding() { _hasSeenOnboarding.value = true }
 
     /**
-     * @param id - id of the [InputField] to retrieve.
+     * @param id id of the [InputField] to retrieve.
      * @return [InputField] instance with matching [id] or null.
      */
     private fun getFieldById(id: String): InputField? = _inputFields.value.firstOrNull { it.id == id }
@@ -45,9 +45,9 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Returns true when every required field in [fieldIds] has a valid value.
      *
-     * @param fieldIds - list of field ids for the current onboarding page.
-     * @param fields - snapshot of fields to validate against. Defaults to the current [fields] state.
-     * @return Boolean - true if all required fields are valid, or [fieldIds] is empty.
+     * @param fieldIds list of field ids for the current onboarding page.
+     * @param fields snapshot of fields to validate against. Defaults to the current [fields] state.
+     * @return true if all required fields are valid, or [fieldIds] is empty.
      */
     fun isFieldsInputValid(
         fieldIds: List<String>,
@@ -64,7 +64,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
      * Updates the full name field.
      * Valid when the value contains at least two whitespace-separated words.
      *
-     * @param value - full name string entered by the user.
+     * @param value full name string entered by the user.
      */
     fun updateName(value: String) {
         val isValid = value.trim().split("\\s+".toRegex()).filter { it.isNotBlank() }.size >= 2
@@ -79,7 +79,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
      * Updates the date of birth field.
      * Valid when the date is after 1900-01-01 and not in the future.
      *
-     * @param value - date of birth selected by the user.
+     * @param value date of birth selected by the user.
      */
     fun updateDateOfBirth(value: LocalDate) {
         val today = today().date
@@ -95,7 +95,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the sex field.
      *
-     * @param value - selected [Sex] enum value.
+     * @param value selected [Sex] enum value.
      */
     fun updateSex(value: Sex) {
         _inputFields.value = _inputFields.value.map { field ->
@@ -108,7 +108,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the height unit system.
      *
-     * @param value - selected height unit system.
+     * @param value selected height unit system.
      */
     fun updateMeasurements(value: HeightMeasurements) {
         _inputFields.value = _inputFields.value.map { field ->
@@ -121,7 +121,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the weight unit system.
      *
-     * @param value - selected weight unit system.
+     * @param value selected weight unit system.
      */
     fun updateMeasurements(value: WeightMeasurements) {
         _inputFields.value = _inputFields.value.map { field ->
@@ -135,7 +135,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the metric height field. Valid range 50–272 cm.
      *
-     * @param cm - height in centimetres.
+     * @param cm height in centimetres.
      */
     fun updateHeightMetric(cm: Int) {
         val isValid = cm in 50..272
@@ -150,8 +150,8 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the imperial height field. Converts feet and inches to centimetres before storing.
      *
-     * @param feet - whole feet component.
-     * @param inches - remaining inches component.
+     * @param feet whole feet component.
+     * @param inches remaining inches component.
      */
     fun updateHeightImperial(feet: Int, inches: Int) {
         _inputFields.value = _inputFields.value.map { field ->
@@ -168,7 +168,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the weight field in kilograms. Valid range 20–300 kg.
      *
-     * @param kilos - weight in kilograms.
+     * @param kilos weight in kilograms.
      */
     fun updateWeightKilos(kilos: Int) {
         val isValid = kilos in 20..300
@@ -186,7 +186,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /**
      * Updates the weight field in pounds. Converts to kg before storing. Valid range 44–661 lb.
      *
-     * @param pounds - weight in pounds.
+     * @param pounds weight in pounds.
      */
     fun updateWeightPounds(pounds: Int) {
         val isValid = pounds in 44..661

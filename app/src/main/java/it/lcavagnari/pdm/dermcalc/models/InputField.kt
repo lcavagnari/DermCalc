@@ -11,13 +11,13 @@ import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 
 
-/** Converts this [LocalDate] to epoch milliseconds in UTC, for use with Material3 date APIs. @return Long - epoch milliseconds. */
+/** Converts this [LocalDate] to epoch milliseconds in UTC, for use with Material3 date APIs. @return Epoch milliseconds. */
 @OptIn(ExperimentalTime::class)
 fun LocalDate.toEpochMillis(): Long {
     return atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()
 }
 
-/** Converts epoch milliseconds to a [LocalDate] in UTC. @return LocalDate - the corresponding local date. */
+/** Converts epoch milliseconds to a [LocalDate] in UTC. @return The corresponding [LocalDate]. */
 @OptIn(ExperimentalTime::class)
 fun Long.toLocalDate(): LocalDate {
     return Instant.fromEpochMilliseconds(this)
@@ -124,8 +124,8 @@ data class HeightInput(
     /**
      * Converts height cm to feet and inches.
      *
-     * @param cm - height in cm.
-     * @return Pair<feet, inches> - height in imperial system as Double.
+     * @param cm height in cm.
+     * @return Height in imperial as a (feet, inches) [Pair].
      */
     fun cmToFeetInches(cm: Double = value ?: 0.0): Pair<Double, Double> {
         val totalInches = cm / 2.54
@@ -135,9 +135,9 @@ data class HeightInput(
     /**
      * Converts feet and inches to centimetres.
      *
-     * @param feet - height in feet.
-     * @param inches - remaining height in inches.
-     * @return Double - height in centimetres.
+     * @param feet height in feet.
+     * @param inches remaining height in inches.
+     * @return Height in centimetres.
      */
     fun feetInchesToCm(feet: Int, inches: Int): Double =
         (feet * 12 + inches) * 2.54
@@ -165,8 +165,8 @@ data class WeightInput(
     /**
      * Converts kilograms to pounds.
      *
-     * @param kilos - weight in kg.
-     * @return Double - weight in pounds.
+     * @param kilos weight in kg.
+     * @return Weight in pounds.
      */
     fun kilosToPounds(kilos: Double = value ?: 0.0): Double = kilos * 2.2046
 }
