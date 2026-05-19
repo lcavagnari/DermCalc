@@ -19,7 +19,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.tools.BMIScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BMIScreen
 
 
 /**
