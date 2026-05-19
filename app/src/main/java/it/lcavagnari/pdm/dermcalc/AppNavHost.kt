@@ -9,18 +9,12 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BMIScreen
-
 
 /**
  * Registers destination composables and wires type-safe route navigation.
@@ -48,14 +42,15 @@ fun AppNavHost(
     ) {
         composable<HomeRoute> {
             HomeScreen(navController, quoteModel, onboardingModel,toolsModel)
+
         }
 
-        composable<ToolsRoute> { ToolsScreen(navController, toolsModel) }
-        composable<ProfileRoute> { ProfileRoute(navController, onboardingModel) }
+        composable<ToolsRoute> {
+            ToolsScreen(navController, toolsModel)
+        }
 
-        composable<BMIToolRoute>  { BMIScreen(navController, toolsModel) }
-        composable<BSAToolRoute>  { ToolsScreen(navController, toolsModel) }
-        composable<PASIToolRoute> { ToolsScreen(navController, toolsModel) }
-        composable<EASIToolRoute> { ToolsScreen(navController, toolsModel) }
+        composable<ProfileRoute> {
+            ProfileRoute(navController, onboardingModel)
+        }
     }
 }

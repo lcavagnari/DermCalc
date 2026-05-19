@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
@@ -84,11 +83,6 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                 selected = isSelected,
                 onClick = {
                     navController.navigate(item) {
-                        // Pop up to the start destination of the graph to avoid building up a large stack
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-
                         // Avoid multiple copies of the same destination when reselecting the same item
                         launchSingleTop = true
 
