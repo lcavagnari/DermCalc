@@ -44,7 +44,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
  * @param onDebugClick - callback invoked when the user taps the debug button.
  */
 @Composable
-fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebugClick: () -> Unit = {}) {
+fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     val title: Int = when (currentDestination?.route) {
@@ -134,9 +134,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}, onDebu
             }
             TopTrayButtons(
                 iconTint = soulColor,
-                onToggleTheme = onToggleTheme,
-                onDebugClick = onDebugClick,
-                showDebug = true
+                onToggleTheme = onToggleTheme
             ) {}
         }
     }
