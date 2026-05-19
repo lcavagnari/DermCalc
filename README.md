@@ -4,10 +4,10 @@ An Android app for dermatological score calculation and patient management, buil
 
 ## Features
 
-- **Patient profile** — onboarding flow collecting personal data (name, date of birth, sex), stored locally with Room
+- **Patient profile** — onboarding flow collecting personal data (name, date of birth, sex); held in-memory for the session (Room dependency included, persistence not yet implemented)
 - **BMI** — weight/height input, automatic classification (underweight / normal / overweight / obese)
 - **BSA** — body surface area via body region checklist (head, trunk, limbs, genitals)
-- **PASI** — multi-step calculator across four districts (head, upper limbs, trunk, lower limbs) with erythema, induration, desquamation and area scoring; severity classification (Mild <5 / Moderate 5–10 / Severe >10)
+- **PASI** — multi-step calculator across four districts (head, upper limbs, trunk, lower limbs) with erythema, induration, desquamation and area scoring; severity classification (Mild <10 / Moderate 10–20 / Severe ≥20)
 - **EASI** — identical structure to PASI with adjusted parameters (erythema, oedema/papulation, excoriation, lichenification; 0–3 scale)
 - **History** — chronological log of all calculations with type, value, severity and date; full history screen with deletion support when entries exceed 7
 
@@ -26,7 +26,7 @@ DermCalc uses a custom Material 3 theme with subtle visual nods to Undertale —
 ### Design language
 
 - **App icon** — a red heart, readable as a medical symbol and as a soul
-- **Typography** — Determination Mono (or equivalent pixel font) for titles and headers only; clean sans-serif for body text, inputs and clinical data
+- **Typography** — Determination Mono used throughout the full type scale (display → label); JetBrains Mono available for clinical score readouts
 - **Result cards** — white border on background, echoing the battle box aesthetic
 - **Severity color mapping** — intentionally aligned with Undertale's own color language:
     - Mild → green
