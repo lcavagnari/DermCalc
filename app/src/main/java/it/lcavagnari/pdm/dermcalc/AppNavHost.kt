@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.navigation
+package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,6 +8,10 @@ import androidx.navigation.compose.composable
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
