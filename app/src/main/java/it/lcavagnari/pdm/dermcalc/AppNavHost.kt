@@ -17,7 +17,10 @@ import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BMIScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BSAScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
 
@@ -54,8 +57,8 @@ fun AppNavHost(
         composable<ProfileRoute> { ProfileRoute(navController, onboardingModel) }
 
         composable<BMIToolRoute> { BMIScreen(navController, toolsModel) }
-        composable<BSAToolRoute> { ToolsScreen(navController, toolsModel) }
-        composable<PASIToolRoute> { ToolsScreen(navController, toolsModel) }
-        composable<EASIToolRoute> { ToolsScreen(navController, toolsModel) }
+        composable<BSAToolRoute> { BSAScreen(navController, toolsModel) }
+        composable<PASIToolRoute> { PASIToolRoute(navController, toolsModel) }
+        composable<EASIToolRoute> { EASIToolRoute(navController, toolsModel) }
     }
 }

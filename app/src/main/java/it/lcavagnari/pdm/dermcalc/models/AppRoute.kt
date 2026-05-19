@@ -97,6 +97,7 @@ data object PASIToolRoute: AppRoute {
 }
 
 @Serializable
+@SerialName("easitool")
 data object EASIToolRoute: AppRoute {
     override val title: Int
         get() = R.string.tools_easi
