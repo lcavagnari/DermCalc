@@ -5,28 +5,45 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -43,41 +60,25 @@ import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.HeightMeasurements
 import it.lcavagnari.pdm.dermcalc.models.InputField
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.Sex
 import it.lcavagnari.pdm.dermcalc.models.SexInput
 import it.lcavagnari.pdm.dermcalc.models.TextInput
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute as ProfileRouteDest
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
-import it.lcavagnari.pdm.dermcalc.utils.today
-
-import java.util.Locale.getDefault
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.runtime.key
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
-import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
+import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
+import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheelPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
+import it.lcavagnari.pdm.dermcalc.utils.today
+import java.util.Locale.getDefault
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute as ProfileRouteDest
 
 /**
  * Profile tab. Lets the user view and edit every onboarding field after the initial setup.
@@ -104,7 +105,9 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
     val inputFields by onboardingModel.fields.collectAsState()
 
     Column(
-        modifier = Modifier.fillMaxHeight().padding(20.dp),
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -144,7 +147,9 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
         verticalArrangement = Arrangement.Bottom
     ) {
         Icon(
-            modifier = Modifier.size(40.dp).padding(end = 5.dp),
+            modifier = Modifier
+                .size(40.dp)
+                .padding(end = 5.dp),
             painter = painterResource(id = R.drawable.ic_annoying_dog),
             contentDescription = "annoying dog",
             tint = Color.Unspecified
@@ -163,9 +168,12 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, onboardingModel: OnboardingModel) {
-    Card(
+    BorderedCard(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
+        borderSide = BorderSide.Left,
+        borderStrokeWidth = 3.dp,
+        borderColor = SoulKindness,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -421,7 +429,9 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                 }
 
                 if (index < inputFields.size) HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(0.84f).padding(start = 15.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(0.84f)
+                        .padding(start = 15.dp),
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.surface
                 )
@@ -443,10 +453,13 @@ fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMe
     val heightInput: HeightInput = inputFields[3] as HeightInput
     val weightInput: WeightInput = inputFields[4] as WeightInput
 
-    Card(
-        modifier = Modifier.fillMaxWidth()
+    BorderedCard(
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(vertical = 10.dp),
         shape = MaterialTheme.shapes.large,
+        borderSide = BorderSide.Left,
+        borderStrokeWidth = 3.dp,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.65f)
