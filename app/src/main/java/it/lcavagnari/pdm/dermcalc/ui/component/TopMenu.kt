@@ -17,26 +17,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
-import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulDetermination
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
@@ -123,10 +122,10 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
         colors    = CardDefaults.cardColors(
             contentColor = soulColor,
             //containerColor = soulColor
-            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.75f)
+            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        border    = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceContainer)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f))
     ) {
         Row(
             modifier = Modifier
@@ -139,14 +138,17 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                modifier           = Modifier.size(35.dp).clickable {
-                    when (currentDestination?.route) {
-                        BMIToolRoute.route, BSAToolRoute.route,
-                        PASIToolRoute.route, EASIToolRoute.route ->
-                            navController.popBackStack(ToolsRoute.route, false)
-                        else -> {}
-                    }
-                },
+                modifier           = Modifier
+                    .size(35.dp)
+                    .clickable {
+                        when (currentDestination?.route) {
+                            BMIToolRoute.route, BSAToolRoute.route,
+                            PASIToolRoute.route, EASIToolRoute.route ->
+                                navController.popBackStack(ToolsRoute.route, false)
+
+                            else -> {}
+                        }
+                    },
                 painter            = painterResource(icon),
                 contentDescription = null,
                 tint               = soulColor

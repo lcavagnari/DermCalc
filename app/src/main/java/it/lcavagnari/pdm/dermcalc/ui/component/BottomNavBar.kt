@@ -1,5 +1,8 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -34,9 +37,12 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 @Composable
 fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
-        modifier = Modifier.semantics { testTag = "bottom_nav_bar" },
-        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-        tonalElevation = 0.dp,
+        modifier = Modifier
+            .semantics { testTag = "bottom_nav_bar" }
+            .height(70.dp),
+        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
+        tonalElevation = 6.dp,
+        windowInsets = WindowInsets(0.dp),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -61,6 +67,7 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                 } == true
 
             NavigationBarItem(
+                modifier = Modifier.padding(top = 5.dp),
                 icon = {
                     if (item.iconRes != null) {
                         Icon(
@@ -76,7 +83,11 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                         }
                     }
                 },
-                label = { Text(text = item.title?.let { stringResource(it) } ?: "") },
+                label = {
+                    Text(
+                        modifier = Modifier.padding(bottom = 5.dp),
+                        text = item.title?.let { stringResource(it) } ?: "")
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = currentSoul,
                     selectedTextColor = currentSoul,
