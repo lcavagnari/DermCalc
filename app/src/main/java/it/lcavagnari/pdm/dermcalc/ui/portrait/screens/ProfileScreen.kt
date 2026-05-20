@@ -100,7 +100,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheelPickerDialog
  * @param onboardingModel view model holding and validating all user profile fields.
  */
 @Composable
-fun ProfileRoute(navController: NavHostController, onboardingModel: OnboardingModel) {
+fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingModel) {
     val inputFields by onboardingModel.fields.collectAsState()
 
     Column(
