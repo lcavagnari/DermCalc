@@ -1,6 +1,8 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait
 
 import android.app.Application
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
@@ -10,21 +12,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.AppNavHost
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.NavigationBar
+import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 
 /**
  * Root portrait composable. Switches between the onboarding flow and the main app shell
@@ -32,8 +40,8 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
  *
  * Two rendering paths:
  * - `!hasSeenOnboarding` → bare [androidx.compose.material3.Scaffold] (no top/bottom bars) containing [OnboardingScreen].
- * - `hasSeenOnboarding`  → [androidx.compose.material3.Scaffold] with [TopMenu] top bar,
- *   [it.lcavagnari.pdm.dermcalc.navigation.NavigationBar] bottom bar, and [it.lcavagnari.pdm.dermcalc.AppNavHost] content.
+ * - `hasSeenOnboarding`  → background image behind a transparent [androidx.compose.material3.Scaffold] with [TopMenu] top bar,
+ *   [NavigationBar] bottom bar, and [it.lcavagnari.pdm.dermcalc.AppNavHost] content.
  *
  * @param modifier modifier applied to each scaffold's content slot.
  * @param onboardingModel view model providing onboarding state and field data.
@@ -66,29 +74,34 @@ fun MainPortraitActivity(
             )
         }
 
-
-    } else Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopMenu(navController, onToggleTheme = onToggleTheme)
-        },
-
-        bottomBar = {
-            NavigationBar(
-                appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute),
-                navController = navController
+    } else {
+        val dark = LocalDarkTheme.current
+        Box(Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(if (dark) R.drawable.bg_dark else R.drawable.bg),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = Color.Transparent,
+                topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
+                bottomBar = {
+                    NavigationBar(navController = navController,
+                        appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+                    )
+                }
+            ) { innerPadding -> AppNavHost(
+                    modifier = modifier.padding(innerPadding),
+                    navController = navController,
+                    startDestination = startingDestination,
+                    onboardingModel = onboardingModel,
+                    toolsModel = toolsModel,
+                    quoteModel = quoteModel,
+                )
+            }
         }
-
-    ) { innerPadding ->
-        AppNavHost(
-            modifier = modifier.padding(innerPadding),
-            navController = navController,
-            startDestination = startingDestination,
-            onboardingModel = onboardingModel,
-            toolsModel = toolsModel,
-            quoteModel = quoteModel,
-        )
     }
 }
 

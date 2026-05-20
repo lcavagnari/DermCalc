@@ -123,7 +123,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
         colors    = CardDefaults.cardColors(
             contentColor = soulColor,
             //containerColor = soulColor
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
+            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.75f)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         border    = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceContainer)

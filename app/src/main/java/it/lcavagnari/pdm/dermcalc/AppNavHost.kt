@@ -1,12 +1,7 @@
 package it.lcavagnari.pdm.dermcalc
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +23,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 
 
 /**
@@ -55,44 +49,13 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable<HomeRoute> {
-            ApplyBackground { HomeScreen(navController, quoteModel, onboardingModel,toolsModel) }
-        }
+        composable<HomeRoute> { HomeScreen(navController, quoteModel, onboardingModel, toolsModel) }
+        composable<ToolsRoute> { ToolsScreen(navController, toolsModel) }
+        composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
 
-        composable<ToolsRoute> {
-            ApplyBackground { ToolsScreen(navController, toolsModel) }
-        }
-        composable<ProfileRoute> {
-            ApplyBackground { ProfileScreen(navController, onboardingModel) }
-        }
-
-        composable<BMIToolRoute> {
-            ApplyBackground { BMIScreen(navController, toolsModel) }
-        }
-        composable<BSAToolRoute> {
-            ApplyBackground { BSAScreen(navController, toolsModel) }
-        }
-        composable<PASIToolRoute> {
-            ApplyBackground { PASIToolRoute(navController, toolsModel) }
-        }
-        composable<EASIToolRoute> {
-            ApplyBackground { EASIToolRoute(navController, toolsModel) }
-        }
-    }
-}
-
-
-@Composable
-private fun ApplyBackground(content: @Composable () -> Unit) {
-    val dark = LocalDarkTheme.current
-
-    Box(Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(if (dark) R.drawable.bg_dark else R.drawable.bg),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-        content()
+        composable<BMIToolRoute> { BMIScreen(navController, toolsModel) }
+        composable<BSAToolRoute> { BSAScreen(navController, toolsModel) }
+        composable<PASIToolRoute> { PASIToolRoute(navController, toolsModel) }
+        composable<EASIToolRoute> { EASIToolRoute(navController, toolsModel) }
     }
 }

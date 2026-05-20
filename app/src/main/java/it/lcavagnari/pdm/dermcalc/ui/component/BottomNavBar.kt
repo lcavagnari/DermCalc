@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.navigation
+package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +18,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
@@ -31,8 +35,8 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         modifier = Modifier.semantics { testTag = "bottom_nav_bar" },
-        containerColor = MaterialTheme.colorScheme.surface,
-        tonalElevation = 6.dp,
+        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+        tonalElevation = 0.dp,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
