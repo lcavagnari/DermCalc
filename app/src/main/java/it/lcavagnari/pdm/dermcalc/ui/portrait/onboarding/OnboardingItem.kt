@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,8 +53,8 @@ import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.ui.component.input.DateInputPicker
-import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheel
-import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheelPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.utils.today
@@ -317,7 +316,6 @@ fun OnBoardItem(page: OnboardingScreen) {
  * @param onKilosChanged callback invoked with the selected weight in whole kilograms.
  * @param onPoundsChanged callback invoked with the selected weight in whole pounds.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeightInputPicker(
     modifier: Modifier = Modifier,
@@ -325,20 +323,6 @@ fun WeightInputPicker(
     onKilosChanged: (Int) -> Unit,
     onPoundsChanged: (Int) -> Unit
 ) {
-    val weightPickerWheelsKilos = listOf<SnapWheel<*>>(
-        SnapWheel(
-            items = (20..300).toList(),
-            initialValue = field.value?.toInt()?.coerceIn(20, 300) ?: 70
-        )
-    )
-
-    val weightPickerWheelsPounds = listOf<SnapWheel<*>>(
-        SnapWheel(
-            items = (44..661).toList(),
-            initialValue = field.value?.let { field.kilosToPounds(it).toInt().coerceIn(44, 661) }
-                ?: 154),
-    )
-
     var openPicker by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -349,19 +333,11 @@ fun WeightInputPicker(
     }
 
     if (openPicker) {
-        SnapWheelPickerDialog(
-            title = R.string.picker_title_weight,
-            // One wheel for both kilos and pounds.
-            // The dialog returns List<Any?>; values are cast back to Int at this call site,
-            // not inside the dialog, so the dialog stays generic.
-            wheels = if (field.isKilos) weightPickerWheelsKilos else weightPickerWheelsPounds,
-            inputFieldLabels = listOf(R.string.label_weight),
+        WeightPickerDialog(
+            field = field,
             onDismiss = { openPicker = false },
-            onConfirm = { values ->
-                if (field.isKilos) onKilosChanged(values[0] as Int)
-                else onPoundsChanged(values[0] as Int)
-                openPicker = false
-            }
+            onKilosChanged = onKilosChanged,
+            onPoundsChanged = onPoundsChanged
         )
     }
 
@@ -404,7 +380,6 @@ fun WeightInputPicker(
  * @param onMetricChanged callback invoked with the selected height in whole centimetres.
  * @param onImperialChanged callback invoked with a (feet, inches) pair.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeightInputPicker(
     modifier: Modifier = Modifier,
@@ -412,18 +387,6 @@ fun HeightInputPicker(
     onMetricChanged: (Int) -> Unit,
     onImperialChanged: (Pair<Int, Int>) -> Unit
 ) {
-    val heightPickerWheelsMetric = listOf<SnapWheel<*>>(
-        SnapWheel(
-            items = (50..272).toList(),
-            initialValue = field.value?.toInt() ?: 170
-        )
-    )
-
-    val heightPickerWheelsImperial = listOf<SnapWheel<*>>(
-        SnapWheel(items = (1..8).toList(), initialValue = field.value?.toInt() ?: 5),
-        SnapWheel(items = (0..11).toList(), initialValue = field.value?.toInt() ?: 7)
-    )
-
     var openPicker by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -434,19 +397,11 @@ fun HeightInputPicker(
     }
 
     if (openPicker) {
-        SnapWheelPickerDialog(
-            title = R.string.picker_title_height,
-            // Two wheels for imperial (feet + inches), one for metric (cm).
-            // The dialog returns List<Any?>; values are cast back to Int at this call site,
-            // not inside the dialog, so the dialog stays generic.
-            wheels = if (field.isMetric) heightPickerWheelsMetric else heightPickerWheelsImperial,
-            inputFieldLabels = if (field.isMetric) listOf(R.string.label_height) else emptyList(),
+        HeightPickerDialog(
+            field = field,
             onDismiss = { openPicker = false },
-            onConfirm = { values ->
-                if (field.isMetric) onMetricChanged(values[0] as Int)
-                else onImperialChanged(values[0] as Int to values[1] as Int)
-                openPicker = false
-            }
+            onMetricChanged = onMetricChanged,
+            onImperialChanged = onImperialChanged
         )
     }
 
