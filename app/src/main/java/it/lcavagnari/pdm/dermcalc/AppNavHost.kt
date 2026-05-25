@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,9 +19,9 @@ import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BMIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BSAScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.EASIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIToolRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
 
@@ -53,9 +54,15 @@ fun AppNavHost(
         composable<ToolsRoute> { ToolsScreen(navController, toolsModel) }
         composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
 
-        composable<BMIToolRoute> { BMIScreen(navController, toolsModel) }
-        composable<BSAToolRoute> { BSAScreen(navController, toolsModel) }
-        composable<PASIToolRoute> { PASIToolRoute(navController, toolsModel) }
-        composable<EASIToolRoute> { EASIToolRoute(navController, toolsModel) }
+        composable<BMIToolRoute> {
+            val fields = onboardingModel.fields.collectAsState().value
+
+            BMIScreen(
+                heightInput =
+            )
+        }
+        composable<BSAToolRoute> { BSAScreen() {} }
+        composable<PASIToolRoute> { PASIScreen() {} }
+        composable<EASIToolRoute> { EASIScreen() {} }
     }
 }
