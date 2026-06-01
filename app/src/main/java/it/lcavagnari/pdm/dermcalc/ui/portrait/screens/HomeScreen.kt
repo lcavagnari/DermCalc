@@ -41,6 +41,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalTime
@@ -62,10 +63,12 @@ fun HomeScreenPreview() {
     val tm = remember { ToolsModel(app) }
 
 
-    MainPortraitActivity(
-        onboardingModel = vm, quoteModel = qm,
-        toolsModel = tm,
-        startingDestination = HomeRoute)
+    DermCalcTheme {
+        MainPortraitActivity(
+            onboardingModel = vm, quoteModel = qm,
+            toolsModel = tm,
+            startingDestination = HomeRoute)
+    }
 }
 
 /**

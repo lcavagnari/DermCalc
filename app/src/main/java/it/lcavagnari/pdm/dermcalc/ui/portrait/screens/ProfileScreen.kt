@@ -74,6 +74,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.utils.today
@@ -518,5 +519,7 @@ fun ProfileScreenPreview() {
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
 
-    MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm, startingDestination = ProfileRouteDest)
+    DermCalcTheme {
+        MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm, startingDestination = ProfileRouteDest)
+    }
 }
