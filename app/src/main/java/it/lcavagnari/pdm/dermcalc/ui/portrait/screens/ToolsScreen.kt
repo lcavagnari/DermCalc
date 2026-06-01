@@ -53,6 +53,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
@@ -346,5 +347,7 @@ fun ToolsScreenPreview() {
     val qm = remember { QuoteModel(app) }
     val tm = remember { ToolsModel(app) }
 
-    MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm, startingDestination = ToolsRoute)
+    DermCalcTheme {
+        MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm, startingDestination = ToolsRoute)
+    }
 }

@@ -50,7 +50,9 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import android.app.Application
+import androidx.compose.ui.platform.LocalContext
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
@@ -133,10 +135,16 @@ val onboardingScreens = listOf(
 @Preview(showBackground = true)
 @Composable
 fun OnboardingPreview() {
-    OnboardingScreen(
-        rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),
-        modifier = Modifier.fillMaxSize(),
-        onFinish = {})
+    val app = LocalContext.current.applicationContext as Application
+    val vm = remember { OnboardingModel(app) }
+    DermCalcTheme {
+        OnboardingScreen(
+            rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),
+            modifier = Modifier.fillMaxSize(),
+            onboardingModel = vm,
+            onFinish = {}
+        )
+    }
 }
 
 /**
@@ -162,18 +170,18 @@ fun OnboardingPreview() {
 fun OnboardingScreen(
     pagerState: PagerState,
     modifier: Modifier,
+    onboardingModel: OnboardingModel,
     onToggleTheme: () -> Unit = {},
     onLangClick: () -> Unit = {},
     onFinish: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val onBoardingModel: OnboardingModel = viewModel()
     val focusManager = LocalFocusManager.current
-    val fields by onBoardingModel.fields.collectAsState()
+    val fields by onboardingModel.fields.collectAsState()
 
     val currentScreen = onboardingScreens[pagerState.currentPage]
     val isLastIndex = pagerState.currentPage == onboardingScreens.lastIndex
-    val isBtnEnabled = onBoardingModel.isFieldsInputValid(currentScreen.inputFieldIds, fields)
+    val isBtnEnabled = onboardingModel.isFieldsInputValid(currentScreen.inputFieldIds, fields)
 
     Box(
         modifier = modifier
@@ -184,6 +192,7 @@ fun OnboardingScreen(
         OnboardingPager(
             pagerState,
             modifier = Modifier.fillMaxSize(),
+            onboardingModel = onboardingModel,
             userScrollEnabled = isBtnEnabled
         )
 
@@ -203,7 +212,7 @@ fun OnboardingScreen(
                     showDebug = true,
                     iconTint = MaterialTheme.colorScheme.secondary,
                     onLangClick = onLangClick,
-                    onDebugClick = { onBoardingModel.finishOnboarding() },
+                    onDebugClick = { onboardingModel.finishOnboarding() },
                     onToggleTheme = onToggleTheme
                 )
             }
