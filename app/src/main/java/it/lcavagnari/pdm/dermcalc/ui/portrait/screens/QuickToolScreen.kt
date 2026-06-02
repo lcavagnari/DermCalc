@@ -82,7 +82,6 @@ fun BMIScreen(
     weightInput: WeightInput,
     onSaveResult: () -> Unit
 ) {
-
     // This is a placeholder
     QuickToolScreen(
         modifier,
