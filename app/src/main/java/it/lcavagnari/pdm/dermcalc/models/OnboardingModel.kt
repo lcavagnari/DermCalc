@@ -25,6 +25,12 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /** Ordered list of all onboarding [InputField] instances, updated in-place by the update methods. */
     val fields: StateFlow<List<InputField>> = _inputFields.asStateFlow()
 
+    /** O(1) accessor for the [HeightInput] field; position 3 in the declared list is stable. */
+    val heightInput: HeightInput get() = _inputFields.value[3] as HeightInput
+
+    /** O(1) accessor for the [WeightInput] field; position 4 in the declared list is stable. */
+    val weightInput: WeightInput get() = _inputFields.value[4] as WeightInput
+
     private val _hasSeenOnboarding = MutableStateFlow(false)
 
     /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
