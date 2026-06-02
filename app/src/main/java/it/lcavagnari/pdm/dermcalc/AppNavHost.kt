@@ -6,9 +6,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
+import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
@@ -56,12 +58,21 @@ fun AppNavHost(
 
         composable<BMIToolRoute> {
             val fields = onboardingModel.fields.collectAsState().value
-
             BMIScreen(
-                heightInput =
+                heightInput = fields[3] as HeightInput,
+                weightInput = fields[4] as WeightInput,
+                onSaveResult = { result ->
+                    toolsModel.addResult(result)
+                    navController.popBackStack()
+                }
             )
         }
-        composable<BSAToolRoute> { BSAScreen() {} }
+        composable<BSAToolRoute> {
+            BSAScreen(onSaveResult = { result ->
+                toolsModel.addResult(result)
+                navController.popBackStack()
+            })
+        }
         composable<PASIToolRoute> { PASIScreen() {} }
         composable<EASIToolRoute> { EASIScreen() {} }
     }

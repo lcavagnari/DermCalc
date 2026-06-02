@@ -25,6 +25,7 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
