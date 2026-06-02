@@ -169,14 +169,6 @@ data class WeightInput(
      * @return Weight in pounds.
      */
     fun kilosToPounds(kilos: Double = value ?: 0.0): Double = kilos * 2.2046
-
-    /**
-     * Converts pounds to kilograms.
-     *
-     * @param pounds weight in pounds.
-     * @return Weight in kilograms.
-     */
-    fun poundsToKilos(pounds: Int): Double = pounds / 2.2046
 }
 
 /**

@@ -66,25 +66,3 @@ fun severityColor(severity: Severity): Color {
         Severity.Severe   -> if (dark) SeveritySevereDark   else SeveritySevereLight
     }
 }
-
-/** Maps a BMI score to a clinical [Severity] tier. */
-fun bmiSeverity(bmi: Double): Severity = when {
-    bmi < 25.0 -> Severity.Mild
-    bmi < 30.0 -> Severity.Moderate
-    else       -> Severity.Severe
-}
-
-/** Returns a human-readable BMI category label for the given score. */
-fun bmiLabel(bmi: Double): String = when {
-    bmi < 18.5 -> "Underweight"
-    bmi < 25.0 -> "Normal"
-    bmi < 30.0 -> "Overweight"
-    else       -> "Obese"
-}
-
-/** Maps a BSA affected percentage to a clinical [Severity] tier. */
-fun bsaSeverity(percentage: Double): Severity = when {
-    percentage < 10.0 -> Severity.Mild
-    percentage < 30.0 -> Severity.Moderate
-    else              -> Severity.Severe
-}
