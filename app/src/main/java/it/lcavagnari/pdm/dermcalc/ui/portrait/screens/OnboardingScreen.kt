@@ -136,8 +136,8 @@ val onboardingScreens = listOf(
 @Composable
 fun OnboardingPreview() {
     val context = LocalContext.current
-    val vm =
-        remember { OnboardingModel(context.applicationContext as? Application ?: Application()) }
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }
     DermCalcTheme {
         OnboardingScreen(
             rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),

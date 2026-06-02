@@ -507,7 +507,8 @@ fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMe
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    val app = LocalContext.current.applicationContext as Application
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
     val vm = remember { OnboardingModel(app) }.also {
         it.finishOnboarding()
         it.updateName("Asriel ")

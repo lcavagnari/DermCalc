@@ -66,8 +66,8 @@ import it.lcavagnari.pdm.dermcalc.utils.today
 @Composable
 fun OnBoardItemPreview() {
     val context = LocalContext.current
-    val vm =
-        remember { OnboardingModel(context.applicationContext as? Application ?: Application()) }
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }
     DermCalcTheme {
         OnBoardItem(onboardingScreens[4], vm)
     }

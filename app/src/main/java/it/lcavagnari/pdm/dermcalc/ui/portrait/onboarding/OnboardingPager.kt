@@ -63,7 +63,8 @@ fun OnboardingPager(pagerState: PagerState, modifier: Modifier, onboardingModel:
 @Preview(showBackground = true)
 @Composable
 fun PagerPreview() {
-    val app = LocalContext.current.applicationContext as Application
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
     val vm = remember { OnboardingModel(app) }
     DermCalcTheme {
         OnboardingPager(

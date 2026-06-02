@@ -113,7 +113,8 @@ fun MainPortraitActivity(
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
-    val app = LocalContext.current.applicationContext as Application
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }

@@ -53,7 +53,8 @@ import java.util.Locale
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    val app = LocalContext.current.applicationContext as Application
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
 
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val vm = remember { OnboardingModel(app) }.also {
