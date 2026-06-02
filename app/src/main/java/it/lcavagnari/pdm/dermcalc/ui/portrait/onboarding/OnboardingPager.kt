@@ -12,9 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import android.app.Application
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 
 
@@ -26,7 +31,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
  * @param userScrollEnabled whether the user can swipe between pages. Defaults to true.
  */
 @Composable
-fun OnboardingPager(pagerState: PagerState, modifier: Modifier, userScrollEnabled: Boolean = true) {
+fun OnboardingPager(pagerState: PagerState, modifier: Modifier, onboardingModel: OnboardingModel, userScrollEnabled: Boolean = true) {
     val dark = LocalDarkTheme.current
     HorizontalPager(
         modifier = modifier,
@@ -49,7 +54,7 @@ fun OnboardingPager(pagerState: PagerState, modifier: Modifier, userScrollEnable
                     .navigationBarsPadding()
                     .padding(bottom = 150.dp)
             ) {
-                OnBoardItem(screen)
+                OnBoardItem(screen, onboardingModel)
             }
         }
     }
@@ -58,8 +63,14 @@ fun OnboardingPager(pagerState: PagerState, modifier: Modifier, userScrollEnable
 @Preview(showBackground = true)
 @Composable
 fun PagerPreview() {
-    OnboardingPager(
-        rememberPagerState(initialPage = 0, pageCount = { onboardingScreens.size }),
-        modifier = Modifier.fillMaxSize()
-    )
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }
+    DermCalcTheme {
+        OnboardingPager(
+            rememberPagerState(initialPage = 0, pageCount = { onboardingScreens.size }),
+            modifier = Modifier.fillMaxSize(),
+            onboardingModel = vm
+        )
+    }
 }

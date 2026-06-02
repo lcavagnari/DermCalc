@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import android.app.Application
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -36,12 +36,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,11 +52,11 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import kotlinx.coroutines.launch
 
@@ -133,10 +135,17 @@ val onboardingScreens = listOf(
 @Preview(showBackground = true)
 @Composable
 fun OnboardingPreview() {
-    OnboardingScreen(
-        rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),
-        modifier = Modifier.fillMaxSize(),
-        onFinish = {})
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }
+    DermCalcTheme {
+        OnboardingScreen(
+            rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),
+            modifier = Modifier.fillMaxSize(),
+            onboardingModel = vm,
+            onFinish = {}
+        )
+    }
 }
 
 /**
@@ -162,18 +171,18 @@ fun OnboardingPreview() {
 fun OnboardingScreen(
     pagerState: PagerState,
     modifier: Modifier,
+    onboardingModel: OnboardingModel,
     onToggleTheme: () -> Unit = {},
     onLangClick: () -> Unit = {},
     onFinish: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val onBoardingModel: OnboardingModel = viewModel()
     val focusManager = LocalFocusManager.current
-    val fields by onBoardingModel.fields.collectAsState()
+    val fields by onboardingModel.fields.collectAsState()
 
     val currentScreen = onboardingScreens[pagerState.currentPage]
     val isLastIndex = pagerState.currentPage == onboardingScreens.lastIndex
-    val isBtnEnabled = onBoardingModel.isFieldsInputValid(currentScreen.inputFieldIds, fields)
+    val isBtnEnabled = onboardingModel.isFieldsInputValid(currentScreen.inputFieldIds, fields)
 
     Box(
         modifier = modifier
@@ -184,6 +193,7 @@ fun OnboardingScreen(
         OnboardingPager(
             pagerState,
             modifier = Modifier.fillMaxSize(),
+            onboardingModel = onboardingModel,
             userScrollEnabled = isBtnEnabled
         )
 
@@ -203,7 +213,7 @@ fun OnboardingScreen(
                     showDebug = true,
                     iconTint = MaterialTheme.colorScheme.secondary,
                     onLangClick = onLangClick,
-                    onDebugClick = { onBoardingModel.finishOnboarding() },
+                    onDebugClick = { onboardingModel.finishOnboarding() },
                     onToggleTheme = onToggleTheme
                 )
             }

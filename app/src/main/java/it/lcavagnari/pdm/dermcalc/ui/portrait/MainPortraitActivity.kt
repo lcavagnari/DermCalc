@@ -32,6 +32,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 
 /**
@@ -69,6 +70,7 @@ fun MainPortraitActivity(
             OnboardingScreen(
                 pagerState = pagerState,
                 modifier = modifier,
+                onboardingModel = onboardingModel,
                 onFinish = { onboardingModel.finishOnboarding() },
                 onToggleTheme = onToggleTheme
             )
@@ -111,9 +113,12 @@ fun MainPortraitActivity(
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
-    val app = LocalContext.current.applicationContext as Application
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
-    MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
+    DermCalcTheme {
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
+    }
 }

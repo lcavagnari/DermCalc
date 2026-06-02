@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -41,7 +43,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.DateInput
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
@@ -57,13 +58,19 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.utils.today
 
 
 @Preview(showBackground = true)
 @Composable
 fun OnBoardItemPreview() {
-    OnBoardItem(onboardingScreens[4])
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }
+    DermCalcTheme {
+        OnBoardItem(onboardingScreens[4], vm)
+    }
 }
 
 /**
@@ -72,9 +79,8 @@ fun OnBoardItemPreview() {
  * @param page the [OnboardingScreen] descriptor for this page.
  */
 @Composable
-fun OnBoardItem(page: OnboardingScreen) {
-    val onBoardingModel: OnboardingModel = viewModel()
-    val fields by onBoardingModel.fields.collectAsState()
+fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
+    val fields by onboardingModel.fields.collectAsState()
     val pageFields =
         page.inputFieldIds.mapNotNull { fieldId -> fields.firstOrNull { it.id == fieldId } }
 
@@ -128,7 +134,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                 is TextInput -> {
                     OutlinedTextField(
                         value = field.value,
-                        onValueChange = { onBoardingModel.updateName(it) },
+                        onValueChange = { onboardingModel.updateName(it) },
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .semantics { testTag = "input_full_name" },
@@ -150,7 +156,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                 is DateInput -> {
                     DateInputPicker(
                         field = field,
-                        onDateSelected = { onBoardingModel.updateDateOfBirth(it) },
+                        onDateSelected = { onboardingModel.updateDateOfBirth(it) },
                     )
 
                     if (!field.isValid && field.isRequired && field.value != null)
@@ -167,7 +173,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                         Sex.entries.forEachIndexed { index, sex ->
                             SegmentedButton(
                                 selected = field.value == sex,
-                                onClick = { onBoardingModel.updateSex(sex) },
+                                onClick = { onboardingModel.updateSex(sex) },
                                 shape = SegmentedButtonDefaults.itemShape(index, Sex.entries.size),
                                 label = { Text(stringResource(when (sex) {
                                     Sex.Male -> R.string.sex_male
@@ -197,7 +203,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                         HeightMeasurements.entries.forEachIndexed { index, measurement ->
                             SegmentedButton(
                                 selected = measurement == (if (field.isMetric) HeightMeasurements.Metric else HeightMeasurements.Imperial),
-                                onClick = { onBoardingModel.updateMeasurements(measurement) },
+                                onClick = { onboardingModel.updateMeasurements(measurement) },
                                 shape = SegmentedButtonDefaults.itemShape(
                                     index,
                                     HeightMeasurements.entries.size
@@ -219,9 +225,9 @@ fun OnBoardItem(page: OnboardingScreen) {
                     HeightInputPicker(
                         modifier = Modifier.padding(bottom = 40.dp),
                         field = field,
-                        onMetricChanged = { height -> onBoardingModel.updateHeightMetric(height) },
+                        onMetricChanged = { height -> onboardingModel.updateHeightMetric(height) },
                         onImperialChanged = { height ->
-                            onBoardingModel.updateHeightImperial(
+                            onboardingModel.updateHeightImperial(
                                 height.first,
                                 height.second
                             )
@@ -242,7 +248,7 @@ fun OnBoardItem(page: OnboardingScreen) {
                         WeightMeasurements.entries.forEachIndexed { index, measurement ->
                             SegmentedButton(
                                 selected = measurement == (if (field.isKilos) WeightMeasurements.Kilos else WeightMeasurements.Pounds),
-                                onClick = { onBoardingModel.updateMeasurements(measurement) },
+                                onClick = { onboardingModel.updateMeasurements(measurement) },
                                 shape = SegmentedButtonDefaults.itemShape(
                                     index,
                                     WeightMeasurements.entries.size
@@ -264,8 +270,8 @@ fun OnBoardItem(page: OnboardingScreen) {
                     WeightInputPicker(
                         modifier = Modifier.padding(bottom = 30.dp),
                         field = field,
-                        onKilosChanged = { weight -> onBoardingModel.updateWeightKilos(weight) },
-                        onPoundsChanged = { weight -> onBoardingModel.updateWeightPounds(weight) }
+                        onKilosChanged = { weight -> onboardingModel.updateWeightKilos(weight) },
+                        onPoundsChanged = { weight -> onboardingModel.updateWeightPounds(weight) }
                     )
 
                     if (!field.isValid && field.isRequired && field.value != null) errorMessage =

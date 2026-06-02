@@ -41,6 +41,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalTime
@@ -52,7 +53,8 @@ import java.util.Locale
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    val app = LocalContext.current.applicationContext as Application
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
 
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val vm = remember { OnboardingModel(app) }.also {
@@ -62,10 +64,12 @@ fun HomeScreenPreview() {
     val tm = remember { ToolsModel(app) }
 
 
-    MainPortraitActivity(
-        onboardingModel = vm, quoteModel = qm,
-        toolsModel = tm,
-        startingDestination = HomeRoute)
+    DermCalcTheme {
+        MainPortraitActivity(
+            onboardingModel = vm, quoteModel = qm,
+            toolsModel = tm,
+            startingDestination = HomeRoute)
+    }
 }
 
 /**
