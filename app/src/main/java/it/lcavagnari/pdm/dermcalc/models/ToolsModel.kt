@@ -134,6 +134,13 @@ data class BmiResult(
 ) : ToolResult {
     override val name: String = "BMI"
     override fun isValid(): Boolean = weightKg > 0.0 && heightCm > 0.0
+
+    companion object {
+        fun calculate(weightKg: Double, heightCm: Double): Double {
+            val h = heightCm / 100.0
+            return weightKg / (h * h)
+        }
+    }
 }
 
 /**
