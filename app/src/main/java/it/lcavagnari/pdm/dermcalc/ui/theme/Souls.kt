@@ -1,7 +1,10 @@
 package it.lcavagnari.pdm.dermcalc.ui.theme
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
@@ -48,8 +51,14 @@ fun soulForRoute(route: String?): Soul = when (route) {
     else                              -> Soul.Determination
 }
 
-/** Clinical severity tier used to color-code tool results throughout the app. */
-enum class Severity { Mild, Moderate, Severe }
+/** Maps this [Severity] to its localized label string resource id. */
+@get:StringRes
+val Severity.labelRes: Int
+    get() = when (this) {
+        Severity.Mild -> R.string.severity_mild
+        Severity.Moderate -> R.string.severity_moderate
+        Severity.Severe -> R.string.severity_severe
+    }
 
 /**
  * Returns the theme-aware [Color] for [severity], switching between dark and light variants.
@@ -67,24 +76,3 @@ fun severityColor(severity: Severity): Color {
     }
 }
 
-/** Maps a BMI score to a clinical [Severity] tier. */
-fun bmiSeverity(bmi: Double): Severity = when {
-    bmi < 25.0 -> Severity.Mild
-    bmi < 30.0 -> Severity.Moderate
-    else       -> Severity.Severe
-}
-
-/** Returns a human-readable BMI category label for the given score. */
-fun bmiLabel(bmi: Double): String = when {
-    bmi < 18.5 -> "Underweight"
-    bmi < 25.0 -> "Normal"
-    bmi < 30.0 -> "Overweight"
-    else       -> "Obese"
-}
-
-/** Maps a BSA affected percentage to a clinical [Severity] tier. */
-fun bsaSeverity(percentage: Double): Severity = when {
-    percentage < 10.0 -> Severity.Mild
-    percentage < 30.0 -> Severity.Moderate
-    else              -> Severity.Severe
-}
