@@ -2,15 +2,58 @@ package it.lcavagnari.pdm.dermcalc.models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
+/**
+ * Maps this [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
+ * - PASI: < 10 Mild, < 20 Moderate, else Severe
+ * - EASI: < 7 Mild, < 21 Moderate, else Severe
+ * - BMI: < 18.5 Severe (underweight), < 25 Mild, < 30 Moderate, else Severe
+ * - BSA: < 10 Mild, < 30 Moderate, else Severe
+ */
+fun ToolResult.severity(): Severity = when (this) {
+    is PasiResult -> when {
+        score < 10.0 -> Severity.Mild
+        score < 20.0 -> Severity.Moderate
+        else -> Severity.Severe
+    }
+
+    is EasiResult -> when {
+        score < 7.0 -> Severity.Mild
+        score < 21.0 -> Severity.Moderate
+        else -> Severity.Severe
+    }
+
+    is BmiResult -> when {
+        score < 18.5 -> Severity.Severe
+        score < 25.0 -> Severity.Mild
+        score < 30.0 -> Severity.Moderate
+        else -> Severity.Severe
+    }
+
+    is BsaResult -> when {
+        score < 10.0 -> Severity.Mild
+        score < 30.0 -> Severity.Moderate
+        else -> Severity.Severe
+    }
+}
+
+/** Formats this result's score: zero decimals for whole numbers, one decimal otherwise. */
+fun ToolResult.formattedScore(): String =
+    if (score % 1.0 == 0.0) "%.0f".format(score) else "%.1f".format(score)
 
 /**
  * Base type for all calculator results stored in [ToolsModel].
@@ -134,13 +177,6 @@ data class BmiResult(
 ) : ToolResult {
     override val name: String = "BMI"
     override fun isValid(): Boolean = weightKg > 0.0 && heightCm > 0.0
-
-    companion object {
-        fun calculate(weightKg: Double, heightCm: Double): Double {
-            val h = heightCm / 100.0
-            return weightKg / (h * h)
-        }
-    }
 }
 
 /**
@@ -164,6 +200,69 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
     /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
+
+    // --- BMI calculator ephemeral state ---
+
+    private val _bmiHeight =
+        MutableStateFlow(HeightInput(id = "height", label = R.string.label_height))
+    private val _bmiWeight =
+        MutableStateFlow(WeightInput(id = "weight", label = R.string.label_weight))
+
+    /** Current height input for the BMI calculator. */
+    val bmiHeight: StateFlow<HeightInput> = _bmiHeight.asStateFlow()
+
+    /** Current weight input for the BMI calculator. */
+    val bmiWeight: StateFlow<WeightInput> = _bmiWeight.asStateFlow()
+
+    /** Live BMI result derived from the current inputs; null when either input value is absent. */
+    private var lastValidBmi: BmiResult? = null
+
+    val bmiResult: StateFlow<BmiResult?> = combine(_bmiHeight, _bmiWeight) { h, w ->
+        val heightCm = h.value
+        val weightKg = w.value
+        if (heightCm != null && weightKg != null) {
+            val hm = heightCm / 100.0
+            lastValidBmi = BmiResult(weightKg, heightCm, weightKg / (hm * hm))
+        }
+        lastValidBmi
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    /** Formatted BMI score string; "--" when no valid score has been computed yet. */
+    val bmiFormattedScore: StateFlow<String> = bmiResult
+        .map { it?.formattedScore() ?: "--" }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, "--")
+
+    /** Clinical severity for the current BMI result; null when no valid score has been computed yet. */
+    val bmiSeverity: StateFlow<Severity?> = bmiResult
+        .map { it?.severity() }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    /** Seeds the BMI calculator with the user's stored profile values. */
+    fun initBmi(height: HeightInput, weight: WeightInput) {
+        _bmiHeight.value = height
+        _bmiWeight.value = weight
+    }
+
+    fun updateBmiHeightMetric(cm: Int) {
+        _bmiHeight.update { it.copy(value = cm.toDouble(), isValid = cm in 50..272) }
+    }
+
+    fun updateBmiHeightImperial(feet: Int, inches: Int) {
+        _bmiHeight.update {
+            val cm = it.feetInchesToCm(feet, inches)
+            it.copy(value = cm, isValid = cm in 19.68..1207.08)
+        }
+    }
+
+    fun updateBmiWeightKilos(kg: Int) {
+        _bmiWeight.update { it.copy(value = kg.toDouble(), isValid = kg in 20..300) }
+    }
+
+    fun updateBmiWeightPounds(lb: Int) {
+        _bmiWeight.update { it.copy(value = it.poundsToKilos(lb), isValid = lb in 44..661) }
+    }
+
+    // --- Result storage ---
 
     /**
      * Validates and appends [result] to the stored list.

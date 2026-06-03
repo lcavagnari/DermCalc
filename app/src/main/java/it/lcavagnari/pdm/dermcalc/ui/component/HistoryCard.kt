@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -33,14 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BmiResult
-import it.lcavagnari.pdm.dermcalc.models.BsaResult
-import it.lcavagnari.pdm.dermcalc.models.EasiResult
-import it.lcavagnari.pdm.dermcalc.models.PasiResult
+import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.ToolResult
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
+import it.lcavagnari.pdm.dermcalc.models.formattedScore
+import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
-import it.lcavagnari.pdm.dermcalc.ui.theme.Severity
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
 import it.lcavagnari.pdm.dermcalc.utils.today
@@ -49,37 +47,6 @@ import kotlinx.datetime.LocalDateTime
 // Maximum number of results shown before a "Show all" row appears.
 private const val MAX_HISTORY_VISIBLE = 4
 
-
-/**
- * Maps a [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
- * - PASI: < 10 Mild, < 20 Moderate, else Severe
- * - EASI: < 7 Mild, < 21 Moderate, else Severe
- * - BMI: < 18.5 Severe, < 25 Mild, < 30 Moderate, else Severe
- * - BSA: < 10 Mild, < 30 Moderate, else Severe
- */
-private fun ToolResult.severity(): Severity = when (this) {
-    is PasiResult -> when {
-        score < 10.0 -> Severity.Mild
-        score < 20.0 -> Severity.Moderate
-        else -> Severity.Severe
-    }
-    is EasiResult -> when {
-        score < 7.0 -> Severity.Mild
-        score < 21.0 -> Severity.Moderate
-        else -> Severity.Severe
-    }
-    is BmiResult -> when {
-        score < 18.5 -> Severity.Severe
-        score < 25.0 -> Severity.Mild
-        score < 30.0 -> Severity.Moderate
-        else -> Severity.Severe
-    }
-    is BsaResult -> when {
-        score < 10.0 -> Severity.Mild
-        score < 30.0 -> Severity.Moderate
-        else -> Severity.Severe
-    }
-}
 
 
 /**
@@ -199,8 +166,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
         Severity.Moderate -> stringResource(R.string.severity_moderate)
         Severity.Severe -> stringResource(R.string.severity_severe)
     }
-    val scoreText = if (result.score % 1.0 == 0.0) "%.0f".format(result.score)
-                    else "%.1f".format(result.score)
+    val scoreText = result.formattedScore()
     val timestamp = relativeTimestamp(result.timestamp, now)
 
     Row(
