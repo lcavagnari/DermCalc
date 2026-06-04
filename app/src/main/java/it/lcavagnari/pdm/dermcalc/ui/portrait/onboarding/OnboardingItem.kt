@@ -52,6 +52,13 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.runtime.key
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import it.lcavagnari.pdm.dermcalc.utils.today
 
 
@@ -123,15 +130,22 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
             errorMessage = null
             successMessage = null
 
+            key(field.id) {
             when (field) {
                 is TextInput -> {
+                    val focusRequester = remember { FocusRequester() }
+                    val focusManager = LocalFocusManager.current
                     OutlinedTextField(
                         value = field.value,
                         onValueChange = { onboardingModel.updateName(it) },
                         modifier = Modifier
                             .padding(top = 20.dp)
-                            .semantics { testTag = "input_full_name" },
+                            .semantics { testTag = "input_full_name" }
+                            .focusRequester(focusRequester),
                         label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                         shape = RoundedCornerShape(17.dp),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -275,6 +289,7 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                     }
                 }
             }
+            }  // key(field.id)
 
             if (errorMessage != null) {
                 Text(

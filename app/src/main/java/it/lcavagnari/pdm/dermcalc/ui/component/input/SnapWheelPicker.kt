@@ -46,9 +46,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import it.lcavagnari.pdm.dermcalc.R
 import androidx.compose.ui.unit.Dp
@@ -58,6 +62,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.res.stringResource
 import androidx.annotation.StringRes
+import androidx.compose.foundation.text.KeyboardActions
 import kotlin.math.abs
 
 
@@ -265,6 +270,10 @@ fun SnapWheelPickerDialog(
                 }
 
                 if (isInputMode && hasInputMode) {
+                    val focusManager = LocalFocusManager.current
+                    val focusRequesters = remember(wheels.size) {
+                        List(wheels.size) { FocusRequester() }
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(0.9f)
@@ -276,6 +285,7 @@ fun SnapWheelPickerDialog(
                             val items = wheels[index].items
                             val minVal = (items.firstOrNull() as? Int) ?: 0
                             val maxVal = (items.lastOrNull() as? Int) ?: 0
+                            val isLast = index == wheels.lastIndex
                             OutlinedTextField(
                                 value = inputTexts[index],
                                 onValueChange = { raw ->
@@ -286,9 +296,17 @@ fun SnapWheelPickerDialog(
                                         }
                                     }
                                 },
+                                modifier = Modifier.focusRequester(focusRequesters[index]),
                                 label = { Text(stringResource(inputFieldLabels[index])) },
                                 singleLine = true,
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number,
+                                    imeAction = if (isLast) ImeAction.Done else ImeAction.Next
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onNext = { if (!isLast) focusRequesters[index + 1].requestFocus() },
+                                    onDone = { focusManager.clearFocus() }
+                                ),
                                 shape = RoundedCornerShape(17.dp),
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.Transparent,
