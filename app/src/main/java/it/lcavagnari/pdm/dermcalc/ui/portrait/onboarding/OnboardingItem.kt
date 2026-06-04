@@ -2,8 +2,6 @@ package it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding
 
 import android.app.Application
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
@@ -23,12 +19,9 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,8 +47,8 @@ import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.ui.component.input.DateInputPicker
-import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightPickerDialog
-import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
+import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
@@ -312,132 +305,4 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
             textAlign = TextAlign.Center
         )
     }
-}
-
-/**
- * Outlined weight field that opens a [SnapWheelPickerDialog] on tap; switches between kg and lb wheels based on [WeightInput.isKilos].
- *
- * @param modifier modifier applied to the [OutlinedTextField].
- * @param field the [WeightInput] field supplying current value and unit preference.
- * @param onKilosChanged callback invoked with the selected weight in whole kilograms.
- * @param onPoundsChanged callback invoked with the selected weight in whole pounds.
- */
-@Composable
-fun WeightInputPicker(
-    modifier: Modifier = Modifier,
-    field: WeightInput,
-    onKilosChanged: (Int) -> Unit,
-    onPoundsChanged: (Int) -> Unit
-) {
-    var openPicker by remember { mutableStateOf(false) }
-    val interactionSource = remember { MutableInteractionSource() }
-
-    LaunchedEffect(interactionSource) {
-        interactionSource.interactions.collect { interaction ->
-            if (interaction is PressInteraction.Release) openPicker = true
-        }
-    }
-
-    if (openPicker) {
-        WeightPickerDialog(
-            field = field,
-            onDismiss = { openPicker = false },
-            onKilosChanged = onKilosChanged,
-            onPoundsChanged = onPoundsChanged
-        )
-    }
-
-    OutlinedTextField(
-        value = field.value?.let {
-            if (field.isKilos) "%.2f".format(it) + " kg" else "%.2f".format(field.kilosToPounds(it)) + " lb"
-        } ?: "",
-        onValueChange = {},
-        modifier = modifier.semantics { testTag = "input_weight" },
-        readOnly = true,
-        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text(stringResource(R.string.placeholder_weight)) },
-        trailingIcon = {
-            IconButton(
-                onClick = { openPicker = true },
-                modifier = Modifier.semantics { testTag = "btn_open_weight_picker" }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_weight_scale),
-                    contentDescription = stringResource(R.string.cd_pick_weight)
-                )
-            }
-        },
-        interactionSource = interactionSource,
-        shape = RoundedCornerShape(17.dp),
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = MaterialTheme.colorScheme.primary
-        ),
-    )
-}
-
-
-/**
- * Outlined height field that opens a [SnapWheelPickerDialog] on tap; uses one wheel for metric (cm) and two wheels for imperial (feet + inches).
- *
- * @param modifier modifier applied to the [OutlinedTextField].
- * @param field the [HeightInput] field supplying current value and unit preference.
- * @param onMetricChanged callback invoked with the selected height in whole centimetres.
- * @param onImperialChanged callback invoked with a (feet, inches) pair.
- */
-@Composable
-fun HeightInputPicker(
-    modifier: Modifier = Modifier,
-    field: HeightInput,
-    onMetricChanged: (Int) -> Unit,
-    onImperialChanged: (Pair<Int, Int>) -> Unit
-) {
-    var openPicker by remember { mutableStateOf(false) }
-    val interactionSource = remember { MutableInteractionSource() }
-
-    LaunchedEffect(interactionSource) {
-        interactionSource.interactions.collect { interaction ->
-            if (interaction is PressInteraction.Release) openPicker = true
-        }
-    }
-
-    if (openPicker) {
-        HeightPickerDialog(
-            field = field,
-            onDismiss = { openPicker = false },
-            onMetricChanged = onMetricChanged,
-            onImperialChanged = onImperialChanged
-        )
-    }
-
-    OutlinedTextField(
-        value = field.value?.let {
-            if (field.isMetric) "${it.toInt()} cm" else field.cmToFeetInches(it)
-                .let { (ft, inch) -> "${ft.toInt()} ft ${inch.toInt()} in" }
-        } ?: "",
-        onValueChange = {},
-        readOnly = true,
-        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text(stringResource(R.string.placeholder_height)) },
-        trailingIcon = {
-            IconButton(
-                onClick = { openPicker = true },
-                modifier = Modifier.semantics { testTag = "btn_open_height_picker" }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_tape_measure),
-                    contentDescription = stringResource(R.string.cd_pick_height)
-                )
-            }
-        },
-        interactionSource = interactionSource,
-        modifier = modifier.semantics { testTag = "input_height" },
-        shape = RoundedCornerShape(17.dp),
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = MaterialTheme.colorScheme.primary
-        ),
-    )
 }
