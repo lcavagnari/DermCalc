@@ -28,8 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -137,7 +135,7 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
     )
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
+        modifier = Modifier.fillMaxSize().padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
     ) {
@@ -249,7 +247,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
             val destination = it.route
             val title = destination.title!!
             val icon = destination.iconRes
-            val onColor = lerp(surface, it.color, 0.22f)
+            val onColor: Color = lerp(surface, it.color, 0.22f)
 
             BorderedCard(
                 modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
@@ -283,7 +281,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterVertically)
+                        verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.Top)
                     ) {
                         Text(
                             text = stringResource(title),
@@ -297,43 +295,56 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 16.sp
                         )
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 3.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
-                        ) {
-                            if(it.districtNum != null) Card(
-                                elevation = CardDefaults.cardElevation(6.dp),
-                                border = BorderStroke(1.dp, onColor),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = onColor,
-                                    contentColor = it.color
-                                )
-                            ) { Text(
-                                "${it.districtNum} ${stringResource(R.string.districts)}",
-                                modifier = Modifier.padding(horizontal = 5.dp),
-                                fontWeight = FontWeight.Thin,
-                                fontSize = 20.sp
-                            ) }
-
-                            if(it.valueRange != null) Card(
-                                elevation = CardDefaults.cardElevation(6.dp),
-                                border = BorderStroke(1.dp, onColor),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = onColor,
-                                    contentColor = it.color
-                                )
-                            ) { Text(
-                                "${it.valueRange.first.toInt()}-${it.valueRange.second.toInt()}",
-                                modifier = Modifier.padding(horizontal = 5.dp),
-                                fontWeight = FontWeight.Thin,
-                                fontSize = 20.sp
-                            ) }
-                        }
                     }
                 }
+
+                DistrictsCards(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp, end = 10.dp),
+                    tool = it, onColor = onColor
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun DistrictsCards(
+    modifier: Modifier = Modifier,
+    tool: ToolCard,
+    onColor: Color
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        if(tool.districtNum != null) Card(
+            elevation = CardDefaults.cardElevation(4.dp),
+            border = BorderStroke(1.dp, onColor),
+            colors = CardDefaults.cardColors(
+                containerColor = onColor,
+                contentColor = tool.color
+            )
+        ) { Text(
+            "${tool.districtNum} ${stringResource(R.string.districts)}",
+            modifier = Modifier.padding(horizontal = 5.dp),
+            fontWeight = FontWeight.Thin,
+            fontSize = 20.sp
+        ) }
+
+        if(tool.valueRange != null) Card(
+            elevation = CardDefaults.cardElevation(6.dp),
+            border = BorderStroke(1.dp, onColor),
+            colors = CardDefaults.cardColors(
+                containerColor = onColor,
+                contentColor = tool.color
+            )
+        ) { Text(
+            "${tool.valueRange.first.toInt()}-${tool.valueRange.second.toInt()}",
+            modifier = Modifier.padding(horizontal = 5.dp),
+            fontWeight = FontWeight.Thin,
+            fontSize = 20.sp
+        ) }
     }
 }
 
@@ -342,7 +353,8 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
 @Preview(showBackground = true)
 @Composable
 fun ToolsScreenPreview() {
-    val app = LocalContext.current.applicationContext as? Application ?: return
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }
     val tm = remember { ToolsModel(app) }

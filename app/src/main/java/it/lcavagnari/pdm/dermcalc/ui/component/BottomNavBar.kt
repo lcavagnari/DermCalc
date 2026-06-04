@@ -2,21 +2,21 @@ package it.lcavagnari.pdm.dermcalc.ui.component
 
 import android.app.Application
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,11 +50,13 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         modifier = Modifier
-            .semantics { testTag = "bottom_nav_bar" }
-            .height(90.dp),
+            .fillMaxWidth()
+            .height(74.dp)
+
+            .semantics { testTag = "bottom_nav_bar" },
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
         tonalElevation = 6.dp,
-        windowInsets = WindowInsets(0.dp),
+        windowInsets = WindowInsets(bottom = 10.dp),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -79,27 +81,24 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                 } == true
 
             NavigationBarItem(
-                modifier = Modifier.padding(top = 5.dp),
                 icon = {
                     if (item.iconRes != null) {
                         Icon(
                             painter = painterResource(id = item.iconRes!!),
                             contentDescription = item.route,
+                            modifier = Modifier.size(30.dp),
                         )
                     } else {
                         item.icon?.let {
                             Icon(
                                 imageVector = it,
-                                contentDescription = item.route
+                                contentDescription = item.route,
+                                modifier = Modifier.size(28.dp),
                             )
                         }
                     }
                 },
-                label = {
-                    Text(
-                        modifier = Modifier.padding(bottom = 5.dp),
-                        text = item.title?.let { stringResource(it) } ?: "")
-                },
+                //label = { Text(item.title?.let { stringResource(it) } ?: "") },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = currentSoul,
                     selectedTextColor = currentSoul,
@@ -109,7 +108,7 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                 ),
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(item) {
+                    if (currentDestination?.route != item.route) navController.navigate(item) {
                         // Avoid multiple copies of the same destination when reselecting the same item
                         launchSingleTop = true
 
@@ -131,7 +130,7 @@ fun MainPortraitActivityPreview() {
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
     DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = BMIToolRoute)
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
     }
 }
 
