@@ -71,8 +71,8 @@ import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
-import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightPickerDialog
-import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightPickerDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheel
+import it.lcavagnari.pdm.dermcalc.ui.component.input.SnapWheelPickerDialog
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -372,20 +372,62 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
                         }
 
                         is HeightInput -> {
-                            HeightPickerDialog(
-                                field = field,
+                            val wheelsMetric = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (50..272).toList(),
+                                    initialValue = field.value?.toInt() ?: 170
+                                )
+                            )
+                            val wheelsImperial = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (1..8).toList(),
+                                    initialValue = field.value?.let { field.cmToFeetInches(it).first.toInt() }
+                                        ?: 5),
+                                SnapWheel(
+                                    items = (0..11).toList(),
+                                    initialValue = field.value?.let { field.cmToFeetInches(it).second.toInt() }
+                                        ?: 0)
+                            )
+                            SnapWheelPickerDialog(
+                                title = R.string.picker_title_height,
+                                wheels = if (field.isMetric) wheelsMetric else wheelsImperial,
+                                inputFieldLabels = if (field.isMetric) listOf(R.string.label_height) else emptyList(),
                                 onDismiss = { showDialog = false },
-                                onMetricChanged = { onboardingModel.updateHeightMetric(it) },
-                                onImperialChanged = { (ft, inch) -> onboardingModel.updateHeightImperial(ft, inch) }
+                                onConfirm = { values ->
+                                    if (field.isMetric) onboardingModel.updateHeightMetric(values[0] as Int)
+                                    else onboardingModel.updateHeightImperial(
+                                        values[0] as Int,
+                                        values[1] as Int
+                                    )
+                                    showDialog = false
+                                }
                             )
                         }
 
                         is WeightInput -> {
-                            WeightPickerDialog(
-                                field = field,
+                            val wheelsKilos = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (20..300).toList(),
+                                    initialValue = field.value?.toInt()?.coerceIn(20, 300) ?: 70
+                                )
+                            )
+                            val wheelsPounds = listOf<SnapWheel<*>>(
+                                SnapWheel(
+                                    items = (44..661).toList(),
+                                    initialValue = field.value?.let {
+                                        field.kilosToPounds(it).toInt().coerceIn(44, 661)
+                                    } ?: 154)
+                            )
+                            SnapWheelPickerDialog(
+                                title = R.string.picker_title_weight,
+                                wheels = if (field.isKilos) wheelsKilos else wheelsPounds,
+                                inputFieldLabels = listOf(R.string.label_weight),
                                 onDismiss = { showDialog = false },
-                                onKilosChanged = { onboardingModel.updateWeightKilos(it) },
-                                onPoundsChanged = { onboardingModel.updateWeightPounds(it) }
+                                onConfirm = { values ->
+                                    if (field.isKilos) onboardingModel.updateWeightKilos(values[0] as Int)
+                                    else onboardingModel.updateWeightPounds(values[0] as Int)
+                                    showDialog = false
+                                }
                             )
                         }
                     }
