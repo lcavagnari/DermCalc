@@ -194,7 +194,8 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        onClick = { quoteModel.updateQuote() }
     ) {
         Column(
             modifier = Modifier.padding(vertical = 15.dp, horizontal = 10.dp),
