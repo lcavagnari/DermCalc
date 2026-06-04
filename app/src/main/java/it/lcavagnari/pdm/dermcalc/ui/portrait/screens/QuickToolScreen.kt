@@ -1,7 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import android.app.Application
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -25,30 +23,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.BsaResult
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
+import it.lcavagnari.pdm.dermcalc.models.formattedScore
+import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
+import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
+import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
+import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
-import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.HeightInputPicker
-import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
-import it.lcavagnari.pdm.dermcalc.ui.theme.bmiLabel
-import it.lcavagnari.pdm.dermcalc.ui.theme.bmiSeverity
-import it.lcavagnari.pdm.dermcalc.ui.theme.bsaSeverity
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
 
 @Composable
@@ -56,92 +58,115 @@ fun QuickToolScreen(
     modifier: Modifier = Modifier,
     soulColour: Color,
     saveEnabled: Boolean = true,
+    toolLabel: String? = null,
+    formattedScore: String? = null,
+    severity: Severity? = null,
     onSaveResult: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
-
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Top)
-        ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                elevation = CardDefaults.cardElevation(6.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant),
-                content = content
+        BorderedCard(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            borderSide = BorderSide.Top,
+            borderColor = soulColour,
+            borderStrokeWidth = 2.dp,
+            cornerRadius = 10.dp,
+            elevation = CardDefaults.cardElevation(6.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            ),
+            content = content
+        )
+
+        if (formattedScore != null) {
+            ResultCard(
+                soulColour = soulColour,
+                toolLabel = toolLabel,
+                formattedScore = formattedScore,
+                severity = severity
             )
         }
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .semantics { testTag = "tool_btn_save" },
-            enabled = saveEnabled,
-            onClick = onSaveResult
-        ) {
-            Text(stringResource(R.string.btn_start))
-        }
+
+        SaveButton(enabled = saveEnabled, onSaveResult = onSaveResult)
     }
 }
 
 @Composable
-fun BMIScreen(
-    modifier: Modifier = Modifier,
-    heightInput: HeightInput,
-    weightInput: WeightInput,
-    onSaveResult: (BmiResult) -> Unit
+private fun SaveButton(
+    enabled: Boolean,
+    onSaveResult: () -> Unit
 ) {
-    var localHeight by remember { mutableStateOf(heightInput) }
-    var localWeight by remember { mutableStateOf(weightInput) }
-    val score = if (localHeight.value != null && localWeight.value != null)
-        BmiResult.calculate(localWeight.value!!, localHeight.value!!)
-    else null
+    var saveArmed by remember { mutableStateOf(false) }
+    Button(
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .semantics { testTag = "tool_btn_save" },
+        enabled = enabled,
+        onClick = {
+            if (saveArmed) {
+                saveArmed = false
+                onSaveResult()
+            } else {
+                saveArmed = true
+            }
+        }
+    ) {
+        Text(if (saveArmed) stringResource(R.string.btn_ok) else stringResource(R.string.btn_start))
+    }
+}
 
-    QuickToolScreen(
-        modifier = modifier,
-        soulColour = SoulPatience,
-        saveEnabled = score != null,
-        onSaveResult = { onSaveResult(BmiResult(localWeight.value!!, localHeight.value!!, score!!)) }
+@Composable
+private fun ResultCard(
+    soulColour: Color,
+    toolLabel: String?,
+    formattedScore: String,
+    severity: Severity?
+) {
+    BorderedCard(
+        modifier = Modifier.fillMaxWidth(0.9f),
+        borderSide = BorderSide.Left,
+        borderColor = soulColour,
+        borderStrokeWidth = 2.dp,
+        cornerRadius = 10.dp,
+        elevation = CardDefaults.cardElevation(6.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            HeightInputPicker(
-                field = localHeight,
-                onMetricChanged = { cm -> localHeight = localHeight.copy(value = cm.toDouble(), isValid = true) },
-                onImperialChanged = { (feet, inches) -> localHeight = localHeight.copy(value = localHeight.feetInchesToCm(feet, inches), isValid = true) }
-            )
-            WeightInputPicker(
-                field = localWeight,
-                onKilosChanged = { kg -> localWeight = localWeight.copy(value = kg.toDouble(), isValid = true) },
-                onPoundsChanged = { lb -> localWeight = localWeight.copy(value = localWeight.poundsToKilos(lb), isValid = true) }
-            )
-            if (score != null) {
-                val severity = bmiSeverity(score)
+            if (toolLabel != null) {
                 Text(
-                    text = "%.1f".format(score),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = SoulPatience
+                    text = toolLabel,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = soulColour
                 )
+            }
+            Text(
+                text = formattedScore,
+                style = TextStyle(fontFamily = PixelSoft, fontSize = 56.sp),
+                color = soulColour
+            )
+            if (severity != null) {
                 Text(
-                    text = bmiLabel(score),
+                    text = when (severity) {
+                        Severity.Mild -> stringResource(R.string.severity_mild)
+                        Severity.Moderate -> stringResource(R.string.severity_moderate)
+                        Severity.Severe -> stringResource(R.string.severity_severe)
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     color = severityColor(severity)
                 )
@@ -151,15 +176,102 @@ fun BMIScreen(
 }
 
 @Composable
-fun BSAScreen(modifier: Modifier = Modifier, onSaveResult: (BsaResult) -> Unit) {
+fun BMIScreen(
+    modifier: Modifier = Modifier,
+    heightCm: Double? = null,
+    weightKg: Double? = null,
+    onSaveResult: (BmiResult) -> Unit,
+) {
+    var heightField by remember {
+        mutableStateOf(
+            HeightInput(id = "bmi_height", label = R.string.label_height).copy(
+                value = heightCm, isValid = heightCm != null,
+            )
+        )
+    }
+    var weightField by remember {
+        mutableStateOf(
+            WeightInput(id = "bmi_weight", label = R.string.label_weight).copy(
+                value = weightKg, isValid = weightKg != null,
+            )
+        )
+    }
+
+    val h = heightField.value
+    val w = weightField.value
+    val bmiResult = remember(h, w) {
+        if (h != null && w != null) BmiResult.compute(w, h) else null
+    }
+
+    val formattedScore = bmiResult?.formattedScore() ?: "--"
+    val severity = bmiResult?.severity()
+
+    QuickToolScreen(
+        modifier = modifier,
+        soulColour = SoulPatience,
+        saveEnabled = bmiResult != null,
+        toolLabel = "BMI",
+        formattedScore = formattedScore,
+        severity = severity,
+        onSaveResult = {
+            bmiResult?.let { onSaveResult(it) }
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Top),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HeightInputPicker(
+                field = heightField,
+                onMetricChanged = { cm ->
+                    heightField = heightField.copy(value = cm.toDouble(), isValid = cm in 50..272)
+                },
+                onImperialChanged = { (feet, inches) ->
+                    val cm = heightField.feetInchesToCm(feet, inches)
+                    heightField = heightField.copy(value = cm, isValid = cm in 19.68..1207.08)
+                }
+            )
+            WeightInputPicker(
+                field = weightField,
+                onKilosChanged = { kg ->
+                    weightField = weightField.copy(value = kg.toDouble(), isValid = kg in 20..300)
+                },
+                onPoundsChanged = { lb ->
+                    weightField = weightField.copy(
+                        value = weightField.poundsToKilos(lb),
+                        isValid = lb in 44..661
+                    )
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun BSAScreen(
+    modifier: Modifier = Modifier,
+    onSaveResult: (BsaResult) -> Unit,
+) {
     var percentage by remember { mutableFloatStateOf(0f) }
+
+    val bsaResult = remember(percentage) {
+        val pct = percentage.toDouble()
+        BsaResult(affectedPercentage = pct, score = pct)
+    }
+    val bsaFormattedScore = bsaResult.formattedScore()
+    val bsaSeverity = bsaResult.severity()
 
     QuickToolScreen(
         modifier = modifier,
         soulColour = SoulBravery,
+        formattedScore = bsaFormattedScore,
+        severity = bsaSeverity,
+        saveEnabled = percentage > 0f,
         onSaveResult = {
-            val pct = percentage.toDouble()
-            onSaveResult(BsaResult(pct, pct))
+            onSaveResult(bsaResult)
         }
     ) {
         Column(
@@ -180,23 +292,12 @@ fun BSAScreen(modifier: Modifier = Modifier, onSaveResult: (BsaResult) -> Unit) 
                 modifier = Modifier.fillMaxWidth(),
                 colors = SliderDefaults.colors(
                     thumbColor = SoulBravery,
-                    activeTrackColor = SoulBravery
+                    activeTickColor = SoulBravery
                 )
             )
             Text(
                 text = "%.1f %%".format(percentage),
                 style = MaterialTheme.typography.bodyMedium
-            )
-            val severity = bsaSeverity(percentage.toDouble())
-            Text(
-                text = "%.1f".format(percentage),
-                style = MaterialTheme.typography.headlineLarge,
-                color = SoulBravery
-            )
-            Text(
-                text = severity.name,
-                style = MaterialTheme.typography.bodyMedium,
-                color = severityColor(severity)
             )
         }
     }
@@ -205,16 +306,7 @@ fun BSAScreen(modifier: Modifier = Modifier, onSaveResult: (BsaResult) -> Unit) 
 @Preview(showBackground = true)
 @Composable
 fun BMIScreenPreview() {
-    BMIScreen(
-        heightInput = HeightInput(id = "height", label = R.string.label_height, isMetric = true),
-        weightInput = WeightInput(id = "weight", label = R.string.label_weight, isKilos = true)
-    ) {}
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BSAScreenPreview() {
-    BSAScreen() { }
+    BMIScreen(onSaveResult = { })
 }
 
 @Preview(showBackground = true)
@@ -228,4 +320,10 @@ fun MainPortraitActivityPreview() {
     DermCalcTheme {
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = BMIToolRoute)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BSAScreenPreview() {
+    BSAScreen(onSaveResult = {})
 }

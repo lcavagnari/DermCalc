@@ -1,16 +1,13 @@
 package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
@@ -57,10 +54,9 @@ fun AppNavHost(
         composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
 
         composable<BMIToolRoute> {
-            val fields = onboardingModel.fields.collectAsState().value
             BMIScreen(
-                heightInput = fields[3] as HeightInput,
-                weightInput = fields[4] as WeightInput,
+                heightCm = onboardingModel.heightInput.value,
+                weightKg = onboardingModel.weightInput.value,
                 onSaveResult = { result ->
                     toolsModel.addResult(result)
                     navController.popBackStack()
