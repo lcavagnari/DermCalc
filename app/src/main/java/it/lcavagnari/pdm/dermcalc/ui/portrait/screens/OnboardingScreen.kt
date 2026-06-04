@@ -140,7 +140,7 @@ fun OnboardingPreview() {
     val vm = remember { OnboardingModel(app) }
     DermCalcTheme {
         OnboardingScreen(
-            rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4),
+            rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 0),
             modifier = Modifier.fillMaxSize(),
             onboardingModel = vm,
             onFinish = {}
