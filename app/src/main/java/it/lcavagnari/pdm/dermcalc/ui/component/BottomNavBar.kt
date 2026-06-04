@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
+import android.app.Application
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,20 +12,31 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import it.lcavagnari.pdm.dermcalc.AppNavHost
+import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
@@ -39,7 +51,7 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
     NavigationBar(
         modifier = Modifier
             .semantics { testTag = "bottom_nav_bar" }
-            .height(70.dp),
+            .height(90.dp),
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
         tonalElevation = 6.dp,
         windowInsets = WindowInsets(0.dp),
@@ -108,4 +120,25 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPortraitActivityPreview() {
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
+    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
+    val tm = remember { ToolsModel(app) }
+    DermCalcTheme {
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = BMIToolRoute)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPortraitActivityPreview1() {
+    NavigationBar(
+        navController = rememberNavController(), appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+    )
 }

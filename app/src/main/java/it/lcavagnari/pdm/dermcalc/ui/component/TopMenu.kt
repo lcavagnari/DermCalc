@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
+import android.app.Application
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,18 +16,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
@@ -35,6 +43,8 @@ import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulDetermination
@@ -133,7 +143,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                 // Soul color fills behind the system status bar; content sits below it
                 // so icons/text/buttons stay tappable and readable.
                 .statusBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp).padding(bottom = 8.dp),
             verticalAlignment     = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -155,7 +165,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
             )
             Column(
                 modifier            = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                //verticalArrangement = Arrangement.spacedBy(1.dp, Alignment.Top)
             ) {
                 // Determination Mono — the theme's actual title font. Pixel aesthetic
                 // with proper glyph spacing, readable at chrome sizes.
@@ -183,4 +193,23 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
             ) {}
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPortraitActivityPrevew() {
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
+    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
+    val tm = remember { ToolsModel(app) }
+    DermCalcTheme {
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = HomeRoute)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPortraitActivityPrevie1() {
+    TopMenu(rememberNavController())
 }
