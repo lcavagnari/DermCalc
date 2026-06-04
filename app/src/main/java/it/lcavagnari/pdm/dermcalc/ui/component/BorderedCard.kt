@@ -207,6 +207,7 @@ fun BorderedCard(
         elevation = elevation,
         border = border,
         interactionSource = interactionSource ?: remember { MutableInteractionSource() },
+        content = content,
         modifier = modifier.drawBehind {
             drawOneSidedBorder(
                 cornerRadiusPx = cornerRadius.toPx(),
@@ -215,7 +216,5 @@ fun BorderedCard(
                 strokeWidthPx = borderStrokeWidth.toPx(),
             )
         }
-    ) {
-        content()
-    }
+    )
 }
