@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -69,14 +70,10 @@ fun QuickToolScreen(
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top)
     ) {
-        BorderedCard(
-            modifier = Modifier.fillMaxWidth(0.9f),
-            borderSide = BorderSide.Top,
-            borderColor = soulColour,
-            borderStrokeWidth = 2.dp,
-            cornerRadius = 10.dp,
+        Card(
+            modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(6.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -85,6 +82,16 @@ fun QuickToolScreen(
             content = content
         )
 
+        SaveButton(enabled = saveEnabled, onSaveResult = onSaveResult)
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 40.dp).padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Bottom)
+    ) {
         if (formattedScore != null) {
             ResultCard(
                 soulColour = soulColour,
@@ -93,8 +100,6 @@ fun QuickToolScreen(
                 severity = severity
             )
         }
-
-        SaveButton(enabled = saveEnabled, onSaveResult = onSaveResult)
     }
 }
 
@@ -130,7 +135,7 @@ private fun ResultCard(
     severity: Severity?
 ) {
     BorderedCard(
-        modifier = Modifier.fillMaxWidth(0.9f),
+        modifier = Modifier.fillMaxWidth(),
         borderSide = BorderSide.Left,
         borderColor = soulColour,
         borderStrokeWidth = 2.dp,
