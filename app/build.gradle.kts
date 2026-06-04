@@ -9,6 +9,19 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+fun stringProperty(name: String): String? = (findProperty(name) as String?) ?: System.getenv(name)
+
+val releaseKeystorePath = stringProperty("ANDROID_SIGNING_KEYSTORE_PATH")
+val releaseKeystorePassword = stringProperty("ANDROID_SIGNING_KEYSTORE_PASSWORD")
+val releaseKeyAlias = stringProperty("ANDROID_SIGNING_KEY_ALIAS")
+val releaseKeyPassword = stringProperty("ANDROID_SIGNING_KEY_PASSWORD")
+val hasReleaseSigningConfig = listOf(
+    releaseKeystorePath,
+    releaseKeystorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+).all { !it.isNullOrBlank() }
+
 dependencyCheck {
     // Fail the build if any dependency has a CVSS score >= 7.0 (HIGH or CRITICAL).
     failBuildOnCVSS = 7.0f
@@ -35,9 +48,23 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasReleaseSigningConfig) {
+            create("release") {
+                storeFile = file(releaseKeystorePath!!)
+                storePassword = releaseKeystorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (hasReleaseSigningConfig) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

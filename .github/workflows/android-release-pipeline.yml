@@ -1,0 +1,40 @@
+name: Android Release Pipeline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  compile:
+    name: Compile
+    uses: ./.github/workflows/android-compile.yml
+
+  unit-tests:
+    name: Unit tests
+    needs: compile
+    uses: ./.github/workflows/android-unit-tests.yml
+
+  security-review:
+    name: Security review (non-blocking)
+    needs: compile
+    uses: ./.github/workflows/android-security-review.yml
+    secrets:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+  signed-release:
+    name: Signed APK release
+    needs: unit-tests
+    uses: ./.github/workflows/android-signed-release.yml
+    secrets:
+      ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
+      ANDROID_SIGNING_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD }}
+      ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+      ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
