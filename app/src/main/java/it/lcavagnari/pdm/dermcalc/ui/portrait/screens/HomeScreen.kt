@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -79,7 +80,7 @@ fun HomeScreen(
 ) {
     val fullNameField: TextInput = onboardingModel.fields.collectAsState().value[0] as TextInput
     val welcomeMessage =
-        stringResource(R.string.welcome) + ", " + fullNameField.value.split(' ')[0] + '.'
+        stringResource(R.string.welcome) + ", " + fullNameField.value.split(' ')[0]
 
     val todayDate = today().date
     val dateText = java.text.SimpleDateFormat("EEEE dd MMMM", Locale.getDefault()).format(
@@ -95,12 +96,8 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
     ) {
-        BorderedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(0.9f),
-            borderSide = BorderSide.Right,
-            borderColor = MaterialTheme.colorScheme.primary,
-            borderStrokeWidth = 2.dp,
-            cornerRadius = 10.dp,
             elevation = CardDefaults.cardElevation(4.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -120,7 +117,7 @@ fun HomeScreen(
                     textAlign = TextAlign.Start
                 )
                 Text(
-                    text = welcomeMessage,
+                    text = welcomeMessage.uppercase(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold,

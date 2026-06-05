@@ -204,16 +204,9 @@ fun HomeScreenPreviewDark() {
 @Composable
 fun HomeScreenPreview() {
     val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
-    }
-    }
-
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val vm = remember { OnboardingModel(app) }.also {
-        it.finishOnboarding(); it.updateName("Asriel ")
-    }
-    val tm = remember { ToolsModel(app) }.also { toolsModel ->
+    val app = object : Application() { init { attachBaseContext(context) } }
+    remember { OnboardingModel(app) }.also { it.finishOnboarding(); it.updateName("Asriel ") }
+    remember { ToolsModel(app) }.also { toolsModel ->
         toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
         toolsModel.addResult(
             BmiResult(
@@ -312,7 +305,7 @@ fun HistoryCard(
             Text(
                 text = stringResource(R.string.home_history_title).uppercase(),
                 style = MaterialTheme.typography.labelLarge,
-                color = Soul.Justice.color,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 6.dp)
             )
