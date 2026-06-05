@@ -13,14 +13,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,23 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Quote
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.utils.today
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.atTime
-import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import java.util.Locale
 
@@ -60,16 +52,9 @@ fun HomeScreenPreview() {
     val vm = remember { OnboardingModel(app) }.also {
         it.finishOnboarding(); it.updateName("Asriel ")
     }
-
     val tm = remember { ToolsModel(app) }
 
-
-    DermCalcTheme {
-        MainPortraitActivity(
-            onboardingModel = vm, quoteModel = qm,
-            toolsModel = tm,
-            startingDestination = HomeRoute)
-    }
+    DermCalcTheme { MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm) }
 }
 
 /**
@@ -93,23 +78,8 @@ fun HomeScreen(
     toolsModel: ToolsModel
 ) {
     val fullNameField: TextInput = onboardingModel.fields.collectAsState().value[0] as TextInput
-    val welcomeMessage = stringResource(R.string.nav_home_subtitle)+ ", " +fullNameField.value.split(' ')[0]+'.'
-
-    // TODO: Remove seed data before release.
-    LaunchedEffect(Unit) {
-        toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
-        toolsModel.addResult(BmiResult(weightKg = 85.0, heightCm = 175.0, score = 27.8, timestamp = today().date.minus(3,
-            DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))))
-        toolsModel.addResult(BmiResult(weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(10,
-            DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))))
-        toolsModel.addResult(BmiResult(weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(10,
-            DateTimeUnit.WEEK).atTime(LocalTime.fromSecondOfDay(0))))
-        toolsModel.addResult(BmiResult(weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(10,
-            DateTimeUnit.MONTH).atTime(LocalTime.fromSecondOfDay(0))))
-        toolsModel.addResult(BmiResult(weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(1,
-            DateTimeUnit.YEAR).atTime(LocalTime.fromSecondOfDay(0))))
-        toolsModel.addResult(BmiResult(weightKg = 78.0, heightCm = 175.0, score = 25.5, timestamp = today()))
-    }
+    val welcomeMessage =
+        stringResource(R.string.welcome) + ", " + fullNameField.value.split(' ')[0] + '.'
 
     val todayDate = today().date
     val dateText = java.text.SimpleDateFormat("EEEE dd MMMM", Locale.getDefault()).format(
