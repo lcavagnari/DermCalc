@@ -3,6 +3,7 @@ package it.lcavagnari.pdm.dermcalc.ui.theme
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
@@ -22,7 +23,7 @@ enum class Soul(val color: Color) {
     Integrity(SoulIntegrity),
     Perseverance(SoulPerseverance),
     Kindness(SoulKindness),
-    Justice(SoulJustice)
+    Justice(SoulJustice);
 }
 
 /**

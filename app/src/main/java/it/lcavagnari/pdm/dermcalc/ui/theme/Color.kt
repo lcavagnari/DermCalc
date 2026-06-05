@@ -1,6 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 
 // ── DARK · Underground ───────────────────────────────────────────────────────
 val DarkBackground   = Color(0xFF0E0E10)
@@ -15,7 +16,6 @@ val DarkOnSurfaceDim = Color(0xFF9C9A93)
 val Determination     = Color(0xFFE8C547)
 val DeterminationCont = Color(0xFF3A2F00)
 val NeutralUi         = Color(0xFFC9C7C0)
-val SoulRed           = Color(0xFFE04848)
 
 // ── LIGHT · Overworld ────────────────────────────────────────────────────────
 val LightBackground   = Color(0xFFFAF8F2)
@@ -48,3 +48,4 @@ val SoulIntegrity     = Color(0xFF4A6BD9)
 val SoulPerseverance  = Color(0xFF9B4FC4)
 val SoulKindness      = Color(0xFF5FB85F)
 val SoulJustice       = Color(0xFFE8B842)
+

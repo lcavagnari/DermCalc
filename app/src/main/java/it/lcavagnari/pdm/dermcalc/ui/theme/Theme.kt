@@ -8,11 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+
 
 /** Composition local providing the current dark-mode state. Consume with `LocalDarkTheme.current`. */
 val LocalDarkTheme = compositionLocalOf { false }
 /** Composition local providing a callback to flip the dark/light theme. Consume with `LocalToggleDarkTheme.current`. */
-val LocalToggleDarkTheme = compositionLocalOf<() -> Unit> { {} }
+val LocalToggleDarkTheme = compositionLocalOf { {} }
 
 private val DarkColorScheme = darkColorScheme(
     primary              = Determination,
@@ -23,19 +25,20 @@ private val DarkColorScheme = darkColorScheme(
     onSecondary          = DarkBackground,
     secondaryContainer   = DarkSurfaceLow,
     onSecondaryContainer = DarkOnSurface,
-    tertiary             = SoulRed,
+    tertiary             = SoulDetermination,
     onTertiary           = Color.White,
     tertiaryContainer    = DarkSurfaceLow,
-    onTertiaryContainer  = SoulRed,
+    onTertiaryContainer  = SoulDetermination,
     background           = DarkBackground,
     onBackground         = DarkOnSurface,
     surface              = DarkSurface,
     onSurface            = DarkOnSurface,
     surfaceVariant       = DarkSurfaceLow,
+    inverseSurface       = LightSurfaceLow,
     onSurfaceVariant     = DarkOnSurfaceDim,
     outline              = DarkOutline,
     outlineVariant       = DarkOutlineDim,
-    error                = SoulRed,
+    error                = SoulDetermination,
     onError              = Color.White
 )
 
@@ -57,12 +60,25 @@ private val LightColorScheme = lightColorScheme(
     surface              = LightSurface,
     onSurface            = LightOnSurface,
     surfaceVariant       = LightSurfaceLow,
+    inverseSurface       = DarkSurfaceLow,
     onSurfaceVariant     = LightOnSurfaceDim,
     outline              = LightOutline,
     outlineVariant       = LightOutlineDim,
     error                = SoulRedMuted,
     onError              = Color.White
 )
+
+/** Composition local providing the bar alpha value for the current theme. Consume with `LocalBarAlpha.current`. */
+val LocalBarAlpha = compositionLocalOf { 0.90f }
+
+fun onSoul(soulColor: Color): Color {
+    return if (soulColor.luminance() > 0.18f) DarkSurface else LightSurface
+}
+
+// MaterialTheme.colorScheme.surfaceVariant
+fun onSoulContainer(soulColor: Color): Color {
+    return if (soulColor.luminance() > 0.18f) LightSurfaceLow else DarkSurfaceLow
+}
 
 /**
  * Root Material3 theme for DermCalc.
@@ -78,11 +94,13 @@ private val LightColorScheme = lightColorScheme(
 fun DermCalcTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     onToggleDarkTheme: () -> Unit = {},
+    barAlpha: Float = if (darkTheme) 0.42f else 0.90f,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
         LocalDarkTheme provides darkTheme,
-        LocalToggleDarkTheme provides onToggleDarkTheme
+        LocalToggleDarkTheme provides onToggleDarkTheme,
+        LocalBarAlpha provides barAlpha
     ) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
