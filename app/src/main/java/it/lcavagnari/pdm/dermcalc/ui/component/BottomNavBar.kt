@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,18 +25,19 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import it.lcavagnari.pdm.dermcalc.AppNavHost
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoulContainer
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
 /**
@@ -48,35 +48,34 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
  */
 @Composable
 fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+
+    val localAlpha = LocalBarAlpha.current
+    val soulColor = when (currentDestination?.route) {
+        HomeRoute.route -> Soul.Determination.color
+        ToolsRoute.route -> MaterialTheme.colorScheme.primary
+        ProfileRoute.route -> Soul.Kindness.color
+        else -> soulForRoute(currentDestination?.route).color
+    }
+
     NavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(74.dp)
-
             .semantics { testTag = "bottom_nav_bar" },
-        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
+        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = localAlpha),
         tonalElevation = 6.dp,
         windowInsets = WindowInsets(bottom = 10.dp),
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
 
-        // HOME = red SOUL Determination (brand mark / launcher icon / heart). TOOLS = gold
-        // primary (palette Determination at rest; no calculator owns the screen).
-        // PROFILE = green Kindness. Each soul claims its own room.
-        val currentSoul = when (currentDestination?.route) {
-            HomeRoute.route -> Soul.Determination.color
-            ToolsRoute.route -> MaterialTheme.colorScheme.primary
-            ProfileRoute.route -> Soul.Kindness.color
-            else -> soulForRoute(currentDestination?.route).color
-        }
 
         appItems.forEach { item ->
             // Using an explicit when block with hasRoute<T>() ensures the compiler uses
             // the correct type-safe extension and avoids "restricted API" errors.
             val isSelected = currentDestination
-                ?.hierarchy
-                ?.any {
+                ?.hierarchy?.any {
                     it.hasRoute(item::class)
                 } == true
 
@@ -98,11 +97,10 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                         }
                     }
                 },
-                //label = { Text(item.title?.let { stringResource(it) } ?: "") },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = currentSoul,
-                    selectedTextColor = currentSoul,
-                    indicatorColor = currentSoul.copy(alpha = 0.22f),
+                    selectedIconColor = soulColor,
+                    selectedTextColor = soulColor,
+                    indicatorColor = soulColor.copy(alpha = 0.22f),
                     unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
@@ -124,11 +122,11 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
+    val app = object : Application() { init { attachBaseContext(LocalContext.current) } }
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
+
     DermCalcTheme {
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
     }
@@ -138,6 +136,7 @@ fun MainPortraitActivityPreview() {
 @Composable
 fun MainPortraitActivityPreview1() {
     NavigationBar(
-        navController = rememberNavController(), appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+        navController = rememberNavController(),
+        appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
     )
 }
