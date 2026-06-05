@@ -67,10 +67,10 @@ fun MainPortraitActivity(
 
     // Show the onboarding flow until the user completes all pages.
     if (!hasSeenOnboarding) {
-        Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OnboardingScreen(
+                modifier = modifier.padding(innerPadding),
                 pagerState = pagerState,
-                modifier = modifier,
                 onboardingModel = onboardingModel,
                 onFinish = { onboardingModel.finishOnboarding() },
                 onToggleTheme = onToggleTheme
@@ -78,10 +78,9 @@ fun MainPortraitActivity(
         }
 
     } else {
-        val dark = LocalDarkTheme.current
         Box(Modifier.fillMaxSize()) {
             Image(
-                painter = painterResource(if (dark) R.drawable.bg_dark else R.drawable.bg),
+                painter = painterResource(if (LocalDarkTheme.current) R.drawable.bg_dark else R.drawable.bg),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

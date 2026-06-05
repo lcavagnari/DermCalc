@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -222,6 +223,11 @@ fun BMIScreen(
             bmiResult?.let { onSaveResult(it) }
         }
     ) {
+        
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 5.dp),
+            text = "1234"
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -239,6 +245,15 @@ fun BMIScreen(
                     heightField = heightField.copy(value = cm, isValid = cm in 19.68..1207.08)
                 }
             )
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth(0.84f)
+                    .padding(start = 15.dp, top = 5.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
             WeightInputPicker(
                 field = weightField,
                 onKilosChanged = { kg ->
