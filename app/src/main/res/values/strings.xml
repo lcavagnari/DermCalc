@@ -44,8 +44,8 @@
 
     <!-- Pickers -->
     <string name="picker_default_title">Scroll to pick a value</string>
-    <string name="picker_title_height">Select height</string>
-    <string name="picker_title_weight">Select weight</string>
+    <string name="picker_title_height">Select your height</string>
+    <string name="picker_title_weight">Select your weight</string>
 
     <!-- Placeholders -->
     <string name="placeholder_date">DD / MM / YYYY</string>
@@ -123,7 +123,7 @@
         <item>Take care of your skin. It represents you every single day, to everyone you meet. — Unknown</item>
 
     </string-array>
-    <string name="nav_home_subtitle">Welcome</string>
+    <string name="welcome">Welcome</string>
     <string name="nav_tools_subtitle">Calculators</string>
     <string name="nav_profile_subtitle">Personal Details</string>
     <string name="btn_back">Go Back</string>

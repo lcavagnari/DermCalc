@@ -40,10 +40,10 @@
 
     <!-- Pickers -->
     <string name="picker_default_title">Faites défiler pour sélectionner une valeur</string>
-    <string name="picker_title_height">Sélectionner la taille</string>
+    <string name="picker_title_height">Sélectionner votre taille</string>
 
     <!-- Placeholders -->
-    <string name="picker_title_weight">Sélectionnez le poids</string>
+    <string name="picker_title_weight">Sélectionnez votre poids</string>
     <string name="placeholder_date">JJ / MM / AAAA</string>
     <string name="placeholder_height">Cliquez ici pour saisir la hauteur</string>
 
@@ -116,7 +116,7 @@
         <item>Prenez soin de votre peau. Elle vous représente chaque jour, auprès de chaque personne que vous rencontrez. — Unknown</item>
 
     </string-array>
-    <string name="nav_home_subtitle">Bienvenue</string>
+    <string name="welcome">Bienvenue</string>
     <string name="nav_tools_subtitle">Calculatrices</string>
     <string name="nav_profile_subtitle">Données personnelles</string>
     <string name="btn_back">Retour</string>

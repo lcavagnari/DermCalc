@@ -40,7 +40,7 @@
 
     <!-- Pickers -->
     <string name="picker_default_title">Scorri per selezionare un valore</string>
-    <string name="picker_title_height">Seleziona l\'altezza</string>
+    <string name="picker_title_height">Seleziona la tua altezza</string>
 
     <!-- Placeholders -->
     <string name="picker_title_weight">Seleziona il tuo peso</string>
@@ -116,7 +116,7 @@
         <item>\"Prenditi cura della tua pelle. Ti rappresenta ogni giorno, davanti a ogni persona che incontri.\" — Unknown</item>
 
     </string-array>
-    <string name="nav_home_subtitle">Benvenuto</string>
+    <string name="welcome">Benvenuto</string>
     <string name="nav_tools_subtitle">Calcolatori</string>
     <string name="nav_profile_subtitle">Dati personali</string>
     <string name="btn_back">Torna indietro</string>

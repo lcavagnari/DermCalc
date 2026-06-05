@@ -90,7 +90,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
     }
 
     val subtitle: Int? = when (currentDestination?.route) {
-        HomeRoute.route -> R.string.nav_home_subtitle
+        HomeRoute.route -> R.string.nav_home
         ToolsRoute.route -> R.string.nav_tools_subtitle
         ProfileRoute.route -> R.string.nav_profile_subtitle
         BMIToolRoute.route  -> R.string.tools_bmi_description
@@ -143,7 +143,8 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                 // Soul color fills behind the system status bar; content sits below it
                 // so icons/text/buttons stay tappable and readable.
                 .statusBarsPadding()
-                .padding(horizontal = 16.dp).padding(bottom = 8.dp),
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 8.dp),
             verticalAlignment     = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -204,7 +205,7 @@ fun MainPortraitActivityPrevew() {
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
     DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = HomeRoute)
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
     }
 }
 
