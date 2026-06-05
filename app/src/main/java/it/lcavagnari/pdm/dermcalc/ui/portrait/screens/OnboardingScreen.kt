@@ -73,10 +73,10 @@ import kotlinx.coroutines.launch
  * @constructor Create empty Onboarding screen
  */
 data class OnboardingScreen(
-    @StringRes val title: Int,
-    @StringRes val description: Int? = null,
-    @DrawableRes val backgroundLight: Int,
-    @DrawableRes val backgroundDark: Int,
+    @param:StringRes val title: Int,
+    @param:StringRes val description: Int? = null,
+    @param:DrawableRes val backgroundLight: Int,
+    @param:DrawableRes val backgroundDark: Int,
 
     val imageRes: ImageVector? = null,
     val imageDrawable: Int? = null,
@@ -95,7 +95,6 @@ val onboardingScreens = listOf(
         imageDrawable = R.drawable.ic_ecg,
         backgroundLight = R.drawable.bg_onboarding1,
         backgroundDark = R.drawable.bg_onboarding1_dark
-
     ),
     OnboardingScreen(
         title = R.string.onboarding_2_title,
@@ -136,7 +135,10 @@ val onboardingScreens = listOf(
 @Composable
 fun OnboardingPreview() {
     val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
+    val app = object : Application() { init {
+        attachBaseContext(context)
+    }
+    }
     val vm = remember { OnboardingModel(app) }
     DermCalcTheme {
         OnboardingScreen(
@@ -149,7 +151,7 @@ fun OnboardingPreview() {
 }
 
 /**
- * Full-screen onboarding flow over a multi-page [androidx.compose.foundation.pager.HorizontalPager].
+ * Full-screen onboarding flow over a multipage [androidx.compose.foundation.pager.HorizontalPager].
  *
  * Layout: [OnboardingPager] fills the full screen as a background layer (edge-to-edge, including
  * behind system bars). A chrome [Column] overlay is drawn on top, inset by status/nav bars:
@@ -237,16 +239,14 @@ fun OnboardingScreen(
                     .padding(16.dp)
                     .semantics { testTag = if (isLastIndex) "btn_start" else "btn_next" },
                 enabled = isBtnEnabled,
+                shape = RoundedCornerShape(5.dp),
                 onClick = {
                     if (!isLastIndex) {
                         coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-                    } else {
-                        onFinish()
-                    }
+
+                    } else onFinish()
                 }
-            ) {
-                Text(stringResource(if (isLastIndex) R.string.btn_start else R.string.btn_next))
-            }
+            ) { Text(stringResource(if (isLastIndex) R.string.btn_start else R.string.btn_next)) }
         }
 
         if (isBtnEnabled) {
