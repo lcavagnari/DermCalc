@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +45,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulDetermination
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
@@ -53,8 +53,56 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
+
+private fun title(route: String): Int {
+    return when (route) {
+        ToolsRoute.route    -> R.string.nav_tools
+        ProfileRoute.route  -> R.string.nav_profile
+        BMIToolRoute.route  -> R.string.tools_bmi
+        BSAToolRoute.route  -> R.string.tools_bsa
+        PASIToolRoute.route -> R.string.tools_pasi
+        EASIToolRoute.route -> R.string.tools_easi
+        else                -> R.string.app_name
+    }
+}
+
+private fun subtitle(route: String?): Int? {
+    return when (route) {
+        HomeRoute.route -> R.string.nav_home
+        ToolsRoute.route -> R.string.nav_tools_subtitle
+        ProfileRoute.route -> R.string.nav_profile_subtitle
+        BMIToolRoute.route -> R.string.tools_bmi_description
+        BSAToolRoute.route -> R.string.tools_bsa_description
+        PASIToolRoute.route -> R.string.tools_pasi_description
+        EASIToolRoute.route -> R.string.tools_easi_description
+        else -> null
+    }
+}
+
+private fun icon(route: String?): Int {
+    return when (route) {
+        ToolsRoute.route -> R.drawable.ic_tools_calculator
+        ProfileRoute.route -> R.drawable.ic_profile_button
+        BMIToolRoute.route, BSAToolRoute.route, PASIToolRoute.route, EASIToolRoute.route -> R.drawable.ic_arrow_back
+        else -> R.drawable.ic_ecg
+    }
+}
+
+private fun soulColor(route: String?): Color {
+    return when (route) {
+        HomeRoute.route -> SoulDetermination
+        ToolsRoute.route -> SoulJustice
+        ProfileRoute.route -> SoulKindness
+        BMIToolRoute.route -> SoulPatience
+        BSAToolRoute.route -> SoulBravery
+        PASIToolRoute.route -> SoulIntegrity
+        EASIToolRoute.route -> SoulPerseverance
+        else -> soulForRoute(route).color
+    }
+}
 
 /**
  * Top app bar. A full-width [androidx.compose.material3.Card] whose chrome color tracks the active soul.
@@ -79,63 +127,26 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
-    val title: Int = when (currentDestination?.route) {
-        ToolsRoute.route    -> R.string.nav_tools
-        ProfileRoute.route  -> R.string.nav_profile
-        BMIToolRoute.route  -> R.string.tools_bmi
-        BSAToolRoute.route  -> R.string.tools_bsa
-        PASIToolRoute.route -> R.string.tools_pasi
-        EASIToolRoute.route -> R.string.tools_easi
-        else -> R.string.app_name
-    }
-
-    val subtitle: Int? = when (currentDestination?.route) {
-        HomeRoute.route -> R.string.nav_home
-        ToolsRoute.route -> R.string.nav_tools_subtitle
-        ProfileRoute.route -> R.string.nav_profile_subtitle
-        BMIToolRoute.route  -> R.string.tools_bmi_description
-        BSAToolRoute.route  -> R.string.tools_bsa_description
-        PASIToolRoute.route -> R.string.tools_pasi_description
-        EASIToolRoute.route -> R.string.tools_easi_description
-        else -> null
-    }
-
-    val icon = when (currentDestination?.route) {
-        ToolsRoute.route -> R.drawable.ic_tools_calculator
-        ProfileRoute.route -> R.drawable.ic_profile_button
-        BMIToolRoute.route, BSAToolRoute.route, PASIToolRoute.route, EASIToolRoute.route -> R.drawable.ic_arrow_back
-        else -> R.drawable.ic_ecg
-    }
-
-    // Per the theme guide (section 03 + 05):
-    //   HOME  → SOUL Determination (red #E04848, the brand mark / launcher icon / heart)
-    //   TOOLS → palette Determination "at rest" (gold primary; no calculator owns this screen)
-    //   PROFILE → SOUL Kindness (green, self-care)
+    val title: Int = title(currentDestination?.route?: "")
+    val subtitle: Int? = subtitle(currentDestination?.route)
+    val icon = icon(currentDestination?.route)
     // Each soul claims its own room — never share chrome between screens.
-    val soulColor = when (currentDestination?.route) {
-        HomeRoute.route     -> SoulDetermination
-        ToolsRoute.route    -> SoulJustice
-        ProfileRoute.route  -> SoulKindness
-        BMIToolRoute.route  -> SoulPatience
-        BSAToolRoute.route  -> SoulBravery
-        PASIToolRoute.route -> SoulIntegrity
-        EASIToolRoute.route -> SoulPerseverance
-        else -> soulForRoute(currentDestination?.route).color
-    }
-    // Use luminance to pick legible text: bright soul backgrounds (gold, green, cyan, orange)
-    // need black; dark backgrounds (blue, purple, red, dark amber) take white.
-    val onSoulColor = if (soulColor.luminance() > 0.18f) Color.Black else Color.White
+    val soulColor = soulColor(currentDestination?.route)
+
+    val localAlpha = LocalBarAlpha.current
+    val contentColor = MaterialTheme.colorScheme.inverseSurface
 
     Card(
-        modifier  = Modifier.fillMaxWidth(),
-        shape     = MaterialTheme.shapes.extraSmall,
-        colors    = CardDefaults.cardColors(
-            contentColor = soulColor,
-            //containerColor = soulColor
-            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f)
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.extraSmall,
+        colors = CardDefaults.cardColors(
+            containerColor = soulColor.copy(alpha = localAlpha),
+            contentColor = contentColor
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f))
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        border = BorderStroke(2.dp,
+            onSoul(soulColor).copy(alpha = localAlpha)
+        )
     ) {
         Row(
             modifier = Modifier
@@ -145,11 +156,11 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                 .statusBarsPadding()
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 8.dp),
-            verticalAlignment     = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                modifier           = Modifier
+                modifier = Modifier
                     .size(35.dp)
                     .clickable {
                         when (currentDestination?.route) {
@@ -160,38 +171,34 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                             else -> {}
                         }
                     },
-                painter            = painterResource(icon),
+                painter = painterResource(icon),
                 contentDescription = null,
-                tint               = soulColor
+                tint = contentColor
             )
             Column(
-                modifier            = Modifier.weight(1f),
-                //verticalArrangement = Arrangement.spacedBy(1.dp, Alignment.Top)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             ) {
-                // Determination Mono — the theme's actual title font. Pixel aesthetic
-                // with proper glyph spacing, readable at chrome sizes.
                 Text(
-                    text       = stringResource(title),
+                    text = stringResource(title).uppercase(),
                     fontFamily = DeterminationMono,
-                    fontSize   = 27.sp,
-                    fontWeight = FontWeight.Normal,
-                    color      = soulColor,
-                    maxLines   = 1,
-                    softWrap   = false,
+                    fontSize = 25.sp,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    softWrap = false,
                 )
                 subtitle?.let {
                     Text(
-                        text  = stringResource(it),
+                        text = stringResource(it),
                         style = MaterialTheme.typography.labelMedium,
-                        color = soulColor.copy(alpha = 0.85f),
+                        color = contentColor.copy(alpha = 0.85f),
                         fontSize = 18.sp
                     )
                 }
             }
-            TopTrayButtons(
-                iconTint = soulColor,
-                onToggleTheme = onToggleTheme
-            ) {}
+            TopTrayButtons(iconTint = contentColor, onToggleTheme = onToggleTheme) {}
         }
     }
 }
@@ -200,7 +207,10 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
 @Composable
 fun MainPortraitActivityPrevew() {
     val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
+    val app = object : Application() { init {
+        attachBaseContext(context)
+    }
+    }
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
