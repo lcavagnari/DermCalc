@@ -55,3 +55,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+//region TODOs
+// L52: `MainPortraitActivity(Modifier, ...)` passes `Modifier` companion object as first positional argument — works but confusing, use named parameter
+// L53: `MainLandscapeActivity(onboardingModel)` receives only one model while `MainPortraitActivity` gets all three — asymmetric, stub ignores toolsModel and quoteModel
+//endregion
+
