@@ -77,3 +77,9 @@ fun severityColor(severity: Severity): Color {
     }
 }
 
+//region TODOs
+// L6: unused import `luminance` — not used in this file
+// L35: `soulFor(toolName: String?)` takes raw strings ("BMI", "BSA") — should use sealed route types
+// L57: `Severity.labelRes` is a model concern defined in a theme file — move to models package
+//endregion
+

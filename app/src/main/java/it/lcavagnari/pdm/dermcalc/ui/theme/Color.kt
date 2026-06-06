@@ -49,3 +49,8 @@ val SoulPerseverance  = Color(0xFF9B4FC4)
 val SoulKindness      = Color(0xFF5FB85F)
 val SoulJustice       = Color(0xFFE8B842)
 
+//region TODOs
+// L4: unused import `luminance` — only needed in Theme.kt
+// L33,38,44: `SoulRedMuted(0xFFB83838)`, `SeveritySevereDark(0xFFE04848)`, `SoulDetermination(0xFFE04848)` — three names sharing two hex values, ambiguous
+//endregion
+
