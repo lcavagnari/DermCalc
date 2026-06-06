@@ -207,3 +207,9 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
         }
     }
 }
+
+//region TODOs
+// L5: unused import `import androidx.lifecycle.ViewModel`
+// L14: `OnboardingModel(application: Application)` extends `AndroidViewModel` but never uses `Application` — can extend `ViewModel` directly
+// L29,32: `_inputFields.value[3] as HeightInput` and `[4] as WeightInput` — fragile hardcoded index + unsafe cast, crashes if field list order changes
+//endregion
