@@ -278,8 +278,14 @@ fun OnboardingScreen(
                     contentDescription = "Swipe forward",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
-        }
+    }
+}
+
+//region TODOs
+// L87-88: `inputFieldId` annotated `@Deprecated(ERROR)` — effectively dead code, remove
+// L299: `MaterialTheme.colorScheme.surface.copy(alpha = if (dark) 0f else 0.6f)` — GoBackButton fully transparent (invisible but clickable) in dark mode, accessibility issue
+//endregion
+
     }
 }
 

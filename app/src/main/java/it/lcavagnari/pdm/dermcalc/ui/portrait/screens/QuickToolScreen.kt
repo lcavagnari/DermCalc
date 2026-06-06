@@ -347,3 +347,12 @@ fun MainPortraitActivityPreview() {
 fun BSAScreenPreview() {
     BSAScreen(onSaveResult = {})
 }
+
+//region TODOs
+// L61: parameter `soulColour` uses British spelling — everywhere else uses `soulColor` / `borderColor` (American)
+// L69-105: two top-level `Column` composables side-by-side with `modifier.fillMaxSize()` — unconventional layout, a single Box or Scaffold would be clearer
+// L229: CRITICAL — `Text("1234")` is debug placeholder text left in production — remove
+// L305: CRITICAL — `Text("Affected body surface area")` is a hardcoded English string, not `stringResource` — breaks localization
+// L313-317: `SliderDefaults.colors(thumbColor = SoulBravery, activeTickColor = SoulBravery)` uses raw soul colors instead of theme tokens
+//endregion
+
