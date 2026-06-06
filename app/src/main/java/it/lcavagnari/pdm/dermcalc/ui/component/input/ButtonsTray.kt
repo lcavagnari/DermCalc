@@ -87,3 +87,9 @@ fun TopTrayButtons(
         )
     }
 }
+
+//region TODOs
+// L43: CRITICAL — `// TODO: Remove this button before release, you dumb cu-` contains truncated profanity — unprofessional, remove before release
+// L79: `toggleDarkTheme()` reads `LocalToggleDarkTheme.current` directly instead of using `onToggleTheme` parameter — two code paths for theme toggling
+//endregion
+

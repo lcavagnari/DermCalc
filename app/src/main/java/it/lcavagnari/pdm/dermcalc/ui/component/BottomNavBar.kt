@@ -140,3 +140,12 @@ fun MainPortraitActivityPreview1() {
         appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
     )
 }
+
+//region TODOs
+// L50: CRITICAL — `NavigationBar` function name collides with `androidx.compose.material3.NavigationBar` — L63 calls itself recursively causing StackOverflowError. Rename to `AppBottomNavBar`.
+// L56-61: soul-color `when` block partially duplicates `soulForRoute()` with different values for ToolsRoute (primary here vs Determination in soulForRoute vs Justice in TopMenu) — unify
+// L66: hardcoded `.height(74.dp)` — extract to named constant
+// L69: `WindowInsets(bottom = 10.dp)` overrides system insets — risk of nav bar overlap
+// L122-133: `MainPortraitActivityPreview()` duplicates preview setup from TopMenu.kt / MainPortraitActivity.kt
+// L137: `MainPortraitActivityPreview1()` misnamed — only previews NavigationBar, suffix "1" meaningless
+//endregion

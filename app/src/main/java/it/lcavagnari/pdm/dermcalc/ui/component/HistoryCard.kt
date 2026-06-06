@@ -341,8 +341,18 @@ fun HistoryCard(
                     }
                     if (hasMore) {
                         item { ShowAllRow(onClick = onShowAll) }
-                    }
-                }
+    }
+}
+
+//region TODOs
+// L269: CRITICAL — `MainActivity()` called as a composable in `@Preview` — ComponentActivity is not a composable, will fail at runtime
+// L63-125: preview data setup (7 mock BmiResults) duplicated verbatim in `HomeScreenPreviewDark()` and `HomeScreenPreview()` — extract to shared helper
+// L289: `results = ...collectAsState().value.sortedByDescending { ... }` creates new sorted list on every recomposition — wrap in `remember` / `derivedStateOf`
+// L291-292: `displayResults` and `hasMore` recalculate every recomposition
+// L335: `items(displayResults.size)` uses index — idiomatic `items(displayResults)` with `it` is cleaner
+// L383-384: `severityColor` + `onColor` read `LocalDarkTheme` — causes full row recomposition on theme toggle
+//endregion
+
             }
         }
     }
