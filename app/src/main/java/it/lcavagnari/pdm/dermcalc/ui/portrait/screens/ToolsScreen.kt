@@ -3,6 +3,8 @@ package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
+import android.os.SystemClock
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -23,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
@@ -56,6 +58,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 
 
 /**
@@ -93,13 +96,13 @@ data class ToolCard(
  *   via [IndexesCalculators]; each card has a [BorderSide.Left] accent plus district-count
  *   and score-range chips in the bottom-right corner.
  *
- * Tapping any card navigates to its [AppRoute] destination via [navController].
+ * Tapping any card navigates to its [AppRoute] destination via [LocalNavigate].
  *
- * @param navController controller used to navigate to calculator screens on card tap.
  * @param toolsModel view model forwarded to calculator screens (unused at this level).
  */
 @Composable
-fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
+fun ToolsScreen(toolsModel: ToolsModel) {
+    val navigate = LocalNavigate.current
     val quick = listOf<ToolCard>(
         ToolCard(
             route = BMIToolRoute,
@@ -148,7 +151,7 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
             color = MaterialTheme.colorScheme.primary,
         )
 
-        QuickCalculators(toolsList = quick) { navController.navigate(it) }
+        QuickCalculators(toolsList = quick) { navigate(it) }
 
         Text(
             text = stringResource(R.string.tools_index).uppercase(),
@@ -159,7 +162,7 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
             color = MaterialTheme.colorScheme.primary,
         )
 
-        IndexesCalculators(toolsList = index) { navController.navigate(it) }
+        IndexesCalculators(toolsList = index) { navigate(it) }
     }
 }
 
@@ -172,6 +175,21 @@ fun ToolsScreen(navController: NavHostController, toolsModel: ToolsModel) {
  */
 @Composable
 fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
+    val lastNavTime = remember { mutableLongStateOf(0L) }
+    // Swallows taps within 500 ms of the last navigation to prevent double-tap pushes.
+    val throttledNavigate: (AppRoute) -> Unit = { route ->
+        val now = SystemClock.elapsedRealtime()
+        Log.d("AppNavHost", "throttledNavigate: $route")
+        Log.d("AppNavHost", "lastNavTime: ${lastNavTime.longValue}")
+        Log.d("AppNavHost", "now: $now")
+        Log.d("AppNavHost", "now - lastNavTime: ${now - lastNavTime.longValue}")
+        Log.d("AppNavHost", "")
+        if (now - lastNavTime.longValue > 100L) {
+            lastNavTime.longValue = now
+            onClick(route)
+        }
+    }
+
     Row(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
         verticalAlignment = Alignment.Top,
@@ -363,3 +381,11 @@ fun ToolsScreenPreview() {
         MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm, startingDestination = ToolsRoute)
     }
 }
+
+//region TODOs
+// L174-228: `QuickCalculators` applies the incoming `modifier` to the outer `Row`, each `BorderedCard`, AND each inner content `Row` — triple-application bug, caller padding applied 3x
+// L238-307: `IndexesCalculators` — same modifier triple-application bug as QuickCalculators
+// L142-160: "QUICK" and "INDEX" section headers are virtually identical — extract shared `SectionHeader` composable
+// L250: `lerp(surface, it.color, 0.22f)` — magic number for color blending
+// L328-329,342-343: string concatenation instead of `stringResource` with format args — breaks localization
+//endregion
