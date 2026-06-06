@@ -1,10 +1,16 @@
 package it.lcavagnari.pdm.dermcalc
 
+import android.os.SystemClock
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -50,7 +56,7 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
         composable<HomeRoute> { HomeScreen(navController, quoteModel, onboardingModel, toolsModel) }
-        composable<ToolsRoute> { ToolsScreen(navController, toolsModel) }
+        composable<ToolsRoute> { ToolsScreen(toolsModel) }
         composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
 
         composable<BMIToolRoute> {
@@ -73,3 +79,8 @@ fun AppNavHost(
         composable<EASIToolRoute> { EASIScreen() {} }
     }
 }
+
+//region TODOs
+// L86-87: `PASIScreen() {}` and `EASIScreen() {}` — placeholder stub screens that accept `onSaveResult` but never call it
+// L57-58: `onboardingModel.heightInput.value` / `weightInput.value` are `Double?` passed to BMIScreen — safe if onboarding ran, but fragile
+//endregion

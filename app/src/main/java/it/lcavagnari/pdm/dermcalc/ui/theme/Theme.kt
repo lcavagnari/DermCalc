@@ -9,12 +9,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 
 
 /** Composition local providing the current dark-mode state. Consume with `LocalDarkTheme.current`. */
 val LocalDarkTheme = compositionLocalOf { false }
 /** Composition local providing a callback to flip the dark/light theme. Consume with `LocalToggleDarkTheme.current`. */
 val LocalToggleDarkTheme = compositionLocalOf { {} }
+/** Composition local providing a throttled navigate callback. Consume with `LocalNavigate.current`. */
+val LocalNavigate = compositionLocalOf<(AppRoute) -> Unit> { {} }
+/** Composition local providing the bar alpha value for the current theme. Consume with `LocalBarAlpha.current`. */
+val LocalBarAlpha = compositionLocalOf { 0.90f }
 
 private val DarkColorScheme = darkColorScheme(
     primary              = Determination,
@@ -68,8 +73,7 @@ private val LightColorScheme = lightColorScheme(
     onError              = Color.White
 )
 
-/** Composition local providing the bar alpha value for the current theme. Consume with `LocalBarAlpha.current`. */
-val LocalBarAlpha = compositionLocalOf { 0.90f }
+
 
 fun onSoul(soulColor: Color): Color {
     return if (soulColor.luminance() > 0.18f) DarkSurface else LightSurface
@@ -109,3 +113,10 @@ fun DermCalcTheme(
         )
     }
 }
+
+//region TODOs
+// L16,18,22: `compositionLocalOf` for rarely-changing values (bool, lambda, float) — use `staticCompositionLocalOf` to avoid unnecessary recomposition
+// L101: magic number `0.42f` / `0.90f` for bar alpha — should be named constants
+// L111: `typography  = Typography` — double space before `=`
+//endregion
+
