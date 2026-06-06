@@ -15,7 +15,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -37,10 +39,12 @@ fun WeightInputPicker(
 ) {
     var openPicker by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
+    val isIdle = LocalIsIdle.current
+    val currentIsIdle by rememberUpdatedState(isIdle)
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
-            if (interaction is PressInteraction.Release) openPicker = true
+            if (interaction is PressInteraction.Release && currentIsIdle) openPicker = true
         }
     }
 
@@ -83,6 +87,7 @@ fun WeightInputPicker(
         placeholder = { Text(stringResource(R.string.placeholder_weight)) },
         trailingIcon = {
             IconButton(
+                enabled = isIdle,
                 onClick = { openPicker = true },
                 modifier = Modifier.semantics { testTag = "btn_open_weight_picker" }
             ) {
@@ -112,10 +117,12 @@ fun HeightInputPicker(
 ) {
     var openPicker by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
+    val isIdle = LocalIsIdle.current
+    val currentIsIdle by rememberUpdatedState(isIdle)
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
-            if (interaction is PressInteraction.Release) openPicker = true
+            if (interaction is PressInteraction.Release && currentIsIdle) openPicker = true
         }
     }
 
@@ -157,6 +164,7 @@ fun HeightInputPicker(
         placeholder = { Text(stringResource(R.string.placeholder_height)) },
         trailingIcon = {
             IconButton(
+                enabled = isIdle,
                 onClick = { openPicker = true },
                 modifier = Modifier.semantics { testTag = "btn_open_height_picker" }
             ) {

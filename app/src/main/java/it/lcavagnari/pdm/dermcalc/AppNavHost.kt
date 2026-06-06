@@ -1,15 +1,18 @@
 package it.lcavagnari.pdm.dermcalc
 
-import android.os.SystemClock
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import kotlinx.coroutines.flow.MutableStateFlow
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
@@ -50,33 +53,44 @@ fun AppNavHost(
     quoteModel: QuoteModel,
     startDestination: AppRoute
 ) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination
-    ) {
-        composable<HomeRoute> { HomeScreen(navController, quoteModel, onboardingModel, toolsModel) }
-        composable<ToolsRoute> { ToolsScreen(toolsModel) }
-        composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val lifecycleState by remember(navBackStackEntry) {
+        navBackStackEntry?.lifecycle?.currentStateFlow ?: MutableStateFlow(Lifecycle.State.RESUMED)
+    }.collectAsState()
+    val isIdle = lifecycleState == Lifecycle.State.RESUMED
 
-        composable<BMIToolRoute> {
-            BMIScreen(
-                heightCm = onboardingModel.heightInput.value,
-                weightKg = onboardingModel.weightInput.value,
-                onSaveResult = { result ->
+    CompositionLocalProvider(
+        LocalNavigate provides { route -> if (isIdle) navController.navigate(route) },
+        LocalIsIdle provides isIdle
+    ) {
+        NavHost(
+            modifier = modifier,
+            navController = navController,
+            startDestination = startDestination
+        ) {
+            composable<HomeRoute> { HomeScreen(navController, quoteModel, onboardingModel, toolsModel) }
+            composable<ToolsRoute> { ToolsScreen(toolsModel) }
+            composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
+
+            composable<BMIToolRoute> {
+                BMIScreen(
+                    heightCm = onboardingModel.heightInput.value,
+                    weightKg = onboardingModel.weightInput.value,
+                    onSaveResult = { result ->
+                        toolsModel.addResult(result)
+                        navController.popBackStack()
+                    }
+                )
+            }
+            composable<BSAToolRoute> {
+                BSAScreen(onSaveResult = { result ->
                     toolsModel.addResult(result)
                     navController.popBackStack()
-                }
-            )
+                })
+            }
+            composable<PASIToolRoute> { PASIScreen() {} }
+            composable<EASIToolRoute> { EASIScreen() {} }
         }
-        composable<BSAToolRoute> {
-            BSAScreen(onSaveResult = { result ->
-                toolsModel.addResult(result)
-                navController.popBackStack()
-            })
-        }
-        composable<PASIToolRoute> { PASIScreen() {} }
-        composable<EASIToolRoute> { EASIScreen() {} }
     }
 }
 

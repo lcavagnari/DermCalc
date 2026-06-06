@@ -18,6 +18,8 @@ val LocalDarkTheme = compositionLocalOf { false }
 val LocalToggleDarkTheme = compositionLocalOf { {} }
 /** Composition local providing a throttled navigate callback. Consume with `LocalNavigate.current`. */
 val LocalNavigate = compositionLocalOf<(AppRoute) -> Unit> { {} }
+/** Composition local providing whether the current screen has fully settled (not mid-transition). Consume with `LocalIsIdle.current`. */
+val LocalIsIdle = compositionLocalOf { true }
 /** Composition local providing the bar alpha value for the current theme. Consume with `LocalBarAlpha.current`. */
 val LocalBarAlpha = compositionLocalOf { 0.90f }
 
