@@ -29,7 +29,6 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run OWASP Dependency-Check
-        continue-on-error: true
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: ./gradlew --no-daemon :app:dependencyCheckAnalyze

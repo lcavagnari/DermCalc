@@ -36,6 +36,10 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
+      - name: Read version
+        id: version
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+
       - name: Decode signing keystore
         env:
           ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
@@ -51,6 +55,15 @@ jobs:
           ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
         run: ./gradlew --no-daemon :app:assembleRelease
 
+      - name: Verify APK is signed
+        run: |
+          BUILD_TOOLS=$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)
+          if [[ -z "$BUILD_TOOLS" ]]; then echo "No build-tools found in $ANDROID_HOME/build-tools"; exit 1; fi
+          APK=$(find app/build/outputs/apk/release -name "*.apk" | grep -v unsigned | head -1)
+          if [[ -z "$APK" ]]; then echo "No signed APK found (only unsigned output present)"; exit 1; fi
+          "$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner" verify --verbose "$APK"
+          echo "APK signature verified: $APK"
+
       - name: Upload signed release APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -61,14 +74,10 @@ jobs:
       - name: Publish APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: dermcalc-${{ github.run_id }}
-          name: DermCalc ${{ github.run_number }}
+          tag_name: v${{ steps.version.outputs.version }}-${{ github.run_number }}
+          name: DermCalc v${{ steps.version.outputs.version }} (build ${{ github.run_number }})
           body: |
-            Automated DermCalc APK release from `${{ github.workflow }}` run #${{ github.run_number }}.
+            Automated release of DermCalc v${{ steps.version.outputs.version }}, build #${{ github.run_number }}.
 
-            Add the self-signed release keystore as repository secrets:
-            - `ANDROID_SIGNING_KEYSTORE_BASE64`: base64-encoded JKS/keystore file
-            - `ANDROID_SIGNING_KEYSTORE_PASSWORD`: keystore password
-            - `ANDROID_SIGNING_KEY_ALIAS`: key alias
-            - `ANDROID_SIGNING_KEY_PASSWORD`: key password
+            Commit: ${{ github.sha }}
           files: app/build/outputs/apk/release/*.apk

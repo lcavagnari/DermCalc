@@ -22,6 +22,24 @@ val hasReleaseSigningConfig = listOf(
     releaseKeyPassword
 ).all { !it.isNullOrBlank() }
 
+val appVersionName: String = run {
+    val raw = rootProject.file("VERSION").readText().trim()
+    require(Regex("""^\d+\.\d+\.\d+$""").matches(raw)) {
+        "VERSION file must contain MAJOR.MINOR.PATCH (e.g. 1.0.0), got: '$raw'"
+    }
+    raw
+}
+
+gradle.taskGraph.whenReady {
+    if (hasTask(":app:assembleRelease") && !hasReleaseSigningConfig) {
+        throw GradleException(
+            "Cannot assemble release: signing config is missing. " +
+            "Set ANDROID_SIGNING_KEYSTORE_PATH, ANDROID_SIGNING_KEYSTORE_PASSWORD, " +
+            "ANDROID_SIGNING_KEY_ALIAS, and ANDROID_SIGNING_KEY_PASSWORD."
+        )
+    }
+}
+
 dependencyCheck {
     // Fail the build if any dependency has a CVSS score >= 7.0 (HIGH or CRITICAL).
     failBuildOnCVSS = 7.0f
@@ -42,8 +60,8 @@ android {
         applicationId = "it.lcavagnari.pdm.dermcalc"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()) ?: 1
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
