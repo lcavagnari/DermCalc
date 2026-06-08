@@ -60,3 +60,29 @@ Dark mode is the intended experience. Light mode is fully functional for clinica
 - [ ] Phase 8 — EASI multi-step calculator
 - [ ] Phase 9 — Full history screen
 - [ ] Phase 10 — Polish (Material 3 theming, transitions, error handling)
+
+## GitHub Actions release pipeline
+
+The Android release pipeline is split into reusable workflow files under `.github/workflows/` and runs in either of these ways:
+
+- Manually from **Actions → Android Release Pipeline → Run workflow**.
+- Automatically every day at midnight UTC via the `0 0 * * *` cron schedule.
+
+Before running the signed release job, add your self-signed Android signing credentials in **GitHub → Settings → Secrets and variables → Actions → Repository secrets**:
+
+| Secret | Value |
+|---|---|
+| `ANDROID_SIGNING_KEYSTORE_BASE64` | Base64-encoded contents of your `.jks`/keystore file |
+| `ANDROID_SIGNING_KEYSTORE_PASSWORD` | Keystore password |
+| `ANDROID_SIGNING_KEY_ALIAS` | Key alias inside the keystore |
+| `ANDROID_SIGNING_KEY_PASSWORD` | Password for the signing key |
+| `NVD_API_KEY` | Optional NVD API key for faster OWASP Dependency-Check vulnerability database downloads |
+
+You can create and encode a self-signed keystore locally with:
+
+```bash
+keytool -genkeypair -v -keystore dermcalc-release.jks -alias dermcalc-release -keyalg RSA -keysize 2048 -validity 10000
+base64 -w 0 dermcalc-release.jks
+```
+
+On macOS, use `base64 -i dermcalc-release.jks` if `base64 -w 0` is unavailable. Paste the resulting single-line output into `ANDROID_SIGNING_KEYSTORE_BASE64`.
