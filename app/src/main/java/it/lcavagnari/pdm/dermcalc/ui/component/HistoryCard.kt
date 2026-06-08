@@ -310,6 +310,12 @@ fun HistoryCard(
                 modifier = Modifier.padding(bottom = 6.dp)
             )
 
+            HorizontalDivider(
+                modifier = Modifier.padding(bottom = 4.dp, top = 2.dp),
+                color = MaterialTheme.colorScheme.outlineVariant,
+                thickness = 4.dp
+            )
+
             if (results.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -334,7 +340,7 @@ fun HistoryCard(
                 ) {
                     items(displayResults.size) { index ->
                         HistoryResultRow(result = displayResults[index], now = now)
-                        HorizontalDivider(
+                        if (index < displayResults.lastIndex || hasMore) HorizontalDivider(
                             modifier = Modifier.padding(vertical = 2.dp),
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
@@ -344,19 +350,13 @@ fun HistoryCard(
     }
 }
 
-//region TODOs
-// L269: CRITICAL — `MainActivity()` called as a composable in `@Preview` — ComponentActivity is not a composable, will fail at runtime
-// L63-125: preview data setup (7 mock BmiResults) duplicated verbatim in `HomeScreenPreviewDark()` and `HomeScreenPreview()` — extract to shared helper
-// L289: `results = ...collectAsState().value.sortedByDescending { ... }` creates new sorted list on every recomposition — wrap in `remember` / `derivedStateOf`
-// L291-292: `displayResults` and `hasMore` recalculate every recomposition
-// L335: `items(displayResults.size)` uses index — idiomatic `items(displayResults)` with `it` is cleaner
-// L383-384: `severityColor` + `onColor` read `LocalDarkTheme` — causes full row recomposition on theme toggle
-//endregion
 
             }
         }
     }
 }
+
+
 
 /**
  * Tappable row shown at the bottom of [HistoryCard] when there are more results than [MAX_HISTORY_VISIBLE].
@@ -393,7 +393,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val color   = severityColor(severity)
     val onColor = if (!dark || severity == Severity.Severe) Color.White else Color.Black
     val severityLabel = when (severity) {
-        Severity.Mild -> stringResource(R.string.severity_mild)
+        Severity.Mild -> stringResource(R.string.severity_normal)
         Severity.Moderate -> stringResource(R.string.severity_moderate)
         Severity.Severe -> stringResource(R.string.severity_severe)
     }
