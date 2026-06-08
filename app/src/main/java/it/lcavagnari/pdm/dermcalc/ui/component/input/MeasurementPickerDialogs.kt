@@ -28,12 +28,15 @@ import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeightInputPicker(
     modifier: Modifier = Modifier,
     field: WeightInput,
+    soulColor: Color = Color.Unspecified,
     onKilosChanged: (Int) -> Unit,
     onPoundsChanged: (Int) -> Unit
 ) {
@@ -83,8 +86,8 @@ fun WeightInputPicker(
         onValueChange = {},
         modifier = modifier.semantics { testTag = "input_weight" },
         readOnly = true,
-        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text(stringResource(R.string.placeholder_weight)) },
+        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium, color = soulColor) },
+        placeholder = { Text(stringResource(R.string.placeholder_weight), style = MaterialTheme.typography.labelMedium) },
         trailingIcon = {
             IconButton(
                 enabled = isIdle,
@@ -112,6 +115,7 @@ fun WeightInputPicker(
 fun HeightInputPicker(
     modifier: Modifier = Modifier,
     field: HeightInput,
+    soulColor: Color = Color.Unspecified,
     onMetricChanged: (Int) -> Unit,
     onImperialChanged: (Pair<Int, Int>) -> Unit
 ) {
@@ -160,8 +164,8 @@ fun HeightInputPicker(
         } ?: "",
         onValueChange = {},
         readOnly = true,
-        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
-        placeholder = { Text(stringResource(R.string.placeholder_height)) },
+        label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium, color = soulColor) },
+        placeholder = { Text(stringResource(R.string.placeholder_height), style = MaterialTheme.typography.labelMedium) },
         trailingIcon = {
             IconButton(
                 enabled = isIdle,
