@@ -581,7 +581,3 @@ fun ProfileScreenPreview() {
     }
 }
 
-//region TODOs
-// L450: `if (index < inputFields.size)` draws divider after every field INCLUDING the last one — should be `index < inputFields.size - 1`
-// L472-473: `inputFields[3] as HeightInput` and `inputFields[4] as WeightInput` — fragile hardcoded index + unsafe cast, same pattern as HomeScreen.kt:81
-//endregion

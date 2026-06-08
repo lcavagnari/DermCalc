@@ -382,10 +382,3 @@ fun ToolsScreenPreview() {
     }
 }
 
-//region TODOs
-// L174-228: `QuickCalculators` applies the incoming `modifier` to the outer `Row`, each `BorderedCard`, AND each inner content `Row` — triple-application bug, caller padding applied 3x
-// L238-307: `IndexesCalculators` — same modifier triple-application bug as QuickCalculators
-// L142-160: "QUICK" and "INDEX" section headers are virtually identical — extract shared `SectionHeader` composable
-// L250: `lerp(surface, it.color, 0.22f)` — magic number for color blending
-// L328-329,342-343: string concatenation instead of `stringResource` with format args — breaks localization
-//endregion

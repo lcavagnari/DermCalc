@@ -247,7 +247,4 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
     }
 }
 
-//region TODO
-// L214: `ToolsModel` extends `AndroidViewModel` but never persists — all results lost on process death. `Application` param unused.
-//endregion
 

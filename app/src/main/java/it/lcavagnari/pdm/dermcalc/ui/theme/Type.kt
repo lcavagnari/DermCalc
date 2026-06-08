@@ -43,8 +43,4 @@ val Typography = Typography(
     labelSmall     = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 22.sp)
 )
 
-//region TODOs
-// L13: `PixelDisplay` font family is defined but never referenced anywhere
-// L27: comment says "Faux-bold renders poorly" yet call sites use `FontWeight.SemiBold` / `FontWeight.Bold` — contradicts design intent
-//endregion
 

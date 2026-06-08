@@ -225,9 +225,3 @@ fun MainPortraitActivityPrevie1() {
     TopMenu(rememberNavController())
 }
 
-//region TODOs
-// L94-105: `soulColor()` duplicates route-to-soul mapping from `soulForRoute()` in Souls.kt — unify both, currently ToolsRoute→SoulJustice here vs ToolsRoute→Soul.Determination in soulForRoute
-// L127: `TopMenu` takes `NavController` just to read the current route — couples presentational component to full nav graph, accept route string instead
-// L186: `fontSize = 25.sp` overrides `headlineMedium` (38sp) — should use `titleLarge` or a custom style not a semantic mismatch
-// L208,224: function names `MainPortraitActivityPrevew` and `MainPortraitActivityPrevie1` — missing 'i'/'w', number suffix meaningless
-//endregion
