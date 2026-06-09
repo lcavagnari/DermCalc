@@ -45,33 +45,33 @@ class ToolsModelTest {
     @Test
     fun `BmiResult severity matches clinical thresholds`() {
         // Underweight: < 18.5
-        assertEquals(Severity.Severe, BmiResult.compute(50.0, 170.0).severity())
+        assertEquals(Severity.SEVERE, BmiResult.compute(50.0, 170.0).severity())
         // Normal weight: 18.5 ≤ score < 25
-        assertEquals(Severity.Mild, BmiResult.compute(65.0, 175.0).severity())
+        assertEquals(Severity.MILD, BmiResult.compute(65.0, 175.0).severity())
         // Overweight: 25 ≤ score < 30
-        assertEquals(Severity.Moderate, BmiResult.compute(80.0, 175.0).severity())
+        assertEquals(Severity.MODERATE, BmiResult.compute(80.0, 175.0).severity())
         // Obese: score ≥ 30
-        assertEquals(Severity.Severe, BmiResult.compute(100.0, 175.0).severity())
+        assertEquals(Severity.SEVERE, BmiResult.compute(100.0, 175.0).severity())
     }
 
     @Test
     fun `BsaResult severity matches clinical thresholds`() {
         val mild = BsaResult(affectedPercentage = 5.0, score = 5.0)
-        assertEquals(Severity.Mild, mild.severity())
+        assertEquals(Severity.MILD, mild.severity())
 
         val moderate = BsaResult(affectedPercentage = 15.0, score = 15.0)
-        assertEquals(Severity.Moderate, moderate.severity())
+        assertEquals(Severity.MODERATE, moderate.severity())
 
         val severe = BsaResult(affectedPercentage = 35.0, score = 35.0)
-        assertEquals(Severity.Severe, severe.severity())
+        assertEquals(Severity.SEVERE, severe.severity())
 
         // Boundary: 10.0 → Moderate (not Mild)
         val boundary = BsaResult(affectedPercentage = 10.0, score = 10.0)
-        assertEquals(Severity.Moderate, boundary.severity())
+        assertEquals(Severity.MODERATE, boundary.severity())
 
         // Boundary: 30.0 → Severe
         val boundary2 = BsaResult(affectedPercentage = 30.0, score = 30.0)
-        assertEquals(Severity.Severe, boundary2.severity())
+        assertEquals(Severity.SEVERE, boundary2.severity())
     }
 
     @Test

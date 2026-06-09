@@ -170,9 +170,9 @@ fun ToolResultCard(
                     Text(
                         modifier = Modifier.padding(5.dp),
                         text = when (severity) {
-                            Severity.Mild -> stringResource(R.string.severity_normal)
-                            Severity.Moderate -> stringResource(R.string.severity_moderate)
-                            Severity.Severe -> stringResource(R.string.severity_severe)
+                            Severity.MILD -> stringResource(R.string.severity_normal)
+                            Severity.MODERATE -> stringResource(R.string.severity_moderate)
+                            Severity.SEVERE -> stringResource(R.string.severity_severe)
                         }.uppercase(),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = PixelSoft,
@@ -193,7 +193,7 @@ fun ResultnPreview() {
         toolLabel = "Your BMI",
         toolMeasurementUnit = stringResource(R.string.bmi_unit),
         formattedScore = "22.2",
-        severity = Severity.Mild
+        severity = Severity.MILD
     )
 }
 

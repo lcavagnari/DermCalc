@@ -391,11 +391,11 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val severity = result.severity()
     val dark    = LocalDarkTheme.current
     val color   = severityColor(severity)
-    val onColor = if (!dark || severity == Severity.Severe) Color.White else Color.Black
+    val onColor = if (!dark || severity == Severity.SEVERE) Color.White else Color.Black
     val severityLabel = when (severity) {
-        Severity.Mild -> stringResource(R.string.severity_normal)
-        Severity.Moderate -> stringResource(R.string.severity_moderate)
-        Severity.Severe -> stringResource(R.string.severity_severe)
+        Severity.MILD -> stringResource(R.string.severity_normal)
+        Severity.MODERATE -> stringResource(R.string.severity_moderate)
+        Severity.SEVERE -> stringResource(R.string.severity_severe)
     }
     val scoreText = result.formattedScore()
     val timestamp = relativeTimestamp(result.timestamp, now)
