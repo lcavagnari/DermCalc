@@ -19,6 +19,7 @@ ksp = "2.1.21-2.0.2"
 room = "2.7.1"
 appcompat = "1.7.0"
 robolectric = "4.13"
+coreKtxVersion = "1.7.0"
 
 [libraries]
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
@@ -51,6 +52,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
