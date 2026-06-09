@@ -129,7 +129,9 @@ data class HeightInput(
      */
     fun cmToFeetInches(cm: Double = value ?: 0.0): Pair<Double, Double> {
         val totalInches = cm / 2.54
-        return totalInches / 12.0 to totalInches % 12.0
+        val feet = kotlin.math.floor(totalInches / 12.0)
+        val inches = totalInches - feet * 12.0
+        return feet to inches
     }
 
     /**
