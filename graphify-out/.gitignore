@@ -1,0 +1,6 @@
+*.html
+obsidian/
+.obsidian/
+query_*.txt
+.graphify_python
+*.py
