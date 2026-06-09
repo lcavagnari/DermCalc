@@ -50,15 +50,42 @@ jobs:
             fi
           fi
 
+  build:
+    name: Compile debug variant
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Compile debug variant
+        run: ./gradlew --no-daemon :app:assembleDebug
+
   unit-tests:
     name: Unit tests
-    needs: changes
+    needs: [changes, build]
     if: needs.changes.outputs.should_run == 'true'
     uses: ./.github/workflows/android-unit-tests.yml
 
   lint:
     name: Lint
-    needs: changes
+    needs: [changes, build]
     if: needs.changes.outputs.should_run == 'true'
     uses: ./.github/workflows/android-lint.yml
 
