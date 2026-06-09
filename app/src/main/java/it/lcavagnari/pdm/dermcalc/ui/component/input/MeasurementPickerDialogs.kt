@@ -31,6 +31,19 @@ import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 
+/**
+ * Read-only weight field that opens a snap-wheel picker for kilograms or pounds.
+ *
+ * The picker uses a single wheel in the active unit system: kilograms must be in 20–300 and
+ * pounds must be in 44–661. Text-field press interactions only open the dialog while
+ * [LocalIsIdle] is true; the trailing icon is disabled by the same idle gate.
+ *
+ * @param modifier modifier applied to the [OutlinedTextField].
+ * @param field current [WeightInput] value and unit preference.
+ * @param soulColor optional accent [Color] for the field label. Defaults to [Color.Unspecified].
+ * @param onKilosChanged callback invoked with the selected kilogram value.
+ * @param onPoundsChanged callback invoked with the selected pound value.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeightInputPicker(
@@ -110,6 +123,19 @@ fun WeightInputPicker(
     )
 }
 
+/**
+ * Read-only height field that opens a metric or imperial snap-wheel picker.
+ *
+ * Metric mode uses one centimetre wheel with values 50–272. Imperial mode uses feet and inches
+ * wheels with values 1–8 ft and 0–11 in. Text-field press interactions only open the dialog while
+ * [LocalIsIdle] is true; the trailing icon is disabled by the same idle gate.
+ *
+ * @param modifier modifier applied to the [OutlinedTextField].
+ * @param field current [HeightInput] value and unit preference.
+ * @param soulColor optional accent [Color] for the field label. Defaults to [Color.Unspecified].
+ * @param onMetricChanged callback invoked with the selected centimetre value.
+ * @param onImperialChanged callback invoked with the selected feet/inches pair.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeightInputPicker(

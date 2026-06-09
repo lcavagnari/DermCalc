@@ -38,6 +38,18 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
 
+/**
+ * Save button for calculator results with a two-step confirmation flow.
+ *
+ * The first tap arms the button and changes the label to a question; the second confirming tap
+ * invokes [onSaveResult]. The armed state resets when the lifecycle reaches
+ * [Lifecycle.Event.ON_STOP].
+ *
+ * @param modifier modifier applied to the full-width button.
+ * @param enabled whether the button can be tapped.
+ * @param soulColor accent [Color] used as the button container. Defaults to [SoulJustice].
+ * @param onSaveResult callback invoked after the confirmation tap sequence completes.
+ */
 @Composable
 fun ToolSaveButton(
     modifier: Modifier = Modifier,
@@ -80,6 +92,19 @@ fun ToolSaveButton(
     }
 }
 
+/**
+ * Result summary card for a calculator score.
+ *
+ * Shows an optional tool label above a large score row; when [severity] is present, a compact
+ * measurement-unit label appears beside the score and a colored severity badge is rendered below.
+ *
+ * @param modifier modifier applied to the bordered card.
+ * @param soulColor accent [Color] used for the left border and score text.
+ * @param toolLabel optional label displayed above the score.
+ * @param toolMeasurementUnit unit label displayed beside the score when [severity] is present.
+ * @param formattedScore preformatted score text to display prominently.
+ * @param severity optional clinical [Severity] used to render the badge and severity color.
+ */
 @Composable
 fun ToolResultCard(
     modifier: Modifier = Modifier,

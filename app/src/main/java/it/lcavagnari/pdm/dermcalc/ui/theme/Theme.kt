@@ -76,12 +76,28 @@ private val LightColorScheme = lightColorScheme(
 )
 
 
-
+/**
+ * Returns a contrasting surface color for content placed directly on [soulColor].
+ *
+ * Uses a luminance threshold of 0.18: bright soul colors receive [DarkSurface], while darker soul
+ * colors receive [LightSurface].
+ *
+ * @param soulColor soul accent [Color] used as the background.
+ * @return The contrasting direct-on-soul surface [Color].
+ */
 fun onSoul(soulColor: Color): Color {
     return if (soulColor.luminance() > 0.18f) DarkSurface else LightSurface
 }
 
-// MaterialTheme.colorScheme.surfaceVariant
+/**
+ * Returns a contrasting container color for surfaces associated with [soulColor].
+ *
+ * Uses a luminance threshold of 0.18: bright soul colors receive [LightSurfaceLow], while darker
+ * soul colors receive [DarkSurfaceLow].
+ *
+ * @param soulColor soul accent [Color] used as the reference background.
+ * @return The contrasting soul-container [Color].
+ */
 fun onSoulContainer(soulColor: Color): Color {
     return if (soulColor.luminance() > 0.18f) LightSurfaceLow else DarkSurfaceLow
 }

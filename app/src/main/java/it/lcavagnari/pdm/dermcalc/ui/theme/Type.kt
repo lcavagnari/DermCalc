@@ -23,8 +23,13 @@ val ClinicalMono      = FontFamily(
     Font(R.font.jetbrains_mono_bold,     FontWeight.Bold)
 )
 
-// Determination Mono ships with a single Regular weight — all styles use FontWeight.Normal.
-// Faux-bold on a pixel font renders poorly; hierarchy comes from size, casing, and color.
+/**
+ * Material3 type scale for the app's retro clinical UI.
+ *
+ * [DeterminationMono] ships with a single regular weight, so every text style uses
+ * [FontWeight.Normal]. Visual hierarchy comes from size, casing, line height, letter spacing,
+ * and color rather than faux-bold, which renders poorly on pixel fonts.
+ */
 val Typography = Typography(
     displayLarge   = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 28.sp, lineHeight = 36.sp, letterSpacing = 0.02.em),
     displayMedium  = TextStyle(fontFamily = DeterminationMono, fontWeight = FontWeight.Normal, fontSize = 24.sp, lineHeight = 32.sp, letterSpacing = 0.02.em),
