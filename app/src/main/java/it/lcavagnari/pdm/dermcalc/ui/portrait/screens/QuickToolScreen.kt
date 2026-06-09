@@ -56,7 +56,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 @Composable
 fun QuickToolScreen(
     modifier: Modifier = Modifier,
-    soulColour: Color,
+    soulColor: Color,
     saveEnabled: Boolean = true,
     toolLabel: String? = null,
     formattedScore: String? = null,
@@ -82,8 +82,7 @@ fun QuickToolScreen(
         )
         if (formattedScore != null) {
             ToolResultCard(
-                //modifier = Modifier.fillMaxWidth(0.9f),
-                soulColour = soulColour,
+                soulColor = soulColor,
                 toolLabel = toolLabel?.uppercase(),
                 toolMeasurementUnit = stringResource(R.string.bmi_unit),
                 formattedScore = formattedScore,
@@ -92,7 +91,6 @@ fun QuickToolScreen(
         }
 
         ToolSaveButton(
-            //modifier = Modifier.fillMaxWidth().padding(10.dp),
             enabled = saveEnabled,
             onSaveResult = onSaveResult
         )
@@ -104,7 +102,7 @@ fun QuickToolScreen(
 @Composable
 fun BMIScreen(
     modifier: Modifier = Modifier,
-    soulColour: Color = SoulPatience,
+    soulColor: Color = SoulPatience,
     heightCm: Double? = null,
     weightKg: Double? = null,
     onSaveResult: (BmiResult) -> Unit,
@@ -135,9 +133,9 @@ fun BMIScreen(
 
     QuickToolScreen(
         modifier = modifier,
-        soulColour = soulColour,
+        soulColor = soulColor,
         saveEnabled = bmiResult != null,
-        toolLabel = stringResource(R.string.your)+" BMI",
+        toolLabel = stringResource(R.string.your_bmi, "BMI"),
         formattedScore = formattedScore,
         severity = severity,
         onSaveResult = { bmiResult?.let { onSaveResult(it) } }
@@ -145,7 +143,7 @@ fun BMIScreen(
         Text(
             modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 10.dp),
             text = stringResource(R.string.tool_measurement).uppercase(),
-            color = onSoul(soulColour),
+            color = onSoul(soulColor),
             letterSpacing = 2.sp,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold
@@ -209,7 +207,7 @@ fun BSAScreen(
 
     QuickToolScreen(
         modifier = modifier,
-        soulColour = SoulBravery,
+        soulColor = SoulBravery,
         formattedScore = bsaFormattedScore,
         severity = bsaSeverity,
         saveEnabled = percentage > 0f,

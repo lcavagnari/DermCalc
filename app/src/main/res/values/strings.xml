@@ -174,5 +174,6 @@
     <string name="btn_confirm">Confirm</string>
     <string name="tool_measurement">Measurements</string>
     <string name="your">Your</string>
+    <string name="your_bmi">Your %s</string>
     <string name="severity_normal">Normal</string>
 </resources>

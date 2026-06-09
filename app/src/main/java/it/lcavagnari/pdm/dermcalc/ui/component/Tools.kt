@@ -69,14 +69,21 @@ fun ToolSaveButton(
             } else saveArmedTimes++
         }
     ) {
-        Text(if (saveArmedTimes > 0) stringResource(R.string.btn_save) else stringResource(R.string.btn_confirm), fontFamily = DeterminationMono)
+        Text(
+            when {
+                saveArmedTimes > 1 -> stringResource(R.string.btn_save)
+                saveArmedTimes > 0 -> stringResource(R.string.btn_save) + "?"
+                else -> stringResource(R.string.btn_confirm)
+            },
+            fontFamily = DeterminationMono
+        )
     }
 }
 
 @Composable
 fun ToolResultCard(
     modifier: Modifier = Modifier,
-    soulColour: Color,
+    soulColor: Color,
     toolLabel: String?,
     toolMeasurementUnit: String,
     formattedScore: String,
@@ -85,7 +92,7 @@ fun ToolResultCard(
     BorderedCard(
         modifier = modifier.fillMaxWidth(),
         borderSide = BorderSide.Left,
-        borderColor = soulColour,
+        borderColor = soulColor,
         borderStrokeWidth = 2.dp,
         cornerRadius = 10.dp,
         elevation = CardDefaults.cardElevation(6.dp),
@@ -117,13 +124,13 @@ fun ToolResultCard(
                 Text(
                     text = formattedScore,
                     style = TextStyle(fontFamily = DeterminationMono, fontSize = 56.sp),
-                    color = soulColour
+                    color = soulColor
                 )
                 if (severity != null) Text(
                     text = toolMeasurementUnit,
                     style = TextStyle(fontFamily = PixelSoft, fontSize = 16.sp),
                     fontWeight = FontWeight.Bold,
-                    color = soulColour
+                    color = soulColor
                 )
             }
 
@@ -157,7 +164,7 @@ fun ToolResultCard(
 @Composable
 fun ResultnPreview() {
     ToolResultCard(
-        soulColour = SoulKindness,
+        soulColor = SoulKindness,
         toolLabel = "Your BMI",
         toolMeasurementUnit = stringResource(R.string.bmi_unit),
         formattedScore = "22.2",

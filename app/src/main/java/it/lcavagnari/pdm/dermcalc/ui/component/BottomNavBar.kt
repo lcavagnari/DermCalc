@@ -140,4 +140,3 @@ fun MainPortraitActivityPreview1() {
         appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
     )
 }
-

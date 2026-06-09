@@ -158,5 +158,6 @@
     <string name="btn_confirm">Conferma</string>
     <string name="tool_measurement">Misurazioni</string>
     <string name="your">Il Tuo</string>
+    <string name="your_bmi">Il Tuo %s</string>
     <string name="severity_normal">Normale</string>
 </resources>

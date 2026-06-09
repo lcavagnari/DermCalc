@@ -159,4 +159,5 @@
     <string name="btn_confirm">Confirmer</string>
     <string name="tool_measurement">Dimensions</string>
     <string name="your">Votre</string>
+    <string name="your_bmi">Votre %s</string>
 </resources>
