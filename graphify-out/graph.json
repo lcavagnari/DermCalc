@@ -177,7 +177,7 @@
       },
       {
         "id": "release_pipeline_gating",
-        "label": "Release Pipeline Quality Gate (unit-tests + lint + security → signed-release)",
+        "label": "Release Pipeline Quality Gate (unit-tests + lint + security \u2192 signed-release)",
         "nodes": [
           "wf_unit_tests",
           "wf_lint",
@@ -218,7 +218,7 @@
       },
       {
         "id": "tool_result_display_pipeline",
-        "label": "Tool Result Display Pipeline: ToolResult → severity/formattedScore → ToolResultCard/HistoryResultRow",
+        "label": "Tool Result Display Pipeline: ToolResult \u2192 severity/formattedScore \u2192 ToolResultCard/HistoryResultRow",
         "nodes": [
           "toolresult_interface",
           "severity_fn",
@@ -352,19 +352,7 @@
         "confidence_score": 1.0,
         "source_file": ".letta/claude/session-70981807-6aac-4a01-80c2-d243656d277a.json"
       }
-    ],
-    "metrics": {
-      "gini": 0.4236,
-      "entropy_bits": 3.0102,
-      "entropy_max_bits": 9.3376,
-      "entropy_normalized": 0.3224,
-      "degree_min": 0,
-      "degree_max": 41,
-      "degree_mean": 3.51,
-      "degree_median": 2,
-      "node_count": 647,
-      "edge_count": 1135
-    }
+    ]
   },
   "nodes": [
     {
@@ -2811,48 +2799,48 @@
       "id": "dermcalc_audit_report_dermcalc_audit_report"
     },
     {
-      "label": "1. Bugs — Provably Wrong Behaviour or Runtime Failures",
+      "label": "1. Bugs \u2014 Provably Wrong Behaviour or Runtime Failures",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L6",
       "community": 19,
-      "norm_label": "1. bugs — provably wrong behaviour or runtime failures",
+      "norm_label": "1. bugs \u2014 provably wrong behaviour or runtime failures",
       "id": "dermcalc_audit_report_1_bugs_provably_wrong_behaviour_or_runtime_failures"
     },
     {
-      "label": "B2 — `HeightInputPicker` initialises imperial wheels from the raw cm value, not from the feet/inches decomposition",
+      "label": "B2 \u2014 `HeightInputPicker` initialises imperial wheels from the raw cm value, not from the feet/inches decomposition",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L13",
       "community": 19,
-      "norm_label": "b2 — `heightinputpicker` initialises imperial wheels from the raw cm value, not from the feet/inches decomposition",
+      "norm_label": "b2 \u2014 `heightinputpicker` initialises imperial wheels from the raw cm value, not from the feet/inches decomposition",
       "id": "dermcalc_audit_report_b2_heightinputpicker_initialises_imperial_wheels_from_the_raw_cm_value_not_from_the_feet_inches_decomposition"
     },
     {
-      "label": "B3 — `ToolResult.timestamp` default is a computed property on the interface, not a stable stored value",
+      "label": "B3 \u2014 `ToolResult.timestamp` default is a computed property on the interface, not a stable stored value",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L23",
       "community": 19,
-      "norm_label": "b3 — `toolresult.timestamp` default is a computed property on the interface, not a stable stored value",
+      "norm_label": "b3 \u2014 `toolresult.timestamp` default is a computed property on the interface, not a stable stored value",
       "id": "dermcalc_audit_report_b3_toolresult_timestamp_default_is_a_computed_property_on_the_interface_not_a_stable_stored_value"
     },
     {
-      "label": "B4 — `ProfileRoute` accesses `inputFields` by fixed index without guarding against list shape changes",
+      "label": "B4 \u2014 `ProfileRoute` accesses `inputFields` by fixed index without guarding against list shape changes",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L33",
       "community": 19,
-      "norm_label": "b4 — `profileroute` accesses `inputfields` by fixed index without guarding against list shape changes",
+      "norm_label": "b4 \u2014 `profileroute` accesses `inputfields` by fixed index without guarding against list shape changes",
       "id": "dermcalc_audit_report_b4_profileroute_accesses_inputfields_by_fixed_index_without_guarding_against_list_shape_changes"
     },
     {
-      "label": "B6 — `InputFieldConversionTest` constructs `HeightInput` and `WeightInput` with `String` label, but `label` is `@StringRes Int`",
+      "label": "B6 \u2014 `InputFieldConversionTest` constructs `HeightInput` and `WeightInput` with `String` label, but `label` is `@StringRes Int`",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L48",
       "community": 19,
-      "norm_label": "b6 — `inputfieldconversiontest` constructs `heightinput` and `weightinput` with `string` label, but `label` is `@stringres int`",
+      "norm_label": "b6 \u2014 `inputfieldconversiontest` constructs `heightinput` and `weightinput` with `string` label, but `label` is `@stringres int`",
       "id": "dermcalc_audit_report_b6_inputfieldconversiontest_constructs_heightinput_and_weightinput_with_string_label_but_label_is_stringres_int"
     },
     {
@@ -2874,21 +2862,21 @@
       "id": "dermcalc_audit_report_3_security_issues"
     },
     {
-      "label": "5. Scope Gaps — Missing Features for a Production Dermatology Calculator",
+      "label": "5. Scope Gaps \u2014 Missing Features for a Production Dermatology Calculator",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L177",
       "community": 19,
-      "norm_label": "5. scope gaps — missing features for a production dermatology calculator",
+      "norm_label": "5. scope gaps \u2014 missing features for a production dermatology calculator",
       "id": "dermcalc_audit_report_5_scope_gaps_missing_features_for_a_production_dermatology_calculator"
     },
     {
-      "label": "6. Scope Creep — Things Present Outside the Stated Purpose",
+      "label": "6. Scope Creep \u2014 Things Present Outside the Stated Purpose",
       "file_type": "document",
       "source_file": "audit_report.md",
       "source_location": "L208",
       "community": 19,
-      "norm_label": "6. scope creep — things present outside the stated purpose",
+      "norm_label": "6. scope creep \u2014 things present outside the stated purpose",
       "id": "dermcalc_audit_report_6_scope_creep_things_present_outside_the_stated_purpose"
     },
     {
@@ -2932,12 +2920,12 @@
       "id": "dermcalc_claude_package_layout"
     },
     {
-      "label": "Letta Memory Blocks — Report",
+      "label": "Letta Memory Blocks \u2014 Report",
       "file_type": "document",
       "source_file": "letta-memory-report.md",
       "source_location": "L1",
       "community": 21,
-      "norm_label": "letta memory blocks — report",
+      "norm_label": "letta memory blocks \u2014 report",
       "id": "dermcalc_letta_memory_report_letta_memory_blocks_report"
     },
     {
@@ -2950,12 +2938,12 @@
       "id": "dermcalc_letta_memory_report_block_contents"
     },
     {
-      "label": "`system/core_directives` (3557–3660 chars)",
+      "label": "`system/core_directives` (3557\u20133660 chars)",
       "file_type": "document",
       "source_file": "letta-memory-report.md",
       "source_location": "L33",
       "community": 21,
-      "norm_label": "`system/core_directives` (3557–3660 chars)",
+      "norm_label": "`system/core_directives` (3557\u20133660 chars)",
       "id": "dermcalc_letta_memory_report_system_core_directives_3557_3660_chars"
     },
     {
@@ -3040,12 +3028,12 @@
       "id": "dermcalc_readme_theme"
     },
     {
-      "label": "Sprint: Commit Split — 2026-05-13",
+      "label": "Sprint: Commit Split \u2014 2026-05-13",
       "file_type": "document",
       "source_file": ".claude/sprints/2026-05-13-commit-split.md",
       "source_location": "L1",
       "community": 68,
-      "norm_label": "sprint: commit split — 2026-05-13",
+      "norm_label": "sprint: commit split \u2014 2026-05-13",
       "id": "sprints_2026_05_13_commit_split_sprint_commit_split_2026_05_13"
     },
     {
@@ -3058,21 +3046,21 @@
       "id": "sprints_2026_05_13_commit_split_dependency_graph_hard_ordering_constraints"
     },
     {
-      "label": "Sprint — KDoc Standardisation (Part 2)",
+      "label": "Sprint \u2014 KDoc Standardisation (Part 2)",
       "file_type": "document",
       "source_file": ".claude/sprints/sprint-kdoc-2.md",
       "source_location": "L1",
       "community": 76,
-      "norm_label": "sprint — kdoc standardisation (part 2)",
+      "norm_label": "sprint \u2014 kdoc standardisation (part 2)",
       "id": "sprints_sprint_kdoc_2_sprint_kdoc_standardisation_part_2"
     },
     {
-      "label": "Sprint — KDoc Standardisation",
+      "label": "Sprint \u2014 KDoc Standardisation",
       "file_type": "document",
       "source_file": ".claude/sprints/sprint-kdoc.md",
       "source_location": "L1",
       "community": 77,
-      "norm_label": "sprint — kdoc standardisation",
+      "norm_label": "sprint \u2014 kdoc standardisation",
       "id": "sprints_sprint_kdoc_sprint_kdoc_standardisation"
     },
     {
@@ -5097,7 +5085,7 @@
       "id": "mood_mysterious_calm"
     },
     {
-      "label": "ic_launcher — Standard Rounded-Square Variant",
+      "label": "ic_launcher \u2014 Standard Rounded-Square Variant",
       "file_type": "image",
       "source_file": "app/src/main/res/mipmap-hdpi/ic_launcher.webp",
       "source_location": null,
@@ -5107,7 +5095,7 @@
       "contributor": null,
       "description": "Standard Android adaptive launcher icon with rounded-square (squircle) shape. Pale blue background, dark red heart with white ECG pulse line. Available at hdpi, mdpi, xhdpi, xxhdpi, xxxhdpi densities.",
       "community": 28,
-      "norm_label": "ic_launcher — standard rounded-square variant",
+      "norm_label": "ic_launcher \u2014 standard rounded-square variant",
       "id": "icon_variant_standard"
     },
     {
@@ -5125,7 +5113,7 @@
       "id": "density_group_hdpi"
     },
     {
-      "label": "ic_launcher_foreground — Foreground Layer Variant",
+      "label": "ic_launcher_foreground \u2014 Foreground Layer Variant",
       "file_type": "image",
       "source_file": "app/src/main/res/mipmap-hdpi/ic_launcher_foreground.webp",
       "source_location": null,
@@ -5135,11 +5123,11 @@
       "contributor": null,
       "description": "Foreground layer of the adaptive icon, showing the heart+ECG motif on a light blue rounded-square background with visible padding/safe zone. Used as the adaptive icon foreground layer. Larger visible safe area than the composed icon. Available at hdpi, mdpi, xhdpi, xxhdpi, xxxhdpi densities.",
       "community": 28,
-      "norm_label": "ic_launcher_foreground — foreground layer variant",
+      "norm_label": "ic_launcher_foreground \u2014 foreground layer variant",
       "id": "icon_variant_foreground"
     },
     {
-      "label": "ic_launcher_round — Circular Variant",
+      "label": "ic_launcher_round \u2014 Circular Variant",
       "file_type": "image",
       "source_file": "app/src/main/res/mipmap-hdpi/ic_launcher_round.webp",
       "source_location": null,
@@ -5149,7 +5137,7 @@
       "contributor": null,
       "description": "Round/circular launcher icon variant. Same heart+ECG design on pale blue background, but rendered within a perfect circle rather than a squircle. Used on devices/launchers that display circular icons. Available at hdpi, mdpi, xhdpi, xxhdpi, xxxhdpi densities.",
       "community": 28,
-      "norm_label": "ic_launcher_round — circular variant",
+      "norm_label": "ic_launcher_round \u2014 circular variant",
       "id": "icon_variant_round"
     },
     {
@@ -6414,7 +6402,7 @@
       "id": "mipmap_xxxhdpi_ic_launcher_round"
     },
     {
-      "label": "DermCalc App Launcher Icon — Heart with ECG/pulse line on light blue background",
+      "label": "DermCalc App Launcher Icon \u2014 Heart with ECG/pulse line on light blue background",
       "file_type": "rationale",
       "source_file": "app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.webp",
       "source_location": null,
@@ -6423,7 +6411,7 @@
       "author": null,
       "contributor": null,
       "community": 18,
-      "norm_label": "dermcalc app launcher icon — heart with ecg/pulse line on light blue background",
+      "norm_label": "dermcalc app launcher icon \u2014 heart with ecg/pulse line on light blue background",
       "id": "concept_app_launcher_icon"
     },
     {
@@ -19058,7 +19046,7 @@
     },
     {
       "id": "release_pipeline_gating",
-      "label": "Release Pipeline Quality Gate (unit-tests + lint + security → signed-release)",
+      "label": "Release Pipeline Quality Gate (unit-tests + lint + security \u2192 signed-release)",
       "nodes": [
         "wf_unit_tests",
         "wf_lint",
@@ -19099,7 +19087,7 @@
     },
     {
       "id": "tool_result_display_pipeline",
-      "label": "Tool Result Display Pipeline: ToolResult → severity/formattedScore → ToolResultCard/HistoryResultRow",
+      "label": "Tool Result Display Pipeline: ToolResult \u2192 severity/formattedScore \u2192 ToolResultCard/HistoryResultRow",
       "nodes": [
         "toolresult_interface",
         "severity_fn",
@@ -19234,5 +19222,5 @@
       "source_file": ".letta/claude/session-70981807-6aac-4a01-80c2-d243656d277a.json"
     }
   ],
-  "built_at_commit": "e4a56894cbae7ae08a8b78a1fc4c48b98c9a9194"
+  "built_at_commit": "96393677e763ea59469291418b80d81c1e0b7dae"
 }

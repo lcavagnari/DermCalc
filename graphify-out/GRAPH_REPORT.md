@@ -1,13 +1,18 @@
-# Graph Report - .  (2026-06-09)
+# Graph Report - DermCalc  (2026-06-09)
 
 ## Corpus Check
-- 126 files · ~470,908 words
+- 89 files · ~472,071 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 - 647 nodes · 1135 edges · 82 communities (35 shown, 47 thin omitted)
 - Extraction: 79% EXTRACTED · 21% INFERRED · 0% AMBIGUOUS · INFERRED: 234 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `96393677`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]

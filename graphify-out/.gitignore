@@ -3,4 +3,5 @@ obsidian/
 .obsidian/
 query_*.txt
 .graphify_python
+.graphify_root
 *.py
