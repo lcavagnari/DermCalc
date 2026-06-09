@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.MainActivity
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
+import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
@@ -45,6 +46,7 @@ import it.lcavagnari.pdm.dermcalc.models.ToolResult
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
+import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -197,14 +199,26 @@ fun HomeScreenPreviewDark() {
         )
     }
 
-    DermCalcTheme { MainPortraitActivity(onboardingModel = vm, quoteModel = qm, toolsModel = tm) }
+    val bm = remember { BodyScanModel(app) }
+    DermCalcTheme {
+        MainPortraitActivity(
+            quoteModel = qm,
+            onboardingModel = vm,
+            toolsModel = tm,
+            bodyScanModel = bm,
+            startingDestination = BSAToolRoute
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
+    val app = object : Application() { init {
+        attachBaseContext(context)
+    }
+    }
     remember { OnboardingModel(app) }.also { it.finishOnboarding(); it.updateName("Asriel ") }
     remember { ToolsModel(app) }.also { toolsModel ->
         toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
@@ -347,15 +361,14 @@ fun HistoryCard(
                     }
                     if (hasMore) {
                         item { ShowAllRow(onClick = onShowAll) }
-    }
-}
+                    }
+                }
 
 
             }
         }
     }
 }
-
 
 
 /**
@@ -389,8 +402,8 @@ private fun ShowAllRow(onClick: () -> Unit) {
 @Composable
 private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val severity = result.severity()
-    val dark    = LocalDarkTheme.current
-    val color   = severityColor(severity)
+    val dark = LocalDarkTheme.current
+    val color = severityColor(severity)
     val onColor = if (!dark || severity == Severity.SEVERE) Color.White else Color.Black
     val severityLabel = when (severity) {
         Severity.NONE -> stringResource(R.string.severity_normal)
@@ -410,26 +423,26 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     ) {
         Card(
             modifier = Modifier.size(48.dp),
-            shape    = RoundedCornerShape(10.dp),
-            colors   = CardDefaults.cardColors(containerColor = color)
+            shape = RoundedCornerShape(10.dp),
+            colors = CardDefaults.cardColors(containerColor = color)
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    text     = scoreText,
+                    text = scoreText,
                     fontSize = 19.sp,
-                    color    = onColor,
+                    color = onColor,
                 )
             }
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
-                text  = result.name,
+                text = result.name,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text  = "$severityLabel · $timestamp",
+                text = "$severityLabel · $timestamp",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -459,8 +472,18 @@ private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): Str
     val daysDiff = (todayDate.toEpochDays() - resultDate.toEpochDays()).toInt().coerceAtLeast(1)
     return when {
         daysDiff < 7 -> pluralStringResource(R.plurals.history_days_ago, daysDiff, daysDiff)
-        daysDiff < 30 -> pluralStringResource(R.plurals.history_weeks_ago, daysDiff / 7, daysDiff / 7)
-        daysDiff < 365 -> pluralStringResource(R.plurals.history_months_ago, daysDiff / 30, daysDiff / 30)
+        daysDiff < 30 -> pluralStringResource(
+            R.plurals.history_weeks_ago,
+            daysDiff / 7,
+            daysDiff / 7
+        )
+
+        daysDiff < 365 -> pluralStringResource(
+            R.plurals.history_months_ago,
+            daysDiff / 30,
+            daysDiff / 30
+        )
+
         else -> pluralStringResource(R.plurals.history_years_ago, daysDiff / 365, daysDiff / 365)
     }
 }

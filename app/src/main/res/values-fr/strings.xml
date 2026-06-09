@@ -158,6 +158,15 @@
     <string name="btn_save">Enregistrer</string>
     <string name="btn_confirm">Confirmer</string>
     <string name="tool_measurement">Dimensions</string>
-    <string name="your">Votre</string>
     <string name="your_bmi">Votre %s</string>
+    <string name="bsa_slider_tooltip">Appuyez sur une partie du corps pour ajuster sa couverture</string>
+    <string name="bsa_diagram_hint">Vue de face · appuyez pour sélectionner</string>
+    <string name="bsa_region_head">Tête</string>
+    <string name="bsa_region_right_arm">Bras droit</string>
+    <string name="bsa_region_left_arm">Bras gauche</string>
+    <string name="bsa_region_anterior_trunk">Tronc antérieur</string>
+    <string name="bsa_region_posterior_trunk">Tronc postérieur</string>
+    <string name="bsa_region_right_leg">Jambe droite</string>
+    <string name="bsa_region_left_leg">Jambe gauche</string>
+    <string name="btn_saved_confirm">Enregistré avec succès!</string>
 </resources>

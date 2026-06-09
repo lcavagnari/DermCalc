@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.AppNavHost
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -56,6 +57,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 fun MainPortraitActivity(
     modifier: Modifier = Modifier,
     onboardingModel: OnboardingModel,
+    bodyScanModel: BodyScanModel,
     toolsModel: ToolsModel,
     quoteModel: QuoteModel,
     startingDestination: AppRoute = HomeRoute,
@@ -93,13 +95,14 @@ fun MainPortraitActivity(
                     )
                 }
             ) { innerPadding -> AppNavHost(
-                    modifier = modifier.padding(innerPadding),
-                    navController = navController,
-                    startDestination = startingDestination,
-                    onboardingModel = onboardingModel,
-                    toolsModel = toolsModel,
-                    quoteModel = quoteModel,
-                )
+                modifier = modifier.padding(innerPadding),
+                startDestination = startingDestination,
+                navController = navController,
+                onboardingModel = onboardingModel,
+                bodyScanModel = bodyScanModel,
+                toolsModel = toolsModel,
+                quoteModel = quoteModel
+            )
             }
         }
     }
@@ -116,8 +119,9 @@ fun MainPortraitActivityPreview() {
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
+    val bm = remember { BodyScanModel(app) }
     DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
     }
 }
 
@@ -129,7 +133,8 @@ fun MainPortraitActivityPreview2() {
     val vm = remember { OnboardingModel(app) }
     val qm = remember { QuoteModel(app) }
     val tm = remember { ToolsModel(app) }
+    val bm = remember { BodyScanModel(app) }
     DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
     }
 }

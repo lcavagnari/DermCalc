@@ -210,11 +210,15 @@ data class BsaResult(
     override val timestamp: LocalDateTime = today(),
 ) : ToolResult {
     override val name: String = "BSA"
-    override fun isValid(): Boolean = affectedPercentage in 0.0..100.0
+    override fun isValid(): Boolean = affectedPercentage in 0.1..100.0
 
     companion object {
-        fun compute(affectedPercentage: Double): BsaResult =
-            BsaResult(affectedPercentage = affectedPercentage, score = affectedPercentage)
+        fun compute(regionValues: Map<BsaRegion, Int>): BsaResult {
+            val total = BsaRegion.entries.sumOf { region ->
+                (regionValues[region] ?: 0) * region.bodyWeight
+            }
+            return BsaResult(affectedPercentage = total, score = total)
+        }
     }
 }
 

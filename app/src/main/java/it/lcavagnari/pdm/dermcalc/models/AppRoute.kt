@@ -83,7 +83,7 @@ data object BSAToolRoute: AppRoute {
     override val route: String
         get() = "bsatool"
     override val iconRes: Int
-        get() = R.drawable.ic_bsa_lungs
+        get() = R.drawable.ic_body
 }
 
 /** PASI (Psoriasis Area and Severity Index) calculator destination metadata. */

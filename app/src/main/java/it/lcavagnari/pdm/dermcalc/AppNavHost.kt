@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
@@ -51,6 +52,7 @@ fun AppNavHost(
     onboardingModel: OnboardingModel,
     toolsModel: ToolsModel,
     quoteModel: QuoteModel,
+    bodyScanModel: BodyScanModel,
     startDestination: AppRoute
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -83,10 +85,13 @@ fun AppNavHost(
                 )
             }
             composable<BSAToolRoute> {
-                BSAScreen(onSaveResult = { result ->
-                    toolsModel.addResult(result)
-                    navController.popBackStack()
-                })
+                BSAScreen(
+                    vm = bodyScanModel,
+                    onSaveResult = { result ->
+                        toolsModel.addResult(result)
+                        navController.popBackStack()
+                    }
+                )
             }
             composable<PASIToolRoute> { PASIScreen() {} }
             composable<EASIToolRoute> { EASIScreen() {} }

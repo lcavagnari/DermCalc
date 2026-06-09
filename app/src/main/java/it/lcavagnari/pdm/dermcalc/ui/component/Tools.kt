@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -57,6 +59,7 @@ fun ToolSaveButton(
     soulColor: Color = SoulJustice,
     onSaveResult: () -> Unit
 ) {
+    val context = LocalContext.current
     var saveArmedTimes by remember { mutableStateOf(0) }
 
     // Reset
@@ -76,6 +79,11 @@ fun ToolSaveButton(
         onClick = {
             if (saveArmedTimes >= 2) {
                 saveArmedTimes = 0
+
+                Toast.makeText(context,
+                    R.string.btn_saved_confirm,
+                    Toast.LENGTH_SHORT
+                ).show()
                 onSaveResult()
 
             } else saveArmedTimes++
