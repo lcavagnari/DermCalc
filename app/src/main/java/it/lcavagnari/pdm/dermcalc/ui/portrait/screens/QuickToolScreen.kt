@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,8 +43,10 @@ import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
+import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaBodyDiagram
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
@@ -249,8 +253,7 @@ fun BSAScreen(
     var percentage by remember { mutableFloatStateOf(0f) }
 
     val bsaResult = remember(percentage) {
-        val pct = percentage.toDouble()
-        BsaResult(affectedPercentage = pct, score = pct)
+
     }
     val bsaFormattedScore = bsaResult.formattedScore()
     val bsaSeverity = bsaResult.severity()
@@ -270,10 +273,15 @@ fun BSAScreen(
             verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Affected body surface area",
-                style = MaterialTheme.typography.bodyMedium
-            )
+// Body diagram
+            Card {
+                Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    BsaBodyDiagram(state.regionValues, state.selectedRegion, vm::selectRegion)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Front view · tap to select", style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
             Slider(
                 value = percentage,
                 onValueChange = { percentage = it },
@@ -292,6 +300,7 @@ fun BSAScreen(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun MainPortraitActivityPreview() {
@@ -301,7 +310,7 @@ fun MainPortraitActivityPreview() {
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
     DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = BMIToolRoute)
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, startingDestination = BSAToolRoute)
     }
 }
 
