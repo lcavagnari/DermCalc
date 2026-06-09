@@ -393,6 +393,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val color   = severityColor(severity)
     val onColor = if (!dark || severity == Severity.SEVERE) Color.White else Color.Black
     val severityLabel = when (severity) {
+        Severity.NONE -> stringResource(R.string.severity_normal)
         Severity.MILD -> stringResource(R.string.severity_normal)
         Severity.MODERATE -> stringResource(R.string.severity_moderate)
         Severity.SEVERE -> stringResource(R.string.severity_severe)

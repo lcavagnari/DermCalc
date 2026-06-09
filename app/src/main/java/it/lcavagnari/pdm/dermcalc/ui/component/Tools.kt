@@ -170,6 +170,7 @@ fun ToolResultCard(
                     Text(
                         modifier = Modifier.padding(5.dp),
                         text = when (severity) {
+                            Severity.NONE -> stringResource(R.string.severity_normal)
                             Severity.MILD -> stringResource(R.string.severity_normal)
                             Severity.MODERATE -> stringResource(R.string.severity_moderate)
                             Severity.SEVERE -> stringResource(R.string.severity_severe)

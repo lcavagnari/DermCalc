@@ -170,6 +170,9 @@
     </plurals>
     <string name="districts">districts</string>
     <string name="bmi_unit" translatable="false">kg / m²</string>
+    <string name="bsa_unit" translatable="false">%</string>
+    <string name="bsa_diagram_hint">Front view · tap to select</string>
+    <string name="bsa_total_label">Total BSA affected</string>
     <string name="btn_save">Save</string>
     <string name="btn_confirm">Confirm</string>
     <string name="tool_measurement">Measurements</string>
