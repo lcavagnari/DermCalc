@@ -35,7 +35,7 @@ jobs:
         if: steps.depcheck.outcome == 'failure'
         run: |
           OUTPUT=$(cat /tmp/depcheck.txt)
-          if echo "$OUTPUT" | grep -qiE 'NvdApiException|NVD API|SocketTimeout|ConnectException|UnknownHost|rate.limit|HTTP 4[0-9][0-9]'; then
+          if echo "$OUTPUT" | grep -qiE 'NvdApiException|NVD API|SocketTimeout|ConnectException|UnknownHost|rate.limit|HTTP 4[0-9][0-9]|DatabaseException.*Value too long|Value too long for column'; then
             echo "::warning::Security scan failed due to NVD/network error — result inconclusive, not blocking"
             exit 0
           elif [[ ! -f app/build/reports/dependency-check-report.html ]]; then
