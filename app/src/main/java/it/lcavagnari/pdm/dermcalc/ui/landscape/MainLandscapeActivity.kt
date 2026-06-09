@@ -38,7 +38,7 @@ fun MainLandscapeActivity(onboardingModel: OnboardingModel) {
     ) {
         Icon(
             modifier = Modifier.size(200.dp),
-            painter = painterResource(id = R.drawable.ic_ecg),
+            painter = painterResource(id = R.drawable.ic_dermatology),
             contentDescription = "App Logo",
             tint = MaterialTheme.colorScheme.primary
         )

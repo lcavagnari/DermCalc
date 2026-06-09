@@ -1,5 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -57,6 +59,7 @@ fun ToolSaveButton(
     soulColor: Color = SoulJustice,
     onSaveResult: () -> Unit
 ) {
+    val context = LocalContext.current
     var saveArmedTimes by remember { mutableStateOf(0) }
 
     // Reset
@@ -76,6 +79,11 @@ fun ToolSaveButton(
         onClick = {
             if (saveArmedTimes >= 2) {
                 saveArmedTimes = 0
+
+                Toast.makeText(context,
+                    R.string.btn_saved_confirm,
+                    Toast.LENGTH_SHORT
+                ).show()
                 onSaveResult()
 
             } else saveArmedTimes++
@@ -170,9 +178,10 @@ fun ToolResultCard(
                     Text(
                         modifier = Modifier.padding(5.dp),
                         text = when (severity) {
-                            Severity.Mild -> stringResource(R.string.severity_normal)
-                            Severity.Moderate -> stringResource(R.string.severity_moderate)
-                            Severity.Severe -> stringResource(R.string.severity_severe)
+                            Severity.NONE -> stringResource(R.string.severity_normal)
+                            Severity.MILD -> stringResource(R.string.severity_normal)
+                            Severity.MODERATE -> stringResource(R.string.severity_moderate)
+                            Severity.SEVERE -> stringResource(R.string.severity_severe)
                         }.uppercase(),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = PixelSoft,
@@ -193,7 +202,7 @@ fun ResultnPreview() {
         toolLabel = "Your BMI",
         toolMeasurementUnit = stringResource(R.string.bmi_unit),
         formattedScore = "22.2",
-        severity = Severity.Mild
+        severity = Severity.MILD
     )
 }
 

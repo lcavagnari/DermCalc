@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 /**
  * Sealed interface for type-safe navigation destinations, carrying metadata for the bottom navigation bar.
  *
- * @property name - display name string (empty string default, prefer [title]).
  * @property title - string resource id for the destination label.
  * @property route - unique route string registered with the nav graph.
  * @property icon - optional vector icon for the bottom nav item.
@@ -84,7 +83,7 @@ data object BSAToolRoute: AppRoute {
     override val route: String
         get() = "bsatool"
     override val iconRes: Int
-        get() = R.drawable.ic_bsa_lungs
+        get() = R.drawable.ic_body
 }
 
 /** PASI (Psoriasis Area and Severity Index) calculator destination metadata. */

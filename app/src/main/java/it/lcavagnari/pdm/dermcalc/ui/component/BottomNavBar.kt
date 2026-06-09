@@ -25,10 +25,12 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
@@ -130,9 +132,9 @@ fun MainPortraitActivityPreview() {
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
-
+    val bm = remember { BodyScanModel(app) }
     DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
     }
 }
 

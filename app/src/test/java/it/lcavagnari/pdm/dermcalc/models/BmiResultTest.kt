@@ -44,28 +44,28 @@ class BmiResultTest {
     fun `severity returns Severe for BMI less than 18_5 (underweight)`() {
         val result = BmiResult.compute(50.0, 170.0)
         // BMI ≈ 17.301
-        assertEquals(Severity.Severe, result.severity())
+        assertEquals(Severity.SEVERE, result.severity())
     }
 
     @Test
     fun `severity returns Mild for BMI in range 18_5 to 25`() {
         val result = BmiResult.compute(65.0, 175.0)
         // BMI ≈ 21.224
-        assertEquals(Severity.Mild, result.severity())
+        assertEquals(Severity.MILD, result.severity())
     }
 
     @Test
     fun `severity returns Moderate for BMI in range 25 to 30`() {
         val result = BmiResult.compute(80.0, 175.0)
         // BMI ≈ 26.122
-        assertEquals(Severity.Moderate, result.severity())
+        assertEquals(Severity.MODERATE, result.severity())
     }
 
     @Test
     fun `severity returns Severe for BMI 30 or greater (obese)`() {
         val result = BmiResult.compute(100.0, 175.0)
         // BMI ≈ 32.653
-        assertEquals(Severity.Severe, result.severity())
+        assertEquals(Severity.SEVERE, result.severity())
     }
 
     @Test
@@ -73,27 +73,27 @@ class BmiResultTest {
         // BMI = weight / (height^2), solve for weight where BMI = 18.5 and height = 170
         // weight = 18.5 * (1.70^2) = 18.5 * 2.89 = 53.465
         val result = BmiResult.compute(53.465, 170.0)
-        assertEquals(Severity.Mild, result.severity())
+        assertEquals(Severity.MILD, result.severity())
     }
 
     @Test
     fun `severity at boundary 25_0 returns Moderate`() {
         // BMI = 25.0, height = 170; weight = 25.0 * 2.89 = 72.25
         val result = BmiResult.compute(72.25, 170.0)
-        assertEquals(Severity.Moderate, result.severity())
+        assertEquals(Severity.MODERATE, result.severity())
     }
 
     @Test
     fun `severity just above boundary 25_0 returns Moderate`() {
         // BMI = 25.01, height = 170; weight = 25.01 * 2.89 ≈ 72.279
         val result = BmiResult.compute(72.279, 170.0)
-        assertEquals(Severity.Moderate, result.severity())
+        assertEquals(Severity.MODERATE, result.severity())
     }
 
     @Test
     fun `severity at boundary 30_0 returns Severe`() {
         // BMI = 30.0, height = 170; weight = 30.0 * 2.89 = 86.7
         val result = BmiResult.compute(86.7, 170.0)
-        assertEquals(Severity.Severe, result.severity())
+        assertEquals(Severity.SEVERE, result.severity())
     }
 }

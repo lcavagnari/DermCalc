@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.math.sqrt
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
  */
-enum class Severity { Mild, Moderate, Severe }
+enum class Severity { NONE ,MILD, MODERATE, SEVERE }
 
 /**
  * Maps this [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
@@ -25,31 +26,30 @@ enum class Severity { Mild, Moderate, Severe }
  */
 fun ToolResult.severity(): Severity = when (this) {
     is PasiResult -> when {
-        score < 10.0 -> Severity.Mild
-        score < 20.0 -> Severity.Moderate
-        else -> Severity.Severe
+        score < 10.0 -> Severity.MILD
+        score < 20.0 -> Severity.MODERATE
+        else -> Severity.SEVERE
     }
 
     is EasiResult -> when {
-        score < 7.0 -> Severity.Mild
-        score < 21.0 -> Severity.Moderate
-        else -> Severity.Severe
+        score < 7.0 -> Severity.MILD
+        score < 21.0 -> Severity.MODERATE
+        else -> Severity.SEVERE
     }
 
     is BmiResult -> when {
-        score < 18.5 -> Severity.Severe
-        score < 25.0 -> Severity.Mild
-        score < 30.0 -> Severity.Moderate
-        else -> Severity.Severe
+        score < 18.5 -> Severity.SEVERE
+        score < 25.0 -> Severity.MILD
+        score < 30.0 -> Severity.MODERATE
+        else -> Severity.SEVERE
     }
 
     is BsaResult -> when {
-        score < 10.0 -> Severity.Mild
-        score < 30.0 -> Severity.Moderate
-        else -> Severity.Severe
+        score < 10.0 -> Severity.MILD
+        score < 30.0 -> Severity.MODERATE
+        else -> Severity.SEVERE
     }
 }
-
 /** Formats this result's score: zero decimals for whole numbers, one decimal otherwise. */
 fun ToolResult.formattedScore(): String {
     val rounded = Math.round(score * 10) / 10.0
@@ -163,6 +163,7 @@ data class EasiResult(
                 ).all { it in 0.0..100.0 }
 }
 
+
 /**
  * BMI (Body Mass Index) result.
  *
@@ -209,8 +210,20 @@ data class BsaResult(
     override val timestamp: LocalDateTime = today(),
 ) : ToolResult {
     override val name: String = "BSA"
-    override fun isValid(): Boolean = affectedPercentage in 0.0..100.0
+    override fun isValid(): Boolean = affectedPercentage in 0.1..100.0
+
+    companion object {
+        fun compute(regionValues: Map<BsaRegion, Int>): BsaResult {
+            val total = BsaRegion.entries.sumOf { region ->
+                (regionValues[region] ?: 0) * region.bodyWeight
+            }
+            return BsaResult(affectedPercentage = total, score = total)
+        }
+    }
 }
+
+
+
 
 /** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
 class ToolsModel(application: Application) : AndroidViewModel(application) {
@@ -238,15 +251,10 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
      * @param result the [ToolResult] instance to remove.
      */
     fun deleteResult(result: ToolResult) {
-        _results.update { current ->
-            current.filter { it != result }
-        }
+        _results.update { current -> current.filter { it != result } }
     }
 
     /** Removes all stored results. */
-    fun clearResult() {
-        _results.update { emptyList() }
-    }
+    fun clearResult() { _results.update { emptyList() } }
 }
-
 

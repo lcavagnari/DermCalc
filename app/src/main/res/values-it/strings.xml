@@ -157,7 +157,16 @@
     <string name="btn_save">Salva</string>
     <string name="btn_confirm">Conferma</string>
     <string name="tool_measurement">Misurazioni</string>
-    <string name="your">Il Tuo</string>
     <string name="your_bmi">Il Tuo %s</string>
     <string name="severity_normal">Normale</string>
+    <string name="bsa_slider_tooltip">Tocca una zona del corpo per regolarne la copertura</string>
+    <string name="bsa_diagram_hint">Vista frontale · tocca per selezionare</string>
+    <string name="bsa_region_head">Testa</string>
+    <string name="bsa_region_right_arm">Braccio destro</string>
+    <string name="bsa_region_left_arm">Braccio sinistro</string>
+    <string name="bsa_region_anterior_trunk">Tronco anteriore</string>
+    <string name="bsa_region_posterior_trunk">Tronco posteriore</string>
+    <string name="bsa_region_right_leg">Gamba destra</string>
+    <string name="bsa_region_left_leg">Gamba sinistra</string>
+    <string name="btn_saved_confirm">Registrato con successo!</string>
 </resources>

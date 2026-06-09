@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.ViewModelProvider
+import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
             val toolsModel = ViewModelProvider(this)[ToolsModel::class.java]
 
             val quoteModel = ViewModelProvider(this)[QuoteModel::class.java]
+            val bodyScanModel = ViewModelProvider(this)[BodyScanModel::class.java]
             // Seed the initial quote; updateQuote() is not called on init.
             LaunchedEffect(Unit) { quoteModel.updateQuote() }
 
@@ -49,7 +51,7 @@ class MainActivity : ComponentActivity() {
             // Delegate to portrait or landscape layout based on current orientation.
             DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
                 if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-                    MainPortraitActivity(Modifier, onboardingModel, toolsModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })
+                    MainPortraitActivity(Modifier, onboardingModel, bodyScanModel,toolsModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })
                 else MainLandscapeActivity(onboardingModel)
             }
         }
