@@ -55,6 +55,7 @@ fun soulForRoute(route: String?): Soul = when (route) {
 @get:StringRes
 val Severity.labelRes: Int
     get() = when (this) {
+        Severity.NONE -> R.string.severity_normal
         Severity.MILD -> R.string.severity_normal
         Severity.MODERATE -> R.string.severity_moderate
         Severity.SEVERE -> R.string.severity_severe
@@ -70,6 +71,7 @@ val Severity.labelRes: Int
 fun severityColor(severity: Severity): Color {
     val dark = LocalDarkTheme.current
     return when (severity) {
+        Severity.NONE     -> if (dark) SeverityMildDark     else SeverityMildLight
         Severity.MILD     -> if (dark) SeverityMildDark     else SeverityMildLight
         Severity.MODERATE -> if (dark) SeverityModerateDark else SeverityModerateLight
         Severity.SEVERE   -> if (dark) SeveritySevereDark   else SeveritySevereLight

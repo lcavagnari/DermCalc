@@ -22,6 +22,10 @@ data class BsaState(
     val regionValues: Map<BsaRegion, Int> = BsaRegion.entries.associateWith { 0 },
     val selectedRegion: BsaRegion? = null,
 ) {
+    val totalBsaPct: Float get() = BsaRegion.entries.sumOf { region ->
+        (regionValues[region] ?: 0) * region.bodyWeight.toDouble()
+    }.toFloat()
+
     val severity: Severity get() = when {
         totalBsaPct == 0f  -> Severity.NONE
         totalBsaPct < 10f  -> Severity.MILD

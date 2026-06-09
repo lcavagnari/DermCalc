@@ -1,7 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.models
 
 import android.app.Application
-import android.health.connect.datatypes.units.Percentage
 import androidx.lifecycle.AndroidViewModel
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -214,12 +213,8 @@ data class BsaResult(
     override fun isValid(): Boolean = affectedPercentage in 0.0..100.0
 
     companion object {
-        fun compute() {
-            val totalBsaPct: Float
-            get() = BsaRegion.entries.sumOf { region ->
-                (regionValues[region] ?: 0) * region.bodyWeight.toDouble()
-            }.toFloat()
-        }
+        fun compute(affectedPercentage: Double): BsaResult =
+            BsaResult(affectedPercentage = affectedPercentage, score = affectedPercentage)
     }
 }
 
