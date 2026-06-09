@@ -1,627 +1,667 @@
 {
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\build.gradle.kts": {
-    "mtime": 1779120790.6945128,
-    "ast_hash": "0e155ee46902f4c8234906fee4957c7d",
-    "semantic_hash": "0e155ee46902f4c8234906fee4957c7d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\gradlew": {
-    "mtime": 1778691956.1946661,
-    "ast_hash": "4f7a8a3a765f6f751d47568dc3bb913f",
-    "semantic_hash": "4f7a8a3a765f6f751d47568dc3bb913f"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\settings.gradle.kts": {
-    "mtime": 1779120790.6975553,
-    "ast_hash": "a968b9d87e73ffdfa5afc3e3d0f4dca2",
-    "semantic_hash": "a968b9d87e73ffdfa5afc3e3d0f4dca2"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.claude\\settings.local.json": {
-    "mtime": 1779715984.8384216,
-    "ast_hash": "3d71d8c5045dddd0ab36ad241a2e477f",
-    "semantic_hash": "3d71d8c5045dddd0ab36ad241a2e477f"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\build.gradle.kts": {
-    "mtime": 1780993315.1077106,
-    "ast_hash": "e84e097677f5805c212fe6ed0859ca4e",
+  "/home/asriel/AndroidStudioProjects/DermCalc/build.gradle.kts": {
+    "mtime": 1780939431.0045698,
+    "ast_hash": "260e692e595086cf2a981ea957d0a625",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\androidTest\\java\\it\\lcavagnari\\pdm\\dermcalc\\OnboardingHappyPathTest.kt": {
-    "mtime": 1779120790.6606514,
-    "ast_hash": "ef0911e4e0d60661920d430e673111a8",
-    "semantic_hash": "ef0911e4e0d60661920d430e673111a8"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\androidTest\\java\\it\\lcavagnari\\pdm\\dermcalc\\OnboardingValidationTest.kt": {
-    "mtime": 1779120790.661151,
-    "ast_hash": "0d5feef87e38fc4031685b7ee756c3c8",
-    "semantic_hash": "0d5feef87e38fc4031685b7ee756c3c8"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\AppNavHost.kt": {
-    "mtime": 1780990913.3796473,
-    "ast_hash": "860130ff404915c96a1a01996d522610",
+  "/home/asriel/AndroidStudioProjects/DermCalc/settings.gradle.kts": {
+    "mtime": 1780939431.00557,
+    "ast_hash": "558a937a62f7c890a7483481b197f408",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\MainActivity.kt": {
-    "mtime": 1780990913.3811474,
-    "ast_hash": "8cdb32c8c797c1c62ecaada34d975808",
+  "/home/asriel/AndroidStudioProjects/DermCalc/gradlew": {
+    "mtime": 1780939431.00557,
+    "ast_hash": "266606e78242737ef3da02a80ea0564d",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\AppRoute.kt": {
-    "mtime": 1780990913.3826923,
-    "ast_hash": "8d0ffa502aa52dd5ab573e775154e89f",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/build.gradle.kts": {
+    "mtime": 1781013770.4327278,
+    "ast_hash": "8e6f238bdcb0234ba22d1a033d7364e0",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\InputField.kt": {
-    "mtime": 1780994076.2020104,
-    "ast_hash": "5e6f8b49a1d2975ec3c83c76ec8a03dc",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/AppNavHost.kt": {
+    "mtime": 1781013348.5001338,
+    "ast_hash": "be7b5c10b5f302dfb7d667a5ddb0821c",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\OnboardingModel.kt": {
-    "mtime": 1780990913.386641,
-    "ast_hash": "d59d9df13d441f59817045eede5291e2",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/MainActivity.kt": {
+    "mtime": 1781013348.5001338,
+    "ast_hash": "57fa03953d0cd5db6b5434365e39616d",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\QuoteModel.kt": {
-    "mtime": 1780668683.7473042,
-    "ast_hash": "eb593cf9f7f425b1e305bf077910bbc4",
-    "semantic_hash": "eb593cf9f7f425b1e305bf077910bbc4"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\ToolsModel.kt": {
-    "mtime": 1780994223.8781407,
-    "ast_hash": "01bd7aaeb4b28f7098da65fe21727931",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/MainPortraitActivity.kt": {
+    "mtime": 1781013348.5031338,
+    "ast_hash": "e660d81e91ab8a290ad992df8ff81aaf",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\BorderedCard.kt": {
-    "mtime": 1780990913.389267,
-    "ast_hash": "97a37bd4d7e28c9b3876b817a8ec8f5b",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/onboarding/OnboardingPager.kt": {
+    "mtime": 1781013348.5041337,
+    "ast_hash": "d82cfee5cd1b8cf9e41aafc546076c6f",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\BottomNavBar.kt": {
-    "mtime": 1780995239.437737,
-    "ast_hash": "4881b2b6e8a8d608afd7da679d01f36d",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/onboarding/OnboardingItem.kt": {
+    "mtime": 1781013348.5031338,
+    "ast_hash": "1ee9da19c7e157e22ddbfb5b154da74b",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\HistoryCard.kt": {
-    "mtime": 1780995239.4397771,
-    "ast_hash": "325d4a6a062243ff2f0129655693d102",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/QuickToolScreen.kt": {
+    "mtime": 1781013991.8967931,
+    "ast_hash": "d2540186f5b988f428d05b9198d326cb",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\TopMenu.kt": {
-    "mtime": 1780995239.4408069,
-    "ast_hash": "37ecd059ecceef723e948dcf2da4ebbf",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/ProfileScreen.kt": {
+    "mtime": 1781013348.5051339,
+    "ast_hash": "0abf2c9d3dec3a5a4588b04ee812ae62",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\input\\ButtonsTray.kt": {
-    "mtime": 1780995239.4423158,
-    "ast_hash": "27aba1323b27c0bc77f78086aff6cae1",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/OnboardingScreen.kt": {
+    "mtime": 1781013348.5041337,
+    "ast_hash": "309490140ff0d883048ce2a368839b9f",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\input\\DatePicker.kt": {
-    "mtime": 1780668683.7513244,
-    "ast_hash": "392f4b0fc259b89ae35809f3d6c53279",
-    "semantic_hash": "392f4b0fc259b89ae35809f3d6c53279"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\input\\SnapWheelPicker.kt": {
-    "mtime": 1780991250.0724943,
-    "ast_hash": "2c985804e12d9140184dbdb3eb2936ef",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/ToolsScreen.kt": {
+    "mtime": 1781013348.5051339,
+    "ast_hash": "3c455ca7ba1db36092ab92f4d3e9cbc0",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\landscape\\MainLandscapeActivity.kt": {
-    "mtime": 1780668683.7568622,
-    "ast_hash": "39f1cf2057d8e4a0c56c4bc334eae781",
-    "semantic_hash": "39f1cf2057d8e4a0c56c4bc334eae781"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\MainPortraitActivity.kt": {
-    "mtime": 1780995239.4443247,
-    "ast_hash": "5a6fac7cfe248ee62c7aa1afdd33dfca",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/HomeScreen.kt": {
+    "mtime": 1781013348.5041337,
+    "ast_hash": "803e922811932b6d4f4a5a2e2a7e2db4",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\onboarding\\OnboardingItem.kt": {
-    "mtime": 1780991250.0734987,
-    "ast_hash": "2a02932f07a10e329a826646af74f126",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/IndexToolScreen.kt": {
+    "mtime": 1781013348.5041337,
+    "ast_hash": "e5fbaf4b5adc95a4c1c40e53765e8c14",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\onboarding\\OnboardingPager.kt": {
-    "mtime": 1780991250.0745099,
-    "ast_hash": "aa38b8bf8d0cbb36138a340ce08fbf27",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Type.kt": {
+    "mtime": 1781013348.5061338,
+    "ast_hash": "e8d2372fcc3061439e4a1c502e5e439c",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\screens\\HomeScreen.kt": {
-    "mtime": 1780990913.4068286,
-    "ast_hash": "220c7cfe7eaa9cec0fd1e304dd304c70",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Souls.kt": {
+    "mtime": 1781013348.5061338,
+    "ast_hash": "9e624f56d34fd330b71c40c087dca080",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\screens\\IndexToolScreen.kt": {
-    "mtime": 1780991250.07551,
-    "ast_hash": "dcba05fe692a4a2e4f166255c3ac7c5d",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Color.kt": {
+    "mtime": 1781013348.5051339,
+    "ast_hash": "d05c148c085cf7a940aea266e8d62300",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\screens\\OnboardingScreen.kt": {
-    "mtime": 1780995239.445325,
-    "ast_hash": "f01be33529166a731cbaf94be3cb9ca4",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Theme.kt": {
+    "mtime": 1781013348.5061338,
+    "ast_hash": "b88c221902e441cfebfc58d1169368bf",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\screens\\ProfileScreen.kt": {
-    "mtime": 1780991250.0765162,
-    "ast_hash": "cb5fc3fdcbec20bfce0e3bc2cfecc99f",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/landscape/MainLandscapeActivity.kt": {
+    "mtime": 1780939431.0015697,
+    "ast_hash": "506c801099997735b67da90bbf51ae6c",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\screens\\QuickToolScreen.kt": {
-    "mtime": 1780995239.447848,
-    "ast_hash": "15c20ad3d5372aaef67dc2c6892e8a2d",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/BottomNavBar.kt": {
+    "mtime": 1781013348.501134,
+    "ast_hash": "b2d2a6d45ee11aac4adb875c53349ea5",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\portrait\\screens\\ToolsScreen.kt": {
-    "mtime": 1780990913.4148467,
-    "ast_hash": "b418eb520c3ec915fa14e61f0f1f78d7",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/BorderedCard.kt": {
+    "mtime": 1780964249.5166802,
+    "ast_hash": "252bc76ae934bc94734f5ef6d4b4f212",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\theme\\Color.kt": {
-    "mtime": 1780991250.0785098,
-    "ast_hash": "5ee9cf0d70dfdce25066a6da560d950b",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/TopMenu.kt": {
+    "mtime": 1781013348.5021338,
+    "ast_hash": "bc7a1bd00dda9f07f0ce36625ec5d218",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\theme\\Souls.kt": {
-    "mtime": 1780995239.4503798,
-    "ast_hash": "e37e5d580ffc065d759edbb71d267255",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/HistoryCard.kt": {
+    "mtime": 1781013348.5021338,
+    "ast_hash": "b949a6e3e72046e8e53fcdbb6d7baac8",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\theme\\Theme.kt": {
-    "mtime": 1780991250.079015,
-    "ast_hash": "0a2a60f98e574a9968ad3388fa80a85f",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/Tools.kt": {
+    "mtime": 1781013348.5021338,
+    "ast_hash": "379229f46c1a28543622c507a535586c",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\theme\\Type.kt": {
-    "mtime": 1780991250.0800147,
-    "ast_hash": "52e59709d1184ca9eb6bf4b8500f922d",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/input/ButtonsTray.kt": {
+    "mtime": 1781013348.5021338,
+    "ast_hash": "d490fac2c3d8be7e752b71e90af351a9",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\utils\\DateUtils.kt": {
-    "mtime": 1780668683.7694218,
-    "ast_hash": "8cdadc493627fd355f66fba2128c105e",
-    "semantic_hash": "8cdadc493627fd355f66fba2128c105e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\test\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\InputFieldConversionTest.kt": {
-    "mtime": 1780991213.0634623,
-    "ast_hash": "c0490f25e6ebe94c90a8ea2bcd093fef",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/input/SnapWheelPicker.kt": {
+    "mtime": 1781013348.5031338,
+    "ast_hash": "18c5757ed335afd97ce6605e9f5a8d5b",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\test\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\OnboardingModelTest.kt": {
-    "mtime": 1780994237.8982618,
-    "ast_hash": "41c57df5a979e6f578787b2c98bc6e17",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/input/DatePicker.kt": {
+    "mtime": 1780939431.0005696,
+    "ast_hash": "467340e6205c273fed7fe34eac69329d",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\audit_report.md": {
-    "mtime": 1778930195.030198,
-    "ast_hash": "3c5976845dedab4678e64b788c596e5d",
-    "semantic_hash": "3c5976845dedab4678e64b788c596e5d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\CLAUDE.md": {
-    "mtime": 1779442698.6270938,
-    "ast_hash": "b2632b846c32abbf07cbf275fdb3a926",
-    "semantic_hash": "b2632b846c32abbf07cbf275fdb3a926"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\README.md": {
-    "mtime": 1780991213.0388465,
-    "ast_hash": "da1a8a6e7c95a98a892f67af33100aee",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/input/MeasurementPickerDialogs.kt": {
+    "mtime": 1781013348.5021338,
+    "ast_hash": "a036282cc0667079978786e004f36cd6",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.claude\\sprints\\2026-05-13-commit-split.md": {
-    "mtime": 1778661807.1440227,
-    "ast_hash": "40eb549f4daed81183642bf916d3c870",
-    "semantic_hash": "40eb549f4daed81183642bf916d3c870"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.claude\\sprints\\sprint-kdoc-2.md": {
-    "mtime": 1778545943.7754543,
-    "ast_hash": "1e1fa3d0ae88feb1a5b017dfe89f3658",
-    "semantic_hash": "1e1fa3d0ae88feb1a5b017dfe89f3658"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.claude\\sprints\\sprint-kdoc.md": {
-    "mtime": 1778544887.9428008,
-    "ast_hash": "5ac9ffe7770558127f8ef2f9ccbe6afc",
-    "semantic_hash": "5ac9ffe7770558127f8ef2f9ccbe6afc"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\docs\\DermCalc_Roadmap.md.pdf": {
-    "mtime": 1777562663.8594809,
-    "ast_hash": "dd222532175426b35ccaf19a9ad534d8",
-    "semantic_hash": "dd222532175426b35ccaf19a9ad534d8"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\docs\\Progetto 1 - DermCalc_0aa7b1b73690c03b0989963ba10e5af5.pdf": {
-    "mtime": 1779120790.6960742,
-    "ast_hash": "ff9fb01ee07b6b588f35d2a1fa1aa8bc",
-    "semantic_hash": "ff9fb01ee07b6b588f35d2a1fa1aa8bc"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\ic_launcher-playstore.png": {
-    "mtime": 1779228970.3152897,
-    "ast_hash": "23e1578f04d42669e469945264ec28e5",
-    "semantic_hash": "23e1578f04d42669e469945264ec28e5"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.webp": {
-    "mtime": 1779228970.37261,
-    "ast_hash": "6770a771d91005dc799ab9381f20e7d8",
-    "semantic_hash": "6770a771d91005dc799ab9381f20e7d8"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.webp": {
-    "mtime": 1779228970.374111,
-    "ast_hash": "cdcd7c5714c47f063adb80eb6b4f227d",
-    "semantic_hash": "cdcd7c5714c47f063adb80eb6b4f227d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.webp": {
-    "mtime": 1779228970.3746102,
-    "ast_hash": "82e746081a9f0578a93a4b10eb91534d",
-    "semantic_hash": "82e746081a9f0578a93a4b10eb91534d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.webp": {
-    "mtime": 1779228970.3751101,
-    "ast_hash": "9448e2b3479f673ca3f37f51f1177822",
-    "semantic_hash": "9448e2b3479f673ca3f37f51f1177822"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.webp": {
-    "mtime": 1779228970.3766196,
-    "ast_hash": "4c53f9507bb4bb51943da22937544a7e",
-    "semantic_hash": "4c53f9507bb4bb51943da22937544a7e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.webp": {
-    "mtime": 1779228970.37712,
-    "ast_hash": "f1874466c94c91800b03b59888b4fe53",
-    "semantic_hash": "f1874466c94c91800b03b59888b4fe53"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp": {
-    "mtime": 1779228970.37812,
-    "ast_hash": "89ebc50c0454dfd65ba4044dc62b336d",
-    "semantic_hash": "89ebc50c0454dfd65ba4044dc62b336d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.webp": {
-    "mtime": 1779228970.3786197,
-    "ast_hash": "f817a733fe8618b6ae644c334c967b2d",
-    "semantic_hash": "f817a733fe8618b6ae644c334c967b2d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.webp": {
-    "mtime": 1779228970.3796246,
-    "ast_hash": "53baff9a1af4d84b54a015f605ac0911",
-    "semantic_hash": "53baff9a1af4d84b54a015f605ac0911"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.webp": {
-    "mtime": 1779228970.3806415,
-    "ast_hash": "21e4c87f82a02dca935b1f6429600f3e",
-    "semantic_hash": "21e4c87f82a02dca935b1f6429600f3e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.webp": {
-    "mtime": 1779228970.3811476,
-    "ast_hash": "833a3e8179c7ea7b5739494bf0afe4c1",
-    "semantic_hash": "833a3e8179c7ea7b5739494bf0afe4c1"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.webp": {
-    "mtime": 1779228970.3821473,
-    "ast_hash": "e18e9d997c9eb9e88e80d952ed919667",
-    "semantic_hash": "e18e9d997c9eb9e88e80d952ed919667"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.webp": {
-    "mtime": 1779228970.3826473,
-    "ast_hash": "14e96a835c1c5b4e14a6093fb5fa866e",
-    "semantic_hash": "14e96a835c1c5b4e14a6093fb5fa866e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.webp": {
-    "mtime": 1779228970.384667,
-    "ast_hash": "cd491d97be7c044a75fa8aadf3d14ccf",
-    "semantic_hash": "cd491d97be7c044a75fa8aadf3d14ccf"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.webp": {
-    "mtime": 1779228970.3851655,
-    "ast_hash": "75ffb5f0423ef72436aec018a93ee681",
-    "semantic_hash": "75ffb5f0423ef72436aec018a93ee681"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.claude\\settings.json": {
-    "mtime": 1780774628.233725,
-    "ast_hash": "25b5a32c52b23e59a786f4085145fd07",
-    "semantic_hash": "25b5a32c52b23e59a786f4085145fd07"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.opencode\\opencode.json": {
-    "mtime": 1779443052.9750009,
-    "ast_hash": "1efe24ecf938911d4f23e4b1c6ec91f7",
-    "semantic_hash": "1efe24ecf938911d4f23e4b1c6ec91f7"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.opencode\\package.json": {
-    "mtime": 1779443072.9698412,
-    "ast_hash": "bc4105f797304ae00bc7e12f4f85bd1a",
-    "semantic_hash": "bc4105f797304ae00bc7e12f4f85bd1a"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.opencode\\plugins\\graphify.js": {
-    "mtime": 1779443078.2678816,
-    "ast_hash": "32b67963417a30cb80544e0b2a56a98d",
-    "semantic_hash": "32b67963417a30cb80544e0b2a56a98d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\AGENTS.md": {
-    "mtime": 1779442899.1821418,
-    "ast_hash": "752aa83aa64361ac32860f882dcff932",
-    "semantic_hash": "752aa83aa64361ac32860f882dcff932"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\input\\MeasurementPickerDialogs.kt": {
-    "mtime": 1780991250.0714889,
-    "ast_hash": "2214ce612910aae1971af8b09f1460ff",
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/utils/DateUtils.kt": {
+    "mtime": 1780939431.0015697,
+    "ast_hash": "61916f09148d2d0519b9326e6e5ab684",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg.png": {
-    "mtime": 1779540511.8828583,
-    "ast_hash": "5061e658b6ca551767be8ad14a72f7a0",
-    "semantic_hash": "5061e658b6ca551767be8ad14a72f7a0"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/models/ToolsModel.kt": {
+    "mtime": 1781013770.4327278,
+    "ast_hash": "bd53e5ac79a483a045d0555ef1cb1cbc",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_dark.png": {
-    "mtime": 1779540511.9257758,
-    "ast_hash": "86972d10bba65baa8af1a74375306fa1",
-    "semantic_hash": "86972d10bba65baa8af1a74375306fa1"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/models/InputField.kt": {
+    "mtime": 1781013770.4327278,
+    "ast_hash": "0107647e0798051ea568640d7d480f2c",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding1.webp": {
-    "mtime": 1779540511.927277,
-    "ast_hash": "011d46697a7aca9b3c89de471f5fa9f2",
-    "semantic_hash": "011d46697a7aca9b3c89de471f5fa9f2"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/models/QuoteModel.kt": {
+    "mtime": 1780939431.0005696,
+    "ast_hash": "ab466ebfea16cb168c63da40903b3252",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding1_dark.webp": {
-    "mtime": 1779540511.928315,
-    "ast_hash": "233446240ef28286a0b1837b53fe0988",
-    "semantic_hash": "233446240ef28286a0b1837b53fe0988"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/models/AppRoute.kt": {
+    "mtime": 1781013348.5001338,
+    "ast_hash": "a80feb98ff8d532f4197e7355be18586",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding2.webp": {
-    "mtime": 1779540511.930323,
-    "ast_hash": "ed2cb5d4168c8f005e6ef069e7efea89",
-    "semantic_hash": "ed2cb5d4168c8f005e6ef069e7efea89"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/java/it/lcavagnari/pdm/dermcalc/models/OnboardingModel.kt": {
+    "mtime": 1781013348.5001338,
+    "ast_hash": "a8e5129238743cd4af006259cc36a3aa",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding2_dark.webp": {
-    "mtime": 1779540511.930846,
-    "ast_hash": "f134c6efc4699c8a43246033e862d3fe",
-    "semantic_hash": "f134c6efc4699c8a43246033e862d3fe"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/test/java/it/lcavagnari/pdm/dermcalc/models/ToolsModelTest.kt": {
+    "mtime": 1780964249.5216763,
+    "ast_hash": "cc8613439b781d3f1319176f0a8839f8",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding3.png": {
-    "mtime": 1779540511.936889,
-    "ast_hash": "08950d897b2dc59d8f207894ad4a5842",
-    "semantic_hash": "08950d897b2dc59d8f207894ad4a5842"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/test/java/it/lcavagnari/pdm/dermcalc/models/InputFieldConversionTest.kt": {
+    "mtime": 1781013770.4337277,
+    "ast_hash": "081b029930af8dc3151ec6a94f996cd3",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding3_dark.png": {
-    "mtime": 1779540511.9409523,
-    "ast_hash": "6ffe11982c8c16852cee1f1d2ffe69b5",
-    "semantic_hash": "6ffe11982c8c16852cee1f1d2ffe69b5"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/test/java/it/lcavagnari/pdm/dermcalc/models/BmiResultTest.kt": {
+    "mtime": 1781013348.5071337,
+    "ast_hash": "45e393cdcd024c37029e19df9843886d",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding4.webp": {
-    "mtime": 1779540511.9419823,
-    "ast_hash": "34ae17f3c091c02d474c2116814d9421",
-    "semantic_hash": "34ae17f3c091c02d474c2116814d9421"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/test/java/it/lcavagnari/pdm/dermcalc/models/OnboardingModelTest.kt": {
+    "mtime": 1781013770.4337277,
+    "ast_hash": "c253b1fd2af88727ab540b5a9504b9d2",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\res\\drawable\\bg_onboarding4_dark.webp": {
-    "mtime": 1779540511.9424827,
-    "ast_hash": "198d073285b54d3f445857ea96a5b087",
-    "semantic_hash": "198d073285b54d3f445857ea96a5b087"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/androidTest/java/it/lcavagnari/pdm/dermcalc/ToolSaveButtonTest.kt": {
+    "mtime": 1781013348.4991338,
+    "ast_hash": "6ece56f14320b3b354eaa11c5dfd40a1",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\settings.local.json": {
-    "mtime": 1780665320.0,
-    "ast_hash": "83f9c7efec3d732c8cde02ecfd223751",
-    "semantic_hash": "83f9c7efec3d732c8cde02ecfd223751"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/androidTest/java/it/lcavagnari/pdm/dermcalc/OnboardingValidationTest.kt": {
+    "mtime": 1780939430.9985697,
+    "ast_hash": "1580955bd6a1dcef02d29bc7a96179a1",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\conversations.json": {
-    "mtime": 1780654850.0,
-    "ast_hash": "ca9655df292d0d910815ece9faffe63e",
-    "semantic_hash": "ca9655df292d0d910815ece9faffe63e"
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/androidTest/java/it/lcavagnari/pdm/dermcalc/OnboardingHappyPathTest.kt": {
+    "mtime": 1780939430.9985697,
+    "ast_hash": "ac48673fdfaa7de2cff35ddf3778583a",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-0bcf383a-ac22-4c41-881a-4cb7593ecba6.json": {
-    "mtime": 1780602970.0,
-    "ast_hash": "bf1880a55a4e92c88c0c80db9d2561a4",
-    "semantic_hash": "bf1880a55a4e92c88c0c80db9d2561a4"
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/settings.local.json": {
+    "mtime": 1780776824.2949302,
+    "ast_hash": "d4bdd6816010bb36c659aff73d93e893",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-15260430-3b68-4928-b494-9a33e67fd4e3.json": {
-    "mtime": 1779184886.0,
-    "ast_hash": "0ff4b36dafdc4016486c68eb92ef207d",
-    "semantic_hash": "0ff4b36dafdc4016486c68eb92ef207d"
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/check-master-hook.sh": {
+    "mtime": 1780776787.782249,
+    "ast_hash": "9dec81d0ef3d2df254cbb6d1f0926340",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-19e0ea61-6c39-4522-9ff1-bff468ffae79.json": {
-    "mtime": 1779211250.0,
-    "ast_hash": "aa21198d0328b9666593196ae13f57c6",
-    "semantic_hash": "aa21198d0328b9666593196ae13f57c6"
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/settings.local.json": {
+    "mtime": 1780928965.2048328,
+    "ast_hash": "c671567a19cd88203194bb8a9b02d17c",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-1c45dcab-6aed-4e38-a6ff-25fbcecb9df8.json": {
-    "mtime": 1779184938.0,
-    "ast_hash": "7c0106a6771f3b0610c95b8f28397834",
-    "semantic_hash": "7c0106a6771f3b0610c95b8f28397834"
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-ac06e686-6474-429c-bc66-80ea482ef0fe.json": {
+    "mtime": 1780964349.74216,
+    "ast_hash": "f8ef294801d6cb5ed60f16e8ef21d4ca",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-1d2556b9-e890-40c2-972a-bbbe870e5034.json": {
-    "mtime": 1779203950.0,
-    "ast_hash": "2b6ba5e4c7eee67f096db1cbcaafcfc5",
-    "semantic_hash": "2b6ba5e4c7eee67f096db1cbcaafcfc5"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-1dfbdf2a-ae20-4d5b-9e84-34e12991771a.json": {
-    "mtime": 1779747296.0,
-    "ast_hash": "602652c453a628c1b04b521dae19f30e",
-    "semantic_hash": "602652c453a628c1b04b521dae19f30e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-1fc5ab50-784b-42fb-851e-5895bd456e35.json": {
-    "mtime": 1780400184.0,
-    "ast_hash": "66f59ef5b8efd42c8207e3d4fdfd1b0d",
-    "semantic_hash": "66f59ef5b8efd42c8207e3d4fdfd1b0d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-2a09367c-9038-49e6-b12f-9d4a3bca48be.json": {
-    "mtime": 1780471638.0,
-    "ast_hash": "654c47d2225e76a8c3679ddf76304339",
-    "semantic_hash": "654c47d2225e76a8c3679ddf76304339"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-39fba000-3ea0-479b-aca3-f8b2a94b3d1f.json": {
-    "mtime": 1779612286.0,
-    "ast_hash": "5d3440d873e3df9c9cd3b0261f2d6536",
-    "semantic_hash": "5d3440d873e3df9c9cd3b0261f2d6536"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-3f322560-d3e1-4223-a8b6-6712b7917787.json": {
-    "mtime": 1780390608.0,
-    "ast_hash": "2d9196c6a11219b8f508522e0806b1a6",
-    "semantic_hash": "2d9196c6a11219b8f508522e0806b1a6"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-3f836bd5-52f8-464d-8c01-a3dca7d396b4.json": {
-    "mtime": 1779183920.0,
-    "ast_hash": "1bf0ccc20289a3bcd6b4948faabe2b90",
-    "semantic_hash": "1bf0ccc20289a3bcd6b4948faabe2b90"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-4bf450e0-9cfb-47bb-bf29-3f303f1bf471.json": {
-    "mtime": 1779710662.0,
-    "ast_hash": "ce264da6500fbd8b7048e610abf6ea7e",
-    "semantic_hash": "ce264da6500fbd8b7048e610abf6ea7e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-53c2c39b-ca02-4975-ba68-1cd7a47f50a3.json": {
-    "mtime": 1779229834.0,
-    "ast_hash": "2a929dff3423e0484b7f46fe5ab6cb85",
-    "semantic_hash": "2a929dff3423e0484b7f46fe5ab6cb85"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-6d48d7c2-aeb5-4526-ac20-4079e4079888.json": {
-    "mtime": 1779739550.0,
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-6d48d7c2-aeb5-4526-ac20-4079e4079888.json": {
+    "mtime": 1779739549.2098508,
     "ast_hash": "8c46f3e3349cdc3b2bebc705ec69c4db",
-    "semantic_hash": "8c46f3e3349cdc3b2bebc705ec69c4db"
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-6f7083fb-69f7-4cfd-bbc5-ce58dca54c6d.json": {
-    "mtime": 1779742542.0,
-    "ast_hash": "846e006542cdd7c651dac807eba3157b",
-    "semantic_hash": "846e006542cdd7c651dac807eba3157b"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-70981807-6aac-4a01-80c2-d243656d277a.json": {
-    "mtime": 1779273116.0,
-    "ast_hash": "63d21510ec9570ccd97f5a3631846a4f",
-    "semantic_hash": "63d21510ec9570ccd97f5a3631846a4f"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-783648bf-5e26-4d90-92d0-144834bd7aed.json": {
-    "mtime": 1779200308.0,
-    "ast_hash": "fc7ab91ee7aff147cf761565b3651bac",
-    "semantic_hash": "fc7ab91ee7aff147cf761565b3651bac"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-7afa5f06-d1cd-4ebb-8291-22235c43058d.json": {
-    "mtime": 1779218214.0,
-    "ast_hash": "60b398b3839d75a7c41f1bd1519ba5bc",
-    "semantic_hash": "60b398b3839d75a7c41f1bd1519ba5bc"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-82942653-6f17-4fef-b91b-d186910d7d5c.json": {
-    "mtime": 1780574452.0,
-    "ast_hash": "f9ebf2d6c4b7a21d30f7dff9f5e57694",
-    "semantic_hash": "f9ebf2d6c4b7a21d30f7dff9f5e57694"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-8388eb19-4e5e-4651-937b-7ebbbd877184.json": {
-    "mtime": 1780585234.0,
-    "ast_hash": "c3c907f1b42b7e3003b31e4f4308524e",
-    "semantic_hash": "c3c907f1b42b7e3003b31e4f4308524e"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-ada82ed1-100a-4008-8361-9cd94f1d0be0.json": {
-    "mtime": 1779211706.0,
-    "ast_hash": "5ba34a076f75062d33f8fedece40c0ff",
-    "semantic_hash": "5ba34a076f75062d33f8fedece40c0ff"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-aeef9a07-cf7b-42b1-802e-c67d03e786ea.json": {
-    "mtime": 1779712566.0,
-    "ast_hash": "17fe9731a937cad9526df4056bbbe054",
-    "semantic_hash": "17fe9731a937cad9526df4056bbbe054"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-b74d865c-3436-4d94-9abc-85f4e490fc52.json": {
-    "mtime": 1780583900.0,
-    "ast_hash": "34eb4a612d699c2cb16363dc8bc6806d",
-    "semantic_hash": "34eb4a612d699c2cb16363dc8bc6806d"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-b7cf8506-0275-4e3b-954b-90abf5859155.json": {
-    "mtime": 1780476192.0,
-    "ast_hash": "35c2be34f66c8aff47f29edab14429b0",
-    "semantic_hash": "35c2be34f66c8aff47f29edab14429b0"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-bb907884-b90b-467e-a82c-8110facc9c60.json": {
-    "mtime": 1779869962.0,
-    "ast_hash": "d166fea04349687680008798b929ce13",
-    "semantic_hash": "d166fea04349687680008798b929ce13"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-bf2a35be-bd3d-4103-8ec9-29be8c1948c1.json": {
-    "mtime": 1779870342.0,
-    "ast_hash": "5ca3b950d9a7f3cd2f3158520e3ab2b8",
-    "semantic_hash": "5ca3b950d9a7f3cd2f3158520e3ab2b8"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-d0b3ebc8-4664-4dca-bc61-3bed65c1cd08.json": {
-    "mtime": 1779200068.0,
-    "ast_hash": "49b6392882f3f35d072680415ce2a628",
-    "semantic_hash": "49b6392882f3f35d072680415ce2a628"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-d3c15e85-b8e1-4114-b7e4-f1e705010484.json": {
-    "mtime": 1780604672.0,
-    "ast_hash": "9a5d9718513bac0a56972681d77a61ba",
-    "semantic_hash": "9a5d9718513bac0a56972681d77a61ba"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-d9843d14-a29e-4f3b-900f-810a894d2d97.json": {
-    "mtime": 1780654298.0,
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-d9843d14-a29e-4f3b-900f-810a894d2d97.json": {
+    "mtime": 1780654298.5824192,
     "ast_hash": "04d2ac00eede8fe271be4e1fb4afece6",
-    "semantic_hash": "04d2ac00eede8fe271be4e1fb4afece6"
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-e33385f4-a059-4942-ae8f-b0ca78684260.json": {
-    "mtime": 1779215234.0,
-    "ast_hash": "f058bc49644cca0224a4f87f38144945",
-    "semantic_hash": "f058bc49644cca0224a4f87f38144945"
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-bf2a35be-bd3d-4103-8ec9-29be8c1948c1.json": {
+    "mtime": 1779870341.5551116,
+    "ast_hash": "5ca3b950d9a7f3cd2f3158520e3ab2b8",
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-f06ce081-61db-4499-a35c-56106690aa41.json": {
-    "mtime": 1780665320.0,
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-3f836bd5-52f8-464d-8c01-a3dca7d396b4.json": {
+    "mtime": 1779183920.442106,
+    "ast_hash": "1bf0ccc20289a3bcd6b4948faabe2b90",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-1d2556b9-e890-40c2-972a-bbbe870e5034.json": {
+    "mtime": 1779203949.654059,
+    "ast_hash": "2b6ba5e4c7eee67f096db1cbcaafcfc5",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-70981807-6aac-4a01-80c2-d243656d277a.json": {
+    "mtime": 1779273115.7711713,
+    "ast_hash": "63d21510ec9570ccd97f5a3631846a4f",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-39fba000-3ea0-479b-aca3-f8b2a94b3d1f.json": {
+    "mtime": 1779612285.7574704,
+    "ast_hash": "5d3440d873e3df9c9cd3b0261f2d6536",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-6f7083fb-69f7-4cfd-bbc5-ce58dca54c6d.json": {
+    "mtime": 1779742542.3646998,
+    "ast_hash": "846e006542cdd7c651dac807eba3157b",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-ada82ed1-100a-4008-8361-9cd94f1d0be0.json": {
+    "mtime": 1779211705.4564247,
+    "ast_hash": "5ba34a076f75062d33f8fedece40c0ff",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-82942653-6f17-4fef-b91b-d186910d7d5c.json": {
+    "mtime": 1780574451.5782967,
+    "ast_hash": "f9ebf2d6c4b7a21d30f7dff9f5e57694",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-4bf450e0-9cfb-47bb-bf29-3f303f1bf471.json": {
+    "mtime": 1779710662.647435,
+    "ast_hash": "ce264da6500fbd8b7048e610abf6ea7e",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-3f322560-d3e1-4223-a8b6-6712b7917787.json": {
+    "mtime": 1780390607.6981106,
+    "ast_hash": "2d9196c6a11219b8f508522e0806b1a6",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-15260430-3b68-4928-b494-9a33e67fd4e3.json": {
+    "mtime": 1779184885.3584366,
+    "ast_hash": "0ff4b36dafdc4016486c68eb92ef207d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-783648bf-5e26-4d90-92d0-144834bd7aed.json": {
+    "mtime": 1779200308.584487,
+    "ast_hash": "fc7ab91ee7aff147cf761565b3651bac",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-2a09367c-9038-49e6-b12f-9d4a3bca48be.json": {
+    "mtime": 1780471638.9000516,
+    "ast_hash": "654c47d2225e76a8c3679ddf76304339",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-bb907884-b90b-467e-a82c-8110facc9c60.json": {
+    "mtime": 1779869961.7140486,
+    "ast_hash": "d166fea04349687680008798b929ce13",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-1dfbdf2a-ae20-4d5b-9e84-34e12991771a.json": {
+    "mtime": 1779747295.2716234,
+    "ast_hash": "602652c453a628c1b04b521dae19f30e",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-53c2c39b-ca02-4975-ba68-1cd7a47f50a3.json": {
+    "mtime": 1779229834.3121724,
+    "ast_hash": "2a929dff3423e0484b7f46fe5ab6cb85",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-8388eb19-4e5e-4651-937b-7ebbbd877184.json": {
+    "mtime": 1780585234.365313,
+    "ast_hash": "c3c907f1b42b7e3003b31e4f4308524e",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-d3c15e85-b8e1-4114-b7e4-f1e705010484.json": {
+    "mtime": 1780604671.5533595,
+    "ast_hash": "9a5d9718513bac0a56972681d77a61ba",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-7afa5f06-d1cd-4ebb-8291-22235c43058d.json": {
+    "mtime": 1779218214.4141147,
+    "ast_hash": "60b398b3839d75a7c41f1bd1519ba5bc",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-d0b3ebc8-4664-4dca-bc61-3bed65c1cd08.json": {
+    "mtime": 1779200067.1149647,
+    "ast_hash": "49b6392882f3f35d072680415ce2a628",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-f06ce081-61db-4499-a35c-56106690aa41.json": {
+    "mtime": 1780665319.6659064,
     "ast_hash": "bcd325c98902954229258b92ac5a0bcb",
-    "semantic_hash": "bcd325c98902954229258b92ac5a0bcb"
+    "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.letta\\claude\\session-f38d457e-99f0-4e7d-b703-a9f7c7d78268.json": {
-    "mtime": 1779274276.0,
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-aeef9a07-cf7b-42b1-802e-c67d03e786ea.json": {
+    "mtime": 1779712565.1936982,
+    "ast_hash": "17fe9731a937cad9526df4056bbbe054",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-1fc5ab50-784b-42fb-851e-5895bd456e35.json": {
+    "mtime": 1780400184.671009,
+    "ast_hash": "66f59ef5b8efd42c8207e3d4fdfd1b0d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-0bcf383a-ac22-4c41-881a-4cb7593ecba6.json": {
+    "mtime": 1780602969.2333527,
+    "ast_hash": "bf1880a55a4e92c88c0c80db9d2561a4",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-1c45dcab-6aed-4e38-a6ff-25fbcecb9df8.json": {
+    "mtime": 1779184937.6680286,
+    "ast_hash": "7c0106a6771f3b0610c95b8f28397834",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-f38d457e-99f0-4e7d-b703-a9f7c7d78268.json": {
+    "mtime": 1779274275.1661162,
     "ast_hash": "8c06f811d998bfcc304ba14c7c5663de",
-    "semantic_hash": "8c06f811d998bfcc304ba14c7c5663de"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\letta-memory-report.md": {
-    "mtime": 1780779449.5495794,
-    "ast_hash": "2321b143fcc829e8f3be2c94f7fbd2d5",
-    "semantic_hash": "2321b143fcc829e8f3be2c94f7fbd2d5"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\section-todos.txt": {
-    "mtime": 1780957453.1972463,
-    "ast_hash": "d429b9662feb24f778a579a93f1b3ab3",
-    "semantic_hash": "d429b9662feb24f778a579a93f1b3ab3"
-  },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\androidTest\\java\\it\\lcavagnari\\pdm\\dermcalc\\ToolSaveButtonTest.kt": {
-    "mtime": 1780990913.3771477,
-    "ast_hash": "bc513acefc805f2327ccb4d3de5043e7",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\main\\java\\it\\lcavagnari\\pdm\\dermcalc\\ui\\component\\Tools.kt": {
-    "mtime": 1780991250.0694888,
-    "ast_hash": "c1e8dc9b32b38ca352d72c60b9f3ec0e",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-277ad43b-aa6e-4f70-89b0-45a064a52d30.json": {
+    "mtime": 1780776835.8819964,
+    "ast_hash": "764896abdbf48a5f21942de8215d351a",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\test\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\BmiResultTest.kt": {
-    "mtime": 1780990913.4298742,
-    "ast_hash": "1505dbc9ad3937d79a0a6e1080109033",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/conversations.json": {
+    "mtime": 1780925096.071364,
+    "ast_hash": "e45a2358f9f67ed931d64c7832798c9e",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\app\\src\\test\\java\\it\\lcavagnari\\pdm\\dermcalc\\models\\ToolsModelTest.kt": {
-    "mtime": 1780990913.434393,
-    "ast_hash": "d4cae602bb63665f88ca3b7503ff9fe2",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-2a10f731-5fb2-4a9d-8f53-325bd0b3e367.json": {
+    "mtime": 1780929947.9544096,
+    "ast_hash": "d0a561a59199584a089408cf17e6070e",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\docs\\DermCalc_Theme.html": {
-    "mtime": 1780990913.435897,
-    "ast_hash": "1ec57330b0dc606879a3d6aca22556a9",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-e33385f4-a059-4942-ae8f-b0ca78684260.json": {
+    "mtime": 1779215234.5990863,
+    "ast_hash": "f058bc49644cca0224a4f87f38144945",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.github\\workflows\\android-compile.yml": {
-    "mtime": 1781000135.7829728,
-    "ast_hash": "af52476032123f00c86eade15effbec1",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-b74d865c-3436-4d94-9abc-85f4e490fc52.json": {
+    "mtime": 1780583900.832928,
+    "ast_hash": "34eb4a612d699c2cb16363dc8bc6806d",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.github\\workflows\\android-pr-ci.yml": {
-    "mtime": 1781000056.565542,
-    "ast_hash": "044e03792a91ba6a75573daf328b31e4",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-19e0ea61-6c39-4522-9ff1-bff468ffae79.json": {
+    "mtime": 1779211249.9771752,
+    "ast_hash": "aa21198d0328b9666593196ae13f57c6",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.github\\workflows\\android-release-pipeline.yml": {
-    "mtime": 1781000135.7975686,
-    "ast_hash": "7688425b7a6910e6d4d98feecf216750",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-b7cf8506-0275-4e3b-954b-90abf5859155.json": {
+    "mtime": 1780476192.8023043,
+    "ast_hash": "35c2be34f66c8aff47f29edab14429b0",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.github\\workflows\\android-security-review.yml": {
-    "mtime": 1780991213.0358489,
-    "ast_hash": "b03d8d0a6a4f26d06a525ce8fad7431c",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.letta/claude/session-0b42d86c-6e73-49ea-b28c-f7762066f28d.json": {
+    "mtime": 1780777388.0290155,
+    "ast_hash": "5f10d0fd7ec4c23f4e8a5d1d859b3f5a",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.github\\workflows\\android-signed-release.yml": {
-    "mtime": 1780991213.0368488,
-    "ast_hash": "38d51d1209f472f578c88b54f60ede22",
+  "/home/asriel/AndroidStudioProjects/DermCalc/.gemini/settings.json": {
+    "mtime": 1779437606.0284617,
+    "ast_hash": "f080aabf772e803c9e24b9ad0acbf2b6",
     "semantic_hash": ""
   },
-  "C:\\Users\\Luke\\AndroidStudioProjects\\DermCalc\\.github\\workflows\\android-tests.yml": {
-    "mtime": 1780999787.1341326,
-    "ast_hash": "c0a22c12916b8da5afe1d6ed06db4dfe",
+  "/home/asriel/AndroidStudioProjects/DermCalc/CLAUDE.md": {
+    "mtime": 1779873009.2413032,
+    "ast_hash": "6abadbcaac924bf8d0c0c454ac7b8d8a",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/GEMINI.md": {
+    "mtime": 1779437606.0282638,
+    "ast_hash": "82efb97a359f5c7290bf2513d14686be",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/README.md": {
+    "mtime": 1781014085.9324439,
+    "ast_hash": "39b2ce715135e5f72a4a55e730ab8401",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/letta-memory-report.md": {
+    "mtime": 1780939431.00557,
+    "ast_hash": "eab1a0269c13cb8a6235cbd98f9297b1",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.csprints/sprint-preview-system.md": {
+    "mtime": 1779610857.1560671,
+    "ast_hash": "0462227ba07b92a6a69f5024e3e870e6",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.csprints/sprint-onboarding-typed-accessors.md": {
+    "mtime": 1779743287.843332,
+    "ast_hash": "722d23f08ad7e9fb81540c71a0537b32",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.csprints/sprint-kdoc-comments.md": {
+    "mtime": 1778922203.5400248,
+    "ast_hash": "a1268158b829dcc7d85d56fb706b412d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.github/workflows/android-security-review.yml": {
+    "mtime": 1781013770.4326837,
+    "ast_hash": "199a5db8d56fe2cb83d92d46bd490700",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.github/workflows/android-compile.yml": {
+    "mtime": 1781013770.4317276,
+    "ast_hash": "f0ebd1ad14746cf2d316fbbe679a20c4",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.github/workflows/android-signed-release.yml": {
+    "mtime": 1781013770.4326837,
+    "ast_hash": "a0464b111825b239df6f19a3cfafb25c",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.github/workflows/android-release-pipeline.yml": {
+    "mtime": 1781013770.4326837,
+    "ast_hash": "a10cc674c58bc7400fe9b2023e9d8311",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.github/workflows/android-pr-ci.yml": {
+    "mtime": 1781013770.4326837,
+    "ast_hash": "dbec3fe09917ee74b0f5bafee2424d7b",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.github/workflows/android-tests.yml": {
+    "mtime": 1781013770.4327278,
+    "ast_hash": "0d23bcae7bc0f729af8f78976f89acf3",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/hookify.confirm-task-understanding.local.md": {
+    "mtime": 1780928853.628955,
+    "ast_hash": "3465b4361463f0fab32c3796399b64ce",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/hookify.block-master-changes.local.md": {
+    "mtime": 1780776544.4670372,
+    "ast_hash": "1c40245a82866133f9f6398bd956d69a",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/refactor-quicktool-plan.md": {
+    "mtime": 1780486084.0024412,
+    "ast_hash": "1d305074517ff7f60be8d5d34bf1f72b",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/session-ses_19ad.md": {
+    "mtime": 1780648580.4726105,
+    "ast_hash": "785148cb08761bcc74e704cfe6bdaca1",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/PLAN_refactor_nav_architecture.md": {
+    "mtime": 1780476774.048926,
+    "ast_hash": "d05a1ddc77146bd33063d97f69fc2b91",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/RESPONSE_PROTOCOL.md": {
+    "mtime": 1780470720.4931517,
+    "ast_hash": "5c03b1e5129c7dafa1f50cd06a1808ca",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/session-ses_172d.md": {
+    "mtime": 1780488058.8098793,
+    "ast_hash": "148574aa8002e70e487b94c846bd2e85",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/.claude/DRAIGO_VERDICT.md": {
+    "mtime": 1780471450.691635,
+    "ast_hash": "3e53dc1333e4f43b2db4205ad0ee5cf4",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/docs/DermCalc_Theme.html": {
+    "mtime": 1780964249.5236747,
+    "ast_hash": "f91b78f4cc8c4fc7cb08b06e09e8f908",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/docs/DermCalc_Roadmap.md.pdf": {
+    "mtime": 1780939431.0045698,
+    "ast_hash": "dd222532175426b35ccaf19a9ad534d8",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/docs/Progetto 1 - DermCalc_0aa7b1b73690c03b0989963ba10e5af5.pdf": {
+    "mtime": 1780939431.00557,
+    "ast_hash": "ff9fb01ee07b6b588f35d2a1fa1aa8bc",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/ic_launcher-playstore.png": {
+    "mtime": 1780939430.9995697,
+    "ast_hash": "23e1578f04d42669e469945264ec28e5",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "75ffb5f0423ef72436aec018a93ee681",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "cd491d97be7c044a75fa8aadf3d14ccf",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "14e96a835c1c5b4e14a6093fb5fa866e",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding1_dark.webp": {
+    "mtime": 1780939431.0015697,
+    "ast_hash": "233446240ef28286a0b1837b53fe0988",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding1.webp": {
+    "mtime": 1780939431.0015697,
+    "ast_hash": "011d46697a7aca9b3c89de471f5fa9f2",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding3.png": {
+    "mtime": 1780939431.0025697,
+    "ast_hash": "08950d897b2dc59d8f207894ad4a5842",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding4.webp": {
+    "mtime": 1780939431.0025697,
+    "ast_hash": "34ae17f3c091c02d474c2116814d9421",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding4_dark.webp": {
+    "mtime": 1780939431.0025697,
+    "ast_hash": "198d073285b54d3f445857ea96a5b087",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_dark.png": {
+    "mtime": 1779270892.0332277,
+    "ast_hash": "86972d10bba65baa8af1a74375306fa1",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding2.webp": {
+    "mtime": 1780939431.0015697,
+    "ast_hash": "ed2cb5d4168c8f005e6ef069e7efea89",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding2_dark.webp": {
+    "mtime": 1780939431.0015697,
+    "ast_hash": "f134c6efc4699c8a43246033e862d3fe",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg.png": {
+    "mtime": 1779270892.0192277,
+    "ast_hash": "5061e658b6ca551767be8ad14a72f7a0",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/drawable/bg_onboarding3_dark.png": {
+    "mtime": 1780939431.0025697,
+    "ast_hash": "6ffe11982c8c16852cee1f1d2ffe69b5",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "e18e9d997c9eb9e88e80d952ed919667",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "833a3e8179c7ea7b5739494bf0afe4c1",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "21e4c87f82a02dca935b1f6429600f3e",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "53baff9a1af4d84b54a015f605ac0911",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "f817a733fe8618b6ae644c334c967b2d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-xhdpi/ic_launcher.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "89ebc50c0454dfd65ba4044dc62b336d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "f1874466c94c91800b03b59888b4fe53",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "4c53f9507bb4bb51943da22937544a7e",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-mdpi/ic_launcher.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "9448e2b3479f673ca3f37f51f1177822",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "82e746081a9f0578a93a4b10eb91534d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "cdcd7c5714c47f063adb80eb6b4f227d",
+    "semantic_hash": ""
+  },
+  "/home/asriel/AndroidStudioProjects/DermCalc/app/src/main/res/mipmap-hdpi/ic_launcher.webp": {
+    "mtime": 1780939431.0035698,
+    "ast_hash": "6770a771d91005dc799ab9381f20e7d8",
     "semantic_hash": ""
   }
 }
