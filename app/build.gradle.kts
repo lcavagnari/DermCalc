@@ -9,6 +9,37 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+fun stringProperty(name: String): String? = (findProperty(name) as String?) ?: System.getenv(name)
+
+val releaseKeystorePath = stringProperty("ANDROID_SIGNING_KEYSTORE_PATH")
+val releaseKeystorePassword = stringProperty("ANDROID_SIGNING_KEYSTORE_PASSWORD")
+val releaseKeyAlias = stringProperty("ANDROID_SIGNING_KEY_ALIAS")
+val releaseKeyPassword = stringProperty("ANDROID_SIGNING_KEY_PASSWORD")
+val hasReleaseSigningConfig = listOf(
+    releaseKeystorePath,
+    releaseKeystorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+).all { !it.isNullOrBlank() }
+
+val appVersionName: String = run {
+    val raw = rootProject.file("VERSION").readText().trim()
+    require(Regex("""^\d+\.\d+\.\d+$""").matches(raw)) {
+        "VERSION file must contain MAJOR.MINOR.PATCH (e.g. 1.0.0), got: '$raw'"
+    }
+    raw
+}
+
+gradle.taskGraph.whenReady {
+    if (hasTask(":app:assembleRelease") && !hasReleaseSigningConfig) {
+        throw GradleException(
+            "Cannot assemble release: signing config is missing. " +
+            "Set ANDROID_SIGNING_KEYSTORE_PATH, ANDROID_SIGNING_KEYSTORE_PASSWORD, " +
+            "ANDROID_SIGNING_KEY_ALIAS, and ANDROID_SIGNING_KEY_PASSWORD."
+        )
+    }
+}
+
 dependencyCheck {
     // Fail the build if any dependency has a CVSS score >= 7.0 (HIGH or CRITICAL).
     failBuildOnCVSS = 7.0f
@@ -29,15 +60,29 @@ android {
         applicationId = "it.lcavagnari.pdm.dermcalc"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()) ?: 1
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        if (hasReleaseSigningConfig) {
+            create("release") {
+                storeFile = file(releaseKeystorePath!!)
+                storePassword = releaseKeystorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (hasReleaseSigningConfig) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -66,6 +111,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -79,6 +129,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

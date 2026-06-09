@@ -1,0 +1,82 @@
+name: Android Release Pipeline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  changes:
+    name: Detect source changes
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Check for changes since last release
+        id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            echo "Manual dispatch — running unconditionally."
+          else
+            LAST=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || echo "")
+            if [[ -z "$LAST" ]]; then
+              echo "should_run=true" >> $GITHUB_OUTPUT
+              echo "No previous release tag found — running on first run."
+            else
+              CHANGED=$(git diff --name-only "$LAST"..HEAD -- app/ VERSION gradle/ '*.gradle.kts')
+              if [[ -n "$CHANGED" ]]; then
+                echo "should_run=true" >> $GITHUB_OUTPUT
+                echo "Changes detected since $LAST: $CHANGED"
+              else
+                echo "should_run=false" >> $GITHUB_OUTPUT
+                echo "No relevant changes since $LAST — skipping pipeline."
+              fi
+            fi
+          fi
+
+  unit-tests:
+    name: Unit tests
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    uses: ./.github/workflows/android-unit-tests.yml
+
+  lint:
+    name: Lint
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    uses: ./.github/workflows/android-lint.yml
+
+  security-review:
+    name: Security review
+    needs: changes
+    if: needs.changes.outputs.should_run == 'true'
+    uses: ./.github/workflows/android-security-review.yml
+    secrets:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+  signed-release:
+    name: Signed APK release
+    needs: [unit-tests, lint, security-review]
+    if: needs.changes.outputs.should_run == 'true'
+    uses: ./.github/workflows/android-signed-release.yml
+    secrets:
+      ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
+      ANDROID_SIGNING_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD }}
+      ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+      ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}

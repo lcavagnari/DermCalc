@@ -7,8 +7,8 @@ import org.junit.Test
 /** Unit tests for [HeightInput] and [WeightInput] conversion helpers, and the [LocalDate] epoch roundtrip. */
 class InputFieldConversionTest {
 
-    private val height = HeightInput(id = "height", label = "Height")
-    private val weight = WeightInput(id = "weight", label = "Weight")
+    private val height = HeightInput(id = "height", label = 0)
+    private val weight = WeightInput(id = "weight", label = 0)
 
     // ── HeightInput.cmToFeetInches ──────────────────────────────────────────
 

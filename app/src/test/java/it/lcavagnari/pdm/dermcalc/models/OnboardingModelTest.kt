@@ -1,25 +1,24 @@
 package it.lcavagnari.pdm.dermcalc.models
 
+import android.app.Application
+import androidx.test.core.app.ApplicationProvider
 import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-/**
- * Unit tests for [OnboardingModel] — all update methods and [OnboardingModel.isFieldsInputValid].
- *
- * OnboardingModel is a plain class here; no Android framework is needed for these tests
- * because none of the logic under test touches Android APIs.
- */
+@RunWith(RobolectricTestRunner::class)
 class OnboardingModelTest {
 
     private lateinit var model: OnboardingModel
 
     @Before
     fun setUp() {
-        model = OnboardingModel()
+        model = OnboardingModel(ApplicationProvider.getApplicationContext<Application>())
     }
 
     // ── helpers ─────────────────────────────────────────────────────────────
