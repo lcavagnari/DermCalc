@@ -15,11 +15,11 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
 
     private val _inputFields = MutableStateFlow<List<InputField>>(
         listOf<InputField>(
-            TextInput(id = "full-name", label = R.string.label_full_name),
-            DateInput(id = "date-of-birth", label = R.string.label_date_of_birth),
-            SexInput(id = "sex", label = R.string.label_sex, value = Sex.Other),
-            HeightInput(id = "height", label = R.string.label_height, isMetric = true),
-            WeightInput(id = "weight", label = R.string.label_weight, isKilos = true)
+            TextInput(   id = "full-name",     label = R.string.label_full_name),
+            DateInput(   id = "date-of-birth", label = R.string.label_date_of_birth),
+            SexInput(    id = "sex",           label = R.string.label_sex,    value = Sex.Other),
+            HeightInput( id = "height",        label = R.string.label_height, isMetric = true),
+            WeightInput( id = "weight",        label = R.string.label_weight, isKilos = true)
         )
     )
     /** Ordered list of all onboarding [InputField] instances, updated in-place by the update methods. */
