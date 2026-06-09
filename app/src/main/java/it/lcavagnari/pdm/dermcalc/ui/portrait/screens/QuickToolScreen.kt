@@ -53,6 +53,21 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 
 
+/**
+ * Shared scaffold for quick calculator screens.
+ *
+ * Renders calculator input [content] inside a raised card, followed by an optional [ToolResultCard]
+ * when [formattedScore] is provided and a [ToolSaveButton] at the bottom.
+ *
+ * @param modifier modifier applied to the root [Column].
+ * @param soulColor accent [Color] used for result chrome.
+ * @param saveEnabled whether the save button is enabled. Defaults to true.
+ * @param toolLabel optional result label shown above the score.
+ * @param formattedScore optional score text; when null, the result card is hidden.
+ * @param severity optional [Severity] shown as a result badge.
+ * @param onSaveResult callback invoked by the save button after confirmation.
+ * @param content calculator-specific input content rendered inside the input card.
+ */
 @Composable
 fun QuickToolScreen(
     modifier: Modifier = Modifier,
@@ -99,6 +114,18 @@ fun QuickToolScreen(
 
 
 
+/**
+ * BMI calculator screen with height and weight pickers.
+ *
+ * Computes a [BmiResult] once both measurements are present, displays the formatted score and
+ * severity, and forwards the result through [onSaveResult] after save confirmation.
+ *
+ * @param modifier modifier applied to the quick-tool scaffold.
+ * @param soulColor accent [Color] for BMI chrome. Defaults to [SoulPatience].
+ * @param heightCm optional initial height in centimetres.
+ * @param weightKg optional initial weight in kilograms.
+ * @param onSaveResult callback invoked with the computed [BmiResult].
+ */
 @Composable
 fun BMIScreen(
     modifier: Modifier = Modifier,
@@ -191,6 +218,15 @@ fun BMIScreen(
     }
 }
 
+/**
+ * BSA calculator screen backed by a 0–100 percentage slider.
+ *
+ * Displays the current affected body surface area as a [BsaResult] and forwards it through
+ * [onSaveResult] after save confirmation.
+ *
+ * @param modifier modifier applied to the quick-tool scaffold.
+ * @param onSaveResult callback invoked with the current [BsaResult].
+ */
 @Composable
 fun BSAScreen(
     modifier: Modifier = Modifier,

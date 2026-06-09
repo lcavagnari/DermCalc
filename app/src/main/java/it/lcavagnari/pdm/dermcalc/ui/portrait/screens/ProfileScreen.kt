@@ -164,12 +164,14 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
 }
 
 /**
- * Drawer for the Profile details card
+ * Details card for viewing and editing profile fields.
  *
- * TODO: Replace [onboardingModel] pass with parameter function call.
- * @param modifier Special modifications to the card
- * @param inputFields List of fields required during the onboarding process
- * @param onboardingModel TODO: to remove
+ * Renders one row per [InputField] with the localized label, formatted value, and edit button.
+ * Tapping edit opens a field-specific dialog and delegates validation/state updates to [onboardingModel].
+ *
+ * @param modifier modifier applied to the [BorderedCard].
+ * @param inputFields profile fields to display and edit.
+ * @param onboardingModel view model that receives all field update operations.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -460,12 +462,14 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields:List<InputField>, 
 }
 
 /**
- * Unit of measurement preference menu.
- * Allows the user to change its preference in unit of measurement for height and weight
+ * Unit preference card for height and weight measurements.
  *
- * @param inputFields List of fields required during onboarding
- * @param onUpdateHeight parameter function run on update of height preference
- * @param onUpdateWeight parameter function run on update of weight preference
+ * Shows two segmented-button rows: metric/imperial for [HeightInput] and kilograms/pounds for
+ * [WeightInput]. Selection changes are emitted through the corresponding callbacks.
+ *
+ * @param inputFields profile field list containing the current [HeightInput] and [WeightInput].
+ * @param onUpdateHeight callback invoked with the selected height unit system.
+ * @param onUpdateWeight callback invoked with the selected weight unit system.
  */
 @Composable
 fun UnitOfMeasurement(inputFields:List<InputField>, onUpdateHeight:(it: HeightMeasurements) -> Unit, onUpdateWeight:(it: WeightMeasurements) -> Unit) {

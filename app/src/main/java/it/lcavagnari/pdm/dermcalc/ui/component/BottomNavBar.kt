@@ -43,6 +43,10 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 /**
  * Renders bottom tabs and preserves per-destination back stack state.
  *
+ * The selected item color follows the active destination: Home uses Determination, Tools uses the
+ * Material primary color, Profile uses Kindness, and other routes fall back to [soulForRoute].
+ * Tapping a different item navigates with single-top and state restoration enabled.
+ *
  * @param navController controller used for tab navigation actions.
  * @param appItems routes rendered as bottom navigation entries.
  */

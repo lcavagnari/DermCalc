@@ -88,9 +88,15 @@ data class SnapWheel<T>(
 
 
 /**
- * Generic infinitely-scrolling (or finite) wheel picker.
- * Renders items via [itemContent] and reports the centred selection via [SnapWheel.onValueChanged].
- * Source: https://stackoverflow.com/a/73968517 (CC BY-SA 4.0)
+ * Generic finite or infinitely wrapping wheel picker.
+ *
+ * Renders [SnapWheel.items] through [itemContent], keeps the centred item visually focused, and
+ * reports selection changes through [SnapWheel.onValueChanged]. Source:
+ * https://stackoverflow.com/a/73968517 (CC BY-SA 4.0)
+ *
+ * @param modifier modifier applied to the wheel container.
+ * @param wheel [SnapWheel] configuration describing items, height, initial value, and wrapping.
+ * @param itemContent composable used to render each item and its focused state.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

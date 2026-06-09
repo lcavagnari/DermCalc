@@ -443,6 +443,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
  *
  * @param timestamp the date/time of the recorded result.
  * @param now the current date/time used as the reference point.
+ * @return Localized relative timestamp text.
  */
 @Composable
 private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): String {

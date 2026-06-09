@@ -57,6 +57,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 
 
+/** Returns the title string resource id for [route]. */
 private fun title(route: String): Int {
     return when (route) {
         ToolsRoute.route    -> R.string.nav_tools
@@ -69,6 +70,7 @@ private fun title(route: String): Int {
     }
 }
 
+/** Returns the optional subtitle string resource id for [route]. */
 private fun subtitle(route: String?): Int? {
     return when (route) {
         HomeRoute.route -> R.string.nav_home
@@ -82,6 +84,7 @@ private fun subtitle(route: String?): Int? {
     }
 }
 
+/** Returns the leading icon drawable resource id for [route]. */
 private fun icon(route: String?): Int {
     return when (route) {
         ToolsRoute.route -> R.drawable.ic_tools_calculator
@@ -91,6 +94,7 @@ private fun icon(route: String?): Int {
     }
 }
 
+/** Returns the soul accent [Color] for [route]. */
 private fun soulColor(route: String?): Color {
     return when (route) {
         HomeRoute.route -> SoulDetermination
