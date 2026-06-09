@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
@@ -51,67 +50,6 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
-
-
-/**
- * Shared scaffold for quick calculator screens.
- *
- * Renders calculator input [content] inside a raised card, followed by an optional [ToolResultCard]
- * when [formattedScore] is provided and a [ToolSaveButton] at the bottom.
- *
- * @param modifier modifier applied to the root [Column].
- * @param soulColor accent [Color] used for result chrome.
- * @param saveEnabled whether the save button is enabled. Defaults to true.
- * @param toolLabel optional result label shown above the score.
- * @param formattedScore optional score text; when null, the result card is hidden.
- * @param severity optional [Severity] shown as a result badge.
- * @param onSaveResult callback invoked by the save button after confirmation.
- * @param content calculator-specific input content rendered inside the input card.
- */
-@Composable
-fun QuickToolScreen(
-    modifier: Modifier = Modifier,
-    soulColor: Color,
-    saveEnabled: Boolean = true,
-    toolLabel: String? = null,
-    formattedScore: String? = null,
-    severity: Severity? = null,
-    onSaveResult: () -> Unit,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(6.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            ),
-            content = content
-        )
-        if (formattedScore != null) {
-            ToolResultCard(
-                soulColor = soulColor,
-                toolLabel = toolLabel?.uppercase(),
-                toolMeasurementUnit = stringResource(R.string.bmi_unit),
-                formattedScore = formattedScore,
-                severity = severity
-            )
-        }
-
-        ToolSaveButton(
-            enabled = saveEnabled,
-            onSaveResult = onSaveResult
-        )
-    }
-}
-
 
 
 /**
@@ -158,7 +96,7 @@ fun BMIScreen(
     val formattedScore = bmiResult?.formattedScore() ?: "--"
     val severity = bmiResult?.severity()
 
-    QuickToolScreen(
+    Scaffold(
         modifier = modifier,
         soulColor = soulColor,
         saveEnabled = bmiResult != null,
@@ -168,7 +106,9 @@ fun BMIScreen(
         onSaveResult = { bmiResult?.let { onSaveResult(it) } }
     ) {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 5.dp, start = 10.dp),
             text = stringResource(R.string.tool_measurement).uppercase(),
             color = onSoul(soulColor),
             letterSpacing = 2.sp,
@@ -179,12 +119,16 @@ fun BMIScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp).padding(bottom = 20.dp, top = 5.dp),
+                .padding(horizontal = 10.dp)
+                .padding(bottom = 20.dp, top = 5.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeightInputPicker(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(bottom = 5.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(bottom = 5.dp),
                 field = heightField,
                 onMetricChanged = { cm ->
                     heightField = heightField.copy(value = cm.toDouble(), isValid = cm in 50..272)
@@ -196,13 +140,17 @@ fun BMIScreen(
             )
 
             HorizontalDivider(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             WeightInputPicker(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
                 field = weightField,
                 onKilosChanged = { kg ->
                     weightField = weightField.copy(value = kg.toDouble(), isValid = kg in 20..300)
@@ -215,6 +163,72 @@ fun BMIScreen(
                 }
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BMIScreenPreview() {
+    BMIScreen(onSaveResult = { })
+}
+
+
+/**
+ * Shared scaffold for quick calculator screens.
+ *
+ * Renders calculator input [content] inside a raised card, followed by an optional [ToolResultCard]
+ * when [formattedScore] is provided and a [ToolSaveButton] at the bottom.
+ *
+ * @param modifier modifier applied to the root [Column].
+ * @param soulColor accent [Color] used for result chrome.
+ * @param saveEnabled whether the save button is enabled. Defaults to true.
+ * @param toolLabel optional result label shown above the score.
+ * @param formattedScore optional score text; when null, the result card is hidden.
+ * @param severity optional [Severity] shown as a result badge.
+ * @param onSaveResult callback invoked by the save button after confirmation.
+ * @param content calculator-specific input content rendered inside the input card.
+ */
+@Composable
+private fun Scaffold(
+    modifier: Modifier = Modifier,
+    soulColor: Color,
+    saveEnabled: Boolean = true,
+    toolLabel: String? = null,
+    formattedScore: String? = null,
+    severity: Severity? = null,
+    onSaveResult: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(6.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            ),
+            content = content
+        )
+        if (formattedScore != null) {
+            ToolResultCard(
+                soulColor = soulColor,
+                toolLabel = toolLabel?.uppercase(),
+                toolMeasurementUnit = stringResource(R.string.bmi_unit),
+                formattedScore = formattedScore,
+                severity = severity
+            )
+        }
+
+        ToolSaveButton(
+            enabled = saveEnabled,
+            onSaveResult = onSaveResult
+        )
     }
 }
 
@@ -241,15 +255,13 @@ fun BSAScreen(
     val bsaFormattedScore = bsaResult.formattedScore()
     val bsaSeverity = bsaResult.severity()
 
-    QuickToolScreen(
+    Scaffold(
         modifier = modifier,
         soulColor = SoulBravery,
         formattedScore = bsaFormattedScore,
         severity = bsaSeverity,
         saveEnabled = percentage > 0f,
-        onSaveResult = {
-            onSaveResult(bsaResult)
-        }
+        onSaveResult = { onSaveResult(bsaResult) }
     ) {
         Column(
             modifier = Modifier
@@ -278,12 +290,6 @@ fun BSAScreen(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BMIScreenPreview() {
-    BMIScreen(onSaveResult = { })
 }
 
 @Preview(showBackground = true)
