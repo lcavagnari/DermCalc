@@ -154,7 +154,7 @@ it.lcavagnari.pdm.dermcalc
 ## Kdoc Reference
 Full KDoc, classes, functions, parameters, and cross-references, is published at:
 
-**[javacode-docsvault.vercel.app/projects/dermcalc/index.html](https://javacode-docsvault.vercel.app/projects/dermcalc/index.html)**
+**[javacode-docsvault.vercel.app/projects/dermcalc](https://javacode-docsvault.vercel.app/projects/dermcalc/index.html)**
 
 Generated via Dokka. To rebuild locally: `.\gradlew dokkaHtml` → `app/build/dokka/html/`.
 
