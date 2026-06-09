@@ -77,6 +77,7 @@ fun OnBoardItemPreview() {
  * Renders the content of a single onboarding page, dispatching field updates to [OnboardingModel].
  *
  * @param page the [OnboardingScreen] descriptor for this page.
+ * @param onboardingModel view model providing fields and receiving update events.
  */
 @Composable
 fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {

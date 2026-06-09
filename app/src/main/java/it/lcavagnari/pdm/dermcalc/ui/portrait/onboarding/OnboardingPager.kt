@@ -28,6 +28,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
  *
  * @param pagerState state object controlling the current page and scroll position.
  * @param modifier modifier applied to the underlying [HorizontalPager].
+ * @param onboardingModel view model shared with each [OnBoardItem] for field updates.
  * @param userScrollEnabled whether the user can swipe between pages. Defaults to true.
  */
 @Composable
