@@ -92,7 +92,7 @@ data class OnboardingScreen(
 val onboardingScreens = listOf(
     OnboardingScreen(
         title = R.string.onboarding_1_title,
-        imageDrawable = R.drawable.ic_ecg,
+        imageDrawable = R.drawable.ic_dermatology,
         backgroundLight = R.drawable.bg_onboarding1,
         backgroundDark = R.drawable.bg_onboarding1_dark
     ),

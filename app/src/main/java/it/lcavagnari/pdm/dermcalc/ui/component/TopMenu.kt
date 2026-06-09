@@ -91,7 +91,7 @@ private fun icon(route: String?): Int {
         ToolsRoute.route -> R.drawable.ic_tools_calculator
         ProfileRoute.route -> R.drawable.ic_profile_button
         BMIToolRoute.route, BSAToolRoute.route, PASIToolRoute.route, EASIToolRoute.route -> R.drawable.ic_arrow_back
-        else -> R.drawable.ic_ecg
+        else -> R.drawable.ic_dermatology
     }
 }
 
