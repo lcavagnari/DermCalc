@@ -51,8 +51,10 @@ fun ToolResult.severity(): Severity = when (this) {
 }
 
 /** Formats this result's score: zero decimals for whole numbers, one decimal otherwise. */
-fun ToolResult.formattedScore(): String =
-    if (score % 1.0 == 0.0) "%.0f".format(score) else "%.1f".format(score)
+fun ToolResult.formattedScore(): String {
+    val rounded = Math.round(score * 10) / 10.0
+    return if (rounded % 1.0 == 0.0) "%.0f".format(rounded) else "%.1f".format(rounded)
+}
 
 /**
  * Base type for all calculator results stored in [ToolsModel].
