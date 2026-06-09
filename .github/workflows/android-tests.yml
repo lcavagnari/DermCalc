@@ -1,34 +1,30 @@
-name: Android Unit Tests
+name: Android Tests and Lint
 
 on:
   workflow_call:
+    inputs:
+      run_tests:
+        type: boolean
+        required: false
+        default: false
+      run_lint:
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   unit-tests:
     name: Run unit tests
     runs-on: ubuntu-latest
+    if: inputs.run_tests
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/setup-android-env
 
       - name: Run debug unit tests
-        run: ./gradlew --no-daemon :app:testDebugUnitTest
+        run: ./gradlew --no-daemon :app:testDebugUnitTest --build-cache
 
       - name: Upload unit test reports
         if: always()
@@ -36,4 +32,25 @@ jobs:
         with:
           name: unit-test-reports
           path: app/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: warn
+
+  lint:
+    name: Android Lint
+    runs-on: ubuntu-latest
+    if: inputs.run_lint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-android-env
+
+      - name: Run Android Lint
+        run: ./gradlew --no-daemon :app:lintDebug --build-cache
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-debug.html
           if-no-files-found: warn

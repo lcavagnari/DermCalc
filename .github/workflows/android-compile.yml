@@ -2,37 +2,88 @@ name: Android Compile
 
 on:
   workflow_call:
+    inputs:
+      run_tests_candidate:
+        type: boolean
+        required: false
+        default: false
+      base_sha:
+        type: string
+        required: false
+        default: ''
+    outputs:
+      run_tests:
+        description: Whether tests should run based on bytecode comparison
+        value: ${{ jobs.compile.outputs.run_tests }}
 
 jobs:
   compile:
     name: Compile debug APK
     runs-on: ubuntu-latest
+    outputs:
+      run_tests: ${{ steps.decide.outputs.run_tests }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
         with:
-          distribution: temurin
-          java-version: '17'
+          fetch-depth: 0
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/setup-android-env
 
       - name: Compile debug APK
-        run: ./gradlew --no-daemon :app:assembleDebug
+        run: ./gradlew --no-daemon :app:assembleDebug --build-cache
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+
+      - name: Decide whether tests are needed
+        id: decide
+        run: |
+          BASE_SHA="${{ inputs.base_sha }}"
+
+          if [[ "${{ inputs.run_tests_candidate }}" != "true" || -z "$BASE_SHA" ]]; then
+            echo "run_tests=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          HEAD_HASH=$(find app/build/tmp/kotlin-classes/debug -name "*.class" | sort | \
+            while IFS= read -r f; do javap -c "$f" 2>/dev/null; done | sha256sum)
+
+          CHANGED=$(git diff --name-only "$BASE_SHA"..HEAD -- 'app/src/')
+
+          if [[ -z "$CHANGED" ]]; then
+            echo "run_tests=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          while IFS= read -r f; do
+            if ! git show "$BASE_SHA:$f" > /dev/null 2>&1; then
+              echo "run_tests=true" >> $GITHUB_OUTPUT
+              echo "New file detected: $f — tests required"
+              exit 0
+            fi
+          done <<< "$CHANGED"
+
+          while IFS= read -r f; do
+            git show "$BASE_SHA:$f" > "$f"
+          done <<< "$CHANGED"
+
+          ./gradlew --no-daemon :app:compileDebugKotlin --build-cache
+
+          BASE_HASH=$(find app/build/tmp/kotlin-classes/debug -name "*.class" | sort | \
+            while IFS= read -r f; do javap -c "$f" 2>/dev/null; done | sha256sum)
+
+          while IFS= read -r f; do
+            git checkout HEAD -- "$f"
+          done <<< "$CHANGED"
+
+          if [[ "$HEAD_HASH" == "$BASE_HASH" ]]; then
+            echo "run_tests=false" >> $GITHUB_OUTPUT
+            echo "Bytecode unchanged — skipping tests"
+          else
+            echo "run_tests=true" >> $GITHUB_OUTPUT
+            echo "Bytecode changed — tests required"
+          fi

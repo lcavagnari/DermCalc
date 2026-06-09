@@ -10,15 +10,65 @@ concurrency:
   group: pr-ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
+  classify:
+    name: Classify changes
+    runs-on: ubuntu-latest
+    outputs:
+      run_compile: ${{ steps.paths.outputs.src_code == 'true' || steps.paths.outputs.src_res == 'true' || steps.paths.outputs.test_code == 'true' || steps.paths.outputs.build == 'true' || steps.paths.outputs.lint_cfg == 'true' }}
+      run_tests_candidate: ${{ steps.paths.outputs.src_code == 'true' || steps.paths.outputs.test_code == 'true' }}
+      run_lint: ${{ steps.paths.outputs.src_code == 'true' || steps.paths.outputs.lint_cfg == 'true' }}
+      run_security: ${{ steps.paths.outputs.build == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect changed paths
+        id: paths
+        uses: dorny/paths-filter@v3
+        with:
+          base: ${{ github.event.pull_request.base.sha || github.event.before }}
+          filters: |
+            src_code:
+              - 'app/src/main/java/**'
+              - 'app/src/main/kotlin/**'
+            src_res:
+              - 'app/src/main/res/**'
+            test_code:
+              - 'app/src/test/**'
+              - 'app/src/androidTest/**'
+            build:
+              - 'gradle/**'
+              - '**/*.gradle.kts'
+              - 'settings.gradle.kts'
+            lint_cfg:
+              - 'app/lint.xml'
+              - 'app/lint-baseline.xml'
+
   compile:
-    name: Compile debug APK
+    name: Compile
+    needs: classify
+    if: needs.classify.outputs.run_compile == 'true'
     uses: ./.github/workflows/android-compile.yml
+    with:
+      run_tests_candidate: ${{ needs.classify.outputs.run_tests_candidate == 'true' }}
+      base_sha: ${{ github.event.pull_request.base.sha || github.event.before }}
 
-  unit-tests:
-    name: Unit tests
-    uses: ./.github/workflows/android-unit-tests.yml
+  checks:
+    name: Tests and lint
+    needs: [classify, compile]
+    if: needs.compile.result == 'success' && (needs.compile.outputs.run_tests == 'true' || needs.classify.outputs.run_lint == 'true')
+    uses: ./.github/workflows/android-tests.yml
+    with:
+      run_tests: ${{ needs.compile.outputs.run_tests == 'true' }}
+      run_lint: ${{ needs.classify.outputs.run_lint == 'true' }}
 
-  lint:
-    name: Lint
-    uses: ./.github/workflows/android-lint.yml
+  security-review:
+    name: Security review
+    needs: classify
+    if: needs.classify.outputs.run_security == 'true'
+    uses: ./.github/workflows/android-security-review.yml
+    secrets:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
