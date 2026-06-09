@@ -116,9 +116,4 @@ fun DermCalcTheme(
     }
 }
 
-//region TODOs
-// L16,18,22: `compositionLocalOf` for rarely-changing values (bool, lambda, float) — use `staticCompositionLocalOf` to avoid unnecessary recomposition
-// L101: magic number `0.42f` / `0.90f` for bar alpha — should be named constants
-// L111: `typography  = Typography` — double space before `=`
-//endregion
 

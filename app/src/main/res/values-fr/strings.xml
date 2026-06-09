@@ -126,11 +126,11 @@
     <string name="home_history_title">Historique Récent</string>
 
     <!-- History -->
-    <string name="tools_bsa_description">Règle Des Neuf</string>
+    <string name="tools_bsa_description">Surface corporelle totale touchée</string>
     <string name="tools_easi_description">Ind.de surface et de gravité de l\'eczéma</string>
     <string name="history_empty">Aucun résultat pour l\'instant. Utilisez les calculatrices pour enregistrer votre premier score.</string>
     <string name="history_show_all">Afficher tous les résultats</string>
-    <string name="severity_mild">Léger</string>
+    <string name="severity_normal">Normal</string>
     <string name="severity_moderate">Modéré</string>
     <string name="severity_severe">Sévère</string>
     <string name="history_today_at">Aujourd\'hui à %s</string>
@@ -155,4 +155,9 @@
     <string name="tools_index">Calculatèur</string>
     <string name="tools_pasi_description">Ind.de surface et de gravité du psoriasis</string>
     <string name="districts">quartiers</string>
+    <string name="btn_save">Enregistrer</string>
+    <string name="btn_confirm">Confirmer</string>
+    <string name="tool_measurement">Dimensions</string>
+    <string name="your">Votre</string>
+    <string name="your_bmi">Votre %s</string>
 </resources>

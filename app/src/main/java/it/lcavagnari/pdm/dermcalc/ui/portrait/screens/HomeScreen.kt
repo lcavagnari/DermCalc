@@ -204,11 +204,5 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
     }
 }
 
-//region TODOs
-// L81: `value[0] as TextInput` — fragile hardcoded index + unsafe cast, crashes if field ordering changes. Use `field.id` matching like elsewhere in codebase
-// L86-90: uses `java.text.SimpleDateFormat` + `java.util.Calendar` while rest of project uses `kotlinx.datetime` — inconsistent
-// L164: `onClick = { quoteModel.updateQuote() }` creates new lambda on every recomposition — wrap in `remember`
-// L175-177: `FontFamily.Serif`, `FontStyle.Italic`, `fontSize = 16.sp` — bypasses MaterialTheme typography, inconsistent with DeterminationMono aesthetic
-//endregion
 
 }

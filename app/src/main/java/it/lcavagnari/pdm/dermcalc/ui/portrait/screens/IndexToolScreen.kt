@@ -29,7 +29,4 @@ fun EASIScreenPreview() {
     EASIScreen() {}
 }
 
-//region TODOs
-// L11,17: `Text("1234")` — debug placeholder text left in production for both PASI and EASI screens
-//endregion
 

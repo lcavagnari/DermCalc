@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -26,10 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
@@ -44,21 +42,21 @@ import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
-import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
+import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
+import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
-import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
-import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
+
 
 @Composable
 fun QuickToolScreen(
     modifier: Modifier = Modifier,
-    soulColour: Color,
+    soulColor: Color,
     saveEnabled: Boolean = true,
     toolLabel: String? = null,
     formattedScore: String? = null,
@@ -71,7 +69,7 @@ fun QuickToolScreen(
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top)
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -82,108 +80,29 @@ fun QuickToolScreen(
             ),
             content = content
         )
-
-        SaveButton(enabled = saveEnabled, onSaveResult = onSaveResult)
-    }
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(bottom = 40.dp).padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Bottom)
-    ) {
         if (formattedScore != null) {
-            ResultCard(
-                soulColour = soulColour,
-                toolLabel = toolLabel,
+            ToolResultCard(
+                soulColor = soulColor,
+                toolLabel = toolLabel?.uppercase(),
+                toolMeasurementUnit = stringResource(R.string.bmi_unit),
                 formattedScore = formattedScore,
                 severity = severity
             )
         }
-    }
-}
 
-@Composable
-private fun SaveButton(
-    enabled: Boolean,
-    onSaveResult: () -> Unit
-) {
-    var saveArmed by remember { mutableStateOf(false) }
-    Button(
-        modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .semantics { testTag = "tool_btn_save" },
-        enabled = enabled,
-        onClick = {
-            if (saveArmed) {
-                saveArmed = false
-                onSaveResult()
-            } else {
-                saveArmed = true
-            }
-        }
-    ) {
-        Text(if (saveArmed) stringResource(R.string.btn_ok) else stringResource(R.string.btn_start))
-    }
-}
-
-@Composable
-private fun ResultCard(
-    soulColour: Color,
-    toolLabel: String?,
-    formattedScore: String,
-    severity: Severity?
-) {
-    BorderedCard(
-        modifier = Modifier.fillMaxWidth(),
-        borderSide = BorderSide.Left,
-        borderColor = soulColour,
-        borderStrokeWidth = 2.dp,
-        cornerRadius = 10.dp,
-        elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurface
+        ToolSaveButton(
+            enabled = saveEnabled,
+            onSaveResult = onSaveResult
         )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            if (toolLabel != null) {
-                Text(
-                    text = toolLabel,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = soulColour
-                )
-            }
-            Text(
-                text = formattedScore,
-                style = TextStyle(fontFamily = PixelSoft, fontSize = 56.sp),
-                color = soulColour
-            )
-            if (severity != null) {
-                Text(
-                    text = when (severity) {
-                        Severity.Mild -> stringResource(R.string.severity_mild)
-                        Severity.Moderate -> stringResource(R.string.severity_moderate)
-                        Severity.Severe -> stringResource(R.string.severity_severe)
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = severityColor(severity)
-                )
-            }
-        }
     }
 }
+
+
 
 @Composable
 fun BMIScreen(
     modifier: Modifier = Modifier,
+    soulColor: Color = SoulPatience,
     heightCm: Double? = null,
     weightKg: Double? = null,
     onSaveResult: (BmiResult) -> Unit,
@@ -214,28 +133,31 @@ fun BMIScreen(
 
     QuickToolScreen(
         modifier = modifier,
-        soulColour = SoulPatience,
+        soulColor = soulColor,
         saveEnabled = bmiResult != null,
-        toolLabel = "BMI",
+        toolLabel = stringResource(R.string.your_bmi, "BMI"),
         formattedScore = formattedScore,
         severity = severity,
-        onSaveResult = {
-            bmiResult?.let { onSaveResult(it) }
-        }
+        onSaveResult = { bmiResult?.let { onSaveResult(it) } }
     ) {
-        
         Text(
-            modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 5.dp),
-            text = "1234"
+            modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 10.dp),
+            text = stringResource(R.string.tool_measurement).uppercase(),
+            color = onSoul(soulColor),
+            letterSpacing = 2.sp,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
         )
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(horizontal = 10.dp).padding(bottom = 20.dp, top = 5.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeightInputPicker(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(bottom = 5.dp),
                 field = heightField,
                 onMetricChanged = { cm ->
                     heightField = heightField.copy(value = cm.toDouble(), isValid = cm in 50..272)
@@ -247,14 +169,13 @@ fun BMIScreen(
             )
 
             HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth(0.84f)
-                    .padding(start = 15.dp, top = 5.dp),
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             WeightInputPicker(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
                 field = weightField,
                 onKilosChanged = { kg ->
                     weightField = weightField.copy(value = kg.toDouble(), isValid = kg in 20..300)
@@ -286,7 +207,7 @@ fun BSAScreen(
 
     QuickToolScreen(
         modifier = modifier,
-        soulColour = SoulBravery,
+        soulColor = SoulBravery,
         formattedScore = bsaFormattedScore,
         severity = bsaSeverity,
         saveEnabled = percentage > 0f,
@@ -334,7 +255,7 @@ fun BMIScreenPreview() {
 fun MainPortraitActivityPreview() {
     val context = LocalContext.current
     val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
+    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding(); it.updateWeightKilos(70); it.updateHeightMetric(172) }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
     DermCalcTheme {
@@ -348,11 +269,4 @@ fun BSAScreenPreview() {
     BSAScreen(onSaveResult = {})
 }
 
-//region TODOs
-// L61: parameter `soulColour` uses British spelling — everywhere else uses `soulColor` / `borderColor` (American)
-// L69-105: two top-level `Column` composables side-by-side with `modifier.fillMaxSize()` — unconventional layout, a single Box or Scaffold would be clearer
-// L229: CRITICAL — `Text("1234")` is debug placeholder text left in production — remove
-// L305: CRITICAL — `Text("Affected body surface area")` is a hardcoded English string, not `stringResource` — breaks localization
-// L313-317: `SliderDefaults.colors(thumbColor = SoulBravery, activeTickColor = SoulBravery)` uses raw soul colors instead of theme tokens
-//endregion
 

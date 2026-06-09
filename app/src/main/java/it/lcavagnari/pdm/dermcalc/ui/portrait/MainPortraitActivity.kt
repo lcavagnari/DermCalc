@@ -67,15 +67,13 @@ fun MainPortraitActivity(
 
     // Show the onboarding flow until the user completes all pages.
     if (!hasSeenOnboarding) {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            OnboardingScreen(
-                modifier = modifier.padding(innerPadding),
-                pagerState = pagerState,
-                onboardingModel = onboardingModel,
-                onFinish = { onboardingModel.finishOnboarding() },
-                onToggleTheme = onToggleTheme
-            )
-        }
+        OnboardingScreen(
+            modifier = Modifier.fillMaxSize(),
+            pagerState = pagerState,
+            onboardingModel = onboardingModel,
+            onFinish = { onboardingModel.finishOnboarding() },
+            onToggleTheme = onToggleTheme
+        )
 
     } else {
         Box(Modifier.fillMaxSize()) {
@@ -117,6 +115,19 @@ fun MainPortraitActivityPreview() {
     val app = object : Application() { init { attachBaseContext(context) } }
     val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
+    val tm = remember { ToolsModel(app) }
+    DermCalcTheme {
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPortraitActivityPreview2() {
+    val context = LocalContext.current
+    val app = object : Application() { init { attachBaseContext(context) } }
+    val vm = remember { OnboardingModel(app) }
+    val qm = remember { QuoteModel(app) }
     val tm = remember { ToolsModel(app) }
     DermCalcTheme {
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm)

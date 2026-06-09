@@ -94,7 +94,3 @@ fun AppNavHost(
     }
 }
 
-//region TODOs
-// L86-87: `PASIScreen() {}` and `EASIScreen() {}` — placeholder stub screens that accept `onSaveResult` but never call it
-// L57-58: `onboardingModel.heightInput.value` / `weightInput.value` are `Double?` passed to BMIScreen — safe if onboarding ran, but fragile
-//endregion

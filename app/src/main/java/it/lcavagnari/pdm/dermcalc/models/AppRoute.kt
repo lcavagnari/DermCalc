@@ -111,6 +111,3 @@ data object EASIToolRoute: AppRoute {
         get() = R.drawable.ic_allergies
 }
 
-//region TODO
-// File is at `models/AppRoute.kt` but declares `package ...navigation` — move to `navigation/` directory to match package name
-//endregion

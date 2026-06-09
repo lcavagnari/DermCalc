@@ -3,7 +3,6 @@ package it.lcavagnari.pdm.dermcalc.ui.theme
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
@@ -56,7 +55,7 @@ fun soulForRoute(route: String?): Soul = when (route) {
 @get:StringRes
 val Severity.labelRes: Int
     get() = when (this) {
-        Severity.Mild -> R.string.severity_mild
+        Severity.Mild -> R.string.severity_normal
         Severity.Moderate -> R.string.severity_moderate
         Severity.Severe -> R.string.severity_severe
     }
@@ -77,9 +76,4 @@ fun severityColor(severity: Severity): Color {
     }
 }
 
-//region TODOs
-// L6: unused import `luminance` — not used in this file
-// L35: `soulFor(toolName: String?)` takes raw strings ("BMI", "BSA") — should use sealed route types
-// L57: `Severity.labelRes` is a model concern defined in a theme file — move to models package
-//endregion
 

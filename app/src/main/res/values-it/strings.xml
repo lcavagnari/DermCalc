@@ -126,11 +126,10 @@
     <string name="home_history_title">Storico Recente</string>
 
     <!-- History -->
-    <string name="tools_bsa_description">Regola Dei Nove</string>
+    <string name="tools_bsa_description">Superficie corporea totale interessata</string>
     <string name="tools_easi_description">Indice di Area/Severità dell\'Eczema</string>
     <string name="history_empty">Nessun risultato ancora. Usa i calcolatori per registrare il tuo primo punteggio.</string>
     <string name="history_show_all">Mostra tutti i risultati</string>
-    <string name="severity_mild">Lieve</string>
     <string name="severity_moderate">Moderata</string>
     <string name="severity_severe">Grave</string>
     <string name="history_today_at">Oggi alle %s</string>
@@ -155,4 +154,10 @@
     <string name="tools_index">Calcolatori</string>
     <string name="tools_pasi_description">Indice di Area/Severità della Psoriasi</string>
     <string name="districts">distretti</string>
+    <string name="btn_save">Salva</string>
+    <string name="btn_confirm">Conferma</string>
+    <string name="tool_measurement">Misurazioni</string>
+    <string name="your">Il Tuo</string>
+    <string name="your_bmi">Il Tuo %s</string>
+    <string name="severity_normal">Normale</string>
 </resources>
