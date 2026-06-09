@@ -1,0 +1,24 @@
+name: Android PR CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: pr-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    name: Compile debug APK
+    uses: ./.github/workflows/android-compile.yml
+
+  unit-tests:
+    name: Unit tests
+    uses: ./.github/workflows/android-unit-tests.yml
+
+  lint:
+    name: Lint
+    uses: ./.github/workflows/android-lint.yml
