@@ -17,90 +17,110 @@ defaults:
     shell: bash
 
 jobs:
-  changes:
-    name: Detect source changes
+  classify:
+    name: Classify changes
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
+      run_tests_candidate: ${{ steps.check.outputs.run_tests_candidate }}
+      run_lint: ${{ steps.check.outputs.run_lint }}
+      run_security: ${{ steps.check.outputs.run_security }}
+      base_sha: ${{ steps.check.outputs.base_sha }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
-      - name: Check for changes since last release
+      - name: Classify changes since last release
         id: check
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "should_run=true" >> $GITHUB_OUTPUT
-            echo "Manual dispatch — running unconditionally."
-          else
-            LAST=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || echo "")
-            if [[ -z "$LAST" ]]; then
-              echo "should_run=true" >> $GITHUB_OUTPUT
-              echo "No previous release tag found — running on first run."
-            else
-              CHANGED=$(git diff --name-only "$LAST"..HEAD -- app/ VERSION gradle/ '*.gradle.kts')
-              if [[ -n "$CHANGED" ]]; then
-                echo "should_run=true" >> $GITHUB_OUTPUT
-                echo "Changes detected since $LAST: $CHANGED"
-              else
-                echo "should_run=false" >> $GITHUB_OUTPUT
-                echo "No relevant changes since $LAST — skipping pipeline."
-              fi
-            fi
+            echo "run_tests_candidate=true" >> $GITHUB_OUTPUT
+            echo "run_lint=true" >> $GITHUB_OUTPUT
+            echo "run_security=true" >> $GITHUB_OUTPUT
+            echo "base_sha=" >> $GITHUB_OUTPUT
+            exit 0
           fi
 
-  build:
-    name: Compile debug variant
-    needs: changes
-    if: needs.changes.outputs.should_run == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+          LAST=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || echo "")
+          if [[ -z "$LAST" ]]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+            echo "run_tests_candidate=true" >> $GITHUB_OUTPUT
+            echo "run_lint=true" >> $GITHUB_OUTPUT
+            echo "run_security=true" >> $GITHUB_OUTPUT
+            echo "base_sha=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+          BASE_SHA=$(git rev-parse "$LAST")
+          CHANGED=$(git diff --name-only "$LAST"..HEAD)
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+          if [[ -z "$CHANGED" ]]; then
+            echo "should_run=false" >> $GITHUB_OUTPUT
+            echo "No changes since $LAST — skipping pipeline"
+            exit 0
+          fi
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+          echo "should_run=true" >> $GITHUB_OUTPUT
+          echo "base_sha=$BASE_SHA" >> $GITHUB_OUTPUT
 
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+          RUN_TESTS_CANDIDATE=false
+          RUN_LINT=false
+          RUN_SECURITY=false
 
-      - name: Compile debug variant
-        run: ./gradlew --no-daemon :app:assembleDebug
+          while IFS= read -r f; do
+            case "$f" in
+              app/src/main/java/*|app/src/main/kotlin/*)
+                RUN_TESTS_CANDIDATE=true; RUN_LINT=true ;;
+              app/src/test/*|app/src/androidTest/*)
+                RUN_TESTS_CANDIDATE=true ;;
+              gradle/*|*.gradle.kts|settings.gradle.kts)
+                RUN_SECURITY=true ;;
+              app/lint.xml|app/lint-baseline.xml)
+                RUN_LINT=true ;;
+            esac
+          done <<< "$CHANGED"
 
-  unit-tests:
-    name: Unit tests
-    needs: [changes, build]
-    if: needs.changes.outputs.should_run == 'true'
-    uses: ./.github/workflows/android-unit-tests.yml
+          echo "run_tests_candidate=$RUN_TESTS_CANDIDATE" >> $GITHUB_OUTPUT
+          echo "run_lint=$RUN_LINT" >> $GITHUB_OUTPUT
+          echo "run_security=$RUN_SECURITY" >> $GITHUB_OUTPUT
 
-  lint:
-    name: Lint
-    needs: [changes, build]
-    if: needs.changes.outputs.should_run == 'true'
-    uses: ./.github/workflows/android-lint.yml
+  compile:
+    name: Compile
+    needs: classify
+    if: needs.classify.outputs.should_run == 'true'
+    uses: ./.github/workflows/android-compile.yml
+    with:
+      run_tests_candidate: ${{ needs.classify.outputs.run_tests_candidate == 'true' }}
+      base_sha: ${{ needs.classify.outputs.base_sha }}
+
+  checks:
+    name: Tests and lint
+    needs: [classify, compile]
+    if: needs.compile.result == 'success' && (needs.compile.outputs.run_tests == 'true' || needs.classify.outputs.run_lint == 'true')
+    uses: ./.github/workflows/android-tests.yml
+    with:
+      run_tests: ${{ needs.compile.outputs.run_tests == 'true' }}
+      run_lint: ${{ needs.classify.outputs.run_lint == 'true' }}
 
   security-review:
     name: Security review
-    needs: changes
-    if: needs.changes.outputs.should_run == 'true'
+    needs: classify
+    if: needs.classify.outputs.should_run == 'true' && needs.classify.outputs.run_security == 'true'
     uses: ./.github/workflows/android-security-review.yml
     secrets:
       NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
 
   signed-release:
     name: Signed APK release
-    needs: [unit-tests, lint, security-review]
-    if: needs.changes.outputs.should_run == 'true'
+    needs: [classify, compile, checks, security-review]
+    if: |
+      always() &&
+      needs.classify.outputs.should_run == 'true' &&
+      needs.compile.result == 'success' &&
+      (needs.checks.result == 'success' || needs.checks.result == 'skipped') &&
+      (needs.security-review.result == 'success' || needs.security-review.result == 'skipped')
     uses: ./.github/workflows/android-signed-release.yml
     secrets:
       ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}

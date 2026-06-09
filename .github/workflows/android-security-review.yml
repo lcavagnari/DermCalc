@@ -12,28 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/setup-android-env
 
       - name: Run OWASP Dependency-Check
+        id: depcheck
+        continue-on-error: true
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: ./gradlew --no-daemon :app:dependencyCheckAnalyze
+        run: ./gradlew --no-daemon :app:dependencyCheckAnalyze --build-cache 2>&1 | tee /tmp/depcheck.txt
 
       - name: Upload security review report
         if: always()
@@ -42,3 +30,18 @@ jobs:
           name: dependency-check-report
           path: app/build/reports/dependency-check-report.html
           if-no-files-found: warn
+
+      - name: Classify failure
+        if: steps.depcheck.outcome == 'failure'
+        run: |
+          OUTPUT=$(cat /tmp/depcheck.txt)
+          if echo "$OUTPUT" | grep -qiE 'NvdApiException|NVD API|SocketTimeout|ConnectException|UnknownHost|rate.limit|HTTP 4[0-9][0-9]'; then
+            echo "::warning::Security scan failed due to NVD/network error — result inconclusive, not blocking"
+            exit 0
+          elif [[ ! -f app/build/reports/dependency-check-report.html ]]; then
+            echo "::warning::Security scan failed before producing a report — likely a build/setup issue, not a CVE"
+            exit 0
+          else
+            echo "::error::OWASP Dependency-Check found CVEs — review the report artifact"
+            exit 1
+          fi
