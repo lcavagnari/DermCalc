@@ -48,11 +48,24 @@ class MainActivity : ComponentActivity() {
             val systemDark = isSystemInDarkTheme()
             var isDarkTheme by remember { mutableStateOf(systemDark) }
 
+            /*
+
             // Delegate to portrait or landscape layout based on current orientation.
             DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
                 if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
                     MainPortraitActivity(Modifier, onboardingModel, bodyScanModel,toolsModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })
                 else MainLandscapeActivity(onboardingModel)
+            }
+
+             */
+            DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
+                MainPortraitActivity(
+                    Modifier,
+                    onboardingModel,
+                    bodyScanModel,
+                    toolsModel,
+                    quoteModel,
+                    onToggleTheme = { isDarkTheme = !isDarkTheme })
             }
         }
     }

@@ -133,6 +133,7 @@ fun MainPortraitActivityPreview() {
     val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
     val tm = remember { ToolsModel(app) }
     val bm = remember { BodyScanModel(app) }
+
     DermCalcTheme {
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
     }

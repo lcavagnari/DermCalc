@@ -174,8 +174,9 @@ fun BsaRegionSlider(
 
             } else {
                 Text(
-                    text = "select area to enable slider. ALso hi, im a placeholder",
-                    fontSize = 13.sp,
+                    modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
+                    text = stringResource(R.string.bsa_slider_tooltip),
+                    fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                 )
