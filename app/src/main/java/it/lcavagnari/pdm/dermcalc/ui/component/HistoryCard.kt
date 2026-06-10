@@ -59,7 +59,7 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
 
-// Maximum number of results shown before a "Show all" row appears.
+/** Maximum number of results shown before a "Show all" row appears. **/
 private const val MAX_HISTORY_VISIBLE = 5
 
 @Preview
