@@ -233,8 +233,8 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                     HeightInputPicker(
                         modifier = Modifier.padding(bottom = 40.dp),
                         field = field,
-                        onMetricChanged = { height -> onboardingModel.updateHeightMetric(height) },
-                        onImperialChanged = { height ->
+                        onMetricChanged = { height: Int -> onboardingModel.updateHeightMetric(height) },
+                        onImperialChanged = { height: Pair<Int, Int> ->
                             onboardingModel.updateHeightImperial(
                                 height.first,
                                 height.second
@@ -278,8 +278,8 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                     WeightInputPicker(
                         modifier = Modifier.padding(bottom = 30.dp),
                         field = field,
-                        onKilosChanged = { weight -> onboardingModel.updateWeightKilos(weight) },
-                        onPoundsChanged = { weight -> onboardingModel.updateWeightPounds(weight) }
+                        onKilosChanged = { weight: Int -> onboardingModel.updateWeightKilos(weight) },
+                        onPoundsChanged = { weight: Int -> onboardingModel.updateWeightPounds(weight) }
                     )
 
                     if (!field.isValid && field.isRequired && field.value != null) errorMessage =
