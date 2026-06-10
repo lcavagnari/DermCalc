@@ -139,10 +139,11 @@ fun BMIScreen(
                     .padding(horizontal = 10.dp)
                     .padding(bottom = 5.dp),
                 field = heightField,
-                onMetricChanged = { cm ->
+                onMetricChanged = { cm: Int ->
                     heightField = heightField.copy(value = cm.toDouble(), isValid = cm in 50..272)
                 },
-                onImperialChanged = { (feet, inches) ->
+                onImperialChanged = { pair: Pair<Int, Int> ->
+                    val (feet, inches) = pair
                     val cm = heightField.feetInchesToCm(feet, inches)
                     heightField = heightField.copy(value = cm, isValid = cm in 19.68..1207.08)
                 }
@@ -161,10 +162,10 @@ fun BMIScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp),
                 field = weightField,
-                onKilosChanged = { kg ->
+                onKilosChanged = { kg: Int ->
                     weightField = weightField.copy(value = kg.toDouble(), isValid = kg in 20..300)
                 },
-                onPoundsChanged = { lb ->
+                onPoundsChanged = { lb: Int ->
                     weightField = weightField.copy(
                         value = weightField.poundsToKilos(lb),
                         isValid = lb in 44..661
