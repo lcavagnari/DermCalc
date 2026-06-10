@@ -116,7 +116,7 @@ fun onSoulContainer(soulColor: Color): Color {
 fun DermCalcTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     onToggleDarkTheme: () -> Unit = {},
-    barAlpha: Float = if (darkTheme) 0.42f else 0.90f,
+    barAlpha: Float = if (darkTheme) 0.7f else 0.90f,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(

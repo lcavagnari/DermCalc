@@ -75,8 +75,6 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
         tonalElevation = 6.dp,
         windowInsets = WindowInsets(bottom = 10.dp),
     ) {
-
-
         appItems.forEach { item ->
             // Using an explicit when block with hasRoute<T>() ensures the compiler uses
             // the correct type-safe extension and avoids "restricted API" errors.
