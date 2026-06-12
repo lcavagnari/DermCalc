@@ -93,8 +93,22 @@ fun AppNavHost(
                     }
                 )
             }
-            composable<PASIToolRoute> { PASIScreen() {} }
-            composable<EASIToolRoute> { EASIScreen() {} }
+            composable<PASIToolRoute> {
+                PASIScreen(
+                    toolsModel = toolsModel,
+                    onSaveResult = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+            composable<EASIToolRoute> {
+                EASIScreen(
+                    toolsModel = toolsModel,
+                    onSaveResult = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }

@@ -231,6 +231,38 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
     /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
 
+    // --- Draft State (Persistence across navigation) ---
+
+    private val _pasiDraftScore = MutableStateFlow(0.0)
+    val pasiDraftScore: StateFlow<Double> = _pasiDraftScore.asStateFlow()
+    private val _pasiDraftPage = MutableStateFlow(0)
+    val pasiDraftPage: StateFlow<Int> = _pasiDraftPage.asStateFlow()
+
+    private val _easiDraftScore = MutableStateFlow(0.0)
+    val easiDraftScore: StateFlow<Double> = _easiDraftScore.asStateFlow()
+    private val _easiDraftPage = MutableStateFlow(0)
+    val easiDraftPage: StateFlow<Int> = _easiDraftPage.asStateFlow()
+
+    fun updatePasiDraft(score: Double, page: Int) {
+        _pasiDraftScore.value = score
+        _pasiDraftPage.value = page
+    }
+
+    fun resetPasiDraft() {
+        _pasiDraftScore.value = 0.0
+        _pasiDraftPage.value = 0
+    }
+
+    fun updateEasiDraft(score: Double, page: Int) {
+        _easiDraftScore.value = score
+        _easiDraftPage.value = page
+    }
+
+    fun resetEasiDraft() {
+        _easiDraftScore.value = 0.0
+        _easiDraftPage.value = 0
+    }
+
     // --- Result storage ---
 
     /**
