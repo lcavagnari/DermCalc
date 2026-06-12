@@ -50,6 +50,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoulContainer
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.DateTimeUnit
@@ -211,7 +212,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         border = BorderStroke(2.dp,
-            onSoul(soulColor).copy(alpha = localAlpha)
+            onSoulContainer(soulColor).copy(alpha = localAlpha)
         )
     ) {
         Row(
