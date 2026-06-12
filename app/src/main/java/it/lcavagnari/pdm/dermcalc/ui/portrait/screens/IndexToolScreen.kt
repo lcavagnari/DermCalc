@@ -143,14 +143,12 @@ fun IndexToolScaffold(
     val isFirstPage = pagerState.currentPage == 0
 
     val onNext = {
-        if (!isLastPage) {
+        if (!isLastPage)
             coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-        }
     }
     val onBack = {
-        if (!isFirstPage) {
+        if (!isFirstPage)
             coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
-        }
     }
 
     Column(
