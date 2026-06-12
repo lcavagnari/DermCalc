@@ -120,6 +120,7 @@
     <string name="nav_tools_subtitle">Calculatrices</string>
     <string name="nav_profile_subtitle">Données personnelles</string>
     <string name="btn_back">Retour</string>
+    <string name="btn_reset">Réinitialiser</string>
     <string name="profile_measure_preference">Unités de mesure</string>
     <string name="profile_details">Détails</string>
     <string name="quote_tip">Astuce</string>

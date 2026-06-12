@@ -127,6 +127,7 @@
     <string name="nav_tools_subtitle">Calculators</string>
     <string name="nav_profile_subtitle">Personal Details</string>
     <string name="btn_back">Go Back</string>
+    <string name="btn_reset">Reset</string>
     <string name="profile_measure_preference">Unit of measurement</string>
     <string name="profile_details">Details</string>
     <string name="quote_tip">Tip</string>
@@ -145,6 +146,13 @@
     <string name="tools_pasi_description">Psoriasis Area&amp;Severity Index</string>
     <string name="tools_easi" translatable="false">EASI</string>
     <string name="tools_easi_description">Eczema Area&amp;Severity Index</string>
+
+    <!-- Index Calculator Districts -->
+    <string name="district_head">Head</string>
+    <string name="district_upper_limbs">Upper Limbs</string>
+    <string name="district_trunk">Trunk</string>
+    <string name="district_lower_limbs">Lower Limbs</string>
+    <string name="label_step_of">Step %1$d of %2$d</string>
 
     <!-- History -->
     <string name="history_empty">No results yet. Use the calculators to record your first score.</string>
