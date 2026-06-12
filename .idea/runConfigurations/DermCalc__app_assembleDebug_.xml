@@ -1,16 +1,16 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DermCalc:app [:app:dokkaGeneratePublicationHtml]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
+  <configuration default="false" name="DermCalc [app:assembleDebug]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
     <ExternalSystemSettings>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="--rerun-tasks --build-cache" />
+      <option name="scriptParameters" value="--build-cache" />
       <option name="taskDescriptions">
         <list />
       </option>
       <option name="taskNames">
         <list>
-          <option value=":app:dokkaGeneratePublicationHtml" />
+          <option value="app:assembleDebug" />
         </list>
       </option>
       <option name="vmOptions" />

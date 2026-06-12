@@ -66,6 +66,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    applicationVariants.all {
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = "DermCalc-${versionName}-${buildType.name}.apk"
+        }
+    }
+
     signingConfigs {
         if (hasReleaseSigningConfig) {
             create("release") {
