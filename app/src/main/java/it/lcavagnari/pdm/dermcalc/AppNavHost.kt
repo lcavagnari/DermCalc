@@ -12,9 +12,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -33,6 +30,9 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 /**

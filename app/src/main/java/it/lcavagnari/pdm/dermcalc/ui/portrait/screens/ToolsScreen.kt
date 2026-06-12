@@ -1,9 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.annotation.SuppressLint
-import android.app.Application
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,12 +44,11 @@ import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 
 @Preview(showBackground = true) @Composable private fun ToolsScreenFullPreview() {
     DermCalcPreview(screen = ToolsRoute, setupOm = { it.finishOnboarding() })

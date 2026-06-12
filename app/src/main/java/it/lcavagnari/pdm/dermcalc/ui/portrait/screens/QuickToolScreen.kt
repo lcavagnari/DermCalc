@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -25,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,9 +33,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
-import it.lcavagnari.pdm.dermcalc.models.BsaResult
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.BsaRegion
+import it.lcavagnari.pdm.dermcalc.models.BsaResult
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
@@ -52,7 +50,6 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul

@@ -1,7 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 
 /** Dark theme base colors for the Underground palette, used by Material surfaces and outlines. */
 

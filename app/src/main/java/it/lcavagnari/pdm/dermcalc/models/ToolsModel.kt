@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.math.sqrt
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
