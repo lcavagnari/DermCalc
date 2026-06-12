@@ -107,46 +107,36 @@ fun MainPortraitActivity(
 }
 
 
-//  Preview
-
-// Template base method 
+//  Preview wrapper functions
 @Composable
 fun DermCalcPreview(
+    screen: AppRoute = HomeRoute,
+    darkTheme: Boolean = false,
+    setupOm: (OnboardingModel) -> Unit = { it.finishOnboarding(); it.updateName("Asriel ") },
+    setupQm: (QuoteModel) -> Unit = { it.updateQuote() },
+    setupTm: (ToolsModel) -> Unit = {},
+    setupBm: (BodyScanModel) -> Unit = {}
+) {
+    DermCalcPreview(darkTheme,setupOm,setupQm,setupTm,setupBm) { vm, qm, tm, bm ->
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = screen)
+    }
+}
+
+@Composable
+fun DermCalcPreview(
+    darkTheme: Boolean = false,
     setupOm: (OnboardingModel) -> Unit = { it.finishOnboarding() },
     setupQm: (QuoteModel) -> Unit = { it.updateQuote() },
     setupTm: (ToolsModel) -> Unit = {},
     setupBm: (BodyScanModel) -> Unit = {},
-    darkTheme: Boolean = false,
     content: @Composable (OnboardingModel, QuoteModel, ToolsModel, BodyScanModel) -> Unit
 ) {
     val context = LocalContext.current
-    val app = remember {
-        object : Application() { init {
-            attachBaseContext(context)
-        }
-        }
-    }
-
+    val app = remember { object : Application() { init { attachBaseContext(context) } } }
     val vm = remember { OnboardingModel(app) }.also { setupOm(it) }
     val qm = remember { QuoteModel(app) }.also { setupQm(it) }
     val tm = remember { ToolsModel(app) }.also { setupTm(it) }
     val bm = remember { BodyScanModel(app) }.also { setupBm(it) }
 
-    DermCalcTheme(darkTheme = darkTheme, content = { content(vm, qm, tm, bm) })
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun HomePreview() {
-    DermCalcPreview() { vm, qm, tm, bm ->
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun HomePreviewDark() {
-    DermCalcPreview(darkTheme = true) { vm, qm, tm, bm ->
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
-    }
+    DermCalcTheme(darkTheme = darkTheme, content = { content(vm,qm,tm,bm) })
 }
