@@ -53,6 +53,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaBodyDiagram
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
@@ -178,8 +179,10 @@ fun BMIScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun BMIScreenPreview() {
-    BMIScreen(onSaveResult = { })
+private fun BMIScreenPreview() {
+    DermCalcPreview { _, _, _, _ ->
+        BMIScreen(onSaveResult = { })
+    }
 }
 
 
@@ -309,30 +312,36 @@ fun BSAScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun BSAScreenPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val bm = remember { BodyScanModel(app) }.also {
-        it.updateRegion(BsaRegion.HEAD, 10)
-        it.updateRegion(BsaRegion.RIGHT_ARM, 20)
-        it.updateRegion(BsaRegion.LEFT_ARM, 30)
-    }
-    DermCalcTheme {
-        BSAScreen(vm = remember { BodyScanModel(app) }, onSaveResult = {})
+private fun BSAScreenPreview() {
+    DermCalcPreview(
+        setupBm = {
+            it.updateRegion(BsaRegion.HEAD, 10)
+            it.updateRegion(BsaRegion.RIGHT_ARM, 20)
+            it.updateRegion(BsaRegion.LEFT_ARM, 30)
+        }
+    ) { _, _, _, bm ->
+        BSAScreen(vm = bm, onSaveResult = {})
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun MainPortraitActivityPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding(); it.updateWeightKilos(70); it.updateHeightMetric(172) }
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
+private fun MainPortraitPreview() {
+    DermCalcPreview(
+        setupOm = {
+            it.finishOnboarding()
+            it.updateWeightKilos(70)
+            it.updateHeightMetric(172)
+        },
+        setupQm = { it.updateQuote() }
+    ) { vm, qm, tm, bm ->
+        MainPortraitActivity(
+            quoteModel = qm,
+            onboardingModel = vm,
+            toolsModel = tm,
+            bodyScanModel = bm,
+            startingDestination = BSAToolRoute
+        )
     }
 }
 

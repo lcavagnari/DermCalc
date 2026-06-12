@@ -62,14 +62,13 @@ import androidx.compose.ui.text.input.ImeAction
 import it.lcavagnari.pdm.dermcalc.utils.today
 
 
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+
 @Preview(showBackground = true)
 @Composable
-fun OnBoardItemPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }
-    DermCalcTheme {
-        OnBoardItem(onboardingScreens[4], vm)
+private fun OnBoardItemPreview() {
+    DermCalcPreview { om, _, _, _ ->
+        OnBoardItem(onboardingScreens[4], om)
     }
 }
 

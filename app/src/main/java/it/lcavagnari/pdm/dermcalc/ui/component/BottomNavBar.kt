@@ -34,6 +34,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
@@ -125,23 +126,19 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
 
 @Preview(showBackground = true)
 @Composable
-fun MainPortraitActivityPreview() {
-    val app = object : Application() { init { attachBaseContext(LocalContext.current) } }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-
-    DermCalcTheme {
+private fun MainPortraitPreview() {
+    DermCalcPreview { vm, qm, tm, bm ->
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun MainPortraitActivityPreview1() {
-    NavigationBar(
-        navController = rememberNavController(),
-        appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
-    )
+private fun BottomNavBarPreview() {
+    DermCalcPreview { _, _, _, _ ->
+        NavigationBar(
+            navController = rememberNavController(),
+            appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+        )
+    }
 }

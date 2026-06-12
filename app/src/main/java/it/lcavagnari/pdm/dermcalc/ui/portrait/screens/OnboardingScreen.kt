@@ -55,6 +55,8 @@ import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -131,24 +133,20 @@ val onboardingScreens = listOf(
 )
 
 
-@Preview(showBackground = true)
-@Composable
-fun OnboardingPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
-    }
-    }
-    val vm = remember { OnboardingModel(app) }
-    DermCalcTheme {
-        OnboardingScreen(
-            rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 0),
-            modifier = Modifier.fillMaxSize(),
-            onboardingModel = vm,
-            onFinish = {}
-        )
+@Preview(showBackground = true) @Composable
+private fun OnboardingPreviewDark() {
+    DermCalcPreview(darkTheme = true, setupOm = {}) { vm, qm, tm, bm ->
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
     }
 }
+
+@Preview(showBackground = true) @Composable
+private fun OnboardingPreview() {
+    DermCalcPreview(setupOm = {}) { vm, qm, tm, bm ->
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
+    }
+}
+
 
 /**
  * Full-screen onboarding flow over a multipage [androidx.compose.foundation.pager.HorizontalPager].
@@ -158,7 +156,7 @@ fun OnboardingPreview() {
  * - Trailing [TopTrayButtons] row (language, theme-toggle, debug skip-to-finish).
  * - [GoBackButton] — back arrow; only visible when the current page's required fields are invalid.
  * - [StepIndicator] — pill/circle dots tracking the current page position.
- * - Next / Start [androidx.compose.material3.Button] — disabled until all required fields pass.
+ * - Next / Start [Button] — disabled until all required fields pass.
  *
  * Directional swipe-hint icons are overlaid at the vertical midpoint when the current page is
  * valid and a swipe target exists (left hint if not page 0; right hint if not the last page).
@@ -171,7 +169,7 @@ fun OnboardingPreview() {
  */
 @Composable
 fun OnboardingScreen(
-    pagerState: PagerState,
+    pagerState: PagerState = rememberPagerState(pageCount = { onboardingScreens.size }),
     modifier: Modifier,
     onboardingModel: OnboardingModel,
     onToggleTheme: () -> Unit = {},
@@ -193,8 +191,8 @@ fun OnboardingScreen(
     ) {
         // Background + page content fills full screen, including behind system bars
         OnboardingPager(
-            pagerState,
             modifier = Modifier.fillMaxSize(),
+            pagerState = pagerState,
             onboardingModel = onboardingModel,
             userScrollEnabled = isBtnEnabled
         )

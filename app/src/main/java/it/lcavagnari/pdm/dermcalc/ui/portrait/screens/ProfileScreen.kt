@@ -322,22 +322,17 @@ fun UnitOfMeasurement(
 @RequiresApi(Build.VERSION_CODES.Q)
 @Preview(showBackground = true)
 @Composable
-fun ProfileScreenPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }.also {
-        it.finishOnboarding()
-        it.updateName("Asriel ")
-        it.updateDateOfBirth(today().date)
-        it.updateHeightMetric(172)
-        it.updateWeightKilos(67)
-    }
-
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-
-    DermCalcTheme {
+private fun ProfileScreenPreview() {
+    DermCalcPreview(
+        setupOm = {
+            it.finishOnboarding()
+            it.updateName("Asriel ")
+            it.updateDateOfBirth(today().date)
+            it.updateHeightMetric(172)
+            it.updateWeightKilos(67)
+        },
+        setupQm = { it.updateQuote() }
+    ) { vm, qm, tm, bm ->
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
     }
 }

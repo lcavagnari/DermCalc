@@ -47,6 +47,7 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -62,15 +63,10 @@ import kotlinx.datetime.minus
 /** Maximum number of results shown before a "Show all" row appears. **/
 private const val MAX_HISTORY_VISIBLE = 5
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun Preview() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
-    }
-    }
-    val tm = remember { ToolsModel(app) }.also { toolsModel ->
+private fun HistoryCardPreview() {
+    DermCalcPreview(setupTm = { toolsModel ->
         toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
         toolsModel.addResult(
             BmiResult(
@@ -120,90 +116,80 @@ fun Preview() {
                 timestamp = today()
             )
         )
+    }) { _, _, tm, _ ->
+        HistoryCard(toolsModel = tm) { }
     }
-
-
-    HistoryCard(toolsModel = tm) { }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreviewDark() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
-    }
-    }
-
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val vm = remember { OnboardingModel(app) }.also {
-        it.finishOnboarding(); it.updateName("Asriel ")
-    }
-    val tm = remember { ToolsModel(app) }.also { toolsModel ->
-        toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 85.0, heightCm = 175.0, score = 27.8, timestamp = today().date.minus(
-                    3,
-                    DateTimeUnit.DAY
-                ).atTime(LocalTime.fromSecondOfDay(0))
+private fun HomeScreenDarkPreview() {
+    DermCalcPreview(
+        darkTheme = true,
+        setupOm = { it.finishOnboarding(); it.updateName("Asriel ") },
+        setupTm = { toolsModel ->
+            toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 85.0, heightCm = 175.0, score = 27.8, timestamp = today().date.minus(
+                        3,
+                        DateTimeUnit.DAY
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
             )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                    10,
-                    DateTimeUnit.DAY
-                ).atTime(LocalTime.fromSecondOfDay(0))
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                        10,
+                        DateTimeUnit.DAY
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
             )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                    10,
-                    DateTimeUnit.WEEK
-                ).atTime(LocalTime.fromSecondOfDay(0))
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                        10,
+                        DateTimeUnit.WEEK
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
             )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                    10,
-                    DateTimeUnit.MONTH
-                ).atTime(LocalTime.fromSecondOfDay(0))
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                        10,
+                        DateTimeUnit.MONTH
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
             )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
-                    1,
-                    DateTimeUnit.YEAR
-                ).atTime(LocalTime.fromSecondOfDay(0))
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
+                        1,
+                        DateTimeUnit.YEAR
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
             )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 78.0,
-                heightCm = 175.0,
-                score = 25.5,
-                timestamp = today()
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 78.0,
+                    heightCm = 175.0,
+                    score = 25.5,
+                    timestamp = today()
+                )
             )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 78.0,
-                heightCm = 175.0,
-                score = 25.5,
-                timestamp = today()
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 78.0,
+                    heightCm = 175.0,
+                    score = 25.5,
+                    timestamp = today()
+                )
             )
-        )
-    }
-
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
+        }
+    ) { om, qm, tm, bm ->
         MainPortraitActivity(
             quoteModel = qm,
-            onboardingModel = vm,
+            onboardingModel = om,
             toolsModel = tm,
             bodyScanModel = bm,
             startingDestination = BSAToolRoute
@@ -213,74 +199,77 @@ fun HomeScreenPreviewDark() {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
+private fun HomeScreenPreview() {
+    DermCalcPreview(
+        setupOm = { it.finishOnboarding(); it.updateName("Asriel ") },
+        setupTm = { toolsModel ->
+            toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 85.0, heightCm = 175.0, score = 27.8, timestamp = today().date.minus(
+                        3,
+                        DateTimeUnit.DAY
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
+            )
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                        10,
+                        DateTimeUnit.DAY
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
+            )
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                        10,
+                        DateTimeUnit.WEEK
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
+            )
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                        10,
+                        DateTimeUnit.MONTH
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
+            )
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
+                        1,
+                        DateTimeUnit.YEAR
+                    ).atTime(LocalTime.fromSecondOfDay(0))
+                )
+            )
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 78.0,
+                    heightCm = 175.0,
+                    score = 25.5,
+                    timestamp = today()
+                )
+            )
+            toolsModel.addResult(
+                BmiResult(
+                    weightKg = 78.0,
+                    heightCm = 175.0,
+                    score = 25.5,
+                    timestamp = today()
+                )
+            )
+        }
+    ) { om, qm, tm, bm ->
+        MainPortraitActivity(
+            quoteModel = qm,
+            onboardingModel = om,
+            toolsModel = tm,
+            bodyScanModel = bm,
+            startingDestination = BSAToolRoute
+        )
     }
-    }
-    remember { OnboardingModel(app) }.also { it.finishOnboarding(); it.updateName("Asriel ") }
-    remember { ToolsModel(app) }.also { toolsModel ->
-        toolsModel.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 85.0, heightCm = 175.0, score = 27.8, timestamp = today().date.minus(
-                    3,
-                    DateTimeUnit.DAY
-                ).atTime(LocalTime.fromSecondOfDay(0))
-            )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                    10,
-                    DateTimeUnit.DAY
-                ).atTime(LocalTime.fromSecondOfDay(0))
-            )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                    10,
-                    DateTimeUnit.WEEK
-                ).atTime(LocalTime.fromSecondOfDay(0))
-            )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                    10,
-                    DateTimeUnit.MONTH
-                ).atTime(LocalTime.fromSecondOfDay(0))
-            )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
-                    1,
-                    DateTimeUnit.YEAR
-                ).atTime(LocalTime.fromSecondOfDay(0))
-            )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 78.0,
-                heightCm = 175.0,
-                score = 25.5,
-                timestamp = today()
-            )
-        )
-        toolsModel.addResult(
-            BmiResult(
-                weightKg = 78.0,
-                heightCm = 175.0,
-                score = 25.5,
-                timestamp = today()
-            )
-        )
-    }
-
-    MainActivity()
 }
 
 /**

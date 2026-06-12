@@ -365,22 +365,24 @@ private fun DistrictsCards(
             fontSize = 20.sp
         ) }
     }
-}
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 
 @SuppressLint("NewApi")
 @RequiresApi(Build.VERSION_CODES.Q)
 @Preview(showBackground = true)
 @Composable
-fun ToolsScreenPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
-    val qm = remember { QuoteModel(app) }
-    val tm = remember { ToolsModel(app) }
-
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
+private fun ToolsScreenPreview() {
+    DermCalcPreview(
+        setupOm = { it.finishOnboarding() }
+    ) { vm, qm, tm, bm ->
+        MainPortraitActivity(
+            quoteModel = qm,
+            onboardingModel = vm,
+            toolsModel = tm,
+            bodyScanModel = bm,
+            startingDestination = BSAToolRoute
+        )
     }
 }
 

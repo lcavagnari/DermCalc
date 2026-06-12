@@ -56,6 +56,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 
 
 /** Returns the title string resource id for [route]. */
@@ -210,24 +211,23 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
 
 @Preview(showBackground = true)
 @Composable
-fun MainPortraitActivityPrevew() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
-    }
-    }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
+private fun MainPortraitActivityPreview() {
+    DermCalcPreview { om, qm, tm, bm ->
+        MainPortraitActivity(
+            quoteModel = qm,
+            onboardingModel = om,
+            toolsModel = tm,
+            bodyScanModel = bm,
+            startingDestination = BSAToolRoute
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun MainPortraitActivityPrevie1() {
-    TopMenu(rememberNavController())
+private fun TopMenuPreview() {
+    DermCalcPreview { _, _, _, _ ->
+        TopMenu(rememberNavController())
+    }
 }
 

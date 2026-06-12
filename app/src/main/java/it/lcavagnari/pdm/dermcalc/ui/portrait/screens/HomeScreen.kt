@@ -39,27 +39,26 @@ import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
-import it.lcavagnari.pdm.dermcalc.utils.today
-import kotlinx.datetime.number
-import java.util.Locale
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val vm = remember { OnboardingModel(app) }.also {
-        it.finishOnboarding(); it.updateName("Asriel ")
+private fun HomeScreenPreview() {
+    DermCalcPreview(
+        setupOm = { it.finishOnboarding(); it.updateName("Asriel ") },
+        setupQm = { it.updateQuote() }
+    ) { vm, qm, tm, bm ->
+        MainPortraitActivity(
+            quoteModel = qm,
+            onboardingModel = vm,
+            toolsModel = tm,
+            bodyScanModel = bm,
+            startingDestination = BSAToolRoute
+        )
     }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
-    }
+}
 }
 
 /**
