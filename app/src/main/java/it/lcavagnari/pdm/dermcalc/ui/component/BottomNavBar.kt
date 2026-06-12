@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
-import android.app.Application
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,9 +11,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -25,23 +22,31 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
-import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
-import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
-import it.lcavagnari.pdm.dermcalc.ui.theme.onSoulContainer
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
+
+@Preview(showBackground = true) @Composable private fun BottomNavBarRegularPreview() {
+    DermCalcTheme {
+        NavigationBar(
+            navController = rememberNavController(),
+            appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+        )
+    }
+}
+@Preview(showBackground = true) @Composable private fun BottomNavBarRegularDarkPreview() {
+    DermCalcTheme(darkTheme = true) {
+        NavigationBar(
+            navController = rememberNavController(),
+            appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+        )
+    }
+}
 
 /**
  * Renders bottom tabs and preserves per-destination back stack state.
@@ -121,24 +126,5 @@ fun NavigationBar(navController: NavController, appItems: List<AppRoute>) {
                 }
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainPortraitPreview() {
-    DermCalcPreview { vm, qm, tm, bm ->
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun BottomNavBarPreview() {
-    DermCalcPreview { _, _, _, _ ->
-        NavigationBar(
-            navController = rememberNavController(),
-            appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
-        )
     }
 }

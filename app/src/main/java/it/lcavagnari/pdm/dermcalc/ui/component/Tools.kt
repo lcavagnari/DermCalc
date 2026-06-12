@@ -39,7 +39,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 
 /**
  * Save button for calculator results with a two-step confirmation flow.
@@ -197,8 +197,8 @@ fun ToolResultCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun ToolResultCardPreview() {
-    DermCalcPreview { _, _, _, _ ->
+private fun ToolResultCardRegularPreview() {
+    DermCalcTheme {
         ToolResultCard(
             soulColor = SoulKindness,
             toolLabel = "Your BMI",
@@ -211,8 +211,8 @@ private fun ToolResultCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ToolSaveButtonPreview() {
-    DermCalcPreview { _, _, _, _ ->
+private fun ToolSaveButtonRegularPreview() {
+    DermCalcTheme {
         ToolSaveButton(
             enabled = true,
             soulColor = SoulJustice,
