@@ -39,13 +39,11 @@ import it.lcavagnari.pdm.dermcalc.models.BsaResult
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.BsaRegion
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
-import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
-import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
+import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
@@ -54,24 +52,48 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 
+private val vm:(BodyScanModel) -> Unit = {
+    it.updateRegion(BsaRegion.HEAD, 10)
+    it.updateRegion(BsaRegion.RIGHT_ARM, 20)
+    it.updateRegion(BsaRegion.LEFT_ARM, 30)
+}
+
+@Preview(showBackground = true) @Composable private fun BMIScreenFullPreview() {
+    DermCalcPreview(
+        screen =    BMIToolRoute,
+        setupOm = {
+            it.finishOnboarding()
+            it.updateWeightKilos(70)
+            it.updateHeightMetric(172)
+        }
+    )
+}
+@Preview(showBackground = true) @Composable private fun BMIScreenFullDarkPreview() {
+    DermCalcPreview(
+        screen = BMIToolRoute,
+        darkTheme = true,
+        setupOm = {
+            it.finishOnboarding()
+            it.updateWeightKilos(70)
+            it.updateHeightMetric(172)
+        }
+    )
+}
+
+@Preview(showBackground = true) @Composable private fun BSAScreenFullPreview() {
+    DermCalcPreview(screen = BSAToolRoute, setupBm = vm)
+}
+@Preview(showBackground = true) @Composable private fun BSAScreenFullDarkPreview() {
+    DermCalcPreview(darkTheme = true, screen = BSAToolRoute, setupBm = vm)
+}
 
 /**
  * BMI calculator screen with height and weight pickers.
- *
- * Computes a [BmiResult] once both measurements are present, displays the formatted score and
- * severity, and forwards the result through [onSaveResult] after save confirmation.
- *
- * @param modifier modifier applied to the quick-tool scaffold.
- * @param soulColor accent [Color] for BMI chrome. Defaults to [SoulPatience].
- * @param heightCm optional initial height in centimetres.
- * @param weightKg optional initial weight in kilograms.
- * @param onSaveResult callback invoked with the computed [BmiResult].
  */
 @Composable
 fun BMIScreen(
@@ -84,14 +106,14 @@ fun BMIScreen(
     var heightField by remember {
         mutableStateOf(
             HeightInput(id = "bmi_height", label = R.string.label_height).copy(
-                value = heightCm, isValid = heightCm != null,
+                value = heightCm, isValid = heightCm != null
             )
         )
     }
     var weightField by remember {
         mutableStateOf(
             WeightInput(id = "bmi_weight", label = R.string.label_weight).copy(
-                value = weightKg, isValid = weightKg != null,
+                value = weightKg, isValid = weightKg != null
             )
         )
     }
@@ -177,29 +199,8 @@ fun BMIScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun BMIScreenPreview() {
-    DermCalcPreview { _, _, _, _ ->
-        BMIScreen(onSaveResult = { })
-    }
-}
-
-
 /**
  * Shared scaffold for quick calculator screens.
- *
- * Renders calculator input [content] inside a raised card, followed by an optional [ToolResultCard]
- * when [formattedScore] is provided and a [ToolSaveButton] at the bottom.
- *
- * @param modifier modifier applied to the root [Column].
- * @param soulColor accent [Color] used for result chrome.
- * @param saveEnabled whether the save button is enabled. Defaults to true.
- * @param toolLabel optional result label shown above the score.
- * @param formattedScore optional score text; when null, the result card is hidden.
- * @param severity optional [Severity] shown as a result badge.
- * @param onSaveResult callback invoked by the save button after confirmation.
- * @param content calculator-specific input content rendered inside the input card.
  */
 @Composable
 private fun Scaffold(
@@ -309,40 +310,3 @@ fun BSAScreen(
 
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun BSAScreenPreview() {
-    DermCalcPreview(
-        setupBm = {
-            it.updateRegion(BsaRegion.HEAD, 10)
-            it.updateRegion(BsaRegion.RIGHT_ARM, 20)
-            it.updateRegion(BsaRegion.LEFT_ARM, 30)
-        }
-    ) { _, _, _, bm ->
-        BSAScreen(vm = bm, onSaveResult = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainPortraitPreview() {
-    DermCalcPreview(
-        setupOm = {
-            it.finishOnboarding()
-            it.updateWeightKilos(70)
-            it.updateHeightMetric(172)
-        },
-        setupQm = { it.updateQuote() }
-    ) { vm, qm, tm, bm ->
-        MainPortraitActivity(
-            quoteModel = qm,
-            onboardingModel = vm,
-            toolsModel = tm,
-            bodyScanModel = bm,
-            startingDestination = BSAToolRoute
-        )
-    }
-}
-
-

@@ -3,8 +3,6 @@ package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.os.SystemClock
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -41,9 +39,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
@@ -53,7 +48,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity
@@ -61,45 +56,28 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 
+@Preview(showBackground = true) @Composable private fun ToolsScreenFullPreview() {
+    DermCalcPreview(screen = ToolsRoute, setupOm = { it.finishOnboarding() })
+}
+@Preview(showBackground = true) @Composable private fun ToolsScreenFullDarkPreview() {
+    DermCalcPreview(screen = ToolsRoute, darkTheme = true, setupOm = { it.finishOnboarding() })
+}
 
 /**
  * Metadata for a single tool entry rendered in [ToolsScreen].
- *
- * @property description - string resource id for the tool's short description.
- * @property color - soul color used for the card border, icon tint, and badge.
- * @property route - navigation destination launched when the card is tapped.
- * @property imageSize - size of the tool icon. Defaults to 40.dp.
- * @property districtNum - number of body districts assessed, or null for tools that don't use districts.
- * @property valueRange - min/max score range shown as a chip, or null if not applicable.
- * @property borderSide - which edge of the card receives the colored accent border.
  */
 data class ToolCard(
     @StringRes val description: Int,
-
     val color: Color,
-
     val route: AppRoute,
     val imageSize: Dp? = 40.dp,
-
     val districtNum: Int? = null,
     val valueRange: Pair<Double, Double>? = null,
-
     val borderSide: BorderSide = BorderSide.Top
 )
 
 /**
  * Tools tab. Two vertically stacked sections, each containing clickable [ToolCard] entries.
- *
- * Layout (top → bottom):
- * - "QUICK" section header — single-value calculators (BMI, BSA) in an equal-width [Row]
- *   via [QuickCalculators]; each card has a [BorderSide.Top] accent.
- * - "INDEX" section header — multi-parameter index calculators (PASI, EASI) in a [Column]
- *   via [IndexesCalculators]; each card has a [BorderSide.Left] accent plus district-count
- *   and score-range chips in the bottom-right corner.
- *
- * Tapping any card navigates to its [AppRoute] destination via [LocalNavigate].
- *
- * @param toolsModel view model forwarded to calculator screens (unused at this level).
  */
 @Composable
 fun ToolsScreen(toolsModel: ToolsModel) {
@@ -168,29 +146,11 @@ fun ToolsScreen(toolsModel: ToolsModel) {
 }
 
 /**
- * Row of quick-calculator [ToolCard] entries that each navigate to their destination on tap.
- *
- * @param modifier modifier applied to the root [Row].
- * @param toolsList list of [ToolCard] descriptors to render.
- * @param onClick callback invoked with the tapped card's [AppRoute].
+ * Row of quick-calculator [ToolCard] entries.
  */
 @Composable
 fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
     val lastNavTime = remember { mutableLongStateOf(0L) }
-    // Swallows taps within 500 ms of the last navigation to prevent double-tap pushes.
-    val throttledNavigate: (AppRoute) -> Unit = { route ->
-        val now = SystemClock.elapsedRealtime()
-        Log.d("AppNavHost", "throttledNavigate: $route")
-        Log.d("AppNavHost", "lastNavTime: ${lastNavTime.longValue}")
-        Log.d("AppNavHost", "now: $now")
-        Log.d("AppNavHost", "now - lastNavTime: ${now - lastNavTime.longValue}")
-        Log.d("AppNavHost", "")
-        if (now - lastNavTime.longValue > 100L) {
-            lastNavTime.longValue = now
-            onClick(route)
-        }
-    }
-
     Row(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
         verticalAlignment = Alignment.Top,
@@ -198,9 +158,8 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
     ) {
         toolsList.forEach {
             val destination = it.route
-
             BorderedCard(
-                modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
+                modifier = Modifier.weight(1f).padding(5.dp).fillMaxHeight(),
                 elevation = CardDefaults.cardElevation(6.dp),
                 border = BorderStroke(1.dp, it.color),
                 borderColor = it.color,
@@ -210,7 +169,7 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
                 onClick = { onClick(destination) }
             ) {
                 Row(
-                    modifier = modifier.padding(horizontal = 10.dp).fillMaxWidth()
+                    modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth()
                 ) {
                     if (destination.iconRes != null) {
                         Icon(
@@ -223,9 +182,7 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
 
                     Column(
                         modifier = Modifier.padding(5.dp),
-                        verticalArrangement = Arrangement.spacedBy(5.dp,
-                            Alignment.CenterVertically
-                        ),
+                        verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
                         horizontalAlignment = Alignment.Start
                     ) {
                         Text(
@@ -233,7 +190,6 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1
                         )
-
                         Text(
                             text = stringResource(it.description),
                             modifier = Modifier.wrapContentWidth(Alignment.Start),
@@ -248,11 +204,7 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
 }
 
 /**
- * Column of index-calculator [ToolCard] entries with district count and score range chips.
- *
- * @param modifier modifier applied to the root [Column].
- * @param toolsList list of [ToolCard] descriptors to render.
- * @param onClick callback invoked with the tapped card's [AppRoute].
+ * Column of index-calculator [ToolCard] entries.
  */
 @Composable
 fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
@@ -269,7 +221,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
             val onColor: Color = lerp(surface, it.color, 0.22f)
 
             BorderedCard(
-                modifier = modifier.weight(1f).padding(5.dp).fillMaxHeight(),
+                modifier = Modifier.weight(1f).padding(5.dp).fillMaxHeight(),
                 elevation = CardDefaults.cardElevation(6.dp),
                 border = BorderStroke(1.dp, it.color),
                 borderColor = it.color,
@@ -279,7 +231,7 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
                 onClick = { onClick(destination) }
             ) {
                 Row(
-                    modifier = modifier.padding(10.dp).fillMaxWidth(),
+                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
@@ -307,7 +259,6 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1
                         )
-
                         Text(
                             text = stringResource(it.description),
                             modifier = Modifier.wrapContentWidth(Alignment.Start),
@@ -316,7 +267,6 @@ fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, 
                         )
                     }
                 }
-
                 DistrictsCards(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp, end = 10.dp),
                     tool = it, onColor = onColor
@@ -365,24 +315,4 @@ private fun DistrictsCards(
             fontSize = 20.sp
         ) }
     }
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
-
-@SuppressLint("NewApi")
-@RequiresApi(Build.VERSION_CODES.Q)
-@Preview(showBackground = true)
-@Composable
-private fun ToolsScreenPreview() {
-    DermCalcPreview(
-        setupOm = { it.finishOnboarding() }
-    ) { vm, qm, tm, bm ->
-        MainPortraitActivity(
-            quoteModel = qm,
-            onboardingModel = vm,
-            toolsModel = tm,
-            bodyScanModel = bm,
-            startingDestination = BSAToolRoute
-        )
-    }
 }
-

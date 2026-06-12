@@ -59,18 +59,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.utils.today
 
-
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-
-@Preview(showBackground = true)
-@Composable
-private fun OnBoardItemPreview() {
-    DermCalcPreview { om, _, _, _ ->
-        OnBoardItem(onboardingScreens[4], om)
-    }
-}
 
 /**
  * Renders the content of a single onboarding page, dispatching field updates to [OnboardingModel].

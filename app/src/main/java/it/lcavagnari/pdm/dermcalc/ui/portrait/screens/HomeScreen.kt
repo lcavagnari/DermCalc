@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.app.Application
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,10 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -28,51 +25,84 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
+import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Quote
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.utils.today
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
+import kotlinx.datetime.number
+import java.util.Locale
 
-@Preview(showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-    DermCalcPreview(
-        setupOm = { it.finishOnboarding(); it.updateName("Asriel ") },
-        setupQm = { it.updateQuote() }
-    ) { vm, qm, tm, bm ->
-        MainPortraitActivity(
-            quoteModel = qm,
-            onboardingModel = vm,
-            toolsModel = tm,
-            bodyScanModel = bm,
-            startingDestination = BSAToolRoute
+private val vm: (ToolsModel) -> Unit = {
+    it.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
+    it.addResult(
+        BmiResult(
+            weightKg = 85.0, heightCm = 175.0, score = 27.8,
+            timestamp = today().date.minus(3, DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))
         )
-    }
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9,
+            timestamp = today().date.minus(10, DateTimeUnit.DAY)
+                .atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                10,
+                DateTimeUnit.WEEK
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                10,
+                DateTimeUnit.MONTH
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
+                1,
+                DateTimeUnit.YEAR
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 78.0,
+            heightCm = 175.0,
+            score = 25.5,
+            timestamp = today()
+        )
+    )
 }
+@Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
+    DermCalcPreview(screen = HomeRoute, setupTm = vm)
+}
+@Preview(showBackground = true) @Composable private fun HomeScreenFullDarkPreview() {
+    DermCalcPreview(darkTheme = true, screen = HomeRoute, setupTm = vm)
 }
 
 /**
  * Home screen. Centered column of three stacked cards at 90% screen width.
- *
- * Layout (top → bottom):
- * - Date + first-name welcome greeting — [BorderedCard] with a right-side primary-color accent.
- * - [QuoteCard] — italic dermatology quote with author attribution; left-side tertiary accent.
- * - [HistoryCard] — snap-fling [androidx.compose.foundation.lazy.LazyColumn] of the most recent tool results.
- *
- * @param navController controller available for future home navigation actions.
- * @param quoteModel view model providing the currently displayed quote.
- * @param onboardingModel view model providing user profile fields for the welcome message.
- * @param toolsModel view model providing the stored tool results for [HistoryCard].
  */
 @Composable
 fun HomeScreen(
@@ -139,15 +169,8 @@ fun HomeScreen(
     }
 }
 
-
 /**
  * Card displaying the current dermatology quote from [quoteModel].
- *
- * Shows the quote body in italic and the author right-aligned below it.
- * When no author is available, a tip prompt is shown instead.
- *
- * @param modifier modifier applied to the [BorderedCard].
- * @param quoteModel view model providing the [Quote] to display.
  */
 @Composable
 fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
@@ -204,8 +227,6 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
                     fontSize = 17.sp
                 )
             }
+        }
     }
-}
-
-
 }
