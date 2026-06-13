@@ -149,7 +149,7 @@ fun BodyScan(
 }
 
 @Composable
-fun BsaRegionSlider(
+fun BodyRegionSlider(
     region: BodyRegion,
     value: Int,
     onValueChange: (Int) -> Unit,

@@ -46,7 +46,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
-import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaRegionSlider
+import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
@@ -285,7 +285,7 @@ fun BSAScreen(
             }
         }
 
-        BsaRegionSlider(
+        BodyRegionSlider(
             region = selectedRegion,
             value = state.regionValues[selectedRegion] ?: 0,
             onValueChange = { vm.updateRegion(selectedRegion, it) },
