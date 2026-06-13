@@ -337,7 +337,7 @@ private fun ResetButton(
     }
 
     IconButton(
-        modifier = modifier.height(48.dp),
+        modifier = modifier.height(64.dp),
         onClick = { showDialog = true }
     ) {
         Column(
