@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -32,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.PasiResult
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
@@ -77,36 +80,17 @@ fun PASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
 }
 
 
-@Composable
-fun ScoreSelector(
-    modifier: Modifier = Modifier,
-    maxValue: Int,
-    range: Int = 4,
-    onValueChange: (Int) -> Unit
-) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        for (i in 0..range) {
-            val filled = i in 1..maxValue
-            Box(
-                modifier = Modifier
-                    .size(22.dp)
-                    .clip(CircleShape)
-                    .background(if (filled) MaterialTheme.colorScheme.primary else Color.Transparent)
-                    .border(1.5.dp, if (filled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, CircleShape)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) { onValueChange(i) }
-            )
-        }
-    }
-}
+
 
 /**
  * Placeholder screen for the EASI calculator.
  */
 @Composable
-fun EASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
+fun EASIScreen(
+    toolsModel: ToolsModel,
+    toolLabel: String = "EASI",
+    onSaveResult: () -> Unit
+) {
     val currentScore by toolsModel.easiDraftScore.collectAsState()
     val startPage by toolsModel.easiDraftPage.collectAsState()
 
@@ -124,8 +108,8 @@ fun EASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
     IndexToolScaffold(
         pages = calculatorPages,
         pagerState = pagerState,
-        soulColor = soulFor("EASI").color,
-        toolLabel = "EASI",
+        soulColor = soulFor(toolLabel).color,
+        toolLabel = toolLabel,
         toolMeasurementUnit = "/ 72",
         formattedScore = "%.1f".format(currentScore),
         severity = when {
@@ -142,22 +126,7 @@ fun EASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Demonstration: ${stringResource(calculatorPages[pageIndex].titleRes)}",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(
-                onClick = {
-                    toolsModel.updateEasiDraft(currentScore + 1.5, pageIndex)
-                    onNext()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = soulFor("EASI").color
-                )
-            ) {
-                Text("Simulate Input & Next")
-            }
+
         }
     }
 }

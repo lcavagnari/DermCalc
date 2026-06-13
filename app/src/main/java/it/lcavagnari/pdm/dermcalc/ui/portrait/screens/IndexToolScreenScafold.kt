@@ -2,7 +2,9 @@ package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -151,7 +154,11 @@ fun IndexToolScaffold(
     ) {
 
         // 1. Header
-        ScafoldHeader(
+        ScafoldHeader(currentPage = pagerState.currentPage, soulColor = soulColor)
+
+        // 2. Custom Step Progress Indicator
+        ProgressBar(
+            modifier = Modifier.padding(horizontal = 5.dp),
             currentPage = pagerState.currentPage,
             soulColor = soulColor,
             formattedScore = formattedScore,
@@ -162,7 +169,7 @@ fun IndexToolScaffold(
             }
         ) { coroutineScope.launch { pagerState.animateScrollToPage(it) } }
 
-        // 2. Central Horizontal Pager for Page Content
+        // 3. Central Horizontal Pager for Page Content
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -253,12 +260,8 @@ fun IndexToolScaffold(
 @Composable
 fun ScafoldHeader(
     modifier: Modifier = Modifier,
-    formattedScore: String?,
-    toolMeasurementUnit: String,
     currentPage: Int,
     soulColor: Color,
-    onReset: () -> Unit,
-    onPageSelect: (Int) -> Unit
 ) {
     val page = calculatorPages[currentPage]
 
@@ -293,17 +296,6 @@ fun ScafoldHeader(
                     showHints = false
                 )
             }
-
-            // 2. Custom Step Progress Indicator
-            ProgressBar(
-                modifier = Modifier.padding(horizontal = 5.dp),
-                currentPage = currentPage,
-                onReset = onReset,
-                soulColor = soulColor,
-                formattedScore = formattedScore,
-                toolMeasurementUnit = toolMeasurementUnit,
-                onPageSelect = onPageSelect
-            )
         }
     }
 }
@@ -420,5 +412,37 @@ private fun ProgressBar(
         Spacer(modifier = Modifier.width(12.dp))
 
         ResetButton(soulColor = soulColor, onReset = onReset)
+    }
+}
+
+@Composable
+fun ScoreSelector(
+    modifier: Modifier = Modifier,
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    max: Int = 4
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = "1", modifier = modifier.padding(end = 4.dp), color = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f))
+
+        repeat(max) { index ->
+            val score = index + 1
+            Box(
+                modifier = Modifier
+                    .size(25.dp)
+                    .clip(CircleShape)
+                    .background(if (score <= value) MaterialTheme.colorScheme.primary else Color.Transparent)
+                    .border(2.dp, if (score <= value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, CircleShape)
+                    .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
+                        onValueChange(score)
+                    }
+            )
+        }
+
+        Text(text = max.toString(), modifier = modifier.padding(end = 4.dp), color = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f))
     }
 }
