@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -53,14 +54,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
+import it.lcavagnari.pdm.dermcalc.models.EasiScore
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
-import it.lcavagnari.pdm.dermcalc.models.Severity.MODERATE
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
 
@@ -80,7 +82,6 @@ private val vm:(OnboardingModel) -> Unit = {
 @Preview(showBackground = true) @Composable private fun EASIScreenFullDarkPreview() {
     DermCalcPreview(screen = EASIToolRoute, darkTheme = true)
 }
-
 
 /**
  * Descriptor representing a single step/district page in an index calculator.
@@ -182,7 +183,7 @@ fun IndexToolScaffold(
         ) {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxWidth(),
                 userScrollEnabled = true
             ) { page ->
                 Column(
@@ -194,9 +195,14 @@ fun IndexToolScaffold(
             }
         }
 
+        /*
+        modifier = if (isLastPage) Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(top = 5.dp)
+                       else Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp),
+         */
+
         // 4. Navigation Controls
         Row(
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -229,15 +235,21 @@ fun IndexToolScaffold(
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(5.dp))
+
+                ToolSaveButton(
+                    enabled = saveEnabled,
+                    onSaveResult = onSaveResult,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
 
         // 5. Final Result Card & Save Trigger
         AnimatedVisibility(visible = isLastPage && formattedScore != null) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(bottom = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
                 ToolResultCard(
                     soulColor = soulColor,
@@ -247,11 +259,7 @@ fun IndexToolScaffold(
                     severity = severity
                 )
 
-                ToolSaveButton(
-                    enabled = saveEnabled,
-                    onSaveResult = onSaveResult,
-                    modifier = Modifier.fillMaxWidth()
-                )
+
             }
         }
     }
