@@ -177,4 +177,8 @@
     <string name="reset_dialog_title">Confirmer cette actiòn.</string>
     <string name="district_head">Tète</string>
     <string name="district_upper_limbs">Membres supérieurs</string>
+    <string name="easi_sign_erythema">Érythème</string>
+    <string name="easi_sign_induration">Induration</string>
+    <string name="easi_sign_excoriation">Excoriation</string>
+    <string name="easi_sign_lichenification">Lichenification</string>
 </resources>

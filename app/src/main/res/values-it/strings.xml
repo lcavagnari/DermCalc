@@ -177,4 +177,8 @@
     <string name="district_upper_limbs">Arti superiori</string>
     <string name="district_trunk">Busto</string>
     <string name="district_lower_limbs">Arti inferiori</string>
+    <string name="easi_sign_erythema">Eritema</string>
+    <string name="easi_sign_induration">Indurimento</string>
+    <string name="easi_sign_excoriation">Escoriazione</string>
+    <string name="easi_sign_lichenification">Lichenizzazione</string>
 </resources>
