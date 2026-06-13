@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -136,6 +137,7 @@ fun EASIScreen(
             }
 
             BodyRegionSlider(
+                modifier = Modifier.padding(vertical = 5.dp),
                 region = calculatorPages[pageIndex].bodyRegions.first(),
                 value = draft.area,
                 onValueChange = { commit(draft.copy(area = it)) }

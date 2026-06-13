@@ -150,10 +150,10 @@ fun BodyScan(
 
 @Composable
 fun BodyRegionSlider(
+    modifier: Modifier = Modifier,
     region: BodyRegion,
     value: Int,
     onValueChange: (Int) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Card(modifier) {
         Column(Modifier.fillMaxWidth().padding(16.dp)) {
