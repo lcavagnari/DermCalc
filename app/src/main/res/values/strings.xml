@@ -178,7 +178,7 @@
     </plurals>
     <string name="districts">districts</string>
     <string name="bmi_unit" translatable="false">kg / m²</string>
-    <string name="bsa_unit" translatable="false">%</string>
+    <string name="bsa_unit" translatable="false">%%</string>
     <string name="bsa_diagram_hint">Front view · tap to select</string>
     <string name="btn_save">Save</string>
     <string name="btn_confirm">Confirm</string>
@@ -196,4 +196,6 @@
     <string name="bsa_region_left_leg">Left leg</string>
     <string name="bsa_slider_tooltip">Tap a body region to adjust its coverage</string>
     <string name="btn_saved_confirm">Saved successfully!</string>
+    <string name="reset_dialog_body">Confirm reset of %s calculation?</string>
+    <string name="reset_dialog_title">Confirm action.</string>
 </resources>
