@@ -10,36 +10,46 @@ import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.div
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
  */
 enum class Severity { NONE, MILD, MODERATE, SEVERE }
 
-abstract class RegionScore(
-    open val erythema: Int = 0,
-    open val induration: Int = 0,
-    open val area: Int = 0
-) {
-    val areaScore: Double
+
+@Serializable
+sealed interface RegionScore {
+    val erythema: Int
+    val induration: Int
+    val area: Int
+
+    val areaToScore: Double
         get() = if (area == 0) 0.0
         else ((area + 10) / 20 + 1).coerceAtMost(6).toDouble()
 }
 
+
+@Serializable
 data class EasiScore(
     override val erythema: Int = 0,
     override val induration: Int = 0,
     override val area: Int = 0,
     val excoriation: Int = 0,
     val lichenification: Int = 0
-) : RegionScore()
+) : RegionScore
 
+
+@Serializable
 data class PasiScore(
     override val erythema: Int = 0,
     override val induration: Int = 0,
     override val area: Int = 0,
     val desquamation: Int = 0
-) : RegionScore()
+) : RegionScore {
+}
+
+
 
 /**
  * Maps this [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
@@ -110,70 +120,41 @@ sealed interface ToolResult {
 @Serializable
 @SerialName("pasi")
 data class PasiResult(
-    val headErythema: Double,
-    val headInduration: Double,
-    val headScaling: Double,
-    val headArea: Double,
-    val trunkErythema: Double,
-    val trunkInduration: Double,
-    val trunkScaling: Double,
-    val trunkArea: Double,
-    val upperLimbsErythema: Double,
-    val upperLimbsInduration: Double,
-    val upperLimbsScaling: Double,
-    val upperLimbsArea: Double,
-    val lowerLimbsErythema: Double,
-    val lowerLimbsInduration: Double,
-    val lowerLimbsScaling: Double,
-    val lowerLimbsArea: Double,
+    val head: PasiScore,
+    val upperLimbs: PasiScore,
+    val trunk: PasiScore,
+    val lowerLimbs: PasiScore,
     override val score: Double,
-    override val timestamp: LocalDateTime = today(),
+    override val timestamp: LocalDateTime = today()
 ) : ToolResult {
     override val name: String = "PASI"
-    override fun isValid(): Boolean =
-        listOf(
-            headErythema, headInduration, headScaling,
-            trunkErythema, trunkInduration, trunkScaling,
-            upperLimbsErythema, upperLimbsInduration, upperLimbsScaling,
-            lowerLimbsErythema, lowerLimbsInduration, lowerLimbsScaling,
-        ).all { it in 0.0..4.0 } &&
-                listOf(
-                    headArea, trunkArea, upperLimbsArea, lowerLimbsArea,
-                ).all { it in 0.0..100.0 }
 
-    companion object {
+    override fun isValid(): Boolean =
+        listOf(head, upperLimbs, trunk, lowerLimbs)
+            .all { region ->
+                listOf(region.erythema, region.induration, region.area).all { it >= 0 }
+            }
+    companion object{
         fun compute(
-            head: PasiScore = PasiScore(),
-            upperLimbs: PasiScore = PasiScore(),
-            trunk: PasiScore = PasiScore(),
-            lowerLimbs: PasiScore = PasiScore(),
+            head: PasiScore,
+            upperLimbs: PasiScore,
+            trunk: PasiScore,
+            lowerLimbs: PasiScore,
         ): PasiResult {
-            val score = 0.1 * head.areaScore * (head.erythema + head.induration + head.desquamation)
-            +0.2 * upperLimbs.areaScore * (upperLimbs.erythema + upperLimbs.induration + upperLimbs.desquamation)
-            +0.3 * trunk.areaScore * (trunk.erythema + trunk.induration + trunk.desquamation)
-            +0.4 * lowerLimbs.areaScore * (lowerLimbs.erythema + lowerLimbs.induration + lowerLimbs.desquamation)
+            val score =
+                0.1 * head.areaToScore * (head.erythema + head.induration + head.desquamation) +
+                        0.2 * upperLimbs.areaToScore * (upperLimbs.erythema + upperLimbs.induration + upperLimbs.desquamation) +
+                        0.3 * trunk.areaToScore * (trunk.erythema + trunk.induration + trunk.desquamation) +
+                        0.4 * lowerLimbs.areaToScore * (lowerLimbs.erythema + lowerLimbs.induration + lowerLimbs.desquamation)
+
             return PasiResult(
-                headErythema = head.erythema.toDouble(),
-                headInduration = head.induration.toDouble(),
-                headScaling = head.desquamation.toDouble(),
-                headArea = head.area.toDouble(),
-                trunkErythema = trunk.erythema.toDouble(),
-                trunkInduration = trunk.induration.toDouble(),
-                trunkScaling = trunk.desquamation.toDouble(),
-                trunkArea = trunk.area.toDouble(),
-                upperLimbsErythema = upperLimbs.erythema.toDouble(),
-                upperLimbsInduration = upperLimbs.induration.toDouble(),
-                upperLimbsScaling = upperLimbs.desquamation.toDouble(),
-                upperLimbsArea = upperLimbs.area.toDouble(),
-                lowerLimbsErythema = lowerLimbs.erythema.toDouble(),
-                lowerLimbsInduration = lowerLimbs.induration.toDouble(),
-                lowerLimbsScaling = lowerLimbs.desquamation.toDouble(),
-                lowerLimbsArea = lowerLimbs.area.toDouble(),
+                head, upperLimbs, trunk, lowerLimbs,
                 score = score
             )
         }
     }
 }
+
 
 /**
  * EASI (Eczema Area and Severity Index) result.
@@ -184,91 +165,44 @@ data class PasiResult(
 @Serializable
 @SerialName("easi")
 data class EasiResult(
-    val headErythema: Double,
-    val headInduration: Double,
-    val headExcoriation: Double,
-    val headLichenification: Double,
-    val headArea: Double,
-    val trunkErythema: Double,
-    val trunkInduration: Double,
-    val trunkExcoriation: Double,
-    val trunkLichenification: Double,
-    val trunkArea: Double,
-    val upperLimbsErythema: Double,
-    val upperLimbsInduration: Double,
-    val upperLimbsExcoriation: Double,
-    val upperLimbsLichenification: Double,
-    val upperLimbsArea: Double,
-    val lowerLimbsErythema: Double,
-    val lowerLimbsInduration: Double,
-    val lowerLimbsExcoriation: Double,
-    val lowerLimbsLichenification: Double,
-    val lowerLimbsArea: Double,
+    val head: EasiScore,
+    val upperLimbs: EasiScore,
+    val trunk: EasiScore,
+    val lowerLimbs: EasiScore,
     override val score: Double,
-    override val timestamp: LocalDateTime = today(),
+    override val timestamp: LocalDateTime = today()
 ) : ToolResult {
     override val name: String = "EASI"
+
     override fun isValid(): Boolean =
-        listOf(
-            headErythema,
-            headInduration,
-            headExcoriation,
-            headLichenification,
-            trunkErythema,
-            trunkInduration,
-            trunkExcoriation,
-            trunkLichenification,
-            upperLimbsErythema,
-            upperLimbsInduration,
-            upperLimbsExcoriation,
-            upperLimbsLichenification,
-            lowerLimbsErythema,
-            lowerLimbsInduration,
-            lowerLimbsExcoriation,
-            lowerLimbsLichenification,
-        ).all { it in 0.0..3.0 } &&
-                listOf(
-                    headArea, trunkArea, upperLimbsArea, lowerLimbsArea,
-                ).all { it in 0.0..100.0 }
+        listOf(head, upperLimbs, trunk, lowerLimbs)
+            .all { region ->
+                listOf(region.erythema, region.induration, region.area).all { it >= 0 }
+            }
 
     companion object {
         fun compute(
-            head: EasiScore = EasiScore(),
-            upperLimbs: EasiScore = EasiScore(),
-            trunk: EasiScore = EasiScore(),
-            lowerLimbs: EasiScore = EasiScore(),
+            head: EasiScore,
+            upperLimbs: EasiScore,
+            trunk: EasiScore,
+            lowerLimbs: EasiScore,
         ): EasiResult {
+
             val score =
-                0.1 * head.areaScore * (head.erythema + head.induration + head.excoriation + head.lichenification) +
-                        0.2 * upperLimbs.areaScore * (upperLimbs.erythema + upperLimbs.induration + upperLimbs.excoriation + upperLimbs.lichenification) +
-                        0.3 * trunk.areaScore * (trunk.erythema + trunk.induration + trunk.excoriation + trunk.lichenification) +
-                        0.4 * lowerLimbs.areaScore * (lowerLimbs.erythema + lowerLimbs.induration + lowerLimbs.excoriation + lowerLimbs.lichenification)
+                0.1 * head.areaToScore * (head.erythema + head.induration + head.excoriation + head.lichenification) +
+                        0.2 * upperLimbs.areaToScore * (upperLimbs.erythema + upperLimbs.induration + upperLimbs.excoriation + upperLimbs.lichenification) +
+                        0.3 * trunk.areaToScore * (trunk.erythema + trunk.induration + trunk.excoriation + trunk.lichenification) +
+                        0.4 * lowerLimbs.areaToScore * (lowerLimbs.erythema + lowerLimbs.induration + lowerLimbs.excoriation + lowerLimbs.lichenification)
+
             return EasiResult(
-                headErythema = head.erythema.toDouble(),
-                headInduration = head.induration.toDouble(),
-                headExcoriation = head.excoriation.toDouble(),
-                headLichenification = head.lichenification.toDouble(),
-                headArea = head.area.toDouble(),
-                trunkErythema = trunk.erythema.toDouble(),
-                trunkInduration = trunk.induration.toDouble(),
-                trunkExcoriation = trunk.excoriation.toDouble(),
-                trunkLichenification = trunk.lichenification.toDouble(),
-                trunkArea = trunk.area.toDouble(),
-                upperLimbsErythema = upperLimbs.erythema.toDouble(),
-                upperLimbsInduration = upperLimbs.induration.toDouble(),
-                upperLimbsExcoriation = upperLimbs.excoriation.toDouble(),
-                upperLimbsLichenification = upperLimbs.lichenification.toDouble(),
-                upperLimbsArea = upperLimbs.area.toDouble(),
-                lowerLimbsErythema = lowerLimbs.erythema.toDouble(),
-                lowerLimbsInduration = lowerLimbs.induration.toDouble(),
-                lowerLimbsExcoriation = lowerLimbs.excoriation.toDouble(),
-                lowerLimbsLichenification = lowerLimbs.lichenification.toDouble(),
-                lowerLimbsArea = lowerLimbs.area.toDouble(),
+                head, upperLimbs, trunk, lowerLimbs,
                 score = score
             )
         }
     }
 }
+
+
 
 
 /**
