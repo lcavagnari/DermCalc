@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,20 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -29,7 +22,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,9 +37,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.BodyRegion
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -55,6 +47,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
+import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulFor
 import it.lcavagnari.pdm.dermcalc.utils.today
@@ -65,14 +58,14 @@ import kotlinx.coroutines.launch
  */
 data class CalculatorPage(
     val titleRes: Int,
-    val descriptionRes: Int? = null
+    val bodyRegions: List<BodyRegion> = listOf(BodyRegion.NONE)
 )
 /** Anatomical districts for calculators. */
 val calculatorPages = listOf(
-    CalculatorPage(R.string.district_head),
-    CalculatorPage(R.string.district_upper_limbs),
-    CalculatorPage(R.string.district_trunk),
-    CalculatorPage(R.string.district_lower_limbs)
+    CalculatorPage(R.string.district_head, listOf(BodyRegion.HEAD)),
+    CalculatorPage(R.string.district_upper_limbs, listOf(BodyRegion.RIGHT_ARM, BodyRegion.LEFT_ARM)),
+    CalculatorPage(R.string.district_trunk, listOf(BodyRegion.ANTERIOR_TRUNK, BodyRegion.POSTERIOR_TRUNK)),
+    CalculatorPage(R.string.district_lower_limbs, listOf(BodyRegion.RIGHT_LEG, BodyRegion.LEFT_LEG))
 )
 
 // Setup for the preview viewmodel
@@ -142,6 +135,8 @@ fun IndexToolScaffold(
     val isLastPage = pagerState.currentPage == pages.lastIndex
     val isFirstPage = pagerState.currentPage == 0
 
+    val page = pages[pagerState.currentPage]
+
     val onNext = {
         if (!isLastPage)
             coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
@@ -153,9 +148,9 @@ fun IndexToolScaffold(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // 1. Persistent Top Score & Progress Header
@@ -163,195 +158,132 @@ fun IndexToolScaffold(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(2.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                    alpha = 0.5f
+                )
             )
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // District name
                     Text(
-                        text = toolLabel.uppercase(),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = soulColor,
-                        letterSpacing = 1.5.sp
-                    )
-                    Text(
-                        text = stringResource(pages[pagerState.currentPage].titleRes),
+                        stringResource(page.titleRes),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
-                }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text(
-                            text = stringResource(R.string.label_step_of, pagerState.currentPage + 1, pages.size),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Row(verticalAlignment = Alignment.Bottom) {
-                            Text(
-                                text = formattedScore ?: "--",
-                                style = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = soulColor
-                            )
-                            Text(
-                                text = " $toolMeasurementUnit",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = 4.dp)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    IconButton(
-                        onClick = {
-                            coroutineScope.launch { pagerState.animateScrollToPage(0) }
-                            onReset()
-                        },
-                        modifier = Modifier.padding(top = 4.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_reset_button),
-                            contentDescription = stringResource(R.string.btn_reset),
-                            tint = soulColor,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
-            }
-        }
-
-        // 2. Custom Step Progress Indicator
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            pages.forEachIndexed { index, _ ->
-                val isActive = index == pagerState.currentPage
-                val hasPassed = index < pagerState.currentPage
-                val dotColor = if (isActive) soulColor else if (hasPassed) soulColor.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
-
-                Box(
-                    modifier = Modifier
-                        .height(6.dp)
-                        .width(if (isActive) 24.dp else 6.dp)
-                        .clip(CircleShape)
-                        .background(dotColor)
-                        .clickable {
-                            coroutineScope.launch { pagerState.animateScrollToPage(index) }
-                        }
-                )
-            }
-        }
-
-        // 3. Central Horizontal Pager for Page Content
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            elevation = CardDefaults.cardElevation(4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            )
-        ) {
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.fillMaxSize(),
-                userScrollEnabled = true
-            ) { page ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    pages[page].descriptionRes?.let {
-                        Text(
-                            text = stringResource(it),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    pageContent(page, onNext, onBack)
-                }
-            }
-        }
-
-        // 4. Navigation Controls
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Previous Button (disabled on page 0)
-            OutlinedButton(
-                onClick = onBack,
-                enabled = !isFirstPage,
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Text(text = stringResource(R.string.btn_back))
-            }
-
-            // Next / Done Button
-            if (!isLastPage) {
-                Button(
-                    onClick = onNext,
-                    colors = ButtonDefaults.buttonColors(containerColor = soulColor),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(text = stringResource(R.string.btn_next))
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = null,
-                        modifier = Modifier.padding(start = 4.dp)
+                    BodyScan(
+                        selectedRegions = page.bodyRegions,
+                        size = Pair(60.dp, 90.dp)
                     )
                 }
-            } else {
-                Spacer(modifier = Modifier.width(8.dp))
-            }
-        }
 
-        // 5. Final Result Card & Save Trigger
-        AnimatedVisibility(visible = isLastPage && formattedScore != null) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                ToolResultCard(
+                // 2. Custom Step Progress Indicator
+                ProgressBar(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    currentPage = pagerState.currentPage,
+                    onReset = onReset,
                     soulColor = soulColor,
-                    toolLabel = toolLabel.uppercase(),
+                    formattedScore = formattedScore,
+                    severity = severity,
                     toolMeasurementUnit = toolMeasurementUnit,
-                    formattedScore = formattedScore ?: "--",
-                    severity = severity
-                )
-
-                ToolSaveButton(
-                    enabled = saveEnabled,
-                    onSaveResult = onSaveResult,
-                    modifier = Modifier.fillMaxWidth()
+                    onPageSelect = { coroutineScope.launch { pagerState.animateScrollToPage(it) } }
                 )
             }
         }
     }
 }
 
+/*
+
+ */
+
+@Composable
+private fun ProgressBar(
+    modifier: Modifier = Modifier,
+    currentPage: Int,
+    soulColor: Color,
+    formattedScore: String?,
+    toolMeasurementUnit: String,
+    severity: Severity?,
+    onReset: () -> Unit,
+    onPageSelect: (Int) -> Unit
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            //
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text(
+                    stringResource(R.string.label_step_of, currentPage + 1, calculatorPages.size),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    "· ${formattedScore ?: "--"} $toolMeasurementUnit",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = soulColor
+                )
+            }
+
+
+            // progress bar
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                calculatorPages.forEachIndexed { index, _ ->
+                    val segColor = when {
+                        index == currentPage -> soulColor
+                        index < currentPage -> soulColor.copy(alpha = 0.5f)
+                        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
+                    }
+
+                    Box(
+                        modifier = Modifier.weight(1f).height(6.dp)
+                            .clip(RoundedCornerShape(3.dp))
+                            .background(segColor).clickable { onPageSelect(index) }
+                    )
+                }
+            }
+        }
+
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+
+        IconButton(
+            modifier = Modifier.size(32.dp),
+            onClick = onReset
+        ) {
+            Icon(
+                painterResource(R.drawable.ic_reset_button),
+                contentDescription = stringResource(R.string.btn_reset),
+                tint = soulColor,
+                modifier = Modifier.size(18.dp)
+            )
+        }
+    }
+}
 
 
 
@@ -402,7 +334,7 @@ fun EASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
         onSaveResult = onSaveResult
     ) { pageIndex, onNext, _ ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
