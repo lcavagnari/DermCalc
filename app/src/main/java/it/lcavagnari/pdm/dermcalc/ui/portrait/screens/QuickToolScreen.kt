@@ -272,6 +272,8 @@ fun BSAScreen(
                 BodyScan(
                     selectedRegion = selectedRegion,
                     regionValues = state.regionValues,
+                    soulColor = soulColor,
+                    showHints = true,
                     onRegionSelected = vm::selectRegion,
                 )
                 Spacer(Modifier.height(8.dp))

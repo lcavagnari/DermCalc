@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 import kotlin.math.roundToInt
 
 private data class RegionDef(
@@ -46,6 +48,9 @@ private val REGION_DEFS = listOf(
     RegionDef(BodyRegion.LEFT_LEG,       l=42.dp,  t=158.dp, r=77.dp,  b=280.dp),
     RegionDef(BodyRegion.RIGHT_LEG,      l=83.dp,  t=158.dp, r=118.dp, b=280.dp),
 )
+
+/** The canvas dimensions that [REGION_DEFS] were authored against. */
+private val REFERENCE_SIZE = Pair(160.dp, 290.dp)
 
 private data class ResolvedRegion(
     val region: BodyRegion,
@@ -67,30 +72,38 @@ private data class ResolvedRegion(
 fun BodyScan(
     modifier: Modifier = Modifier,
     size: Pair<Dp, Dp> = Pair(160.dp, 290.dp),
+    soulColor: Color,
+    showHints: Boolean = true,
     selectedRegion: BodyRegion? = null,
     selectedRegions: List<BodyRegion> = listOf(),
     regionValues: Map<BodyRegion, Int> = mapOf(),
     onRegionSelected: (BodyRegion) -> Unit = {},
 ) {
     val density = LocalDensity.current
-    val resolved = remember(density) {
+    val resolved = remember(density, size) {
+        val scaleX = size.first / REFERENCE_SIZE.first
+        val scaleY = size.second / REFERENCE_SIZE.second
         REGION_DEFS.map { def ->
             with(density) {
                 ResolvedRegion(
                     region = def.region,
-                    rect = Rect(def.l.toPx(), def.t.toPx(), def.r.toPx(), def.b.toPx()),
+                    rect = Rect(
+                        (def.l * scaleX).toPx(),
+                        (def.t * scaleY).toPx(),
+                        (def.r * scaleX).toPx(),
+                        (def.b * scaleY).toPx(),
+                    ),
                     isEllipse = def.isEllipse,
-                    corner = def.corner.toPx(),
+                    corner = (def.corner * minOf(scaleX, scaleY)).toPx(),
                 )
             }
         }
     }
 
     val defaultFill    = MaterialTheme.colorScheme.surfaceVariant
-    val selectedFill   = MaterialTheme.colorScheme.primary
-    val filledFill     = MaterialTheme.colorScheme.primaryContainer
+    val filledFill     = onSoul(soulColor)
     val defaultStroke  = MaterialTheme.colorScheme.outline
-    val selectedStroke = MaterialTheme.colorScheme.primary
+    val selectedStroke = soulColor
 
     Canvas(
         modifier = modifier
@@ -106,7 +119,7 @@ fun BodyScan(
         resolved.forEach { r ->
             val isSelected = if (selectedRegion == null) selectedRegions.contains(r.region) else selectedRegion == r.region
             val hasValue   = (regionValues[r.region] ?: 0) > 0
-            val fill   = if (isSelected) selectedFill else if (hasValue) filledFill else defaultFill
+            val fill   = if (isSelected) soulColor else if (hasValue) filledFill else defaultFill
             val stroke = if (isSelected) selectedStroke else defaultStroke
             val sw     = if (isSelected) 2.dp.toPx() else 1.5f
 
@@ -119,7 +132,7 @@ fun BodyScan(
                 drawRoundRect(stroke, topLeft = r.rect.topLeft, size = r.rect.size, cornerRadius = cr, style = Stroke(sw))
             }
 
-            if (!isSelected) {
+            if (showHints && !isSelected) {
                 val cx = r.rect.center.x
                 val cy = r.rect.center.y
                 val arm = 4.dp.toPx()
