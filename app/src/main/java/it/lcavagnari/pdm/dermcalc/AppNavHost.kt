@@ -106,7 +106,10 @@ fun AppNavHost(
                     onReset = { toolsModel.resetPasiDraft() },
                     onSaveResult = {
                         val success = toolsModel.savePasiDraft()
-                        if (success) navController.popBackStack()
+                        if (success) {
+                            toolsModel.resetPasiDraft()
+                            navController.popBackStack()
+                        }
                     }
                 )
             }
@@ -115,13 +118,20 @@ fun AppNavHost(
                     toolsModel.initEasiDraft(calculatorPages.size)
                 }
 
+                val easiScore by toolsModel.easiScore.collectAsState()
+
                 EASIScreen(
-                    score = toolsModel.easiDraftScore,
+                    score = easiScore,
                     startPage = toolsModel.easiDraftStartPage,
-                    onRegionScore = toolsModel::easiDraftScore,
+                    onRegionScore = toolsModel::easiRegionScore,
                     onScoreUpdate = toolsModel::updateEasiDraft,
                     onReset = toolsModel::resetEasiDraft,
-                    onSaveResult = { if (toolsModel.saveEasiDraft()) navController.popBackStack() }
+                    onSaveResult = {
+                        if (toolsModel.saveEasiDraft()) {
+                            toolsModel.resetEasiDraft()
+                            navController.popBackStack()
+                        }
+                    }
                 )
             }
         }

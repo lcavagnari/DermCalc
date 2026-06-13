@@ -78,7 +78,7 @@ fun PASIScreen(
 private fun SeverityRow(label: String, value: Int, onValueChange: (Int) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(label, modifier = Modifier.weight(1f))
-        ScoreSelector(value = value, max = 3, onValueChange = onValueChange)
+        ScoreSelector(value = value, max = 4, onValueChange = onValueChange)
     }
 }
 
@@ -87,7 +87,7 @@ fun EASIScreen(
     toolLabel: String = "EASI",
     score: Double = 0.0,
     startPage: Int = 0,
-    
+    onRegionScore: (Int) -> EasiScore,
     onScoreUpdate: (Int, EasiScore, Int) -> Unit,
     onReset: () -> Unit,
     onSaveResult: () -> Unit

@@ -3,9 +3,13 @@ package it.lcavagnari.pdm.dermcalc.models
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import it.lcavagnari.pdm.dermcalc.utils.today
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
@@ -304,6 +308,15 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
 
     val easiDraftStartPage: Int
         get() = _easiDraft.value.startPage
+
+    fun easiRegionScore(region: Int): EasiScore {
+        return (_easiDraft.value.values[region] as? EasiScore) ?: EasiScore()
+    }
+
+    /** Reactive stream of the computed EASI score — bridges StateFlow → Compose reactivity. */
+    val easiScore: StateFlow<Double> = _easiDraft
+        .map { it.result?.score ?: 0.0 }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
     // TODO: Have it reviewed
     fun initPasiDraft(pages: Int) { _pasiDraft.value.initPasi(pages) }
