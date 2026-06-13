@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -54,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
-import it.lcavagnari.pdm.dermcalc.models.EasiScore
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
@@ -62,7 +59,6 @@ import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
 
@@ -154,12 +150,8 @@ fun IndexToolScaffold(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // 1. Header
-        ScafoldHeader(currentPage = pagerState.currentPage, soulColor = soulColor)
-
-        // 2. Custom Step Progress Indicator
-        ProgressBar(
-            modifier = Modifier.padding(horizontal = 5.dp),
+        // 1. Header & Custom Step Progress Indicator
+        ScafoldHeader(
             currentPage = pagerState.currentPage,
             soulColor = soulColor,
             formattedScore = formattedScore,
@@ -167,10 +159,11 @@ fun IndexToolScaffold(
             onReset = {
                 coroutineScope.launch { pagerState.animateScrollToPage(0) }
                 onReset()
-            }
+            },
         ) { coroutineScope.launch { pagerState.animateScrollToPage(it) } }
 
-        // 3. Central Horizontal Pager for Page Content
+
+        // 2. Central Horizontal Pager for Page Content
         Card(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -194,12 +187,8 @@ fun IndexToolScaffold(
             }
         }
 
-        /*
-        modifier = if (isLastPage) Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(top = 5.dp)
-                       else Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp),
-         */
 
-        // 4. Navigation Controls
+        // 3. Navigation Controls
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -244,7 +233,7 @@ fun IndexToolScaffold(
             }
         }
 
-        // 5. Final Result Card & Save Trigger
+        // 4. Final Result Card & Save Trigger
         AnimatedVisibility(visible = isLastPage && formattedScore != null) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(15.dp),
@@ -267,6 +256,10 @@ fun ScafoldHeader(
     modifier: Modifier = Modifier,
     currentPage: Int,
     soulColor: Color,
+    formattedScore: String?,
+    toolMeasurementUnit: String,
+    onReset: () -> Unit,
+    onPageSelect: (Int) -> Unit
 ) {
     val page = calculatorPages[currentPage]
 
@@ -301,6 +294,15 @@ fun ScafoldHeader(
                     showHints = false
                 )
             }
+
+            ProgressBar(
+                currentPage = currentPage,
+                soulColor = soulColor,
+                formattedScore = formattedScore,
+                toolMeasurementUnit = toolMeasurementUnit,
+                onReset = onReset,
+                onPageSelect = onPageSelect
+            )
         }
     }
 }
@@ -375,58 +377,69 @@ private fun ProgressBar(
     onReset: () -> Unit,
     onPageSelect: (Int) -> Unit
 ) {
-    Row(
+    Card(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
+        ),
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().weight(1f),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
-                verticalAlignment = Alignment.Bottom
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                Text(
-                    stringResource(R.string.label_step_of, currentPage + 1, calculatorPages.size)+" ·",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Text(
-                    "${formattedScore ?: "--"} $toolMeasurementUnit",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = soulColor
-                )
-            }
-
-
-            // progress bar
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                calculatorPages.forEachIndexed { index, _ ->
-                    val segColor = when {
-                        index == currentPage -> soulColor
-                        index < currentPage -> soulColor.copy(alpha = 0.5f)
-                        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
-                    }
-
-                    Box(
-                        modifier = Modifier.weight(1f).height(6.dp)
-                            .clip(RoundedCornerShape(3.dp))
-                            .background(segColor).clickable { onPageSelect(index) }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        stringResource(
+                            R.string.label_step_of,
+                            currentPage + 1,
+                            calculatorPages.size
+                        ) + " ·",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        "${formattedScore ?: "--"} $toolMeasurementUnit",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = soulColor
                     )
                 }
+
+
+                // progress bar
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    calculatorPages.forEachIndexed { index, _ ->
+                        val segColor = when {
+                            index == currentPage -> soulColor
+                            index < currentPage -> soulColor.copy(alpha = 0.5f)
+                            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(1f).height(6.dp)
+                                .clip(RoundedCornerShape(3.dp))
+                                .background(segColor).clickable { onPageSelect(index) }
+                        )
+                    }
+                }
             }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            ResetButton(soulColor = soulColor, onReset = onReset)
         }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        ResetButton(soulColor = soulColor, onReset = onReset)
     }
 }
 
