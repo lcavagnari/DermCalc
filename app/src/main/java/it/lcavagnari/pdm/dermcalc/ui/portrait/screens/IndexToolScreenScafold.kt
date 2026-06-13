@@ -150,7 +150,7 @@ fun IndexToolScaffold(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -247,8 +247,8 @@ fun IndexToolScaffold(
         // 5. Final Result Card & Save Trigger
         AnimatedVisibility(visible = isLastPage && formattedScore != null) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(bottom = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(3.dp)
+                modifier = Modifier.fillMaxWidth().padding(15.dp),
+                verticalArrangement = Arrangement.Bottom
             ) {
                 ToolResultCard(
                     soulColor = soulColor,
@@ -257,8 +257,6 @@ fun IndexToolScaffold(
                     formattedScore = formattedScore ?: "--",
                     severity = severity
                 )
-
-
             }
         }
     }
