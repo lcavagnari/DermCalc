@@ -212,8 +212,8 @@ data class BsaResult(
     override fun isValid(): Boolean = affectedPercentage in 0.1..100.0
 
     companion object {
-        fun compute(regionValues: Map<BsaRegion, Int>): BsaResult {
-            val total = BsaRegion.entries.sumOf { region ->
+        fun compute(regionValues: Map<BodyRegion, Int>): BsaResult {
+            val total = BodyRegion.entries.sumOf { region ->
                 (regionValues[region] ?: 0) * region.bodyWeight
             }
             return BsaResult(affectedPercentage = total, score = total)

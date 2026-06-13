@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import it.lcavagnari.pdm.dermcalc.models.BsaRegion
+import it.lcavagnari.pdm.dermcalc.models.BodyRegion
 import it.lcavagnari.pdm.dermcalc.models.BsaResult
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.Severity
@@ -45,7 +45,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
-import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaBodyDiagram
+import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BsaRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
@@ -55,9 +55,9 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 
 private val vm:(BodyScanModel) -> Unit = {
-    it.updateRegion(BsaRegion.HEAD, 10)
-    it.updateRegion(BsaRegion.RIGHT_ARM, 20)
-    it.updateRegion(BsaRegion.LEFT_ARM, 30)
+    it.updateRegion(BodyRegion.HEAD, 10)
+    it.updateRegion(BodyRegion.RIGHT_ARM, 20)
+    it.updateRegion(BodyRegion.LEFT_ARM, 30)
 }
 
 @Preview(showBackground = true) @Composable private fun BMIScreenFullPreview() {
@@ -269,7 +269,7 @@ fun BSAScreen(
                 Modifier.fillMaxWidth().padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                BsaBodyDiagram(
+                BodyScan(
                     selectedRegion = selectedRegion,
                     regionValues = state.regionValues,
                     onRegionSelected = vm::selectRegion,

@@ -28,27 +28,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BsaRegion
+import it.lcavagnari.pdm.dermcalc.models.BodyRegion
 import kotlin.math.roundToInt
 
 private data class RegionDef(
-    val region: BsaRegion,
+    val region: BodyRegion,
     val l: Dp, val t: Dp, val r: Dp, val b: Dp,
     val isEllipse: Boolean = false,
     val corner: Dp = 10.dp,
 )
 
 private val REGION_DEFS = listOf(
-    RegionDef(BsaRegion.HEAD,           l=58.dp,  t=2.dp,   r=102.dp, b=54.dp,  isEllipse=true),
-    RegionDef(BsaRegion.LEFT_ARM,       l=10.dp,  t=57.dp,  r=38.dp,  b=139.dp),
-    RegionDef(BsaRegion.ANTERIOR_TRUNK, l=42.dp,  t=57.dp,  r=118.dp, b=155.dp, corner=6.dp),
-    RegionDef(BsaRegion.RIGHT_ARM,      l=122.dp, t=57.dp,  r=150.dp, b=139.dp),
-    RegionDef(BsaRegion.LEFT_LEG,       l=42.dp,  t=158.dp, r=77.dp,  b=280.dp),
-    RegionDef(BsaRegion.RIGHT_LEG,      l=83.dp,  t=158.dp, r=118.dp, b=280.dp),
+    RegionDef(BodyRegion.HEAD,           l=58.dp,  t=2.dp,   r=102.dp, b=54.dp,  isEllipse=true),
+    RegionDef(BodyRegion.LEFT_ARM,       l=10.dp,  t=57.dp,  r=38.dp,  b=139.dp),
+    RegionDef(BodyRegion.ANTERIOR_TRUNK, l=42.dp,  t=57.dp,  r=118.dp, b=155.dp, corner=6.dp),
+    RegionDef(BodyRegion.RIGHT_ARM,      l=122.dp, t=57.dp,  r=150.dp, b=139.dp),
+    RegionDef(BodyRegion.LEFT_LEG,       l=42.dp,  t=158.dp, r=77.dp,  b=280.dp),
+    RegionDef(BodyRegion.RIGHT_LEG,      l=83.dp,  t=158.dp, r=118.dp, b=280.dp),
 )
 
 private data class ResolvedRegion(
-    val region: BsaRegion,
+    val region: BodyRegion,
     val rect: Rect,
     val isEllipse: Boolean,
     val corner: Float,
@@ -64,11 +64,13 @@ private data class ResolvedRegion(
 }
 
 @Composable
-fun BsaBodyDiagram(
-    regionValues: Map<BsaRegion, Int>,
-    selectedRegion: BsaRegion?,
-    onRegionSelected: (BsaRegion) -> Unit,
+fun BodyScan(
     modifier: Modifier = Modifier,
+    size: Pair<Dp, Dp> = Pair(160.dp, 290.dp),
+    selectedRegion: BodyRegion? = null,
+    selectedRegions: List<BodyRegion> = listOf(),
+    regionValues: Map<BodyRegion, Int> = mapOf(),
+    onRegionSelected: (BodyRegion) -> Unit = {},
 ) {
     val density = LocalDensity.current
     val resolved = remember(density) {
@@ -92,7 +94,7 @@ fun BsaBodyDiagram(
 
     Canvas(
         modifier = modifier
-            .size(160.dp, 290.dp)
+            .size(size.first, size.second)
             .pointerInput(Unit) {
                 detectTapGestures { tap ->
                     resolved.firstOrNull { it.contains(tap) }
@@ -102,7 +104,7 @@ fun BsaBodyDiagram(
             }
     ) {
         resolved.forEach { r ->
-            val isSelected = r.region == selectedRegion
+            val isSelected = if (selectedRegion == null) selectedRegions.contains(r.region) else selectedRegion == r.region
             val hasValue   = (regionValues[r.region] ?: 0) > 0
             val fill   = if (isSelected) selectedFill else if (hasValue) filledFill else defaultFill
             val stroke = if (isSelected) selectedStroke else defaultStroke
@@ -135,14 +137,14 @@ fun BsaBodyDiagram(
 
 @Composable
 fun BsaRegionSlider(
-    region: BsaRegion,
+    region: BodyRegion,
     value: Int,
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(modifier) {
         Column(Modifier.fillMaxWidth().padding(16.dp)) {
-            if (region != BsaRegion.NONE) {
+            if (region != BodyRegion.NONE) {
                 Row(
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
