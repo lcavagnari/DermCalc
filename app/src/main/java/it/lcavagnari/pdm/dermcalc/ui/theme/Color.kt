@@ -86,7 +86,7 @@ val SoulBravery       = Color(0xFFE5853A)
 /** Integrity soul color for PASI accents. */
 val SoulIntegrity     = Color(0xFF314390)
 /** Perseverance soul color for EASI accents. */
-val SoulPerseverance  = Color(0xFF803CA1)
+val SoulPerseverance  = Color(0xFF9630DE)
 /** Kindness soul color for profile accents. */
 val SoulKindness      = Color(0xFF5FB85F)
 /** Justice soul color for tools and save-action accents. */
