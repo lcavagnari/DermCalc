@@ -1,5 +1,7 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -7,14 +9,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -22,6 +29,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +57,9 @@ import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoulContainer
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulFor
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
@@ -135,8 +146,6 @@ fun IndexToolScaffold(
     val isLastPage = pagerState.currentPage == pages.lastIndex
     val isFirstPage = pagerState.currentPage == 0
 
-    val page = pages[pagerState.currentPage]
-
     val onNext = {
         if (!isLastPage)
             coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
@@ -147,64 +156,165 @@ fun IndexToolScaffold(
     }
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 1. Persistent Top Score & Progress Header
+
+        // 1. Header
+        ScafoldHeader(
+            currentPage = pagerState.currentPage,
+            soulColor = soulColor,
+            formattedScore = formattedScore,
+            toolMeasurementUnit = toolMeasurementUnit,
+            onReset = { coroutineScope.launch { pagerState.animateScrollToPage(1); onReset() } }
+        ) { coroutineScope.launch { pagerState.animateScrollToPage(it) } }
+
+        // 2. Central Horizontal Pager for Page Content
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(2.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            elevation = CardDefaults.cardElevation(4.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
-                    alpha = 0.5f
-                )
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurface
             )
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // District name
-                    Text(
-                        stringResource(page.titleRes),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize(),
+                userScrollEnabled = true
+            ) { page ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) { pageContent(page, onNext, onBack) }
+            }
+        }
 
-                    BodyScan(
-                        selectedRegions = page.bodyRegions,
-                        size = Pair(60.dp, 90.dp)
+        // 4. Navigation Controls
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Previous Button (disabled on page 0)
+            OutlinedButton(
+                onClick = onBack,
+                enabled = !isFirstPage,
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                Text(text = stringResource(R.string.btn_back))
+            }
+
+            // Next / Done Button
+            if (!isLastPage) {
+                Button(
+                    onClick = onNext,
+                    colors = ButtonDefaults.buttonColors(containerColor = soulColor),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(text = stringResource(R.string.btn_next))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.padding(start = 4.dp)
                     )
                 }
+            } else {
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+        }
 
-                // 2. Custom Step Progress Indicator
-                ProgressBar(
-                    modifier = Modifier.padding(horizontal = 5.dp),
-                    currentPage = pagerState.currentPage,
-                    onReset = onReset,
+        // 5. Final Result Card & Save Trigger
+        AnimatedVisibility(visible = isLastPage && formattedScore != null) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                ToolResultCard(
                     soulColor = soulColor,
-                    formattedScore = formattedScore,
-                    severity = severity,
+                    toolLabel = toolLabel.uppercase(),
                     toolMeasurementUnit = toolMeasurementUnit,
-                    onPageSelect = { coroutineScope.launch { pagerState.animateScrollToPage(it) } }
+                    formattedScore = formattedScore ?: "--",
+                    severity = severity
+                )
+
+                ToolSaveButton(
+                    enabled = saveEnabled,
+                    onSaveResult = onSaveResult,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
     }
 }
 
-/*
+@Composable
+fun ScafoldHeader(
+    modifier: Modifier = Modifier,
+    formattedScore: String?,
+    toolMeasurementUnit: String,
+    currentPage: Int,
+    soulColor: Color,
+    onReset: () -> Unit,
+    onPageSelect: (Int) -> Unit
+) {
+    val page = calculatorPages[currentPage]
 
- */
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
+        ),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // District name
+                Text(
+                    stringResource(page.titleRes).uppercase(),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                BodyScan(
+                    selectedRegions = page.bodyRegions,
+                    size = Pair(40.dp, 60.dp),
+                    soulColor = soulColor,
+                    showHints = false
+                )
+            }
+
+            // 2. Custom Step Progress Indicator
+            ProgressBar(
+                modifier = Modifier.padding(horizontal = 5.dp),
+                currentPage = currentPage,
+                onReset = onReset,
+                soulColor = soulColor,
+                formattedScore = formattedScore,
+                toolMeasurementUnit = toolMeasurementUnit,
+                onPageSelect = onPageSelect
+            )
+        }
+    }
+}
 
 @Composable
 private fun ProgressBar(
@@ -213,7 +323,6 @@ private fun ProgressBar(
     soulColor: Color,
     formattedScore: String?,
     toolMeasurementUnit: String,
-    severity: Severity?,
     onReset: () -> Unit,
     onPageSelect: (Int) -> Unit
 ) {
@@ -233,12 +342,12 @@ private fun ProgressBar(
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    stringResource(R.string.label_step_of, currentPage + 1, calculatorPages.size),
+                    stringResource(R.string.label_step_of, currentPage + 1, calculatorPages.size)+" ·",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    "· ${formattedScore ?: "--"} $toolMeasurementUnit",
+                    "${formattedScore ?: "--"} $toolMeasurementUnit",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                     color = soulColor
