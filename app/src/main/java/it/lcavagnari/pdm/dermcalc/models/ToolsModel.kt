@@ -318,6 +318,16 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
         .map { it.result?.score ?: 0.0 }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
+    /** Reactive boolean: true if any region in the EASI draft has a non-zero field value. */
+    val easiHasData: StateFlow<Boolean> = _easiDraft
+        .map { draft ->
+            draft.values.any { (_, v) ->
+                val e = v as? EasiScore ?: return@any false
+                e.erythema > 0 || e.induration > 0 || e.excoriation > 0 || e.lichenification > 0 || e.area > 0
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
     // TODO: Have it reviewed
     fun initPasiDraft(pages: Int) { _pasiDraft.value.initPasi(pages) }
     fun initEasiDraft(pages: Int) { _easiDraft.value.initEasi(pages) }

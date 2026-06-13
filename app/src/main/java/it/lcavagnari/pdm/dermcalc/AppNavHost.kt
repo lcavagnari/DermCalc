@@ -119,9 +119,11 @@ fun AppNavHost(
                 }
 
                 val easiScore by toolsModel.easiScore.collectAsState()
+                val easiHasData by toolsModel.easiHasData.collectAsState()
 
                 EASIScreen(
                     score = easiScore,
+                    saveEnabled = easiHasData,
                     startPage = toolsModel.easiDraftStartPage,
                     onRegionScore = toolsModel::easiRegionScore,
                     onScoreUpdate = toolsModel::updateEasiDraft,

@@ -87,6 +87,7 @@ fun EASIScreen(
     toolLabel: String = "EASI",
     score: Double = 0.0,
     startPage: Int = 0,
+    saveEnabled: Boolean = true,
     onRegionScore: (Int) -> EasiScore,
     onScoreUpdate: (Int, EasiScore, Int) -> Unit,
     onReset: () -> Unit,
@@ -110,6 +111,7 @@ fun EASIScreen(
             score < 21.0 -> Severity.MODERATE
             else         -> Severity.SEVERE
         },
+        saveEnabled = saveEnabled,
         onReset = onReset,
         onSaveResult = onSaveResult
     ) { pageIndex, _, _ ->
