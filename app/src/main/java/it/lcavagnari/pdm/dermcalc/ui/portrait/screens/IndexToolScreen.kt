@@ -125,10 +125,10 @@ fun EASIScreen(
         }
 
         val signs = listOf(
-            Triple(R.string.easi_sign_erythema,        draft.erythema         ) { v: Int -> draft.copy(erythema = v) },
-            Triple(R.string.easi_sign_induration,      draft.induration       ) { v: Int -> draft.copy(erythema = v) },
-            Triple(R.string.easi_sign_excoriation,     draft.excoriation      ) { v: Int -> draft.copy(erythema = v) },
-            Triple(R.string.easi_sign_lichenification, draft.lichenification  ) { v: Int -> draft.copy(erythema = v) },
+            Triple(R.string.easi_sign_erythema,        draft.erythema,         { v: Int -> draft.copy(erythema = v) }),
+            Triple(R.string.easi_sign_induration,      draft.induration,       { v: Int -> draft.copy(erythema = v) }),
+            Triple(R.string.easi_sign_excoriation,     draft.excoriation,      { v: Int -> draft.copy(erythema = v) }),
+            Triple(R.string.easi_sign_lichenification, draft.lichenification,  { v: Int -> draft.copy(erythema = v) }),
         )
 
         Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
