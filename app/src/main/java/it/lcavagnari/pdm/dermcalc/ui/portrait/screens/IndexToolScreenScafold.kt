@@ -173,8 +173,7 @@ fun IndexToolScaffold(
         // 3. Central Horizontal Pager for Page Content
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+                .fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -188,9 +187,9 @@ fun IndexToolScaffold(
             ) { page ->
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) { pageContent(page, onNext, onBack) }
             }
         }
@@ -280,7 +279,7 @@ fun ScafoldHeader(
         ),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(top = 10.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -388,7 +387,6 @@ private fun ProgressBar(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            //
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                 verticalAlignment = Alignment.Bottom
