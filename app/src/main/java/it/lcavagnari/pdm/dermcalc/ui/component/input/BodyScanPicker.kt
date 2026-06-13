@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -152,6 +153,7 @@ fun BodyScan(
 fun BodyRegionSlider(
     modifier: Modifier = Modifier,
     region: BodyRegion,
+    soulColor: Color = MaterialTheme.colorScheme.primary,
     value: Int,
     onValueChange: (Int) -> Unit,
 ) {
@@ -177,12 +179,16 @@ fun BodyRegionSlider(
                     Text(
                         "$value%",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = soulColor,
                     )
                 }
                 Slider(
                     value = value.toFloat(),
                     onValueChange = { onValueChange((it / 5f).roundToInt() * 5) },
+                    colors = SliderDefaults.colors(
+                        thumbColor = soulColor,
+                        activeTickColor = soulColor,
+                    ),
                     valueRange = 0f..100f,
                     steps = 19,
                 )
