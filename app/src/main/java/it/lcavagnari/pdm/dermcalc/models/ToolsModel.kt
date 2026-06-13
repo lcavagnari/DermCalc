@@ -14,7 +14,32 @@ import kotlinx.serialization.Serializable
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
  */
-enum class Severity { NONE ,MILD, MODERATE, SEVERE }
+enum class Severity { NONE, MILD, MODERATE, SEVERE }
+
+abstract class RegionScore(
+    open val erythema: Int = 0,
+    open val induration: Int = 0,
+    open val area: Int = 0
+) {
+    val areaScore: Double
+        get() = if (area == 0) 0.0
+        else ((area + 10) / 20 + 1).coerceAtMost(6).toDouble()
+}
+
+data class EasiScore(
+    override val erythema: Int = 0,
+    override val induration: Int = 0,
+    override val area: Int = 0,
+    val excoriation: Int = 0,
+    val lichenification: Int = 0
+) : RegionScore()
+
+data class PasiScore(
+    override val erythema: Int = 0,
+    override val induration: Int = 0,
+    override val area: Int = 0,
+    val desquamation: Int = 0
+) : RegionScore()
 
 /**
  * Maps this [ToolResult] to its clinical [Severity] tier using per-tool thresholds:
@@ -49,6 +74,7 @@ fun ToolResult.severity(): Severity = when (this) {
         else -> Severity.SEVERE
     }
 }
+
 /** Formats this result's score: zero decimals for whole numbers, one decimal otherwise. */
 fun ToolResult.formattedScore(): String {
     val rounded = Math.round(score * 10) / 10.0
@@ -73,7 +99,6 @@ sealed interface ToolResult {
 
     fun isValid(): Boolean
 }
-
 
 
 /**
@@ -115,6 +140,39 @@ data class PasiResult(
                 listOf(
                     headArea, trunkArea, upperLimbsArea, lowerLimbsArea,
                 ).all { it in 0.0..100.0 }
+
+    companion object {
+        fun compute(
+            head: PasiScore = PasiScore(),
+            upperLimbs: PasiScore = PasiScore(),
+            trunk: PasiScore = PasiScore(),
+            lowerLimbs: PasiScore = PasiScore(),
+        ): PasiResult {
+            val score = 0.1 * head.areaScore * (head.erythema + head.induration + head.desquamation)
+            +0.2 * upperLimbs.areaScore * (upperLimbs.erythema + upperLimbs.induration + upperLimbs.desquamation)
+            +0.3 * trunk.areaScore * (trunk.erythema + trunk.induration + trunk.desquamation)
+            +0.4 * lowerLimbs.areaScore * (lowerLimbs.erythema + lowerLimbs.induration + lowerLimbs.desquamation)
+            return PasiResult(
+                headErythema = head.erythema.toDouble(),
+                headInduration = head.induration.toDouble(),
+                headScaling = head.desquamation.toDouble(),
+                headArea = head.area.toDouble(),
+                trunkErythema = trunk.erythema.toDouble(),
+                trunkInduration = trunk.induration.toDouble(),
+                trunkScaling = trunk.desquamation.toDouble(),
+                trunkArea = trunk.area.toDouble(),
+                upperLimbsErythema = upperLimbs.erythema.toDouble(),
+                upperLimbsInduration = upperLimbs.induration.toDouble(),
+                upperLimbsScaling = upperLimbs.desquamation.toDouble(),
+                upperLimbsArea = upperLimbs.area.toDouble(),
+                lowerLimbsErythema = lowerLimbs.erythema.toDouble(),
+                lowerLimbsInduration = lowerLimbs.induration.toDouble(),
+                lowerLimbsScaling = lowerLimbs.desquamation.toDouble(),
+                lowerLimbsArea = lowerLimbs.area.toDouble(),
+                score = score
+            )
+        }
+    }
 }
 
 /**
@@ -152,14 +210,64 @@ data class EasiResult(
     override val name: String = "EASI"
     override fun isValid(): Boolean =
         listOf(
-            headErythema, headInduration, headExcoriation, headLichenification,
-            trunkErythema, trunkInduration, trunkExcoriation, trunkLichenification,
-            upperLimbsErythema, upperLimbsInduration, upperLimbsExcoriation, upperLimbsLichenification,
-            lowerLimbsErythema, lowerLimbsInduration, lowerLimbsExcoriation, lowerLimbsLichenification,
+            headErythema,
+            headInduration,
+            headExcoriation,
+            headLichenification,
+            trunkErythema,
+            trunkInduration,
+            trunkExcoriation,
+            trunkLichenification,
+            upperLimbsErythema,
+            upperLimbsInduration,
+            upperLimbsExcoriation,
+            upperLimbsLichenification,
+            lowerLimbsErythema,
+            lowerLimbsInduration,
+            lowerLimbsExcoriation,
+            lowerLimbsLichenification,
         ).all { it in 0.0..3.0 } &&
                 listOf(
                     headArea, trunkArea, upperLimbsArea, lowerLimbsArea,
                 ).all { it in 0.0..100.0 }
+
+    companion object {
+        fun compute(
+            head: EasiScore = EasiScore(),
+            upperLimbs: EasiScore = EasiScore(),
+            trunk: EasiScore = EasiScore(),
+            lowerLimbs: EasiScore = EasiScore(),
+        ): EasiResult {
+            val score =
+                0.1 * head.areaScore * (head.erythema + head.induration + head.excoriation + head.lichenification) +
+                        0.2 * upperLimbs.areaScore * (upperLimbs.erythema + upperLimbs.induration + upperLimbs.excoriation + upperLimbs.lichenification) +
+                        0.3 * trunk.areaScore * (trunk.erythema + trunk.induration + trunk.excoriation + trunk.lichenification) +
+                        0.4 * lowerLimbs.areaScore * (lowerLimbs.erythema + lowerLimbs.induration + lowerLimbs.excoriation + lowerLimbs.lichenification)
+            return EasiResult(
+                headErythema = head.erythema.toDouble(),
+                headInduration = head.induration.toDouble(),
+                headExcoriation = head.excoriation.toDouble(),
+                headLichenification = head.lichenification.toDouble(),
+                headArea = head.area.toDouble(),
+                trunkErythema = trunk.erythema.toDouble(),
+                trunkInduration = trunk.induration.toDouble(),
+                trunkExcoriation = trunk.excoriation.toDouble(),
+                trunkLichenification = trunk.lichenification.toDouble(),
+                trunkArea = trunk.area.toDouble(),
+                upperLimbsErythema = upperLimbs.erythema.toDouble(),
+                upperLimbsInduration = upperLimbs.induration.toDouble(),
+                upperLimbsExcoriation = upperLimbs.excoriation.toDouble(),
+                upperLimbsLichenification = upperLimbs.lichenification.toDouble(),
+                upperLimbsArea = upperLimbs.area.toDouble(),
+                lowerLimbsErythema = lowerLimbs.erythema.toDouble(),
+                lowerLimbsInduration = lowerLimbs.induration.toDouble(),
+                lowerLimbsExcoriation = lowerLimbs.excoriation.toDouble(),
+                lowerLimbsLichenification = lowerLimbs.lichenification.toDouble(),
+                lowerLimbsArea = lowerLimbs.area.toDouble(),
+                score = score
+            )
+        }
+    }
 }
 
 
@@ -222,45 +330,92 @@ data class BsaResult(
 }
 
 
-
+data class IndexToolDraft<Tool : ToolResult>(
+    var result: Tool? = null,
+    var page: Int = 0,
+    val values: MutableMap<Int, RegionScore> = mutableMapOf()
+) {
+    fun reset() {
+        result = null
+        page = 0
+        values.clear()
+    }
+}
 
 /** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
 class ToolsModel(application: Application) : AndroidViewModel(application) {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
+
     /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
 
     // --- Draft State (Persistence across navigation) ---
+    private val _pasiDraft = MutableStateFlow(IndexToolDraft<PasiResult>())
+    val pasiDraftScore: Double
+        get() = _pasiDraft.value.result?.score ?: 0.0
 
-    private val _pasiDraftScore = MutableStateFlow(0.0)
-    val pasiDraftScore: StateFlow<Double> = _pasiDraftScore.asStateFlow()
-    private val _pasiDraftPage = MutableStateFlow(0)
-    val pasiDraftPage: StateFlow<Int> = _pasiDraftPage.asStateFlow()
+    val pasiDraftPage: Int
+        get() = _pasiDraft.value.page
 
-    private val _easiDraftScore = MutableStateFlow(0.0)
-    val easiDraftScore: StateFlow<Double> = _easiDraftScore.asStateFlow()
-    private val _easiDraftPage = MutableStateFlow(0)
-    val easiDraftPage: StateFlow<Int> = _easiDraftPage.asStateFlow()
+    private val _easiDraft = MutableStateFlow(IndexToolDraft<EasiResult>())
+    val easiDraftScore: Double
+        get() = _easiDraft.value.result?.score ?: 0.0
 
-    fun updatePasiDraft(score: Double, page: Int) {
-        _pasiDraftScore.value = score
-        _pasiDraftPage.value = page
+    val easiDraftPage: Int
+        get() = _easiDraft.value.page
+
+    fun updatePasiDraft(region: Int, score: PasiScore, page: Int) {
+        val old = _pasiDraft.value
+        val newValues = old.values.toMutableMap().apply { this[region] = score }
+
+        val result = PasiResult.compute(
+            head = newValues[0] as? PasiScore ?: PasiScore(),
+            upperLimbs = newValues[1] as? PasiScore ?: PasiScore(),
+            trunk = newValues[2] as? PasiScore ?: PasiScore(),
+            lowerLimbs = newValues[3] as? PasiScore ?: PasiScore()
+        )
+
+        _pasiDraft.value = old.copy(
+            values = newValues,
+            page = page,
+            result = result
+        )
+    }
+
+    fun updateEasiDraft(region: Int, score: EasiScore, page: Int) {
+        val old = _easiDraft.value
+        val newValues = old.values.toMutableMap().apply { this[region] = score }
+
+        val result = EasiResult.compute(
+            head = newValues[0] as? EasiScore ?: EasiScore(),
+            upperLimbs = newValues[1] as? EasiScore ?: EasiScore(),
+            trunk = newValues[2] as? EasiScore ?: EasiScore(),
+            lowerLimbs = newValues[3] as? EasiScore ?: EasiScore()
+        )
+
+        _easiDraft.value = old.copy(
+            values = newValues,
+            page = page,
+            result = result
+        )
     }
 
     fun resetPasiDraft() {
-        _pasiDraftScore.value = 0.0
-        _pasiDraftPage.value = 0
-    }
-
-    fun updateEasiDraft(score: Double, page: Int) {
-        _easiDraftScore.value = score
-        _easiDraftPage.value = page
+        _pasiDraft.value = IndexToolDraft()
     }
 
     fun resetEasiDraft() {
-        _easiDraftScore.value = 0.0
-        _easiDraftPage.value = 0
+        _easiDraft.value = IndexToolDraft()
     }
+
+    fun savePasiDraft(): Boolean {
+        return addResult(_pasiDraft.value.result ?: return false)
+    }
+
+    fun saveEasiDraft(): Boolean {
+        return addResult(_easiDraft.value.result ?: return false)
+    }
+
 
     // --- Result storage ---
 
@@ -286,6 +441,7 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
     }
 
     /** Removes all stored results. */
-    fun clearResult() { _results.update { emptyList() } }
+    fun clearResult() {
+        _results.update { emptyList() }
+    }
 }
-
