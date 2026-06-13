@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.div
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
@@ -266,12 +265,20 @@ data class BsaResult(
 
 data class IndexToolDraft<Tool : ToolResult>(
     var result: Tool? = null,
-    var page: Int = 0,
+    var startPage: Int = 0,
     val values: MutableMap<Int, RegionScore> = mutableMapOf()
 ) {
+    fun initPasi(pages: Int) {
+        for (i in 0 until pages) values[i] = PasiScore()
+    }
+
+    fun initEasi(pages: Int) {
+        for (i in 0 until pages) values[i] = EasiScore()
+    }
+
     fun reset() {
         result = null
-        page = 0
+        startPage = 0
         values.clear()
     }
 }
@@ -289,14 +296,18 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
         get() = _pasiDraft.value.result?.score ?: 0.0
 
     val pasiDraftPage: Int
-        get() = _pasiDraft.value.page
+        get() = _pasiDraft.value.startPage
 
     private val _easiDraft = MutableStateFlow(IndexToolDraft<EasiResult>())
     val easiDraftScore: Double
         get() = _easiDraft.value.result?.score ?: 0.0
 
-    val easiDraftPage: Int
-        get() = _easiDraft.value.page
+    val easiDraftStartPage: Int
+        get() = _easiDraft.value.startPage
+
+    // TODO: Have it reviewed
+    fun initPasiDraft(pages: Int) { _pasiDraft.value.initPasi(pages) }
+    fun initEasiDraft(pages: Int) { _easiDraft.value.initEasi(pages) }
 
     fun updatePasiDraft(region: Int, score: PasiScore, page: Int) {
         val old = _pasiDraft.value
@@ -311,7 +322,7 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
 
         _pasiDraft.value = old.copy(
             values = newValues,
-            page = page,
+            startPage = page,
             result = result
         )
     }
@@ -329,7 +340,7 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
 
         _easiDraft.value = old.copy(
             values = newValues,
-            page = page,
+            startPage = page,
             result = result
         )
     }

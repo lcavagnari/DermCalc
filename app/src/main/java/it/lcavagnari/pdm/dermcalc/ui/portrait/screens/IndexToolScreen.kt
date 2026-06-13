@@ -1,40 +1,15 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.PasiResult
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
@@ -75,11 +50,15 @@ private val vm:(OnboardingModel) -> Unit = {
  * Placeholder screen for the PASI calculator.
  */
 @Composable
-fun PASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
+fun PASIScreen(
+    toolLabel: String = "PASI",
+    score: Double = 0.0,
+    startPage: Int = 0,
+    onReset: () -> Unit,
+    onSaveResult: () -> Unit
+) {
     Text("PASI Screen Placeholder")
 }
-
-
 
 
 /**
@@ -87,23 +66,17 @@ fun PASIScreen(toolsModel: ToolsModel, onSaveResult: () -> Unit) {
  */
 @Composable
 fun EASIScreen(
-    toolsModel: ToolsModel,
     toolLabel: String = "EASI",
+    score: Double = 0.0,
+    startPage: Int = 0,
+    onReset: () -> Unit,
     onSaveResult: () -> Unit
 ) {
-    val currentScore by toolsModel.easiDraftScore.collectAsState()
-    val startPage by toolsModel.easiDraftPage.collectAsState()
-
     val pagerState = rememberPagerState(
         initialPage = startPage,
         pageCount = { calculatorPages.size }
     )
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            toolsModel.updateEasiDraft(currentScore, page)
-        }
-    }
 
     IndexToolScaffold(
         pages = calculatorPages,
@@ -111,14 +84,14 @@ fun EASIScreen(
         soulColor = soulFor(toolLabel).color,
         toolLabel = toolLabel,
         toolMeasurementUnit = "/ 72",
-        formattedScore = "%.1f".format(currentScore),
+        formattedScore = "%.1f".format(score),
         severity = when {
-            currentScore == 0.0 -> Severity.NONE
-            currentScore < 7.0 -> Severity.MILD
-            currentScore < 21.0 -> Severity.MODERATE
+            score == 0.0 -> Severity.NONE
+            score < 7.0 -> Severity.MILD
+            score < 21.0 -> Severity.MODERATE
             else -> Severity.SEVERE
         },
-        onReset = { toolsModel.resetEasiDraft() },
+        onReset = onReset,
         onSaveResult = onSaveResult
     ) { pageIndex, onNext, _ ->
         Column(

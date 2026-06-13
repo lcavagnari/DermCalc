@@ -2,6 +2,7 @@ package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.calculatorPages
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,18 +96,32 @@ fun AppNavHost(
                 )
             }
             composable<PASIToolRoute> {
+                LaunchedEffect(toolsModel) {
+                    toolsModel.initPasiDraft(calculatorPages.size)
+                }
+
                 PASIScreen(
-                    toolsModel = toolsModel,
+                    score = toolsModel.easiDraftScore,
+                    startPage = toolsModel.easiDraftStartPage,
+                    onReset = { toolsModel.resetEasiDraft() },
                     onSaveResult = {
-                        navController.popBackStack()
+                        val success = toolsModel.savePasiDraft()
+                        if (success) navController.popBackStack()
                     }
                 )
             }
             composable<EASIToolRoute> {
+                LaunchedEffect(toolsModel) {
+                    toolsModel.initEasiDraft(calculatorPages.size)
+                }
+
                 EASIScreen(
-                    toolsModel = toolsModel,
+                    score = toolsModel.easiDraftScore,
+                    startPage = toolsModel.easiDraftStartPage,
+                    onReset = { toolsModel.resetEasiDraft() },
                     onSaveResult = {
-                        navController.popBackStack()
+                        val success = toolsModel.saveEasiDraft()
+                        if (success) navController.popBackStack()
                     }
                 )
             }
