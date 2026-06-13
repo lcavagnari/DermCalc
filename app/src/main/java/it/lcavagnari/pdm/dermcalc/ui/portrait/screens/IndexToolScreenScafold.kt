@@ -337,15 +337,26 @@ private fun ResetButton(
     }
 
     IconButton(
-        modifier = modifier.size(32.dp),
+        modifier = modifier.height(48.dp),
         onClick = { showDialog = true }
     ) {
-        Icon(
-            painterResource(R.drawable.ic_reset_button),
-            contentDescription = stringResource(R.string.btn_reset),
-            tint = soulColor,
-            modifier = Modifier.size(18.dp)
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Icon(
+                painterResource(R.drawable.ic_reset_button),
+                contentDescription = stringResource(R.string.btn_reset),
+                tint = soulColor,
+                modifier = Modifier.size(18.dp)
+            )
+            Text(
+                stringResource(R.string.btn_reset),
+                style = MaterialTheme.typography.labelSmall,
+                color = soulColor,
+                maxLines = 1
+            )
+        }
     }
 }
 
