@@ -315,7 +315,13 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
             toolResultDao.getAll().collect { entities ->
                 _results.value = entities.mapNotNull { entity ->
                     try {
-                        Json.decodeFromString<ToolResult>(entity.detailsJson)
+                        val decoded = Json.decodeFromString<ToolResult>(entity.detailsJson)
+                        when (decoded) {
+                            is PasiResult -> decoded.copy(id = entity.id)
+                            is EasiResult -> decoded.copy(id = entity.id)
+                            is BmiResult  -> decoded.copy(id = entity.id)
+                            is BsaResult  -> decoded.copy(id = entity.id)
+                        }
                     } catch (e: Exception) {
                         null // Skip deserialization failures
                     }
@@ -445,15 +451,18 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     fun addResult(result: ToolResult): Boolean {
         if (!result.isValid()) return false
         viewModelScope.launch {
+            try {
             val json = Json.encodeToString(ToolResult.serializer(), result)
             val entity = ToolResultEntity(
                 toolName = result.name,
                 score = result.score,
-                timestamp = result.timestamp.toInstant(TimeZone.UTC).toEpochMilliseconds(),
                 detailsJson = json
             )
-            toolResultDao.insert(entity)
+            toolResultDao.upsert(entity)
         }
+            } catch (e: Exception) {
+                // Insert failed silently
+            }
         return true
     }
 
@@ -471,7 +480,7 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     /** Removes all stored results. */
     fun clearResult() {
         viewModelScope.launch {
-            toolResultDao.getAll().first().forEach { toolResultDao.deleteById(it.id) }
+            toolResultDao.deleteAll()
         }
     }
 }

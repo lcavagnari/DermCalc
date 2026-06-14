@@ -1,17 +1,12 @@
-﻿@file:OptIn(kotlin.time.ExperimentalTime::class)
-
+﻿
 package it.lcavagnari.pdm.dermcalc.data
 
-import kotlin.time.ExperimentalTime
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Database(
     entities = [
@@ -20,7 +15,7 @@ import kotlinx.coroutines.launch
         ToolResultEntity::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -50,13 +45,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val seedCallback = object : RoomDatabase.Callback() {
             override fun onCreate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
                 super.onCreate(db)
-                INSTANCE?.let { database ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        database.appSettingsDao().upsert(
-                            AppSettingsEntity(id = 1, isDarkTheme = false, hasSeenOnboarding = false)
-                        )
-                    }
-                }
+                db.execSQL("INSERT OR IGNORE INTO app_settings (id, isDarkTheme, hasSeenOnboarding) VALUES (1, 0, 0)")
+                db.execSQL("INSERT OR IGNORE INTO user_profile (id) VALUES (1)")
             }
         }
     }

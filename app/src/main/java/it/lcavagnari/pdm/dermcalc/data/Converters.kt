@@ -18,13 +18,5 @@ class Converters {
     fun toLocalDate(millis: Long?): LocalDate? = millis?.let {
         Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.UTC).date
     }
-
-    @TypeConverter
-    fun fromLocalDateTime(dateTime: LocalDateTime?): Long? = dateTime?.toInstant(TimeZone.UTC)?.toEpochMilliseconds()
-
-    @TypeConverter
-    fun toLocalDateTime(millis: Long?): LocalDateTime? = millis?.let {
-        Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.UTC)
-    }
 }
 

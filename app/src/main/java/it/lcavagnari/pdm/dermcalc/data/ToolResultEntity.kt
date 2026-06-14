@@ -8,6 +8,5 @@ data class ToolResultEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val toolName: String,
     val score: Double,
-    val timestamp: Long,
     val detailsJson: String
 )
