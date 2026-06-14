@@ -109,8 +109,6 @@ android {
         lintConfig = file("lint.xml")
         // Abort the build if any of the rules in lint.xml produce an error.
         abortOnError = true
-        // Emit a baseline so that pre-existing findings are not counted as new failures.
-        baseline = file("lint-baseline.xml")
         // Always generate the HTML report (useful for artifact upload in CI).
         htmlReport = true
         htmlOutput = layout.buildDirectory.file("reports/lint-results-debug.html").get().asFile
@@ -118,6 +116,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
         freeCompilerArgs += "-opt-in=kotlin.time.ExperimentalTime"
+    }
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
     testOptions {
         unitTests {
@@ -136,7 +137,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.appcompat)
-    implementation(libs.core.ktx)
+    testImplementation(libs.core.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     androidTestImplementation(libs.androidx.junit)
