@@ -141,9 +141,9 @@ DermCalc uses a custom Material 3 theme with subtle visual nods to Undertale —
 - **Typography** — Determination Mono used throughout the full type scale (display → label); JetBrains Mono available for clinical score readouts
 - **Result cards** — white border on background, echoing the battle box aesthetic
 - **Severity color mapping** — intentionally aligned with Undertale's own color language:
-    - Mild → green
-    - Moderate → yellow (`#ffff00` toned down for readability)
-    - Severe → red
+  - Mild → green
+  - Moderate → yellow (`#ffff00` toned down for readability)
+  - Severe → red
 
 ### Light / Dark mode
 
@@ -170,6 +170,6 @@ Dark mode is the intended experience. Light mode is fully functional for clinica
 - [x] Phase 5 — BMI calculator end-to-end & BSA calculator
 - [x] Phase 6 — PASI multi-step calculator
 - [x] Phase 7 — EASI multi-step calculator
-- [ ] Phase 8 —  Room profile & result storage
+- [x] Phase 8 — Room profile & result storage
 - [ ] Phase 9 — Full history screen
 - [ ] Phase 10 — Polish (Material 3 theming, transitions, error handling)
