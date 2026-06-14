@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +60,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.utils.today
-import java.util.Locale.getDefault
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -85,6 +85,7 @@ private val vm:(OnboardingModel) -> Unit = {
 @Composable
 fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingModel) {
     val inputFields by onboardingModel.fields.collectAsState()
+    val locale = LocalConfiguration.current.locales[0]
 
     Column(
         modifier = Modifier
@@ -94,7 +95,7 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            stringResource(R.string.profile_details).uppercase(getDefault()),
+            stringResource(R.string.profile_details).uppercase(locale),
             modifier = Modifier.padding(top = 10.dp),
             style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
@@ -108,7 +109,7 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
         )
 
         Text(
-            stringResource(R.string.profile_measure_preference).uppercase(getDefault()),
+            stringResource(R.string.profile_measure_preference).uppercase(locale),
             modifier = Modifier.padding(top = 10.dp),
             style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
@@ -143,6 +144,7 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>, onboardingModel: OnboardingModel) {
+    val locale = LocalConfiguration.current.locales[0]
     BorderedCard(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
@@ -166,7 +168,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>,
                 ) {
                     Text(
                         modifier = Modifier.padding(vertical = 5.dp, horizontal = 15.dp),
-                        text = stringResource(field.label).uppercase(getDefault()),
+                        text = stringResource(field.label).uppercase(locale),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurface,
                     )

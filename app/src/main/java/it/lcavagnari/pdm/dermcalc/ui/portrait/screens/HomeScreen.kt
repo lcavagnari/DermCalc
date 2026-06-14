@@ -14,7 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -39,7 +41,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.datetime.number
-import java.util.Locale
 
 @Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
     DermCalcPreview(screen = HomeRoute, setupTm = previewBmiResults)
@@ -63,11 +64,14 @@ fun HomeScreen(
         stringResource(R.string.welcome) + ", " + fullNameField.value.split(' ')[0]
 
     val todayDate = today().date
-    val dateText = java.text.SimpleDateFormat("EEEE dd MMMM", Locale.getDefault()).format(
-        java.util.Calendar.getInstance().apply {
-            set(todayDate.year, todayDate.month.number - 1, todayDate.day)
-        }.time
-    )
+    val configuration = LocalConfiguration.current
+    val dateText = remember(configuration) {
+        java.text.SimpleDateFormat("EEEE dd MMMM", configuration.locales[0]).format(
+            java.util.Calendar.getInstance().apply {
+                set(todayDate.year, todayDate.month.number - 1, todayDate.day)
+            }.time
+        )
+    }
 
     Column(
         modifier = Modifier
