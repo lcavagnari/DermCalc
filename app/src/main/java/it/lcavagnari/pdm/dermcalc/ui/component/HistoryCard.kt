@@ -148,11 +148,11 @@ private fun HistoryResultRow(
     result: ToolResult,
     now: LocalDateTime
 ) {
-    val daysAgo = now.date.toEpochDays() - result.timestamp.date.toEpochDays()
+    val daysAgo = (now.date.toEpochDays() - result.timestamp.date.toEpochDays()).toInt()
     val timeAgo = when {
         daysAgo == 0 -> stringResource(R.string.time_today)
-        daysAgo == 1 -> stringResource(R.string.time_yesterday)
-        else -> pluralStringResource(R.plurals.time_days_ago, daysAgo, daysAgo)
+        daysAgo == 1 -> pluralStringResource(R.plurals.history_days_ago, 1, 1)
+        else -> pluralStringResource(R.plurals.history_days_ago, daysAgo, daysAgo)
     }
 
     Row(
@@ -179,7 +179,7 @@ private fun HistoryResultRow(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
-        if (result.severity() != Severity.Normal) {
+        if (result.severity() != Severity.NONE) {
             Text(
                 text = result.severity().name,
                 style = MaterialTheme.typography.labelSmall,

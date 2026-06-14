@@ -159,6 +159,8 @@
     <string name="history_show_all">Show all results</string>
     <string name="severity_moderate">Moderate</string>
     <string name="severity_severe">Severe</string>
+    <string name="time_today">Today</string>
+    <string name="time_yesterday">Yesterday</string>
     <string name="history_today_at">Today at %s</string>
     <plurals name="history_days_ago">
         <item quantity="one">%d day ago</item>
