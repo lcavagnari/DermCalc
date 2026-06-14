@@ -168,8 +168,8 @@ Dark mode is the intended experience. Light mode is fully functional for clinica
 - [X] Phase 3 — Profile screen (read + edit)
 - [X] Phase 4 — Home screen (welcome, medical quote, history preview)
 - [x] Phase 5 — BMI calculator end-to-end & BSA calculator
-- [ ] Phase 6 — PASI multi-step calculator
-- [ ] Phase 7 — EASI multi-step calculator
+- [x] Phase 6 — PASI multi-step calculator
+- [x] Phase 7 — EASI multi-step calculator
 - [ ] Phase 8 —  Room profile & result storage
 - [ ] Phase 9 — Full history screen
 - [ ] Phase 10 — Polish (Material 3 theming, transitions, error handling)
