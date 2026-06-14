@@ -313,6 +313,25 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
         return (_easiDraft.value.values[region] as? EasiScore) ?: EasiScore()
     }
 
+    fun pasiRegionScore(region: Int): PasiScore {
+        return (_pasiDraft.value.values[region] as? PasiScore) ?: PasiScore()
+    }
+
+    /** Reactive stream of the computed PASI score — bridges StateFlow → Compose reactivity. */
+    val pasiScore: StateFlow<Double> = _pasiDraft
+        .map { it.result?.score ?: 0.0 }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
+
+    /** Reactive boolean: true if any region in the PASI draft has a non-zero field value. */
+    val pasiHasData: StateFlow<Boolean> = _pasiDraft
+        .map { draft ->
+            draft.values.any { (_, v) ->
+                val p = v as? PasiScore ?: return@any false
+                p.erythema > 0 || p.induration > 0 || p.desquamation > 0 || p.area > 0
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
     /** Reactive stream of the computed EASI score — bridges StateFlow → Compose reactivity. */
     val easiScore: StateFlow<Double> = _easiDraft
         .map { it.result?.score ?: 0.0 }

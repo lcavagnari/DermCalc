@@ -100,13 +100,18 @@ fun AppNavHost(
                     toolsModel.initPasiDraft(calculatorPages.size)
                 }
 
+                val pasiScore by toolsModel.pasiScore.collectAsState()
+                val pasiHasData by toolsModel.pasiHasData.collectAsState()
+
                 PASIScreen(
-                    score = toolsModel.easiDraftScore,
-                    startPage = toolsModel.easiDraftStartPage,
-                    onReset = { toolsModel.resetPasiDraft() },
+                    score = pasiScore,
+                    saveEnabled = pasiHasData,
+                    startPage = toolsModel.pasiDraftPage,
+                    onRegionScore = toolsModel::pasiRegionScore,
+                    onScoreUpdate = toolsModel::updatePasiDraft,
+                    onReset = toolsModel::resetPasiDraft,
                     onSaveResult = {
-                        val success = toolsModel.savePasiDraft()
-                        if (success) {
+                        if (toolsModel.savePasiDraft()) {
                             toolsModel.resetPasiDraft()
                             navController.popBackStack()
                         }

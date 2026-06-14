@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.EasiScore
+import it.lcavagnari.pdm.dermcalc.models.PasiScore
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
@@ -57,17 +58,70 @@ private val vm:(OnboardingModel) -> Unit = {
 
 
 /**
- * Placeholder screen for the PASI calculator.
+ * Screen for the PASI calculator, mirroring the EASI screen structure.
  */
 @Composable
 fun PASIScreen(
     toolLabel: String = "PASI",
     score: Double = 0.0,
     startPage: Int = 0,
+    saveEnabled: Boolean = true,
+    onRegionScore: (Int) -> PasiScore,
+    onScoreUpdate: (Int, PasiScore, Int) -> Unit,
     onReset: () -> Unit,
     onSaveResult: () -> Unit
 ) {
-    Text("PASI Screen Placeholder")
+    val soulColor = soulFor(toolLabel).color
+
+    val pagerState = rememberPagerState(
+        initialPage = startPage,
+        pageCount = { calculatorPages.size }
+    )
+
+    IndexToolScaffold(
+        pages = calculatorPages,
+        pagerState = pagerState,
+        soulColor = soulColor,
+        toolLabel = toolLabel,
+        toolMeasurementUnit = "/ 72",
+        formattedScore = "%.1f".format(score),
+        severity = when {
+            score == 0.0 -> Severity.NONE
+            score < 10.0 -> Severity.MILD
+            score < 20.0 -> Severity.MODERATE
+            else         -> Severity.SEVERE
+        },
+        saveEnabled = saveEnabled,
+        onReset = onReset,
+        onSaveResult = onSaveResult
+    ) { pageIndex, _, _ ->
+        var draft by remember(pageIndex) { mutableStateOf(onRegionScore(pageIndex)) }
+
+        val commit: (PasiScore) -> Unit = { updated ->
+            draft = updated
+            onScoreUpdate(pageIndex, updated, pagerState.currentPage)
+        }
+
+        val signs = listOf(
+            Triple(R.string.tool_sign_erythema,     draft.erythema,     { v: Int -> draft.copy(erythema = v) }),
+            Triple(R.string.tool_sign_induration,   draft.induration,   { v: Int -> draft.copy(induration = v) }),
+            Triple(R.string.pasi_sign_desquamation, draft.desquamation, { v: Int -> draft.copy(desquamation = v) }),
+        )
+
+        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            signs.forEach { (nameRes, currentScore, withScore) ->
+                SeverityRow(stringResource(nameRes), soulColor, currentScore, max = 4) { commit(withScore(it)) }
+            }
+
+            BodyRegionSlider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                soulColor = soulColor,
+                region = calculatorPages[pageIndex].bodyRegions.first(),
+                value = draft.area,
+                onValueChange = { commit(draft.copy(area = it)) }
+            )
+        }
+    }
 }
 
 
@@ -75,10 +129,10 @@ fun PASIScreen(
  * Placeholder screen for the EASI calculator.
  */
 @Composable
-private fun SeverityRow(label: String, soulColor: Color, value: Int, onValueChange: (Int) -> Unit) {
+private fun SeverityRow(label: String, soulColor: Color, value: Int, max: Int = 3, onValueChange: (Int) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(label, modifier = Modifier.weight(1f))
-        ScoreSelector(value = value, max = 3, souldColor = soulColor, onValueChange = onValueChange)
+        ScoreSelector(value = value, max = max, souldColor = soulColor, onValueChange = onValueChange)
     }
 }
 
@@ -126,15 +180,15 @@ fun EASIScreen(
         }
 
         val signs = listOf(
-            Triple(R.string.easi_sign_erythema,        draft.erythema,         { v: Int -> draft.copy(erythema = v) }),
-            Triple(R.string.easi_sign_induration,      draft.induration,       { v: Int -> draft.copy(induration = v) }),
+            Triple(R.string.tool_sign_erythema,        draft.erythema,         { v: Int -> draft.copy(erythema = v) }),
+            Triple(R.string.tool_sign_induration,      draft.induration,       { v: Int -> draft.copy(induration = v) }),
             Triple(R.string.easi_sign_excoriation,     draft.excoriation,      { v: Int -> draft.copy(excoriation = v) }),
             Triple(R.string.easi_sign_lichenification, draft.lichenification,  { v: Int -> draft.copy(lichenification = v) }),
         )
 
         Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             signs.forEach { (nameRes, currentScore, withScore) ->
-                SeverityRow(stringResource(nameRes),soulColor, currentScore) { commit(withScore(it)) }
+                SeverityRow(stringResource(nameRes),soulColor, currentScore, max = 4) { commit(withScore(it)) }
             }
 
             BodyRegionSlider(
