@@ -8,6 +8,7 @@ import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
 import kotlinx.datetime.LocalDate
@@ -43,30 +44,35 @@ class OnboardingModel(
     /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
     val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
 
+    private var restored = false
+
     init {
-        // Load persisted profile and settings on creation
-        viewModelScope.launch {
-            userProfileDao.getProfile().collect { profile ->
-                if (profile != null) {
-                    // Restore profile values
-                    if (!profile.fullName.isNullOrBlank()) {
-                        updateName(profile.fullName)
+        if (!restored) {
+            // Load persisted profile and settings on creation
+            viewModelScope.launch {
+                userProfileDao.getProfile().collect { profile ->
+                    if (profile != null) {
+                        // Restore profile values
+                        if (!profile.fullName.isNullOrBlank()) {
+                            updateName(profile.fullName)
+                        }
+                        profile.dateOfBirth?.let { updateDateOfBirth(it) }
+                        profile.sex?.let { updateSex(it) }
+                        if (profile.heightCm > 0) {
+                            updateHeightMetric(profile.heightCm.toInt())
+                        }
+                        if (profile.weightKg > 0) {
+                            updateWeightKilos(profile.weightKg.toInt())
+                        }
                     }
-                    profile.dateOfBirth?.let { updateDateOfBirth(it) }
-                    profile.sex?.let { updateSex(it) }
-                    if (profile.heightCm > 0) {
-                        updateHeightMetric(profile.heightCm.toInt())
-                    }
-                    if (profile.weightKg > 0) {
-                        updateWeightKilos(profile.weightKg.toInt())
-                    }
+                    restored = true
                 }
             }
-        }
-        viewModelScope.launch {
-            appSettingsDao.getSettings().collect { settings ->
-                if (settings != null) {
-                    _hasSeenOnboarding.value = settings.hasSeenOnboarding
+            viewModelScope.launch {
+                appSettingsDao.getSettings().collect { settings ->
+                    if (settings != null) {
+                        _hasSeenOnboarding.value = settings.hasSeenOnboarding
+                    }
                 }
             }
         }
@@ -78,10 +84,11 @@ class OnboardingModel(
     fun finishOnboarding() {
         _hasSeenOnboarding.value = true
         viewModelScope.launch {
+            val current = appSettingsDao.getSettings().firstOrNull()
             appSettingsDao.upsert(
                 AppSettingsEntity(
                     id = 1,
-                    isDarkTheme = false,
+                    isDarkTheme = current?.isDarkTheme ?: false,
                     hasSeenOnboarding = true
                 )
             )
