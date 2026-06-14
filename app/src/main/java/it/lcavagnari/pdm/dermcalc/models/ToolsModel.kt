@@ -452,17 +452,17 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
         if (!result.isValid()) return false
         viewModelScope.launch {
             try {
-            val json = Json.encodeToString(ToolResult.serializer(), result)
-            val entity = ToolResultEntity(
-                toolName = result.name,
-                score = result.score,
-                detailsJson = json
-            )
-            toolResultDao.upsert(entity)
-        }
+                val json = Json.encodeToString(ToolResult.serializer(), result)
+                val entity = ToolResultEntity(
+                    toolName = result.name,
+                    score = result.score,
+                    detailsJson = json
+                )
+                toolResultDao.upsert(entity)
             } catch (e: Exception) {
                 // Insert failed silently
             }
+        }
         return true
     }
 
