@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.compose.animation.AnimatedVisibility
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
@@ -229,12 +230,12 @@ private fun Scaffold(
             ),
             content = content
         )
-        if (formattedScore != null) {
+        AnimatedVisibility(visible = formattedScore != null) {
             ToolResultCard(
                 soulColor = soulColor,
                 toolLabel = toolLabel?.uppercase(),
                 toolMeasurementUnit = toolMeasurementUnit,
-                formattedScore = formattedScore,
+                formattedScore = formattedScore ?: "--",
                 severity = severity
             )
         }
@@ -293,10 +294,10 @@ fun BSAScreen(
             onValueChange = { vm.updateRegion(selectedRegion, it) },
         )
 
-        if (result.score > 0.0) {
+        AnimatedVisibility(visible = result.score > 0.0) {
             ToolResultCard(
                 soulColor = SoulBravery,
-                toolLabel = stringResource(R.string.tools_bsa).uppercase(),
+                toolLabel = stringResource(R.string.your_bmi, stringResource(R.string.tools_bsa)).uppercase(),
                 toolMeasurementUnit = stringResource(R.string.bsa_unit),
                 formattedScore = result.formattedScore(),
                 severity = result.severity()
