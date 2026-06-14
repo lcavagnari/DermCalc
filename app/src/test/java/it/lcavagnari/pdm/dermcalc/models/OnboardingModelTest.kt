@@ -1,7 +1,11 @@
 package it.lcavagnari.pdm.dermcalc.models
 
-import android.app.Application
-import androidx.test.core.app.ApplicationProvider
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
+import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -17,10 +21,34 @@ import org.robolectric.annotation.Config
 class OnboardingModelTest {
 
     private lateinit var model: OnboardingModel
+    private lateinit var fakeProfileDao: FakeUserProfileDao
+    private lateinit var fakeSettingsDao: FakeAppSettingsDao
 
     @Before
     fun setUp() {
-        model = OnboardingModel(ApplicationProvider.getApplicationContext<Application>())
+        fakeProfileDao = FakeUserProfileDao()
+        fakeSettingsDao = FakeAppSettingsDao()
+        model = OnboardingModel(fakeProfileDao, fakeSettingsDao)
+    }
+
+    private class FakeUserProfileDao : UserProfileDao {
+        private val _profile = MutableStateFlow<UserProfileEntity?>(null)
+
+        override suspend fun upsert(profile: UserProfileEntity) {
+            _profile.value = profile
+        }
+
+        override fun getProfile(): Flow<UserProfileEntity?> = _profile
+    }
+
+    private class FakeAppSettingsDao : AppSettingsDao {
+        private val _settings = MutableStateFlow<AppSettingsEntity?>(null)
+
+        override suspend fun upsert(settings: AppSettingsEntity) {
+            _settings.value = settings
+        }
+
+        override fun getSettings(): Flow<AppSettingsEntity?> = _settings
     }
 
     // ── helpers ─────────────────────────────────────────────────────────────
