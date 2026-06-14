@@ -61,6 +61,14 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.utils.today
 import java.util.Locale.getDefault
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import it.lcavagnari.pdm.dermcalc.models.isDefaultOrBlank
+
+
 private val vm:(OnboardingModel) -> Unit = {
     it.finishOnboarding()
     it.updateDateOfBirth(today().date)
@@ -197,11 +205,25 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>,
                         }
                     )
 
+                    val isDefault = field.isDefaultOrBlank()
+                    val iconAlpha = if (isDefault) {
+                        val transition = rememberInfiniteTransition()
+                        val alpha by transition.animateFloat(
+                            initialValue = 0.5f,
+                            targetValue = 1.0f,
+                            animationSpec = infiniteRepeatable(
+                                animation = tween(1200),
+                                repeatMode = RepeatMode.Reverse
+                            )
+                        )
+                        alpha
+                    } else 1.0f
+
                     IconButton(onClick = { showDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "Edit ${field.id}",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = iconAlpha)
                         )
                     }
                 }

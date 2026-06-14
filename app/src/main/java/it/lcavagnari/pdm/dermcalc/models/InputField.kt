@@ -26,6 +26,18 @@ fun Long.toLocalDate(): LocalDate {
 }
 
 /**
+ * Returns true when the field still holds its default/unset value.
+ * Used to show a subtle hint on the edit icon.
+ */
+fun InputField.isDefaultOrBlank(): Boolean = when (this) {
+    is TextInput   -> value.isBlank()
+    is DateInput   -> value == null
+    is SexInput    -> value == it.lcavagnari.pdm.dermcalc.models.Sex.Other
+    is HeightInput -> value == null
+    is WeightInput -> value == null
+}
+
+/**
  * Biological sex of the patient.
  */
 @Serializable
