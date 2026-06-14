@@ -223,7 +223,7 @@ fun IndexToolScaffold(
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
                 ToolSaveButton(
                     enabled = saveEnabled,

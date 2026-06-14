@@ -212,7 +212,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         border = BorderStroke(2.dp,
-            onSoulContainer(soulColor).copy(alpha = localAlpha)
+            soulColor.copy(alpha = localAlpha)
         )
     ) {
         Row(

@@ -187,6 +187,7 @@ fun BodyRegionSlider(
                     onValueChange = { onValueChange((it / 5f).roundToInt() * 5) },
                     colors = SliderDefaults.colors(
                         thumbColor = soulColor,
+                        activeTrackColor = soulColor,
                         activeTickColor = soulColor,
                     ),
                     valueRange = 0f..100f,
