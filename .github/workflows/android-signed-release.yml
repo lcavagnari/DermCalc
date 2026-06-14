@@ -1,6 +1,7 @@
 name: Android Signed Release
 
 on:
+  workflow_dispatch: 
   workflow_call:
     secrets:
       ANDROID_SIGNING_KEYSTORE_BASE64:
