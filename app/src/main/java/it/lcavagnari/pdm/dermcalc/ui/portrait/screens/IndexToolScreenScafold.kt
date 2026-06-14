@@ -360,7 +360,7 @@ private fun ResetButton(
             Text(
                 stringResource(R.string.btn_reset),
                 style = MaterialTheme.typography.labelSmall,
-                color = soulColor,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1
             )
         }
@@ -447,26 +447,26 @@ private fun ProgressBar(
 fun ScoreSelector(
     modifier: Modifier = Modifier,
     value: Int,
-    onValueChange: (Int) -> Unit,
-    max: Int = 4
+    max: Int = 4,
+    souldColor: Color = MaterialTheme.colorScheme.primary,
+    onValueChange: (Int) -> Unit
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "1", modifier = modifier.padding(end = 4.dp), color = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f))
+        Text(text = "0", modifier = modifier.padding(end = 4.dp), color = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f))
 
-        repeat(max) { index ->
-            val score = index + 1
+        repeat(max + 1) { index ->
             Box(
                 modifier = Modifier
                     .size(25.dp)
                     .clip(CircleShape)
-                    .background(if (score <= value) MaterialTheme.colorScheme.primary else Color.Transparent)
-                    .border(2.dp, if (score <= value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, CircleShape)
+                    .background(if (index <= value) souldColor else Color.Transparent)
+                    .border(2.dp, if (index <= value) souldColor else MaterialTheme.colorScheme.outline, CircleShape)
                     .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
-                        onValueChange(score)
+                        onValueChange(index)
                     }
             )
         }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,10 +75,10 @@ fun PASIScreen(
  * Placeholder screen for the EASI calculator.
  */
 @Composable
-private fun SeverityRow(label: String, value: Int, onValueChange: (Int) -> Unit) {
+private fun SeverityRow(label: String, soulColor: Color, value: Int, onValueChange: (Int) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(label, modifier = Modifier.weight(1f))
-        ScoreSelector(value = value, max = 4, onValueChange = onValueChange)
+        ScoreSelector(value = value, max = 3, souldColor = soulColor, onValueChange = onValueChange)
     }
 }
 
@@ -126,14 +127,14 @@ fun EASIScreen(
 
         val signs = listOf(
             Triple(R.string.easi_sign_erythema,        draft.erythema,         { v: Int -> draft.copy(erythema = v) }),
-            Triple(R.string.easi_sign_induration,      draft.induration,       { v: Int -> draft.copy(erythema = v) }),
-            Triple(R.string.easi_sign_excoriation,     draft.excoriation,      { v: Int -> draft.copy(erythema = v) }),
-            Triple(R.string.easi_sign_lichenification, draft.lichenification,  { v: Int -> draft.copy(erythema = v) }),
+            Triple(R.string.easi_sign_induration,      draft.induration,       { v: Int -> draft.copy(induration = v) }),
+            Triple(R.string.easi_sign_excoriation,     draft.excoriation,      { v: Int -> draft.copy(excoriation = v) }),
+            Triple(R.string.easi_sign_lichenification, draft.lichenification,  { v: Int -> draft.copy(lichenification = v) }),
         )
 
         Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             signs.forEach { (nameRes, currentScore, withScore) ->
-                SeverityRow(stringResource(nameRes), currentScore) { commit(withScore(it)) }
+                SeverityRow(stringResource(nameRes),soulColor, currentScore) { commit(withScore(it)) }
             }
 
             BodyRegionSlider(
