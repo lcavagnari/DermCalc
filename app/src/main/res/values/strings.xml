@@ -196,6 +196,7 @@
     <string name="bsa_region_left_leg">Left leg</string>
     <string name="bsa_slider_tooltip">Tap a body region to adjust its coverage</string>
     <string name="btn_saved_confirm">Saved successfully!</string>
+    <string name="error_save_failed">Failed to save</string>
     <string name="reset_dialog_body">Confirm reset of %s calculation?</string>
     <string name="reset_dialog_title">Confirm action.</string>
     <string name="tool_sign_erythema">Erythema</string>

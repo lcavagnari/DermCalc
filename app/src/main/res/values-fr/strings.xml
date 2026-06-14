@@ -173,6 +173,7 @@
     <string name="bsa_region_right_leg">Jambe droite</string>
     <string name="bsa_region_left_leg">Jambe gauche</string>
     <string name="btn_saved_confirm">Enregistré avec succès!</string>
+    <string name="error_save_failed">Échec de la sauvegarde</string>
     <string name="reset_dialog_body">Voulez-vous confirmer la réinitialisation du calcul de %s?</string>
     <string name="reset_dialog_title">Confirmer cette actiòn.</string>
     <string name="district_head">Tète</string>

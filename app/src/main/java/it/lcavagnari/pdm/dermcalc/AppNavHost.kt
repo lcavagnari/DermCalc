@@ -35,6 +35,7 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.calculatorPages
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import kotlinx.coroutines.flow.MutableStateFlow
+import android.widget.Toast
 
 
 /**
@@ -81,8 +82,8 @@ fun AppNavHost(
                     heightCm = onboardingModel.heightInput.value,
                     weightKg = onboardingModel.weightInput.value,
                     onSaveResult = { result ->
-                        toolsModel.addResult(result)
-                        navController.popBackStack()
+                        if (toolsModel.addResult(result))
+                            navController.popBackStack()
                     }
                 )
             }
@@ -90,8 +91,10 @@ fun AppNavHost(
                 BSAScreen(
                     vm = bodyScanModel,
                     onSaveResult = { result ->
-                        toolsModel.addResult(result)
-                        navController.popBackStack()
+                        navController.saveWithFeedback(
+                            onSave = { toolsModel.addResult(result) },
+                            onReset = {}
+                        )
                     }
                 )
             }
@@ -111,10 +114,10 @@ fun AppNavHost(
                     onScoreUpdate = toolsModel::updatePasiDraft,
                     onReset = toolsModel::resetPasiDraft,
                     onSaveResult = {
-                        if (toolsModel.savePasiDraft()) {
-                            toolsModel.resetPasiDraft()
-                            navController.popBackStack()
-                        }
+                        navController.saveWithFeedback(
+                            onSave = toolsModel::savePasiDraft,
+                            onReset = toolsModel::resetPasiDraft
+                        )
                     }
                 )
             }
@@ -134,14 +137,31 @@ fun AppNavHost(
                     onScoreUpdate = toolsModel::updateEasiDraft,
                     onReset = toolsModel::resetEasiDraft,
                     onSaveResult = {
-                        if (toolsModel.saveEasiDraft()) {
-                            toolsModel.resetEasiDraft()
-                            navController.popBackStack()
-                        }
+                        navController.saveWithFeedback(
+                            onSave = toolsModel::saveEasiDraft,
+                            onReset = toolsModel::resetEasiDraft
+                        )
                     }
                 )
             }
         }
     }
+}
+
+/**
+ * Attempts to save via [onSave]; on success resets via [onReset] and pops the back stack.
+ * Shows a "Failed to save" toast if [onSave] returns `false`.
+ */
+private fun NavHostController.saveWithFeedback(
+    onSave: () -> Boolean,
+    onReset: () -> Unit
+) {
+    val ctx = context
+    if (onSave()) {
+        onReset()
+        popBackStack()
+        Toast.makeText(ctx, R.string.btn_saved_confirm, Toast.LENGTH_SHORT).show()
+    } else Toast.makeText(ctx, R.string.error_save_failed, Toast.LENGTH_SHORT).show()
+
 }
 

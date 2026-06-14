@@ -171,6 +171,7 @@
     <string name="bsa_region_right_leg">Gamba destra</string>
     <string name="bsa_region_left_leg">Gamba sinistra</string>
     <string name="btn_saved_confirm">Registrato con successo!</string>
+    <string name="error_save_failed">Salvataggio fallito</string>
     <string name="reset_dialog_title">Conferma azione.</string>
     <string name="reset_dialog_body">Confermare il ripristino del calcolo di %s?</string>
     <string name="district_head">Testa</string>
