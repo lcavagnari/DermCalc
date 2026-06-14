@@ -81,6 +81,8 @@ fun AppNavHost(
                 BMIScreen(
                     heightCm = onboardingModel.heightInput.value,
                     weightKg = onboardingModel.weightInput.value,
+                    isMetric = onboardingModel.heightInput.isMetric,
+                    isKilos = onboardingModel.weightInput.isKilos,
                     onSaveResult = { result ->
                         if (toolsModel.addResult(result))
                             navController.popBackStack()

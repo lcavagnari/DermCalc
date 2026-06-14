@@ -98,18 +98,20 @@ fun BMIScreen(
     soulColor: Color = SoulPatience,
     heightCm: Double? = null,
     weightKg: Double? = null,
+    isMetric: Boolean = true,
+    isKilos: Boolean = true,
     onSaveResult: (BmiResult) -> Unit,
 ) {
     var heightField by remember {
         mutableStateOf(
-            HeightInput(id = "bmi_height", label = R.string.label_height).copy(
+            HeightInput(id = "bmi_height", label = R.string.label_height, isMetric = isMetric).copy(
                 value = heightCm, isValid = heightCm != null
             )
         )
     }
     var weightField by remember {
         mutableStateOf(
-            WeightInput(id = "bmi_weight", label = R.string.label_weight).copy(
+            WeightInput(id = "bmi_weight", label = R.string.label_weight, isKilos = isKilos).copy(
                 value = weightKg, isValid = weightKg != null
             )
         )
