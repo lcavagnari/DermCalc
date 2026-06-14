@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -26,78 +26,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Quote
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.utils.today
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.atTime
-import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import java.util.Locale
 
-private val vm: (ToolsModel) -> Unit = {
-    it.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
-    it.addResult(
-        BmiResult(
-            weightKg = 85.0, heightCm = 175.0, score = 27.8,
-            timestamp = today().date.minus(3, DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 110.0, heightCm = 175.0, score = 35.9,
-            timestamp = today().date.minus(10, DateTimeUnit.DAY)
-                .atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                10,
-                DateTimeUnit.WEEK
-            ).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                10,
-                DateTimeUnit.MONTH
-            ).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
-                1,
-                DateTimeUnit.YEAR
-            ).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 78.0,
-            heightCm = 175.0,
-            score = 25.5,
-            timestamp = today()
-        )
-    )
-}
 @Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
-    DermCalcPreview(screen = HomeRoute, setupTm = vm)
+    DermCalcPreview(screen = HomeRoute, setupTm = previewBmiResults)
 }
 @Preview(showBackground = true) @Composable private fun HomeScreenFullDarkPreview() {
-    DermCalcPreview(darkTheme = true, screen = HomeRoute, setupTm = vm)
+    DermCalcPreview(darkTheme = true, screen = HomeRoute, setupTm = previewBmiResults)
 }
 
 /**
