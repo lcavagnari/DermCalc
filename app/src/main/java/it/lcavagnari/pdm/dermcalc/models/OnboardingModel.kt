@@ -1,16 +1,24 @@
-package it.lcavagnari.pdm.dermcalc.models
+﻿package it.lcavagnari.pdm.dermcalc.models
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
+import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
 import kotlinx.datetime.LocalDate
+import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
 
 /** ViewModel holding onboarding state and all user-input update operations. */
-class OnboardingModel(application: Application) : AndroidViewModel(application) {
+class OnboardingModel(
+    private val userProfileDao: UserProfileDao,
+    private val appSettingsDao: AppSettingsDao
+) : ViewModel() {
 
     private val _inputFields = MutableStateFlow<List<InputField>>(
         listOf<InputField>(
@@ -35,10 +43,50 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
     /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
     val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
 
+    init {
+        // Load persisted profile and settings on creation
+        viewModelScope.launch {
+            userProfileDao.getProfile().collect { profile ->
+                if (profile != null) {
+                    // Restore profile values
+                    if (!profile.fullName.isNullOrBlank()) {
+                        updateName(profile.fullName)
+                    }
+                    profile.dateOfBirth?.let { updateDateOfBirth(it) }
+                    profile.sex?.let { updateSex(it) }
+                    if (profile.heightCm > 0) {
+                        updateHeightMetric(profile.heightCm.toInt())
+                    }
+                    if (profile.weightKg > 0) {
+                        updateWeightKilos(profile.weightKg.toInt())
+                    }
+                }
+            }
+        }
+        viewModelScope.launch {
+            appSettingsDao.getSettings().collect { settings ->
+                if (settings != null) {
+                    _hasSeenOnboarding.value = settings.hasSeenOnboarding
+                }
+            }
+        }
+    }
+
     // Methods
 
     /** Marks onboarding as complete; causes [hasSeenOnboarding] to emit true. */
-    fun finishOnboarding() { _hasSeenOnboarding.value = true }
+    fun finishOnboarding() {
+        _hasSeenOnboarding.value = true
+        viewModelScope.launch {
+            appSettingsDao.upsert(
+                AppSettingsEntity(
+                    id = 1,
+                    isDarkTheme = false,
+                    hasSeenOnboarding = true
+                )
+            )
+        }
+    }
 
     /**
      * @param id id of the [InputField] to retrieve.
@@ -78,6 +126,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 field.copy(value = value, isValid = if (field.isRequired) isValid else true)
             else field
         }
+        saveProfile()
     }
 
     /**
@@ -95,6 +144,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 field.copy(value = value, isValid = if (field.isRequired) isValid else true)
             else field
         }
+        saveProfile()
     }
 
     /**
@@ -108,6 +158,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 field.copy(value = value, isValid = true)
             else field
         }
+        saveProfile()
     }
 
     /**
@@ -150,6 +201,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 field.copy(value = cm.toDouble(), isValid = if (field.isRequired) isValid else true)
             else field
         }
+        saveProfile()
     }
 
     /**
@@ -168,6 +220,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 )
             } else field
         }
+        saveProfile()
     }
 
     /**
@@ -186,6 +239,7 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 )
             } else field
         }
+        saveProfile()
     }
 
     /**
@@ -204,6 +258,30 @@ class OnboardingModel(application: Application) : AndroidViewModel(application) 
                 )
             } else field
         }
+        saveProfile()
+    }
+
+    private fun saveProfile() {
+        val fields = _inputFields.value
+        val name = (fields.firstOrNull { it.id == "full-name" } as? TextInput)?.value
+        val dobField = (fields.firstOrNull { it.id == "date-of-birth" } as? DateInput)?.value
+        val sex = (fields.firstOrNull { it.id == "sex" } as? SexInput)?.value
+        val height = (fields.firstOrNull { it.id == "height" } as? HeightInput)?.value
+        val weight = (fields.firstOrNull { it.id == "weight" } as? WeightInput)?.value
+        
+        viewModelScope.launch {
+            userProfileDao.upsert(
+                UserProfileEntity(
+                    id = 1,
+                    fullName = name,
+                    dateOfBirth = dobField,
+                    sex = sex ?: Sex.Other,
+                    heightCm = height ?: 0.0,
+                    weightKg = weight ?: 0.0
+                )
+            )
+        }
     }
 }
+
 
