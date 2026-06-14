@@ -294,7 +294,7 @@ private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): Str
 
     if (resultDate == todayDate) {
         val time = "%02d:%02d".format(timestamp.hour, timestamp.minute)
-        return stringResource(R.string.history_today_at, time)
+        return stringResource(R.string.time_today_at, time)
     }
 
     val daysDiff = (todayDate.toEpochDays() - resultDate.toEpochDays()).toInt().coerceAtLeast(1)
