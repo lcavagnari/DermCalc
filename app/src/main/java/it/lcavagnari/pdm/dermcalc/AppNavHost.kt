@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc
+﻿package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -16,14 +16,14 @@ import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
+import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
+import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BMIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BSAScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.EASIScreen

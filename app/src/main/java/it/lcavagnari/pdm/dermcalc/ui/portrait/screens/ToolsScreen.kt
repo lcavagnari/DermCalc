@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -19,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,12 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
+import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
@@ -144,7 +143,6 @@ fun ToolsScreen(toolsModel: ToolsModel) {
  */
 @Composable
 fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
-    val lastNavTime = remember { mutableLongStateOf(0L) }
     Row(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
         verticalAlignment = Alignment.Top,

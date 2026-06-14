@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.theme
+﻿package it.lcavagnari.pdm.dermcalc.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,7 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
 
 
 /** Composition local providing the current dark-mode state. Consume with `LocalDarkTheme.current`. */

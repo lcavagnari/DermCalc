@@ -30,10 +30,10 @@ import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
 import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
 import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
 import kotlinx.coroutines.flow.MutableStateFlow
-import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen

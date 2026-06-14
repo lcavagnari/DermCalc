@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,8 +23,8 @@ import it.lcavagnari.pdm.dermcalc.models.EasiScore
 import it.lcavagnari.pdm.dermcalc.models.PasiScore
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
-import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulFor
