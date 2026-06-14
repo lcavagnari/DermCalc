@@ -102,7 +102,7 @@ fun BodyScan(
     }
 
     val defaultFill    = MaterialTheme.colorScheme.surfaceVariant
-    val filledFill     = onSoul(soulColor)
+    val filledFill     = soulColor.copy(alpha = 0.3f)
     val defaultStroke  = MaterialTheme.colorScheme.outline
     val selectedStroke = soulColor
 
