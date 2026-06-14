@@ -20,6 +20,8 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.data.AppDatabase
+import it.lcavagnari.pdm.dermcalc.data.DermCalcViewModelFactory
 
 /**
  * Root activity. Detects orientation and delegates rendering to either
@@ -35,11 +37,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
-            val toolsModel = ViewModelProvider(this)[ToolsModel::class.java]
-
-            val quoteModel = ViewModelProvider(this)[QuoteModel::class.java]
-            val bodyScanModel = ViewModelProvider(this)[BodyScanModel::class.java]
+            val database = remember { AppDatabase.getInstance(this@MainActivity) }
+            val factory = remember { DermCalcViewModelFactory(database, this@MainActivity) }
+            
+            val onboardingModel = ViewModelProvider(this, factory)[OnboardingModel::class.java]
+            val toolsModel = ViewModelProvider(this, factory)[ToolsModel::class.java]
+            val quoteModel = ViewModelProvider(this, factory)[QuoteModel::class.java]
+            val bodyScanModel = ViewModelProvider(this, factory)[BodyScanModel::class.java]
             // Seed the initial quote; updateQuote() is not called on init.
             LaunchedEffect(Unit) { quoteModel.updateQuote() }
 
