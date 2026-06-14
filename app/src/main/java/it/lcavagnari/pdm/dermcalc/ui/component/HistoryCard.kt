@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -32,25 +35,81 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.ToolResult
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
-import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
 import it.lcavagnari.pdm.dermcalc.utils.today
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
 
 /** Maximum number of results shown before a "Show all" row appears. **/
 private const val MAX_HISTORY_VISIBLE = 5
 
+private val vm: (ToolsModel) -> Unit = {
+    it.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
+    it.addResult(
+        BmiResult(
+            weightKg = 85.0, heightCm = 175.0, score = 27.8,
+            timestamp = today().date.minus(3, DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9,
+            timestamp = today().date.minus(10, DateTimeUnit.DAY)
+                .atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                10,
+                DateTimeUnit.WEEK
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                10,
+                DateTimeUnit.MONTH
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
+                1,
+                DateTimeUnit.YEAR
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 78.0,
+            heightCm = 175.0,
+            score = 25.5,
+            timestamp = today()
+        )
+    )
+}
 @Preview(showBackground = true) @Composable private fun HistoryRegularPreview() {
-    DermCalcPreview(setupTm = previewBmiResults) { _,_,tm,_ -> HistoryCard (toolsModel = tm, onShowAll = {}) }
+    DermCalcPreview(setupTm = vm) { _,_,tm,_ -> HistoryCard (toolsModel = tm, onShowAll = {}) }
 }
 @Preview(showBackground = true) @Composable private fun HistoryRegularDarkPreview() {
-    DermCalcPreview(darkTheme = true,setupTm = previewBmiResults,) { _,_,tm,_ -> HistoryCard (toolsModel = tm, onShowAll = {}) }
+    DermCalcPreview(darkTheme = true,setupTm = vm,) { _,_,tm,_ -> HistoryCard (toolsModel = tm, onShowAll = {}) }
 }
+
 
 /**
  * Card that displays the most recent [ToolResult] entries from [toolsModel].
@@ -141,59 +200,9 @@ fun HistoryCard(
 
 
 /**
- * A single result row showing the tool name, score, severity badge, and relative timestamp.
- */
-@Composable
-private fun HistoryResultRow(
-    result: ToolResult,
-    now: LocalDateTime
-) {
-    val daysAgo = (now.date.toEpochDays() - result.timestamp.date.toEpochDays()).toInt()
-    val timeAgo = when {
-        daysAgo == 0 -> stringResource(R.string.time_today)
-        daysAgo == 1 -> pluralStringResource(R.plurals.history_days_ago, 1, 1)
-        else -> pluralStringResource(R.plurals.history_days_ago, daysAgo, daysAgo)
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = result.name,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
-            )
-            Text(
-                text = timeAgo,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
-        }
-        Text(
-            text = result.formattedScore(),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
-        )
-        if (result.severity() != Severity.NONE) {
-            Text(
-                text = result.severity().name,
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.White,
-                modifier = Modifier
-                    .padding(horizontal = 6.dp, vertical = 2.dp)
-            )
-        }
-    }
-}
-
-
-/**
- * "Show all" row at the bottom of the history list.
+ * Tappable row shown at the bottom of [HistoryCard] when there are more results than [MAX_HISTORY_VISIBLE].
+ *
+ * @param onClick callback invoked when the row is tapped.
  */
 @Composable
 private fun ShowAllRow(onClick: () -> Unit) {
@@ -201,14 +210,108 @@ private fun ShowAllRow(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(vertical = 8.dp),
+            .padding(vertical = 10.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.history_show_all),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.labelLarge,
+            color = Soul.Justice.color,
         )
+    }
+}
+
+/**
+ * Single row inside [HistoryCard] showing the score badge, tool name, severity label, and timestamp.
+ *
+ * @param result the [ToolResult] to display.
+ * @param now the current date/time used as the reference point for [relativeTimestamp].
+ */
+@Composable
+private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
+    val severity = result.severity()
+    val dark = LocalDarkTheme.current
+    val color = severityColor(severity)
+    val onColor = if (!dark || severity == Severity.SEVERE) Color.White else Color.Black
+    val severityLabel = when (severity) {
+        Severity.NONE -> stringResource(R.string.severity_normal)
+        Severity.MILD -> stringResource(R.string.severity_normal)
+        Severity.MODERATE -> stringResource(R.string.severity_moderate)
+        Severity.SEVERE -> stringResource(R.string.severity_severe)
+    }
+    val scoreText = result.formattedScore()
+    val timestamp = relativeTimestamp(result.timestamp, now)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Card(
+            modifier = Modifier.size(48.dp),
+            shape = RoundedCornerShape(10.dp),
+            colors = CardDefaults.cardColors(containerColor = color)
+        ) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    text = scoreText,
+                    fontSize = 19.sp,
+                    color = onColor,
+                )
+            }
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                text = result.name,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = "$severityLabel · $timestamp",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+/**
+ * Produces a human-readable relative label for [timestamp] compared to [now].
+ *
+ * Returns "Today at HH:MM" for same-day results, then falls back to days, weeks, months, or years ago.
+ *
+ * @param timestamp the date/time of the recorded result.
+ * @param now the current date/time used as the reference point.
+ * @return Localized relative timestamp text.
+ */
+@Composable
+private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): String {
+    val todayDate = now.date
+    val resultDate = timestamp.date
+
+    if (resultDate == todayDate) {
+        val time = "%02d:%02d".format(timestamp.hour, timestamp.minute)
+        return stringResource(R.string.history_today_at, time)
+    }
+
+    val daysDiff = (todayDate.toEpochDays() - resultDate.toEpochDays()).toInt().coerceAtLeast(1)
+    return when {
+        daysDiff < 7 -> pluralStringResource(R.plurals.history_days_ago, daysDiff, daysDiff)
+        daysDiff < 30 -> pluralStringResource(
+            R.plurals.history_weeks_ago,
+            daysDiff / 7,
+            daysDiff / 7
+        )
+
+        daysDiff < 365 -> pluralStringResource(
+            R.plurals.history_months_ago,
+            daysDiff / 30,
+            daysDiff / 30
+        )
+
+        else -> pluralStringResource(R.plurals.history_years_ago, daysDiff / 365, daysDiff / 365)
     }
 }
