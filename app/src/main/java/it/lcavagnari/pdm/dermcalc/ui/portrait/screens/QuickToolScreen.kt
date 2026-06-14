@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,8 +42,8 @@ import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan

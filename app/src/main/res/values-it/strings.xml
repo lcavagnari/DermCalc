@@ -134,7 +134,8 @@
     <string name="history_show_all">Mostra tutti i risultati</string>
     <string name="severity_moderate">Moderata</string>
     <string name="severity_severe">Grave</string>
-    <string name="history_today_at">Oggi alle %s</string>
+    <string name="time_yesterday">Ieri</string>
+    <string name="time_today_at">Oggi alle %s</string>
     <plurals name="history_days_ago">
         <item quantity="one">%d giorno fa</item>
         <item quantity="other">%d giorni fa</item>
@@ -183,4 +184,5 @@
     <string name="easi_sign_excoriation">Escoriazione</string>
     <string name="easi_sign_lichenification">Lichenizzazione</string>
     <string name="pasi_sign_desquamation">Desquamazione</string>
+    <string name="time_today">Oggi</string>
 </resources>

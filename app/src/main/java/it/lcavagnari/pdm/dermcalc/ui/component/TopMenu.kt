@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.component
+﻿package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -28,17 +28,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BmiResult
-import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
+import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
@@ -49,64 +48,8 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
-import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
-import it.lcavagnari.pdm.dermcalc.ui.theme.onSoulContainer
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
-import it.lcavagnari.pdm.dermcalc.utils.today
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.atTime
-import kotlinx.datetime.minus
 
-
-private val vm: (ToolsModel) -> Unit = {
-    it.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
-    it.addResult(
-        BmiResult(
-            weightKg = 85.0, heightCm = 175.0, score = 27.8,
-            timestamp = today().date.minus(3, DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 110.0, heightCm = 175.0, score = 35.9,
-            timestamp = today().date.minus(10, DateTimeUnit.DAY)
-                .atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                10,
-                DateTimeUnit.WEEK
-            ).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
-                10,
-                DateTimeUnit.MONTH
-            ).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
-                1,
-                DateTimeUnit.YEAR
-            ).atTime(LocalTime.fromSecondOfDay(0))
-        )
-    )
-    it.addResult(
-        BmiResult(
-            weightKg = 78.0,
-            heightCm = 175.0,
-            score = 25.5,
-            timestamp = today()
-        )
-    )
-}
 @Preview(showBackground = true) @Composable private fun TopMenuRegularPreview() {
     DermCalcTheme { TopMenu(rememberNavController())
     }
@@ -115,10 +58,10 @@ private val vm: (ToolsModel) -> Unit = {
     DermCalcTheme(darkTheme = true) { TopMenu(rememberNavController()) }
 }
 @Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
-    DermCalcPreview(screen = HomeRoute, setupTm = vm)
+    DermCalcPreview(screen = HomeRoute, setupTm = previewBmiResults)
 }
 @Preview(showBackground = true) @Composable private fun HomeScreenFullDarkPreview() {
-    DermCalcPreview(darkTheme = true, screen = HomeRoute, setupTm = vm)
+    DermCalcPreview(darkTheme = true, screen = HomeRoute, setupTm = previewBmiResults)
 }
 
 /** Returns the title string resource id for [route]. */

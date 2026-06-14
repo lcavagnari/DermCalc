@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait
+﻿package it.lcavagnari.pdm.dermcalc.ui.portrait
 
 import android.app.Application
 import androidx.compose.foundation.Image
@@ -23,10 +23,17 @@ import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
+import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
+import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
+import kotlinx.coroutines.flow.MutableStateFlow
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
@@ -132,9 +139,29 @@ fun DermCalcPreview(
 ) {
     val context = LocalContext.current
     val app = remember { object : Application() { init { attachBaseContext(context) } } }
-    val vm = remember { OnboardingModel(app) }.also { setupOm(it) }
+    val vm = remember {
+        OnboardingModel(
+            object : UserProfileDao {
+                override suspend fun upsert(profile: UserProfileEntity) {}
+                override fun getProfile() = MutableStateFlow<UserProfileEntity?>(null)
+            },
+            object : AppSettingsDao {
+                override suspend fun upsert(settings: AppSettingsEntity) {}
+                override fun getSettings() = MutableStateFlow<AppSettingsEntity?>(null)
+            }
+        )
+    }.also { setupOm(it) }
     val qm = remember { QuoteModel(app) }.also { setupQm(it) }
-    val tm = remember { ToolsModel(app) }.also { setupTm(it) }
+    val tm = remember {
+        ToolsModel(
+            object : ToolResultDao {
+                override suspend fun upsert(result: ToolResultEntity) {}
+                override fun getAll() = MutableStateFlow<List<ToolResultEntity>>(emptyList())
+                override suspend fun deleteById(id: Long) {}
+                override suspend fun deleteAll() {}
+            }
+        )
+    }.also { setupTm(it) }
     val bm = remember { BodyScanModel(app) }.also { setupBm(it) }
 
     DermCalcTheme(darkTheme = darkTheme, content = { content(vm,qm,tm,bm) })

@@ -159,7 +159,9 @@
     <string name="history_show_all">Show all results</string>
     <string name="severity_moderate">Moderate</string>
     <string name="severity_severe">Severe</string>
-    <string name="history_today_at">Today at %s</string>
+    <string name="time_today">Today</string>
+    <string name="time_yesterday">Yesterday</string>
+    <string name="time_today_at">Today at %s</string>
     <plurals name="history_days_ago">
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>
@@ -178,7 +180,7 @@
     </plurals>
     <string name="districts">districts</string>
     <string name="bmi_unit" translatable="false">kg / m²</string>
-    <string name="bsa_unit" translatable="false">%%</string>
+    <string name="bsa_unit" translatable="false">%</string>
     <string name="bsa_diagram_hint">Front view · tap to select</string>
     <string name="btn_save">Save</string>
     <string name="btn_confirm">Confirm</string>

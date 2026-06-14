@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc
+﻿package it.lcavagnari.pdm.dermcalc
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,10 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.data.AppDatabase
+import it.lcavagnari.pdm.dermcalc.data.DermCalcViewModelFactory
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import kotlinx.coroutines.launch
 
 /**
  * Root activity. Detects orientation and delegates rendering to either
@@ -35,29 +40,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val onboardingModel = ViewModelProvider(this)[OnboardingModel::class.java]
-            val toolsModel = ViewModelProvider(this)[ToolsModel::class.java]
-
-            val quoteModel = ViewModelProvider(this)[QuoteModel::class.java]
-            val bodyScanModel = ViewModelProvider(this)[BodyScanModel::class.java]
+            val database = remember { AppDatabase.getInstance(this@MainActivity) }
+            val factory = remember { DermCalcViewModelFactory(database, this@MainActivity) }
+            
+            val onboardingModel = ViewModelProvider(this, factory)[OnboardingModel::class.java]
+            val toolsModel = ViewModelProvider(this, factory)[ToolsModel::class.java]
+            val quoteModel = ViewModelProvider(this, factory)[QuoteModel::class.java]
+            val bodyScanModel = ViewModelProvider(this, factory)[BodyScanModel::class.java]
             // Seed the initial quote; updateQuote() is not called on init.
             LaunchedEffect(Unit) { quoteModel.updateQuote() }
 
+            val scope = rememberCoroutineScope()
             val configuration = LocalConfiguration.current
             val systemDark = isSystemInDarkTheme()
             var isDarkTheme by remember { mutableStateOf(systemDark) }
+            var currentSettings by remember { mutableStateOf<AppSettingsEntity?>(null) }
 
-            /*
-
-            // Delegate to portrait or landscape layout based on current orientation.
-            DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
-                if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-                    MainPortraitActivity(Modifier, onboardingModel, bodyScanModel,toolsModel, quoteModel, onToggleTheme = { isDarkTheme = !isDarkTheme })
-                else MainLandscapeActivity(onboardingModel)
+            // Persist theme changes
+            LaunchedEffect(Unit) {
+                database.appSettingsDao().getSettings().collect { settings ->
+                    currentSettings = settings
+                    if (settings != null) {
+                        isDarkTheme = settings.isDarkTheme
+                    }
+                }
             }
 
-             */
-            DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { isDarkTheme = !isDarkTheme }) {
+            DermCalcTheme(darkTheme = isDarkTheme, onToggleDarkTheme = { 
+                isDarkTheme = !isDarkTheme
+                scope.launch {
+                    currentSettings?.let { settings ->
+                        database.appSettingsDao().upsert(settings.copy(isDarkTheme = !settings.isDarkTheme))
+                    }
+                }
+            }) {
                 MainPortraitActivity(
                     Modifier,
                     onboardingModel,

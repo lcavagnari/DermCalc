@@ -137,7 +137,8 @@
     <string name="severity_normal">Normal</string>
     <string name="severity_moderate">Modéré</string>
     <string name="severity_severe">Sévère</string>
-    <string name="history_today_at">Aujourd\'hui à %s</string>
+    <string name="time_yesterday">Hier</string>
+    <string name="time_today_at">Aujourd\'hui à %s</string>
     <plurals name="history_days_ago">
         <item quantity="one">Il y a %d jour</item>
         <item quantity="other">Il y a %d jours</item>
@@ -183,4 +184,5 @@
     <string name="easi_sign_excoriation">Excoriation</string>
     <string name="easi_sign_lichenification">Lichenification</string>
     <string name="pasi_sign_desquamation">Desquamation</string>
+    <string name="time_today">Aujourd\'hui</string>
 </resources>

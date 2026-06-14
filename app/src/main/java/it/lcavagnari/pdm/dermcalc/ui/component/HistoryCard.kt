@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.component
+﻿package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -127,7 +128,10 @@ fun HistoryCard(
     toolsModel: ToolsModel,
     onShowAll: () -> Unit
 ) {
-    val results = toolsModel.toolsResult.collectAsState().value.sortedByDescending { it.timestamp }
+    val rawResults by toolsModel.toolsResult.collectAsState()
+    val results = remember(rawResults) {
+        rawResults.sortedByDescending { it.timestamp }
+    }
     val now = remember { today() }
     val displayResults = results.take(MAX_HISTORY_VISIBLE)
     val hasMore = results.size > MAX_HISTORY_VISIBLE
@@ -175,7 +179,6 @@ fun HistoryCard(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    //.heightIn(max = 320.dp),
                     state = scrollState,
                     flingBehavior = rememberSnapFlingBehavior(scrollState)
                 ) {
@@ -190,8 +193,6 @@ fun HistoryCard(
                         item { ShowAllRow(onClick = onShowAll) }
                     }
                 }
-
-
             }
         }
     }
@@ -293,7 +294,7 @@ private fun relativeTimestamp(timestamp: LocalDateTime, now: LocalDateTime): Str
 
     if (resultDate == todayDate) {
         val time = "%02d:%02d".format(timestamp.hour, timestamp.minute)
-        return stringResource(R.string.history_today_at, time)
+        return stringResource(R.string.time_today_at, time)
     }
 
     val daysDiff = (todayDate.toEpochDays() - resultDate.toEpochDays()).toInt().coerceAtLeast(1)

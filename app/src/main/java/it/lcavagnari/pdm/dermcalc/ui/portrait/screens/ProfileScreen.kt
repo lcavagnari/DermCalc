@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -51,7 +51,7 @@ import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
-import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.input.InputFieldEditDialog
@@ -232,13 +232,13 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>,
                     InputFieldEditDialog(
                         field = field,
                         onDismiss = { showDialog = false },
-                        onNameChanged = { onboardingModel.updateName(it) },
-                        onDateChanged = { onboardingModel.updateDateOfBirth(it.toLocalDate()) },
-                        onSexChanged = { onboardingModel.updateSex(it) },
-                        onHeightMetricChanged = { onboardingModel.updateHeightMetric(it) },
-                        onHeightImperialChanged = { ft, inch -> onboardingModel.updateHeightImperial(ft, inch) },
-                        onWeightKilosChanged = { onboardingModel.updateWeightKilos(it) },
-                        onWeightPoundsChanged = { onboardingModel.updateWeightPounds(it) }
+                        onNameChanged = { onboardingModel.updateName(it); onboardingModel.persistFields() },
+                        onDateChanged = { onboardingModel.updateDateOfBirth(it.toLocalDate()); onboardingModel.persistFields() },
+                        onSexChanged = { onboardingModel.updateSex(it); onboardingModel.persistFields() },
+                        onHeightMetricChanged = { onboardingModel.updateHeightMetric(it); onboardingModel.persistFields() },
+                        onHeightImperialChanged = { ft, inch -> onboardingModel.updateHeightImperial(ft, inch); onboardingModel.persistFields() },
+                        onWeightKilosChanged = { onboardingModel.updateWeightKilos(it); onboardingModel.persistFields() },
+                        onWeightPoundsChanged = { onboardingModel.updateWeightPounds(it); onboardingModel.persistFields() }
                     )
                 }
 

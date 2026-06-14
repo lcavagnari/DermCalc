@@ -1,7 +1,11 @@
+﻿@file:OptIn(kotlin.time.ExperimentalTime::class)
+
 package it.lcavagnari.pdm.dermcalc.models
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import kotlin.time.ExperimentalTime
+
+import androidx.lifecycle.ViewModel
+import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
 import it.lcavagnari.pdm.dermcalc.utils.today
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,9 +15,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.coroutines.flow.first
+import kotlinx.datetime.toInstant
+import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
+import kotlinx.datetime.TimeZone
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
@@ -105,6 +115,7 @@ fun ToolResult.formattedScore(): String {
  */
 @Serializable
 sealed interface ToolResult {
+    val id: Long   // NEW — default 0 for new results
     val name: String
     val score: Double
     val timestamp: LocalDateTime
@@ -128,7 +139,8 @@ data class PasiResult(
     val trunk: PasiScore,
     val lowerLimbs: PasiScore,
     override val score: Double,
-    override val timestamp: LocalDateTime = today()
+    override val timestamp: LocalDateTime = today(),
+    override val id: Long = 0   // NEW
 ) : ToolResult {
     override val name: String = "PASI"
 
@@ -173,7 +185,8 @@ data class EasiResult(
     val trunk: EasiScore,
     val lowerLimbs: EasiScore,
     override val score: Double,
-    override val timestamp: LocalDateTime = today()
+    override val timestamp: LocalDateTime = today(),
+    override val id: Long = 0   // NEW
 ) : ToolResult {
     override val name: String = "EASI"
 
@@ -220,6 +233,7 @@ data class BmiResult(
     val heightCm: Double,
     override val score: Double,
     override val timestamp: LocalDateTime = today(),
+    override val id: Long = 0   // NEW
 ) : ToolResult {
     override val name: String = "BMI"
     override fun isValid(): Boolean = weightKg > 0.0 && heightCm > 0.0
@@ -252,6 +266,7 @@ data class BsaResult(
     val affectedPercentage: Double,
     override val score: Double,
     override val timestamp: LocalDateTime = today(),
+    override val id: Long = 0   // NEW
 ) : ToolResult {
     override val name: String = "BSA"
     override fun isValid(): Boolean = affectedPercentage in 0.1..100.0
@@ -288,11 +303,32 @@ data class IndexToolDraft<Tool : ToolResult>(
 }
 
 /** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
-class ToolsModel(application: Application) : AndroidViewModel(application) {
+class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
 
     /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
+
+    init {
+        // Load persisted results on creation
+        viewModelScope.launch {
+            toolResultDao.getAll().collect { entities ->
+                _results.value = entities.mapNotNull { entity ->
+                    try {
+                        val decoded = Json.decodeFromString<ToolResult>(entity.detailsJson)
+                        when (decoded) {
+                            is PasiResult -> decoded.copy(id = entity.id)
+                            is EasiResult -> decoded.copy(id = entity.id)
+                            is BmiResult  -> decoded.copy(id = entity.id)
+                            is BsaResult  -> decoded.copy(id = entity.id)
+                        }
+                    } catch (e: Exception) {
+                        null // Skip deserialization failures
+                    }
+                }
+            }
+        }
+    }
 
     // --- Draft State (Persistence across navigation) ---
     private val _pasiDraft = MutableStateFlow(IndexToolDraft<PasiResult>())
@@ -414,7 +450,19 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
      */
     fun addResult(result: ToolResult): Boolean {
         if (!result.isValid()) return false
-        _results.update { it + result }
+        viewModelScope.launch {
+            try {
+                val json = Json.encodeToString(ToolResult.serializer(), result)
+                val entity = ToolResultEntity(
+                    toolName = result.name,
+                    score = result.score,
+                    detailsJson = json
+                )
+                toolResultDao.upsert(entity)
+            } catch (e: Exception) {
+                // Insert failed silently
+            }
+        }
         return true
     }
 
@@ -424,11 +472,19 @@ class ToolsModel(application: Application) : AndroidViewModel(application) {
      * @param result the [ToolResult] instance to remove.
      */
     fun deleteResult(result: ToolResult) {
-        _results.update { current -> current.filter { it != result } }
+        viewModelScope.launch {
+            toolResultDao.deleteById(result.id)
+        }
     }
 
     /** Removes all stored results. */
     fun clearResult() {
-        _results.update { emptyList() }
+        viewModelScope.launch {
+            toolResultDao.deleteAll()
+        }
     }
 }
+
+
+
+
