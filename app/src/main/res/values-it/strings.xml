@@ -159,7 +159,7 @@
     <string name="btn_save">Salva</string>
     <string name="btn_confirm">Conferma</string>
     <string name="tool_measurement">Misurazioni</string>
-    <string name="your_bmi">Il Tuo %s</string>
+    <string name="tool_result_header">Il Tuo %s</string>
     <string name="severity_normal">Normale</string>
     <string name="bsa_slider_tooltip">Tocca una zona del corpo per regolarne la copertura</string>
     <string name="bsa_diagram_hint">Vista frontale · tocca per selezionare</string>

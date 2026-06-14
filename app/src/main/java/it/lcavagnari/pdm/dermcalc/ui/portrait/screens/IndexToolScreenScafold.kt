@@ -241,7 +241,7 @@ fun IndexToolScaffold(
             ) {
                 ToolResultCard(
                     soulColor = soulColor,
-                    toolLabel = toolLabel.uppercase(),
+                    toolLabel = stringResource(it.lcavagnari.pdm.dermcalc.R.string.tool_result_header, toolLabel).uppercase(),
                     toolMeasurementUnit = toolMeasurementUnit,
                     formattedScore = formattedScore ?: "--",
                     severity = severity

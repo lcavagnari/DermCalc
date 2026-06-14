@@ -162,7 +162,7 @@
     <string name="btn_save">Enregistrer</string>
     <string name="btn_confirm">Confirmer</string>
     <string name="tool_measurement">Dimensions</string>
-    <string name="your_bmi">Votre %s</string>
+    <string name="tool_result_header">Votre %s</string>
     <string name="bsa_slider_tooltip">Appuyez sur une partie du corps pour ajuster sa couverture</string>
     <string name="bsa_diagram_hint">Vue de face · appuyez pour sélectionner</string>
     <string name="bsa_region_head">Tête</string>

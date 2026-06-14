@@ -124,7 +124,7 @@ fun BMIScreen(
         if (h != null && w != null) BmiResult.compute(w, h) else null
     }
 
-    val formattedScore = bmiResult?.formattedScore() ?: "--"
+    val formattedScore = bmiResult?.formattedScore()
     val severity = bmiResult?.severity()
 
     Scaffold(
@@ -132,7 +132,7 @@ fun BMIScreen(
         soulColor = soulColor,
         saveEnabled = bmiResult != null,
         toolMeasurementUnit = stringResource(R.string.bmi_unit),
-        toolLabel = stringResource(R.string.your_bmi, "BMI"),
+        toolLabel = stringResource(R.string.tool_result_header, "BMI"),
         formattedScore = formattedScore,
         severity = severity,
         onSaveResult = { bmiResult?.let { onSaveResult(it) } }
@@ -297,7 +297,7 @@ fun BSAScreen(
         AnimatedVisibility(visible = result.score > 0.0) {
             ToolResultCard(
                 soulColor = SoulBravery,
-                toolLabel = stringResource(R.string.your_bmi, stringResource(R.string.tools_bsa)).uppercase(),
+                toolLabel = stringResource(R.string.tool_result_header, stringResource(R.string.tools_bsa)).uppercase(),
                 toolMeasurementUnit = stringResource(R.string.bsa_unit),
                 formattedScore = result.formattedScore(),
                 severity = result.severity()

@@ -183,7 +183,7 @@
     <string name="btn_save">Save</string>
     <string name="btn_confirm">Confirm</string>
     <string name="tool_measurement">Measurements</string>
-    <string name="your_bmi">Your %s</string>
+    <string name="tool_result_header">Your %s</string>
     <string name="severity_normal">Normal</string>
 
     <!-- BSA regions -->
