@@ -155,7 +155,7 @@ fun DermCalcPreview(
     val tm = remember {
         ToolsModel(
             object : ToolResultDao {
-                override suspend fun insert(result: ToolResultEntity) {}
+                suspend fun insert(result: ToolResultEntity) {}
                 override fun getAll() = MutableStateFlow<List<ToolResultEntity>>(emptyList())
                 override suspend fun deleteById(id: Long) {}
             }
