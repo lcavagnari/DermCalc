@@ -127,6 +127,7 @@
     <string name="nav_tools_subtitle">Calculators</string>
     <string name="nav_profile_subtitle">Personal Details</string>
     <string name="btn_back">Go Back</string>
+    <string name="btn_reset">Reset</string>
     <string name="profile_measure_preference">Unit of measurement</string>
     <string name="profile_details">Details</string>
     <string name="quote_tip">Tip</string>
@@ -145,6 +146,13 @@
     <string name="tools_pasi_description">Psoriasis Area&amp;Severity Index</string>
     <string name="tools_easi" translatable="false">EASI</string>
     <string name="tools_easi_description">Eczema Area&amp;Severity Index</string>
+
+    <!-- Index Calculator Districts -->
+    <string name="district_head">Head</string>
+    <string name="district_upper_limbs">Upper Limbs</string>
+    <string name="district_trunk">Trunk</string>
+    <string name="district_lower_limbs">Lower Limbs</string>
+    <string name="label_step_of">Step %1$d of %2$d</string>
 
     <!-- History -->
     <string name="history_empty">No results yet. Use the calculators to record your first score.</string>
@@ -170,7 +178,7 @@
     </plurals>
     <string name="districts">districts</string>
     <string name="bmi_unit" translatable="false">kg / m²</string>
-    <string name="bsa_unit" translatable="false">%</string>
+    <string name="bsa_unit" translatable="false">%%</string>
     <string name="bsa_diagram_hint">Front view · tap to select</string>
     <string name="btn_save">Save</string>
     <string name="btn_confirm">Confirm</string>
@@ -188,4 +196,12 @@
     <string name="bsa_region_left_leg">Left leg</string>
     <string name="bsa_slider_tooltip">Tap a body region to adjust its coverage</string>
     <string name="btn_saved_confirm">Saved successfully!</string>
+    <string name="error_save_failed">Failed to save</string>
+    <string name="reset_dialog_body">Confirm reset of %s calculation?</string>
+    <string name="reset_dialog_title">Confirm action.</string>
+    <string name="tool_sign_erythema">Erythema</string>
+    <string name="tool_sign_induration">Induration</string>
+    <string name="easi_sign_excoriation">Excoriation</string>
+    <string name="easi_sign_lichenification">Lichenification</string>
+    <string name="pasi_sign_desquamation">Desquamation</string>
 </resources>

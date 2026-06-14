@@ -1,9 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.annotation.SuppressLint
-import android.app.Application
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -45,30 +40,39 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.DateInput
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.HeightMeasurements
 import it.lcavagnari.pdm.dermcalc.models.InputField
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.Sex
 import it.lcavagnari.pdm.dermcalc.models.SexInput
 import it.lcavagnari.pdm.dermcalc.models.TextInput
-import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
-import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.input.InputFieldEditDialog
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.utils.today
 import java.util.Locale.getDefault
+
+private val vm:(OnboardingModel) -> Unit = {
+    it.finishOnboarding()
+    it.updateDateOfBirth(today().date)
+    it.updateHeightMetric(172)
+    it.updateWeightKilos(67)
+}
+@Preview(showBackground = true) @Composable private fun ProfileScreenFullPreview() {
+    DermCalcPreview(screen = ProfileRoute, setupOm = vm)
+}
+@Preview(showBackground = true) @Composable private fun ProfileScreenFullDarkPreview() {
+    DermCalcPreview(darkTheme = true, setupOm = vm, screen = ProfileRoute)
+}
 
 @Composable
 fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingModel) {
@@ -315,29 +319,5 @@ fun UnitOfMeasurement(
                 }
             }
         }
-    }
-}
-
-@SuppressLint("NewApi")
-@RequiresApi(Build.VERSION_CODES.Q)
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }.also {
-        it.finishOnboarding()
-        it.updateName("Asriel ")
-        it.updateDateOfBirth(today().date)
-        it.updateHeightMetric(172)
-        it.updateWeightKilos(67)
-    }
-
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
     }
 }

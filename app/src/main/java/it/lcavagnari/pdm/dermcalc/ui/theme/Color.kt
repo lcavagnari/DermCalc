@@ -1,7 +1,6 @@
 package it.lcavagnari.pdm.dermcalc.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 
 /** Dark theme base colors for the Underground palette, used by Material surfaces and outlines. */
 
@@ -85,11 +84,11 @@ val SoulPatience      = Color(0xFF4FB8B8)
 /** Bravery soul color for BSA accents. */
 val SoulBravery       = Color(0xFFE5853A)
 /** Integrity soul color for PASI accents. */
-val SoulIntegrity     = Color(0xFF4A6BD9)
+val SoulIntegrity     = Color(0xFF8296E6)
 /** Perseverance soul color for EASI accents. */
-val SoulPerseverance  = Color(0xFF9B4FC4)
+val SoulPerseverance  = Color(0xFFD26CED)
 /** Kindness soul color for profile accents. */
 val SoulKindness      = Color(0xFF5FB85F)
 /** Justice soul color for tools and save-action accents. */
-val SoulJustice       = Color(0xFFE8B842)
+val SoulJustice       = Color(0xFFFFC107)
 

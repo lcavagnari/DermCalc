@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -28,27 +30,31 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BsaRegion
+import it.lcavagnari.pdm.dermcalc.models.BodyRegion
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 import kotlin.math.roundToInt
 
 private data class RegionDef(
-    val region: BsaRegion,
+    val region: BodyRegion,
     val l: Dp, val t: Dp, val r: Dp, val b: Dp,
     val isEllipse: Boolean = false,
     val corner: Dp = 10.dp,
 )
 
 private val REGION_DEFS = listOf(
-    RegionDef(BsaRegion.HEAD,           l=58.dp,  t=2.dp,   r=102.dp, b=54.dp,  isEllipse=true),
-    RegionDef(BsaRegion.LEFT_ARM,       l=10.dp,  t=57.dp,  r=38.dp,  b=139.dp),
-    RegionDef(BsaRegion.ANTERIOR_TRUNK, l=42.dp,  t=57.dp,  r=118.dp, b=155.dp, corner=6.dp),
-    RegionDef(BsaRegion.RIGHT_ARM,      l=122.dp, t=57.dp,  r=150.dp, b=139.dp),
-    RegionDef(BsaRegion.LEFT_LEG,       l=42.dp,  t=158.dp, r=77.dp,  b=280.dp),
-    RegionDef(BsaRegion.RIGHT_LEG,      l=83.dp,  t=158.dp, r=118.dp, b=280.dp),
+    RegionDef(BodyRegion.HEAD,           l=58.dp,  t=2.dp,   r=102.dp, b=54.dp,  isEllipse=true),
+    RegionDef(BodyRegion.LEFT_ARM,       l=10.dp,  t=57.dp,  r=38.dp,  b=139.dp),
+    RegionDef(BodyRegion.ANTERIOR_TRUNK, l=42.dp,  t=57.dp,  r=118.dp, b=155.dp, corner=6.dp),
+    RegionDef(BodyRegion.RIGHT_ARM,      l=122.dp, t=57.dp,  r=150.dp, b=139.dp),
+    RegionDef(BodyRegion.LEFT_LEG,       l=42.dp,  t=158.dp, r=77.dp,  b=280.dp),
+    RegionDef(BodyRegion.RIGHT_LEG,      l=83.dp,  t=158.dp, r=118.dp, b=280.dp),
 )
 
+/** The canvas dimensions that [REGION_DEFS] were authored against. */
+private val REFERENCE_SIZE = Pair(160.dp, 290.dp)
+
 private data class ResolvedRegion(
-    val region: BsaRegion,
+    val region: BodyRegion,
     val rect: Rect,
     val isEllipse: Boolean,
     val corner: Float,
@@ -64,35 +70,45 @@ private data class ResolvedRegion(
 }
 
 @Composable
-fun BsaBodyDiagram(
-    regionValues: Map<BsaRegion, Int>,
-    selectedRegion: BsaRegion?,
-    onRegionSelected: (BsaRegion) -> Unit,
+fun BodyScan(
     modifier: Modifier = Modifier,
+    size: Pair<Dp, Dp> = Pair(160.dp, 290.dp),
+    soulColor: Color,
+    showHints: Boolean = true,
+    selectedRegion: BodyRegion? = null,
+    selectedRegions: List<BodyRegion> = listOf(),
+    regionValues: Map<BodyRegion, Int> = mapOf(),
+    onRegionSelected: (BodyRegion) -> Unit = {},
 ) {
     val density = LocalDensity.current
-    val resolved = remember(density) {
+    val resolved = remember(density, size) {
+        val scaleX = size.first / REFERENCE_SIZE.first
+        val scaleY = size.second / REFERENCE_SIZE.second
         REGION_DEFS.map { def ->
             with(density) {
                 ResolvedRegion(
                     region = def.region,
-                    rect = Rect(def.l.toPx(), def.t.toPx(), def.r.toPx(), def.b.toPx()),
+                    rect = Rect(
+                        (def.l * scaleX).toPx(),
+                        (def.t * scaleY).toPx(),
+                        (def.r * scaleX).toPx(),
+                        (def.b * scaleY).toPx(),
+                    ),
                     isEllipse = def.isEllipse,
-                    corner = def.corner.toPx(),
+                    corner = (def.corner * minOf(scaleX, scaleY)).toPx(),
                 )
             }
         }
     }
 
     val defaultFill    = MaterialTheme.colorScheme.surfaceVariant
-    val selectedFill   = MaterialTheme.colorScheme.primary
-    val filledFill     = MaterialTheme.colorScheme.primaryContainer
+    val filledFill     = onSoul(soulColor)
     val defaultStroke  = MaterialTheme.colorScheme.outline
-    val selectedStroke = MaterialTheme.colorScheme.primary
+    val selectedStroke = soulColor
 
     Canvas(
         modifier = modifier
-            .size(160.dp, 290.dp)
+            .size(size.first, size.second)
             .pointerInput(Unit) {
                 detectTapGestures { tap ->
                     resolved.firstOrNull { it.contains(tap) }
@@ -102,9 +118,9 @@ fun BsaBodyDiagram(
             }
     ) {
         resolved.forEach { r ->
-            val isSelected = r.region == selectedRegion
+            val isSelected = if (selectedRegion == null) selectedRegions.contains(r.region) else selectedRegion == r.region
             val hasValue   = (regionValues[r.region] ?: 0) > 0
-            val fill   = if (isSelected) selectedFill else if (hasValue) filledFill else defaultFill
+            val fill   = if (isSelected) soulColor else if (hasValue) filledFill else defaultFill
             val stroke = if (isSelected) selectedStroke else defaultStroke
             val sw     = if (isSelected) 2.dp.toPx() else 1.5f
 
@@ -117,7 +133,7 @@ fun BsaBodyDiagram(
                 drawRoundRect(stroke, topLeft = r.rect.topLeft, size = r.rect.size, cornerRadius = cr, style = Stroke(sw))
             }
 
-            if (!isSelected) {
+            if (showHints && !isSelected) {
                 val cx = r.rect.center.x
                 val cy = r.rect.center.y
                 val arm = 4.dp.toPx()
@@ -134,15 +150,16 @@ fun BsaBodyDiagram(
 }
 
 @Composable
-fun BsaRegionSlider(
-    region: BsaRegion,
+fun BodyRegionSlider(
+    modifier: Modifier = Modifier,
+    region: BodyRegion,
+    soulColor: Color = MaterialTheme.colorScheme.primary,
     value: Int,
     onValueChange: (Int) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Card(modifier) {
         Column(Modifier.fillMaxWidth().padding(16.dp)) {
-            if (region != BsaRegion.NONE) {
+            if (region != BodyRegion.NONE) {
                 Row(
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -162,12 +179,17 @@ fun BsaRegionSlider(
                     Text(
                         "$value%",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = soulColor,
                     )
                 }
                 Slider(
                     value = value.toFloat(),
                     onValueChange = { onValueChange((it / 5f).roundToInt() * 5) },
+                    colors = SliderDefaults.colors(
+                        thumbColor = soulColor,
+                        activeTrackColor = soulColor,
+                        activeTickColor = soulColor,
+                    ),
                     valueRange = 0f..100f,
                     steps = 19,
                 )

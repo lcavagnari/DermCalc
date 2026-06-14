@@ -1,0 +1,216 @@
+================================================================================
+SECTION TODOs — extracted from source files
+================================================================================
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/MainActivity.kt
+================================================================================
+
+//region TODOs
+// L52: `MainPortraitActivity(Modifier, ...)` passes `Modifier` companion object as first positional argument — works but confusing, use named parameter
+// L53: `MainLandscapeActivity(onboardingModel)` receives only one model while `MainPortraitActivity` gets all three — asymmetric, stub ignores toolsModel and quoteModel
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/AppNavHost.kt
+================================================================================
+
+//region TODOs
+// L86-87: `PASIScreen() {}` and `EASIScreen() {}` — placeholder stub screens that accept `onSaveResult` but never call it
+// L57-58: `onboardingModel.heightInput.value` / `weightInput.value` are `Double?` passed to BMIScreen — safe if onboarding ran, but fragile
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/TopMenu.kt
+================================================================================
+
+//region TODOs
+// L94-105: `soulColor()` duplicates route-to-soul mapping from `soulForRoute()` in Souls.kt — unify both, currently ToolsRoute→SoulJustice here vs ToolsRoute→Soul.Determination in soulForRoute
+// L127: `TopMenu` takes `NavController` just to read the current route — couples presentational component to full nav graph, accept route string instead
+// L186: `fontSize = 25.sp` overrides `headlineMedium` (38sp) — should use `titleLarge` or a custom style not a semantic mismatch
+// L208,224: function names `MainPortraitActivityPrevew` and `MainPortraitActivityPrevie1` — missing 'i'/'w', number suffix meaningless
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/BottomNavBar.kt
+================================================================================
+
+//region TODOs
+// L50: CRITICAL — `NavigationBar` function name collides with `androidx.compose.material3.NavigationBar` — L63 calls itself recursively causing StackOverflowError. Rename to `AppBottomNavBar`.
+// L56-61: soul-color `when` block partially duplicates `soulForRoute()` with different values for ToolsRoute (primary here vs Determination in soulForRoute vs Justice in TopMenu) — unify
+// L66: hardcoded `.height(74.dp)` — extract to named constant
+// L69: `WindowInsets(bottom = 10.dp)` overrides system insets — risk of nav bar overlap
+// L122-133: `MainPortraitActivityPreview()` duplicates preview setup from TopMenu.kt / MainPortraitActivity.kt
+// L137: `MainPortraitActivityPreview1()` misnamed — only previews NavigationBar, suffix "1" meaningless
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/HistoryCard.kt
+================================================================================
+
+//region TODOs
+// L269: CRITICAL — `MainActivity()` called as a composable in `@Preview` — ComponentActivity is not a composable, will fail at runtime
+// L63-125: preview data setup (7 mock BmiResults) duplicated verbatim in `HomeScreenPreviewDark()` and `HomeScreenPreview()` — extract to shared helper
+// L289: `results = ...collectAsState().value.sortedByDescending { ... }` creates new sorted list on every recomposition — wrap in `remember` / `derivedStateOf`
+// L291-292: `displayResults` and `hasMore` recalculate every recomposition
+// L335: `items(displayResults.size)` uses index — idiomatic `items(displayResults)` with `it` is cleaner
+// L383-384: `severityColor` + `onColor` read `LocalDarkTheme` — causes full row recomposition on theme toggle
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/component/input/ButtonsTray.kt
+================================================================================
+
+// L43: CRITICAL — `// TODO: Remove this button before release, you dumb cu-` contains truncated profanity — unprofessional, remove before release
+
+//region TODOs
+// L43: CRITICAL — `// TODO: Remove this button before release, you dumb cu-` contains truncated profanity — unprofessional, remove before release
+// L79: `toggleDarkTheme()` reads `LocalToggleDarkTheme.current` directly instead of using `onToggleTheme` parameter — two code paths for theme toggling
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/HomeScreen.kt
+================================================================================
+
+//region TODOs
+// L81: `value[0] as TextInput` — fragile hardcoded index + unsafe cast, crashes if field ordering changes. Use `field.id` matching like elsewhere in codebase
+// L86-90: uses `java.text.SimpleDateFormat` + `java.util.Calendar` while rest of project uses `kotlinx.datetime` — inconsistent
+// L164: `onClick = { quoteModel.updateQuote() }` creates new lambda on every recomposition — wrap in `remember`
+// L175-177: `FontFamily.Serif`, `FontStyle.Italic`, `fontSize = 16.sp` — bypasses MaterialTheme typography, inconsistent with DeterminationMono aesthetic
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/ToolsScreen.kt
+================================================================================
+
+//region TODOs
+// L174-228: `QuickCalculators` applies the incoming `modifier` to the outer `Row`, each `BorderedCard`, AND each inner content `Row` — triple-application bug, caller padding applied 3x
+// L238-307: `IndexesCalculators` — same modifier triple-application bug as QuickCalculators
+// L142-160: "QUICK" and "INDEX" section headers are virtually identical — extract shared `SectionHeader` composable
+// L250: `lerp(surface, it.color, 0.22f)` — magic number for color blending
+// L328-329,342-343: string concatenation instead of `stringResource` with format args — breaks localization
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/QuickToolScreen.kt
+================================================================================
+
+//region TODOs
+// L61: parameter `soulColour` uses British spelling — everywhere else uses `soulColor` / `borderColor` (American)
+// L69-105: two top-level `Column` composables side-by-side with `modifier.fillMaxSize()` — unconventional layout, a single Box or Scaffold would be clearer
+// L229: CRITICAL — `Text("1234")` is debug placeholder text left in production — remove
+// L305: CRITICAL — `Text("Affected body surface area")` is a hardcoded English string, not `stringResource` — breaks localization
+// L313-317: `SliderDefaults.colors(thumbColor = SoulBravery, activeTickColor = SoulBravery)` uses raw soul colors instead of theme tokens
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/IndexToolScreen.kt
+================================================================================
+
+//region TODOs
+// L11,17: `Text("1234")` — debug placeholder text left in production for both PASI and EASI screens
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/OnboardingScreen.kt
+================================================================================
+
+//region TODOs
+// L87-88: `inputFieldId` annotated `@Deprecated(ERROR)` — effectively dead code, remove
+// L299: `MaterialTheme.colorScheme.surface.copy(alpha = if (dark) 0f else 0.6f)` — GoBackButton fully transparent (invisible but clickable) in dark mode, accessibility issue
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/portrait/screens/ProfileScreen.kt
+================================================================================
+
+// L169: TODO: Replace [onboardingModel] pass with parameter function call.
+// L172: @param onboardingModel TODO: to remove
+
+//region TODOs
+// L450: `if (index < inputFields.size)` draws divider after every field INCLUDING the last one — should be `index < inputFields.size - 1`
+// L472-473: `inputFields[3] as HeightInput` and `inputFields[4] as WeightInput` — fragile hardcoded index + unsafe cast, same pattern as HomeScreen.kt:81
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/models/OnboardingModel.kt
+================================================================================
+
+//region TODOs
+// L5: unused import `import androidx.lifecycle.ViewModel`
+// L14: `OnboardingModel(application: Application)` extends `AndroidViewModel` but never uses `Application` — can extend `ViewModel` directly
+// L29,32: `_inputFields.value[3] as HeightInput` and `[4] as WeightInput` — fragile hardcoded index + unsafe cast, crashes if field list order changes
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/models/ToolsModel.kt
+================================================================================
+
+//region TODO
+// L214: `ToolsModel` extends `AndroidViewModel` but never persists — all results lost on process death. `Application` param unused.
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/models/AppRoute.kt
+================================================================================
+
+//region TODO
+// File is at `models/AppRoute.kt` but declares `package ...navigation` — move to `navigation/` directory to match package name
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Theme.kt
+================================================================================
+
+//region TODOs
+// L16,18,22: `compositionLocalOf` for rarely-changing values (bool, lambda, float) — use `staticCompositionLocalOf` to avoid unnecessary recomposition
+// L101: magic number `0.42f` / `0.90f` for bar alpha — should be named constants
+// L111: `typography  = Typography` — double space before `=`
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Souls.kt
+================================================================================
+
+//region TODOs
+// L6: unused import `luminance` — not used in this file
+// L35: `soulFor(toolName: String?)` takes raw strings ("BMI", "BSA") — should use sealed route types
+// L57: `Severity.labelRes` is a model concern defined in a theme file — move to models package
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Type.kt
+================================================================================
+
+//region TODOs
+// L13: `PixelDisplay` font family is defined but never referenced anywhere
+// L27: comment says "Faux-bold renders poorly" yet call sites use `FontWeight.SemiBold` / `FontWeight.Bold` — contradicts design intent
+//endregion
+
+
+================================================================================
+app/src/main/java/it/lcavagnari/pdm/dermcalc/ui/theme/Color.kt
+================================================================================
+
+//region TODOs
+// L4: unused import `luminance` — only needed in Theme.kt
+// L33,38,44: `SoulRedMuted(0xFFB83838)`, `SeveritySevereDark(0xFFE04848)`, `SoulDetermination(0xFFE04848)` — three names sharing two hex values, ambiguous
+//endregion

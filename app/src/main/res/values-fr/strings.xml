@@ -120,6 +120,7 @@
     <string name="nav_tools_subtitle">Calculatrices</string>
     <string name="nav_profile_subtitle">Données personnelles</string>
     <string name="btn_back">Retour</string>
+    <string name="btn_reset">Réinitialiser</string>
     <string name="profile_measure_preference">Unités de mesure</string>
     <string name="profile_details">Détails</string>
     <string name="quote_tip">Astuce</string>
@@ -128,6 +129,9 @@
     <!-- History -->
     <string name="tools_bsa_description">Surface corporelle totale touchée</string>
     <string name="tools_easi_description">Ind.de surface et de gravité de l\'eczéma</string>
+    <string name="district_trunk">Coffre</string>
+    <string name="district_lower_limbs">Membres infèrieur</string>
+    <string name="label_step_of">Étape %1$d sur %2$d</string>
     <string name="history_empty">Aucun résultat pour l\'instant. Utilisez les calculatrices pour enregistrer votre premier score.</string>
     <string name="history_show_all">Afficher tous les résultats</string>
     <string name="severity_normal">Normal</string>
@@ -169,4 +173,14 @@
     <string name="bsa_region_right_leg">Jambe droite</string>
     <string name="bsa_region_left_leg">Jambe gauche</string>
     <string name="btn_saved_confirm">Enregistré avec succès!</string>
+    <string name="error_save_failed">Échec de la sauvegarde</string>
+    <string name="reset_dialog_body">Voulez-vous confirmer la réinitialisation du calcul de %s?</string>
+    <string name="reset_dialog_title">Confirmer cette actiòn.</string>
+    <string name="district_head">Tète</string>
+    <string name="district_upper_limbs">Membres supérieurs</string>
+    <string name="tool_sign_erythema">Érythème</string>
+    <string name="tool_sign_induration">Induration</string>
+    <string name="easi_sign_excoriation">Excoriation</string>
+    <string name="easi_sign_lichenification">Lichenification</string>
+    <string name="pasi_sign_desquamation">Desquamation</string>
 </resources>

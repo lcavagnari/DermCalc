@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.component
 
-import android.app.Application
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +15,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,9 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.QuoteModel
+import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.BSAToolRoute
@@ -43,7 +38,7 @@ import it.lcavagnari.pdm.dermcalc.navigation.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
-import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
@@ -55,8 +50,76 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPerseverance
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
+import it.lcavagnari.pdm.dermcalc.ui.theme.onSoulContainer
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulForRoute
+import it.lcavagnari.pdm.dermcalc.utils.today
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
 
+
+private val vm: (ToolsModel) -> Unit = {
+    it.addResult(BmiResult(weightKg = 70.0, heightCm = 175.0, score = 22.9))
+    it.addResult(
+        BmiResult(
+            weightKg = 85.0, heightCm = 175.0, score = 27.8,
+            timestamp = today().date.minus(3, DateTimeUnit.DAY).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9,
+            timestamp = today().date.minus(10, DateTimeUnit.DAY)
+                .atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                10,
+                DateTimeUnit.WEEK
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 110.0, heightCm = 175.0, score = 35.9, timestamp = today().date.minus(
+                10,
+                DateTimeUnit.MONTH
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 92.0, heightCm = 175.0, score = 30.1, timestamp = today().date.minus(
+                1,
+                DateTimeUnit.YEAR
+            ).atTime(LocalTime.fromSecondOfDay(0))
+        )
+    )
+    it.addResult(
+        BmiResult(
+            weightKg = 78.0,
+            heightCm = 175.0,
+            score = 25.5,
+            timestamp = today()
+        )
+    )
+}
+@Preview(showBackground = true) @Composable private fun TopMenuRegularPreview() {
+    DermCalcTheme { TopMenu(rememberNavController())
+    }
+}
+@Preview(showBackground = true) @Composable private fun TopMenuRegularDarkPreview() {
+    DermCalcTheme(darkTheme = true) { TopMenu(rememberNavController()) }
+}
+@Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
+    DermCalcPreview(screen = HomeRoute, setupTm = vm)
+}
+@Preview(showBackground = true) @Composable private fun HomeScreenFullDarkPreview() {
+    DermCalcPreview(darkTheme = true, screen = HomeRoute, setupTm = vm)
+}
 
 /** Returns the title string resource id for [route]. */
 private fun title(route: String): Int {
@@ -70,7 +133,6 @@ private fun title(route: String): Int {
         else                -> R.string.app_name
     }
 }
-
 /** Returns the optional subtitle string resource id for [route]. */
 private fun subtitle(route: String?): Int? {
     return when (route) {
@@ -84,7 +146,6 @@ private fun subtitle(route: String?): Int? {
         else -> null
     }
 }
-
 /** Returns the leading icon drawable resource id for [route]. */
 private fun icon(route: String?): Int {
     return when (route) {
@@ -94,7 +155,6 @@ private fun icon(route: String?): Int {
         else -> R.drawable.ic_dermatology
     }
 }
-
 /** Returns the soul accent [Color] for [route]. */
 private fun soulColor(route: String?): Color {
     return when (route) {
@@ -108,6 +168,8 @@ private fun soulColor(route: String?): Color {
         else -> soulForRoute(route).color
     }
 }
+
+
 
 /**
  * Top app bar. A full-width [androidx.compose.material3.Card] whose chrome color tracks the active soul.
@@ -150,7 +212,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         border = BorderStroke(2.dp,
-            onSoul(soulColor).copy(alpha = localAlpha)
+            soulColor.copy(alpha = localAlpha)
         )
     ) {
         Row(
@@ -207,27 +269,3 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun MainPortraitActivityPrevew() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
-    }
-    }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = BSAToolRoute)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainPortraitActivityPrevie1() {
-    TopMenu(rememberNavController())
-}
-

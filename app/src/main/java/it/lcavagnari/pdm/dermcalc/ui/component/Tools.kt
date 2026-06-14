@@ -28,12 +28,14 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Severity
+import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
@@ -167,50 +169,62 @@ fun ToolResultCard(
                 )
             }
 
-            if (severity != null) {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = severityColor(severity),
-                        contentColor = MaterialTheme.colorScheme.surface
-                    ),
-                    shape = RoundedCornerShape(2.dp)
-                ) {
-                    Text(
-                        modifier = Modifier.padding(5.dp),
-                        text = when (severity) {
-                            Severity.NONE -> stringResource(R.string.severity_normal)
-                            Severity.MILD -> stringResource(R.string.severity_normal)
-                            Severity.MODERATE -> stringResource(R.string.severity_moderate)
-                            Severity.SEVERE -> stringResource(R.string.severity_severe)
-                        }.uppercase(),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontFamily = PixelSoft,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 13.sp
-                    )
-                }
-            }
+            if (severity != null) ToolSeverityCard(severity = severity)
         }
+    }
+}
+
+
+@Composable
+fun ToolSeverityCard(
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 13.sp,
+    severity: Severity
+) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = severityColor(severity),
+            contentColor = MaterialTheme.colorScheme.surface
+        ),
+        shape = RoundedCornerShape(2.dp)
+    ) {
+        Text(
+            modifier = Modifier.padding(5.dp),
+            text = when (severity) {
+                Severity.NONE -> stringResource(R.string.severity_normal)
+                Severity.MILD -> stringResource(R.string.severity_normal)
+                Severity.MODERATE -> stringResource(R.string.severity_moderate)
+                Severity.SEVERE -> stringResource(R.string.severity_severe)
+            }.uppercase(),
+            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PixelSoft,
+            fontWeight = FontWeight.Bold,
+            fontSize = fontSize
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ResultnPreview() {
-    ToolResultCard(
-        soulColor = SoulKindness,
-        toolLabel = "Your BMI",
-        toolMeasurementUnit = stringResource(R.string.bmi_unit),
-        formattedScore = "22.2",
-        severity = Severity.MILD
-    )
+private fun ToolResultCardRegularPreview() {
+    DermCalcTheme {
+        ToolResultCard(
+            soulColor = SoulKindness,
+            toolLabel = "Your BMI",
+            toolMeasurementUnit = stringResource(R.string.bmi_unit),
+            formattedScore = "22.2",
+            severity = Severity.MILD
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ButtonPreview() {
-    ToolSaveButton(
-        enabled = true,
-        soulColor = SoulJustice,
-    ) { }
+private fun ToolSaveButtonRegularPreview() {
+    DermCalcTheme {
+        ToolSaveButton(
+            enabled = true,
+            soulColor = SoulJustice,
+        ) { }
+    }
 }

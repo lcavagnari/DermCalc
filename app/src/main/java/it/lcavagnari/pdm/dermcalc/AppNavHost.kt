@@ -2,6 +2,7 @@ package it.lcavagnari.pdm.dermcalc
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -12,9 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
-import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
@@ -33,6 +31,11 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.calculatorPages
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
+import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
+import kotlinx.coroutines.flow.MutableStateFlow
+import android.widget.Toast
 
 
 /**
@@ -79,8 +82,8 @@ fun AppNavHost(
                     heightCm = onboardingModel.heightInput.value,
                     weightKg = onboardingModel.weightInput.value,
                     onSaveResult = { result ->
-                        toolsModel.addResult(result)
-                        navController.popBackStack()
+                        if (toolsModel.addResult(result))
+                            navController.popBackStack()
                     }
                 )
             }
@@ -88,14 +91,77 @@ fun AppNavHost(
                 BSAScreen(
                     vm = bodyScanModel,
                     onSaveResult = { result ->
-                        toolsModel.addResult(result)
-                        navController.popBackStack()
+                        navController.saveWithFeedback(
+                            onSave = { toolsModel.addResult(result) },
+                            onReset = {}
+                        )
                     }
                 )
             }
-            composable<PASIToolRoute> { PASIScreen() {} }
-            composable<EASIToolRoute> { EASIScreen() {} }
+            composable<PASIToolRoute> {
+                LaunchedEffect(toolsModel) {
+                    toolsModel.initPasiDraft(calculatorPages.size)
+                }
+
+                val pasiScore by toolsModel.pasiScore.collectAsState()
+                val pasiHasData by toolsModel.pasiHasData.collectAsState()
+
+                PASIScreen(
+                    score = pasiScore,
+                    saveEnabled = pasiHasData,
+                    startPage = toolsModel.pasiDraftPage,
+                    onRegionScore = toolsModel::pasiRegionScore,
+                    onScoreUpdate = toolsModel::updatePasiDraft,
+                    onReset = toolsModel::resetPasiDraft,
+                    onSaveResult = {
+                        navController.saveWithFeedback(
+                            onSave = toolsModel::savePasiDraft,
+                            onReset = toolsModel::resetPasiDraft
+                        )
+                    }
+                )
+            }
+            composable<EASIToolRoute> {
+                LaunchedEffect(toolsModel) {
+                    toolsModel.initEasiDraft(calculatorPages.size)
+                }
+
+                val easiScore by toolsModel.easiScore.collectAsState()
+                val easiHasData by toolsModel.easiHasData.collectAsState()
+
+                EASIScreen(
+                    score = easiScore,
+                    saveEnabled = easiHasData,
+                    startPage = toolsModel.easiDraftStartPage,
+                    onRegionScore = toolsModel::easiRegionScore,
+                    onScoreUpdate = toolsModel::updateEasiDraft,
+                    onReset = toolsModel::resetEasiDraft,
+                    onSaveResult = {
+                        navController.saveWithFeedback(
+                            onSave = toolsModel::saveEasiDraft,
+                            onReset = toolsModel::resetEasiDraft
+                        )
+                    }
+                )
+            }
         }
     }
+}
+
+/**
+ * Attempts to save via [onSave]; on success resets via [onReset] and pops the back stack.
+ * Shows a "Failed to save" toast if [onSave] returns `false`.
+ */
+private fun NavHostController.saveWithFeedback(
+    onSave: () -> Boolean,
+    onReset: () -> Unit
+) {
+    val ctx = context
+    if (onSave()) {
+        onReset()
+        popBackStack()
+        Toast.makeText(ctx, R.string.btn_saved_confirm, Toast.LENGTH_SHORT).show()
+    } else Toast.makeText(ctx, R.string.error_save_failed, Toast.LENGTH_SHORT).show()
+
 }
 

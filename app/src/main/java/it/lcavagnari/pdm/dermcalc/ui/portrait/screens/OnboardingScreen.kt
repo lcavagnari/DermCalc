@@ -1,6 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.app.Application
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
@@ -36,14 +35,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,43 +52,31 @@ import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
-import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
 
 /**
  * Represents a single page in the onboarding flow.
- *
- * @property title - text displayed as the page heading.
- * @property description - optional subtitle shown below the title.
- * @property imageRes - optional vector icon displayed on the page.
- * @property imageDrawable - optional drawable resource id for the page image.
- * @property imageSize - size applied to the image composable. Defaults to 280.dp.
- * @property inputFieldIds - ids of [it.lcavagnari.pdm.dermcalc.models.InputField] instances rendered on this page.
- * @property inputFieldId - deprecated. use [inputFieldIds] instead.
- * @constructor Create empty Onboarding screen
  */
 data class OnboardingScreen(
     @param:StringRes val title: Int,
     @param:StringRes val description: Int? = null,
     @param:DrawableRes val backgroundLight: Int,
     @param:DrawableRes val backgroundDark: Int,
-
     val imageRes: ImageVector? = null,
     val imageDrawable: Int? = null,
-    val imageSize: Dp? = 280.dp,
-
+    val imageSize: Dp = 280.dp,
     val inputFieldIds: List<String> = emptyList(),
-
-    @Deprecated("Use inputFieldIds instead", ReplaceWith("inputFieldIds"), DeprecationLevel.ERROR)
-    val inputFieldId: String? = null
 )
 
-// Static page descriptors; index matches HorizontalPager page index.
+/** Anatomical districts for Onboarding calculator. */
 val onboardingScreens = listOf(
     OnboardingScreen(
         title = R.string.onboarding_1_title,
+        description = null,
         imageDrawable = R.drawable.ic_dermatology,
         backgroundLight = R.drawable.bg_onboarding1,
         backgroundDark = R.drawable.bg_onboarding1_dark
@@ -130,49 +115,98 @@ val onboardingScreens = listOf(
     )
 )
 
+private val vm:(OnboardingModel) -> Unit = {
+    it.updateName("Asriel ")
+    it.updateDateOfBirth(today().date)
+    it.updateHeightMetric(172)
+    it.updateWeightKilos(67)
+}
 
-@Preview(showBackground = true)
-@Composable
-fun OnboardingPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init {
-        attachBaseContext(context)
+// Light
+@Preview(showBackground = true) @Composable private fun OnboardingRegularPreview() {
+    DermCalcPreview(setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 0)
+        )
     }
-    }
-    val vm = remember { OnboardingModel(app) }
-    DermCalcTheme {
-        OnboardingScreen(
-            rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 0),
-            modifier = Modifier.fillMaxSize(),
-            onboardingModel = vm,
-            onFinish = {}
+}
+@Preview(showBackground = true) @Composable private fun OnboardingDarkRegularPreview() {
+    DermCalcPreview(darkTheme = true, setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 0)
         )
     }
 }
 
+@Preview(showBackground = true) @Composable private fun OnboardingRegularPreview1() {
+    DermCalcPreview(setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 1)
+        )
+    }
+}
+@Preview(showBackground = true) @Composable private fun OnboardingDarkRegularPreview1() {
+    DermCalcPreview(darkTheme = true, setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 1)
+        )
+    }
+}
+
+@Preview(showBackground = true) @Composable private fun OnboardingRegularPreview2() {
+    DermCalcPreview(setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 2)
+        )
+    }
+}
+@Preview(showBackground = true) @Composable private fun OnboardingDarkRegularPreview2() {
+    DermCalcPreview(darkTheme = true, setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 2)
+        )
+    }
+}
+
+@Preview(showBackground = true) @Composable private fun OnboardingRegularPreview3() {
+    DermCalcPreview(setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 3)
+        )
+    }
+}
+@Preview(showBackground = true) @Composable private fun OnboardingDarkRegularPreview3() {
+    DermCalcPreview(darkTheme = true, setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 3)
+        )
+    }
+}
+
+@Preview(showBackground = true) @Composable private fun OnboardingRegularPreview4() {
+    DermCalcPreview(setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4)
+        )
+    }
+}
+@Preview(showBackground = true) @Composable private fun OnboardingDarkRegularPreview4() {
+    DermCalcPreview(darkTheme = true, setupOm = vm) { vm, _, _, _ ->
+        OnboardingScreen(onboardingModel = vm, onFinish = {},
+            pagerState = rememberPagerState(pageCount = { onboardingScreens.size }, initialPage = 4)
+        )
+    }
+}
+
+
+
 /**
  * Full-screen onboarding flow over a multipage [androidx.compose.foundation.pager.HorizontalPager].
- *
- * Layout: [OnboardingPager] fills the full screen as a background layer (edge-to-edge, including
- * behind system bars). A chrome [Column] overlay is drawn on top, inset by status/nav bars:
- * - Trailing [TopTrayButtons] row (language, theme-toggle, debug skip-to-finish).
- * - [GoBackButton] — back arrow; only visible when the current page's required fields are invalid.
- * - [StepIndicator] — pill/circle dots tracking the current page position.
- * - Next / Start [androidx.compose.material3.Button] — disabled until all required fields pass.
- *
- * Directional swipe-hint icons are overlaid at the vertical midpoint when the current page is
- * valid and a swipe target exists (left hint if not page 0; right hint if not the last page).
- *
- * @param pagerState state object controlling the current page and scroll position.
- * @param modifier modifier applied to the root [Box].
- * @param onToggleTheme callback threaded through to [TopTrayButtons] for theme switching.
- * @param onLangClick callback threaded through to [TopTrayButtons] for language switching.
- * @param onFinish callback invoked when the user completes the final onboarding page.
  */
 @Composable
 fun OnboardingScreen(
-    pagerState: PagerState,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    pagerState: PagerState = rememberPagerState(pageCount = { onboardingScreens.size }),
     onboardingModel: OnboardingModel,
     onToggleTheme: () -> Unit = {},
     onLangClick: () -> Unit = {},
@@ -191,15 +225,13 @@ fun OnboardingScreen(
             .fillMaxSize()
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
     ) {
-        // Background + page content fills full screen, including behind system bars
         OnboardingPager(
-            pagerState,
             modifier = Modifier.fillMaxSize(),
+            pagerState = pagerState,
             onboardingModel = onboardingModel,
             userScrollEnabled = isBtnEnabled
         )
 
-        // Chrome overlay; insets applied here so background bleeds edge-to-edge
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -244,7 +276,6 @@ fun OnboardingScreen(
                 onClick = {
                     if (!isLastIndex) {
                         coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-
                     } else onFinish()
                 }
             ) { Text(stringResource(if (isLastIndex) R.string.btn_start else R.string.btn_next)) }
@@ -281,17 +312,11 @@ fun OnboardingScreen(
                 )
             }
         }
-
-
     }
 }
 
-
 /**
- * Back arrow with label, navigating the user to the previous onboarding page.
- *
- * @param modifier modifier applied to the root [Box].
- * @param onClick callback invoked when the button is tapped.
+ * Back arrow with label.
  */
 @Composable
 private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -321,11 +346,7 @@ private fun GoBackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 /**
- * Row of dots indicating the current page position within the onboarding flow.
- *
- * @param modifier modifier applied to the root [Row].
- * @param totalSteps total number of onboarding pages.
- * @param currentStep zero-based index of the currently visible page.
+ * Row of dots indicating the current page position.
  */
 @Composable
 private fun StepIndicator(
@@ -339,7 +360,6 @@ private fun StepIndicator(
     ) {
         repeat(totalSteps) { index ->
             val isActive = index == currentStep
-            // Active dot stretches to 20dp; inactive dots stay at 8dp (pill vs circle).
             Box(
                 modifier = Modifier
                     .height(8.dp)

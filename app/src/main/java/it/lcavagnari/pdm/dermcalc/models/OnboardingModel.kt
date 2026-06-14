@@ -2,7 +2,6 @@ package it.lcavagnari.pdm.dermcalc.models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow

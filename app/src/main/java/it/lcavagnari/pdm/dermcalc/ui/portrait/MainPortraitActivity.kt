@@ -12,12 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.AppNavHost
 import it.lcavagnari.pdm.dermcalc.R
@@ -26,11 +24,10 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
-import it.lcavagnari.pdm.dermcalc.navigation.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
-import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
@@ -109,32 +106,36 @@ fun MainPortraitActivity(
 }
 
 
-//  Preview
-
-@Preview(showBackground = true)
+//  Preview wrapper functions
 @Composable
-fun MainPortraitActivityPreview() {
-    val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }.also { it.finishOnboarding() }
-    val qm = remember { QuoteModel(app) }.also { it.updateQuote() }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
+fun DermCalcPreview(
+    screen: AppRoute = HomeRoute,
+    darkTheme: Boolean = false,
+    setupOm: (OnboardingModel) -> Unit = { it.finishOnboarding(); it.updateName("Asriel ") },
+    setupQm: (QuoteModel) -> Unit = { it.updateQuote() },
+    setupTm: (ToolsModel) -> Unit = {},
+    setupBm: (BodyScanModel) -> Unit = {}
+) {
+    DermCalcPreview(darkTheme,setupOm,setupQm,setupTm,setupBm) { vm, qm, tm, bm ->
+        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = screen)
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainPortraitActivityPreview2() {
+fun DermCalcPreview(
+    darkTheme: Boolean = false,
+    setupOm: (OnboardingModel) -> Unit = { it.finishOnboarding() },
+    setupQm: (QuoteModel) -> Unit = { it.updateQuote() },
+    setupTm: (ToolsModel) -> Unit = {},
+    setupBm: (BodyScanModel) -> Unit = {},
+    content: @Composable (OnboardingModel, QuoteModel, ToolsModel, BodyScanModel) -> Unit
+) {
     val context = LocalContext.current
-    val app = object : Application() { init { attachBaseContext(context) } }
-    val vm = remember { OnboardingModel(app) }
-    val qm = remember { QuoteModel(app) }
-    val tm = remember { ToolsModel(app) }
-    val bm = remember { BodyScanModel(app) }
-    DermCalcTheme {
-        MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm)
-    }
+    val app = remember { object : Application() { init { attachBaseContext(context) } } }
+    val vm = remember { OnboardingModel(app) }.also { setupOm(it) }
+    val qm = remember { QuoteModel(app) }.also { setupQm(it) }
+    val tm = remember { ToolsModel(app) }.also { setupTm(it) }
+    val bm = remember { BodyScanModel(app) }.also { setupBm(it) }
+
+    DermCalcTheme(darkTheme = darkTheme, content = { content(vm,qm,tm,bm) })
 }
