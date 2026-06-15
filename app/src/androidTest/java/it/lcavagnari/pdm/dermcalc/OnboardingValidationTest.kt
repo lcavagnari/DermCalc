@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
  * Compose UI tests that verify the Next button is disabled when required onboarding
  * inputs are missing or invalid.
  *
- * Each test starts from a fresh [MainActivity] instance and navigates to the page
+ * Each test starts from a fresh [AppMain] instance and navigates to the page
  * under test before asserting the button state.
  */
 @RunWith(AndroidJUnit4::class)

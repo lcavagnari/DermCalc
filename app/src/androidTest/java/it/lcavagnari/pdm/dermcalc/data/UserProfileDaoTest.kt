@@ -7,14 +7,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import it.lcavagnari.pdm.dermcalc.models.Sex
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.LocalDate
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlinx.datetime.LocalDate
 
 @RunWith(AndroidJUnit4::class)
 class UserProfileDaoTest {
