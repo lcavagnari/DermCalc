@@ -47,7 +47,7 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
 import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulDetermination

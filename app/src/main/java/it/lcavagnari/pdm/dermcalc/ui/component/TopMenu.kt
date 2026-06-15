@@ -36,7 +36,7 @@ import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
