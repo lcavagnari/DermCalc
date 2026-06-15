@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ToolResultDao {
     @Upsert
-    suspend fun upsert(result: ToolResultEntity)
+    suspend fun upsert(result: ToolResultEntity): Long
 
     @Query("SELECT * FROM tool_results ORDER BY id DESC")
     fun getAll(): Flow<List<ToolResultEntity>>

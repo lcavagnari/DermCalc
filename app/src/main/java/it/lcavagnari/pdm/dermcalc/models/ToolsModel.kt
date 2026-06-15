@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -141,7 +143,10 @@ data class PasiResult(
     override fun isValid(): Boolean =
         listOf(head, upperLimbs, trunk, lowerLimbs)
             .all { region ->
-                listOf(region.erythema, region.induration, region.area).all { it >= 0 }
+                region.erythema in 0..4 &&
+                region.induration in 0..4 &&
+                region.desquamation in 0..4 &&
+                region.area in 0..100
             }
     companion object{
         fun compute(
@@ -187,7 +192,11 @@ data class EasiResult(
     override fun isValid(): Boolean =
         listOf(head, upperLimbs, trunk, lowerLimbs)
             .all { region ->
-                listOf(region.erythema, region.induration, region.area).all { it >= 0 }
+                region.erythema in 0..3 &&
+                region.induration in 0..3 &&
+                region.excoriation in 0..3 &&
+                region.lichenification in 0..3 &&
+                region.area in 0..100
             }
 
     companion object {
@@ -299,6 +308,7 @@ data class IndexToolDraft<Tool : ToolResult>(
 /** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
 class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
+    private val dbMutex = Mutex()
 
     /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
@@ -445,16 +455,26 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     fun addResult(result: ToolResult): Boolean {
         if (!result.isValid()) return false
         viewModelScope.launch {
-            try {
-                val json = Json.encodeToString(ToolResult.serializer(), result)
-                val entity = ToolResultEntity(
-                    toolName = result.name,
-                    score = result.score,
-                    detailsJson = json
-                )
-                toolResultDao.upsert(entity)
-            } catch (e: Exception) {
-                // Insert failed silently
+            dbMutex.withLock {
+                try {
+                    val json = Json.encodeToString(ToolResult.serializer(), result)
+                    val entity = ToolResultEntity(
+                        toolName = result.name,
+                        score = result.score,
+                        detailsJson = json
+                    )
+                    val id = toolResultDao.upsert(entity)
+                    // Update in-memory state with the generated ID
+                    val updatedResult = when (result) {
+                        is PasiResult -> result.copy(id = id)
+                        is EasiResult -> result.copy(id = id)
+                        is BmiResult -> result.copy(id = id)
+                        is BsaResult -> result.copy(id = id)
+                    }
+                    _results.value = _results.value + updatedResult
+                } catch (e: Exception) {
+                    // Insert failed silently
+                }
             }
         }
         return true
@@ -467,14 +487,22 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
      */
     fun deleteResult(result: ToolResult) {
         viewModelScope.launch {
-            toolResultDao.deleteById(result.id)
+            dbMutex.withLock {
+                toolResultDao.deleteById(result.id)
+                // Update in-memory state
+                _results.value = _results.value - result
+            }
         }
     }
 
     /** Removes all stored results. */
     fun clearAllResults() {
         viewModelScope.launch {
-            toolResultDao.deleteAll()
+            dbMutex.withLock {
+                toolResultDao.deleteAll()
+                // Update in-memory state
+                _results.value = emptyList()
+            }
         }
     }
 }
