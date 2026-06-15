@@ -88,7 +88,6 @@ import kotlinx.datetime.number
 /**
  * Home screen. Centered column of three stacked cards at 90% screen width.
  */
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     quoteModel: QuoteModel,

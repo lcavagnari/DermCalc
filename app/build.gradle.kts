@@ -58,7 +58,7 @@ android {
 
     defaultConfig {
         applicationId = "it.lcavagnari.pdm.dermcalc"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = (System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()) ?: 1
         versionName = appVersionName
