@@ -34,6 +34,9 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "dermcalc.db"
                 )
+                    // WARNING: Destructive migration loses all user data.
+                    // Replace with explicit Migration(N, N+1) objects before bumping version.
+                    // See: https://developer.android.com/training/data-storage/room/migrating
                     .fallbackToDestructiveMigration()
                     .addCallback(seedCallback)
                     .build()
