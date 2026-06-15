@@ -188,7 +188,7 @@ fun EASIScreen(
 
         Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             signs.forEach { (nameRes, currentScore, withScore) ->
-                SeverityRow(stringResource(nameRes),soulColor, currentScore, max = 4) { commit(withScore(it)) }
+                SeverityRow(stringResource(nameRes),soulColor, currentScore, max = 3) { commit(withScore(it)) }
             }
 
             BodyRegionSlider(
