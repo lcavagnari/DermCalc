@@ -41,9 +41,13 @@ class OnboardingModel(
     val weightInput: WeightInput get() = _inputFields.value[4] as WeightInput
 
     private val _hasSeenOnboarding = MutableStateFlow(false)
+    private val _isOnboardingLoading = MutableStateFlow(true)
 
     /** Whether the user has completed the onboarding flow. In-memory only; resets on process death. */
     val hasSeenOnboarding: StateFlow<Boolean> = _hasSeenOnboarding.asStateFlow()
+
+    /** True while the persisted onboarding state is being loaded from Room. */
+    val isOnboardingLoading: StateFlow<Boolean> = _isOnboardingLoading.asStateFlow()
 
     init {
         // Load persisted profile once on creation.
@@ -95,6 +99,7 @@ class OnboardingModel(
             if (settings != null) {
                 _hasSeenOnboarding.value = settings.hasSeenOnboarding
             }
+            _isOnboardingLoading.value = false
         }
     }
 

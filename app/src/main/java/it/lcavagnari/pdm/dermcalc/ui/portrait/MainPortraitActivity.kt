@@ -5,13 +5,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -67,46 +70,69 @@ fun MainPortraitActivity(
     startingDestination: AppRoute = HomeRoute,
     onToggleTheme: () -> Unit = {}
 ) {
+    val isOnboardingLoading by onboardingModel.isOnboardingLoading.collectAsState()
     val hasSeenOnboarding by onboardingModel.hasSeenOnboarding.collectAsState()
     val navController = rememberNavController()
     val pagerState = rememberPagerState(pageCount = { onboardingScreens.size })
 
-    // Show the onboarding flow until the user completes all pages.
-    if (!hasSeenOnboarding) {
-        OnboardingScreen(
-            modifier = Modifier.fillMaxSize(),
-            pagerState = pagerState,
-            onboardingModel = onboardingModel,
-            onFinish = { onboardingModel.finishOnboarding() },
-            onToggleTheme = onToggleTheme
-        )
-
-    } else {
-        Box(Modifier.fillMaxSize()) {
+    when {
+        isOnboardingLoading -> Box(Modifier.fillMaxSize()) {
             Image(
-                painter = painterResource(if (LocalDarkTheme.current) R.drawable.bg_dark else R.drawable.bg),
+                painter = painterResource(
+                    if (LocalDarkTheme.current) R.drawable.loading_dark
+                    else R.drawable.loading_light
+                ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
-            Scaffold(
-                modifier = Modifier.fillMaxSize(),
-                containerColor = Color.Transparent,
-                topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
-                bottomBar = {
-                    NavigationBar(navController = navController,
-                        appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
-                    )
-                }
-            ) { innerPadding -> AppNavHost(
-                modifier = modifier.padding(innerPadding),
-                startDestination = startingDestination,
-                navController = navController,
-                onboardingModel = onboardingModel,
-                bodyScanModel = bodyScanModel,
-                toolsModel = toolsModel,
-                quoteModel = quoteModel
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(120.dp)
             )
+        }
+
+        !hasSeenOnboarding -> {
+            OnboardingScreen(
+                modifier = Modifier.fillMaxSize(),
+                pagerState = pagerState,
+                onboardingModel = onboardingModel,
+                onFinish = { onboardingModel.finishOnboarding() },
+                onToggleTheme = onToggleTheme
+            )
+        }
+
+        else -> {
+            Box(Modifier.fillMaxSize()) {
+                Image(
+                    painter = painterResource(if (LocalDarkTheme.current) R.drawable.bg_dark else R.drawable.bg),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Transparent,
+                    topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
+                    bottomBar = {
+                        NavigationBar(navController = navController,
+                            appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+                        )
+                    }
+                ) { innerPadding -> AppNavHost(
+                    modifier = modifier.padding(innerPadding),
+                    startDestination = startingDestination,
+                    navController = navController,
+                    onboardingModel = onboardingModel,
+                    bodyScanModel = bodyScanModel,
+                    toolsModel = toolsModel,
+                    quoteModel = quoteModel
+                )
+                }
             }
         }
     }
