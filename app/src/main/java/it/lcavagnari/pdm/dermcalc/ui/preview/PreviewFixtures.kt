@@ -103,7 +103,7 @@ fun DermCalcPreview(
     content: @Composable (OnboardingModel, QuoteModel, ToolsModel, BodyScanModel) -> Unit
 ) {
     val context = LocalContext.current
-    val app = remember { object : Application() { init { attachBaseContext(context) } } }
+    val app = remember { context.applicationContext as Application }
     val vm = remember {
         OnboardingModel(
             object : UserProfileDao {
@@ -120,7 +120,7 @@ fun DermCalcPreview(
     val tm = remember {
         ToolsModel(
             object : ToolResultDao {
-                override suspend fun upsert(result: ToolResultEntity) {}
+                override suspend fun upsert(result: ToolResultEntity): Long = 0L
                 override fun getAll() = MutableStateFlow<List<ToolResultEntity>>(emptyList())
                 override suspend fun deleteById(id: Long) {}
                 override suspend fun deleteAll() {}
