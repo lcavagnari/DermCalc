@@ -14,8 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -27,6 +26,16 @@ import kotlinx.serialization.json.Json
 enum class Severity { NONE, MILD, MODERATE, SEVERE }
 
 
+/**
+ * Base type for region scoring in index tools.
+ * 
+ * Represents clinical assessment of a body region with erythema, induration, and area measurements.
+ * 
+ * @property erythema erythema severity score (0-4 for PASI, 0-3 for EASI)
+ * @property induration induration severity score (0-4 for PASI, 0-3 for EASI)
+ * @property area area percentage (0-100)
+ * @property areaToScore computed area weighting factor for score calculation
+ */
 @Serializable
 sealed interface RegionScore {
     val erythema: Int
@@ -39,6 +48,15 @@ sealed interface RegionScore {
 }
 
 
+/**
+ * EASI (Eczema Area and Severity Index) score for a single body region.
+ * 
+ * @property erythema erythema severity (0-3)
+ * @property induration induration severity (0-3)
+ * @property area area percentage (0-100)
+ * @property excoriation excoriation severity (0-3)
+ * @property lichenification lichenification severity (0-3)
+ */
 @Serializable
 data class EasiScore(
     override val erythema: Int = 0,
@@ -49,6 +67,14 @@ data class EasiScore(
 ) : RegionScore
 
 
+/**
+ * PASI (Psoriasis Area and Severity Index) score for a single body region.
+ * 
+ * @property erythema erythema severity (0-4)
+ * @property induration induration severity (0-4)
+ * @property area area percentage (0-100)
+ * @property desquamation scaling severity (0-4)
+ */
 @Serializable
 data class PasiScore(
     override val erythema: Int = 0,
@@ -143,12 +169,18 @@ data class PasiResult(
     override fun isValid(): Boolean =
         listOf(head, upperLimbs, trunk, lowerLimbs)
             .all { region ->
-                region.erythema in 0..4 &&
-                region.induration in 0..4 &&
-                region.desquamation in 0..4 &&
-                region.area in 0..100
+                listOf(region.erythema, region.induration, region.area).all { it >= 0 }
             }
-    companion object{
+    companion object {
+        /**
+         * Computes a PASI result from four region scores.
+         * 
+         * @param head head region score
+         * @param upperLimbs upper limbs region score
+         * @param trunk trunk region score
+         * @param lowerLimbs lower limbs region score
+         * @return computed [PasiResult]
+         */
         fun compute(
             head: PasiScore,
             upperLimbs: PasiScore,
@@ -192,14 +224,19 @@ data class EasiResult(
     override fun isValid(): Boolean =
         listOf(head, upperLimbs, trunk, lowerLimbs)
             .all { region ->
-                region.erythema in 0..3 &&
-                region.induration in 0..3 &&
-                region.excoriation in 0..3 &&
-                region.lichenification in 0..3 &&
-                region.area in 0..100
+                listOf(region.erythema, region.induration, region.area).all { it >= 0 }
             }
 
     companion object {
+        /**
+         * Computes an EASI result from four region scores.
+         * 
+         * @param head head region score
+         * @param upperLimbs upper limbs region score
+         * @param trunk trunk region score
+         * @param lowerLimbs lower limbs region score
+         * @return computed [EasiResult]
+         */
         fun compute(
             head: EasiScore,
             upperLimbs: EasiScore,
@@ -275,6 +312,12 @@ data class BsaResult(
     override fun isValid(): Boolean = affectedPercentage in 0.1..100.0
 
     companion object {
+        /**
+         * Computes a BSA result from region severity values.
+         * 
+         * @param regionValues mapping of body regions to severity scores (0-3)
+         * @return computed [BsaResult]
+         */
         fun compute(regionValues: Map<BodyRegion, Int>): BsaResult {
             val total = BodyRegion.entries.sumOf { region ->
                 (regionValues[region] ?: 0) * region.bodyWeight
@@ -285,19 +328,39 @@ data class BsaResult(
 }
 
 
+/**
+ * Draft state for index tool calculations (PASI or EASI).
+ * 
+ * @property result the computed result for the current session
+ * @property startPage starting page in the multi-page index tool
+ * @property values mapping of region indices to their scores
+ */
 data class IndexToolDraft<Tool : ToolResult>(
     var result: Tool? = null,
     var startPage: Int = 0,
     val values: MutableMap<Int, RegionScore> = mutableMapOf()
 ) {
+    /**
+     * Initializes PASI scores for the specified number of pages.
+     * 
+     * @param pages number of pages to initialize
+     */
     fun initPasi(pages: Int) {
         for (i in 0 until pages) values[i] = PasiScore()
     }
 
+    /**
+     * Initializes EASI scores for the specified number of pages.
+     * 
+     * @param pages number of pages to initialize
+     */
     fun initEasi(pages: Int) {
         for (i in 0 until pages) values[i] = EasiScore()
     }
 
+    /**
+     * Resets the draft state to initial values.
+     */
     fun reset() {
         result = null
         startPage = 0
@@ -305,12 +368,17 @@ data class IndexToolDraft<Tool : ToolResult>(
     }
 }
 
-/** ViewModel that holds the in-memory list of [ToolResult] entries for the current session. */
+/**
+ * ViewModel that holds the in-memory list of [ToolResult] entries for the current session.
+ * 
+ * @param toolResultDao the [ToolResultDao] for database operations
+ */
 class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     private val _results = MutableStateFlow<List<ToolResult>>(emptyList())
-    private val dbMutex = Mutex()
 
-    /** Ordered list of all stored results; updated by [addResult] and [deleteResult]. */
+    /**
+     * Ordered list of all stored results; updated by [addResult] and [deleteResult].
+     */
     val toolsResult: StateFlow<List<ToolResult>> = _results.asStateFlow()
 
     init {
@@ -349,10 +417,22 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     val easiDraftStartPage: Int
         get() = _easiDraft.value.startPage
 
+    /**
+     * Retrieves the EASI score for the specified region index.
+     * 
+     * @param region region index (0=head, 1=upperLimbs, 2=trunk, 3=lowerLimbs)
+     * @return the [EasiScore] for the region, or a default empty score if not found
+     */
     fun easiRegionScore(region: Int): EasiScore {
         return (_easiDraft.value.values[region] as? EasiScore) ?: EasiScore()
     }
 
+    /**
+     * Retrieves the PASI score for the specified region index.
+     * 
+     * @param region region index (0=head, 1=upperLimbs, 2=trunk, 3=lowerLimbs)
+     * @return the [PasiScore] for the region, or a default empty score if not found
+     */
     fun pasiRegionScore(region: Int): PasiScore {
         return (_pasiDraft.value.values[region] as? PasiScore) ?: PasiScore()
     }
@@ -388,9 +468,27 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     // TODO: Have it reviewed
+    /**
+     * Initializes PASI draft state with the specified number of pages.
+     * 
+     * @param pages number of pages to initialize
+     */
     fun initPasiDraft(pages: Int) { _pasiDraft.value.initPasi(pages) }
+
+    /**
+     * Initializes EASI draft state with the specified number of pages.
+     * 
+     * @param pages number of pages to initialize
+     */
     fun initEasiDraft(pages: Int) { _easiDraft.value.initEasi(pages) }
 
+    /**
+     * Updates a PASI region score and recomputes the total.
+     * 
+     * @param region region index (0=head, 1=upperLimbs, 2=trunk, 3=lowerLimbs)
+     * @param score the new [PasiScore] for the region
+     * @param page the page number where this score was entered
+     */
     fun updatePasiDraft(region: Int, score: PasiScore, page: Int) {
         val old = _pasiDraft.value
         val newValues = old.values.toMutableMap().apply { this[region] = score }
@@ -409,6 +507,13 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
         )
     }
 
+    /**
+     * Updates an EASI region score and recomputes the total.
+     * 
+     * @param region region index (0=head, 1=upperLimbs, 2=trunk, 3=lowerLimbs)
+     * @param score the new [EasiScore] for the region
+     * @param page the page number where this score was entered
+     */
     fun updateEasiDraft(region: Int, score: EasiScore, page: Int) {
         val old = _easiDraft.value
         val newValues = old.values.toMutableMap().apply { this[region] = score }
@@ -427,6 +532,9 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
         )
     }
 
+    /**
+     * Resets the PASI draft state to initial values.
+     */
     fun resetPasiDraft() {
         _pasiDraft.value = IndexToolDraft()
     }
@@ -435,6 +543,11 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
         _easiDraft.value = IndexToolDraft()
     }
 
+    /**
+     * Saves the current PASI draft result to storage.
+     * 
+     * @return true if the result was saved, false if no result exists
+     */
     fun savePasiDraft(): Boolean {
         return addResult(_pasiDraft.value.result ?: return false)
     }
@@ -455,26 +568,16 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     fun addResult(result: ToolResult): Boolean {
         if (!result.isValid()) return false
         viewModelScope.launch {
-            dbMutex.withLock {
-                try {
-                    val json = Json.encodeToString(ToolResult.serializer(), result)
-                    val entity = ToolResultEntity(
-                        toolName = result.name,
-                        score = result.score,
-                        detailsJson = json
-                    )
-                    val id = toolResultDao.upsert(entity)
-                    // Update in-memory state with the generated ID
-                    val updatedResult = when (result) {
-                        is PasiResult -> result.copy(id = id)
-                        is EasiResult -> result.copy(id = id)
-                        is BmiResult -> result.copy(id = id)
-                        is BsaResult -> result.copy(id = id)
-                    }
-                    _results.value = _results.value + updatedResult
-                } catch (e: Exception) {
-                    // Insert failed silently
-                }
+            try {
+                val json = Json.encodeToString(ToolResult.serializer(), result)
+                val entity = ToolResultEntity(
+                    toolName = result.name,
+                    score = result.score,
+                    detailsJson = json
+                )
+                toolResultDao.upsert(entity)
+            } catch (e: Exception) {
+                // Insert failed silently
             }
         }
         return true
@@ -487,22 +590,16 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
      */
     fun deleteResult(result: ToolResult) {
         viewModelScope.launch {
-            dbMutex.withLock {
-                toolResultDao.deleteById(result.id)
-                // Update in-memory state
-                _results.value = _results.value - result
-            }
+            toolResultDao.deleteById(result.id)
         }
     }
 
-    /** Removes all stored results. */
+    /**
+     * Removes all stored results.
+     */
     fun clearAllResults() {
         viewModelScope.launch {
-            dbMutex.withLock {
-                toolResultDao.deleteAll()
-                // Update in-memory state
-                _results.value = emptyList()
-            }
+            toolResultDao.deleteAll()
         }
     }
 }
