@@ -1,5 +1,10 @@
 ﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,13 +51,14 @@ import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.HeightMeasurements
 import it.lcavagnari.pdm.dermcalc.models.InputField
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.Sex
 import it.lcavagnari.pdm.dermcalc.models.SexInput
 import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
+import it.lcavagnari.pdm.dermcalc.models.isDefaultOrBlank
 import it.lcavagnari.pdm.dermcalc.models.toLocalDate
-import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.input.InputFieldEditDialog
@@ -60,13 +66,6 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.utils.today
-
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import it.lcavagnari.pdm.dermcalc.models.isDefaultOrBlank
 
 
 private val vm:(OnboardingModel) -> Unit = {

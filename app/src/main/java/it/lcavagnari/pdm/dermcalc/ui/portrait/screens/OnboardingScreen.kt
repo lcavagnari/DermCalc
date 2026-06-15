@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -209,7 +209,6 @@ fun OnboardingScreen(
     pagerState: PagerState = rememberPagerState(pageCount = { onboardingScreens.size }),
     onboardingModel: OnboardingModel,
     onToggleTheme: () -> Unit = {},
-    onLangClick: () -> Unit = {},
     onFinish: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -239,22 +238,19 @@ fun OnboardingScreen(
                 .navigationBarsPadding()
                 .padding(16.dp)
         ) {
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
-                TopTrayButtons(
-                    showDebug = true,
+                ButtonsTray(
                     iconTint = MaterialTheme.colorScheme.secondary,
-                    onLangClick = onLangClick,
-                    onDebugClick = { onboardingModel.finishOnboarding() },
-                    onToggleTheme = onToggleTheme
+                    onToggleTheme = onToggleTheme,
                 )
             }
 
             Spacer(Modifier.weight(1f))
-
             if (!isBtnEnabled)
                 GoBackButton(modifier = Modifier.padding(bottom = 7.dp, start = 5.dp)) {
                     if (pagerState.currentPage > 0)

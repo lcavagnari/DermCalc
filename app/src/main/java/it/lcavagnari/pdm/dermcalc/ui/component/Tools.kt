@@ -7,17 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,9 +26,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Severity
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
@@ -62,41 +56,26 @@ fun ToolSaveButton(
     onSaveResult: () -> Unit
 ) {
     val context = LocalContext.current
-    var saveArmedTimes by remember { mutableStateOf(0) }
 
-    // Reset
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        saveArmedTimes = 0
-    }
-
-    Button(
+    ConfirmIconButton(
         modifier = modifier
             .fillMaxWidth(0.9f)
             .semantics { testTag = "tool_btn_save" },
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = soulColor,
-        ),
-        shape = RoundedCornerShape(3.dp),
-        onClick = {
-            if (saveArmedTimes >= 2) {
-                saveArmedTimes = 0
-
-                Toast.makeText(context,
-                    R.string.btn_saved_confirm,
-                    Toast.LENGTH_SHORT
-                ).show()
-                onSaveResult()
-
-            } else saveArmedTimes++
+        color = soulColor,
+        labelDefault = stringResource(R.string.btn_confirm),
+        labelArmed = stringResource(R.string.btn_save) + "?",
+        labelExecute = stringResource(R.string.btn_save),
+        onConfirm = {
+            Toast.makeText(context,
+                R.string.btn_saved_confirm,
+                Toast.LENGTH_SHORT
+            ).show()
+            onSaveResult()
         }
-    ) {
+    ) { text, _ ->
         Text(
-            when {
-                saveArmedTimes > 1 -> stringResource(R.string.btn_save)
-                saveArmedTimes > 0 -> stringResource(R.string.btn_save) + "?"
-                else -> stringResource(R.string.btn_confirm)
-            },
+            text = text,
             fontFamily = DeterminationMono
         )
     }
@@ -128,7 +107,7 @@ fun ToolResultCard(
         modifier = modifier.fillMaxWidth(),
         borderSide = BorderSide.Left,
         borderColor = soulColor,
-        borderStrokeWidth = 2.dp,
+        borderStrokeWidth = 3.dp,
         cornerRadius = 10.dp,
         elevation = CardDefaults.cardElevation(6.dp),
         colors = CardDefaults.cardColors(

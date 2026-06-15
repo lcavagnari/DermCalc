@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -23,41 +23,34 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
+import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
-import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ResetButton
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
@@ -307,65 +300,7 @@ fun ScafoldHeader(
     }
 }
 
-@Composable
-private fun ResetButton(
-    modifier: Modifier = Modifier,
-    toolLabel: String = "",
-    soulColor: Color,
-    onReset: () -> Unit
-) {
-    var showDialog by remember { mutableStateOf(false) }
 
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = {
-                Text(
-                    stringResource(R.string.reset_dialog_title),
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontSize = 24.sp
-                ) },
-            text = {
-                Text(
-                    stringResource(R.string.reset_dialog_body, toolLabel),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontSize = 16.sp
-                ) },
-            confirmButton = {
-                TextButton(onClick = { showDialog = false; onReset() }
-                ) { Text(stringResource(R.string.btn_confirm)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text(stringResource(R.string.btn_cancel))
-                }
-            }
-        )
-    }
-
-    IconButton(
-        modifier = modifier.height(64.dp),
-        onClick = { showDialog = true }
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            Icon(
-                painterResource(R.drawable.ic_reset_button),
-                contentDescription = stringResource(R.string.btn_reset),
-                tint = soulColor,
-                modifier = Modifier.size(18.dp)
-            )
-            Text(
-                stringResource(R.string.btn_reset),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1
-            )
-        }
-    }
-}
 
 @Composable
 private fun ProgressBar(
@@ -438,7 +373,11 @@ private fun ProgressBar(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            ResetButton(soulColor = soulColor, onReset = onReset)
+            ResetButton(
+                soulColor = soulColor,
+                onReset = onReset,
+                label = stringResource(R.string.btn_reset),
+            )
         }
     }
 }

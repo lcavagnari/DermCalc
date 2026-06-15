@@ -19,27 +19,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.AppNavHost
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
+import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
+import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
+import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
-import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
-import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
-import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
-import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
-import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
-import kotlinx.coroutines.flow.MutableStateFlow
-import it.lcavagnari.pdm.dermcalc.models.AppRoute
-import it.lcavagnari.pdm.dermcalc.models.HomeRoute
-import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.LoadingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * Root portrait composable. Switches between the onboarding flow and the main app shell
@@ -67,46 +68,51 @@ fun MainPortraitActivity(
     startingDestination: AppRoute = HomeRoute,
     onToggleTheme: () -> Unit = {}
 ) {
+    val isOnboardingLoading by onboardingModel.isOnboardingLoading.collectAsState()
     val hasSeenOnboarding by onboardingModel.hasSeenOnboarding.collectAsState()
     val navController = rememberNavController()
     val pagerState = rememberPagerState(pageCount = { onboardingScreens.size })
 
-    // Show the onboarding flow until the user completes all pages.
-    if (!hasSeenOnboarding) {
-        OnboardingScreen(
-            modifier = Modifier.fillMaxSize(),
-            pagerState = pagerState,
-            onboardingModel = onboardingModel,
-            onFinish = { onboardingModel.finishOnboarding() },
-            onToggleTheme = onToggleTheme
-        )
+    when {
+        isOnboardingLoading -> LoadingScreen()
 
-    } else {
-        Box(Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(if (LocalDarkTheme.current) R.drawable.bg_dark else R.drawable.bg),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-            Scaffold(
+        !hasSeenOnboarding -> {
+            OnboardingScreen(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = Color.Transparent,
-                topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
-                bottomBar = {
-                    NavigationBar(navController = navController,
-                        appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
-                    )
-                }
-            ) { innerPadding -> AppNavHost(
-                modifier = modifier.padding(innerPadding),
-                startDestination = startingDestination,
-                navController = navController,
+                pagerState = pagerState,
                 onboardingModel = onboardingModel,
-                bodyScanModel = bodyScanModel,
-                toolsModel = toolsModel,
-                quoteModel = quoteModel
+                onFinish = { onboardingModel.finishOnboarding() },
+                onToggleTheme = onToggleTheme
             )
+        }
+
+        else -> {
+            Box(Modifier.fillMaxSize()) {
+                Image(
+                    painter = painterResource(if (LocalDarkTheme.current) R.drawable.bg_dark else R.drawable.bg),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Transparent,
+                    topBar = { TopMenu(navController, onToggleTheme = onToggleTheme) },
+                    bottomBar = {
+                        NavigationBar(navController = navController,
+                            appItems = listOf(HomeRoute, ToolsRoute, ProfileRoute)
+                        )
+                    }
+                ) { innerPadding -> AppNavHost(
+                    modifier = modifier.padding(innerPadding),
+                    startDestination = startingDestination,
+                    navController = navController,
+                    onboardingModel = onboardingModel,
+                    bodyScanModel = bodyScanModel,
+                    toolsModel = toolsModel,
+                    quoteModel = quoteModel
+                )
+                }
             }
         }
     }
@@ -127,6 +133,8 @@ fun DermCalcPreview(
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = screen)
     }
 }
+
+
 
 @Composable
 fun DermCalcPreview(

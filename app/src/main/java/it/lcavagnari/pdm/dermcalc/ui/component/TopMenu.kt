@@ -35,7 +35,7 @@ import it.lcavagnari.pdm.dermcalc.models.HomeRoute
 import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
-import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
@@ -121,7 +121,7 @@ private fun soulColor(route: String?): Color {
  * - Leading icon — ECG logo on Home; destination icon on other screens. On calculator screens
  *   the icon is clickable and pops the back stack to [it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute].
  * - Title column — destination title (27sp) and optional subtitle (18sp), both in the soul color.
- * - Trailing [it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons] — language, theme-toggle; debug button omitted at this call site.
+ * - Trailing [it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray] — language, theme-toggle; debug button omitted at this call site.
  *
  * Soul-color assignment per destination:
  * - Home → Determination (red)   · Tools  → Justice (gold)      · Profile → Kindness (green)
@@ -131,7 +131,7 @@ private fun soulColor(route: String?): Color {
  * Text and icon tint are chosen via luminance: bright soul backgrounds get black, dark ones get white.
  *
  * @param navController controller used to observe the current back-stack destination.
- * @param onToggleTheme callback forwarded to [it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons].
+ * @param onToggleTheme callback forwarded to [it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray].
  */
 @Composable
 fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
@@ -208,7 +208,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                     )
                 }
             }
-            TopTrayButtons(iconTint = contentColor, onToggleTheme = onToggleTheme) {}
+            ButtonsTray(iconTint = contentColor, onToggleTheme = onToggleTheme)
         }
     }
 }

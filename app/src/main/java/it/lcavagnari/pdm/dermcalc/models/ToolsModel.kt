@@ -2,28 +2,22 @@
 
 package it.lcavagnari.pdm.dermcalc.models
 
-import kotlin.time.ExperimentalTime
-
 import androidx.lifecycle.ViewModel
-import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
-import it.lcavagnari.pdm.dermcalc.utils.today
 import androidx.lifecycle.viewModelScope
+import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
+import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
+import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.coroutines.flow.first
-import kotlinx.datetime.toInstant
-import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
-import kotlinx.datetime.TimeZone
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.
@@ -478,7 +472,7 @@ class ToolsModel(private val toolResultDao: ToolResultDao) : ViewModel() {
     }
 
     /** Removes all stored results. */
-    fun clearResult() {
+    fun clearAllResults() {
         viewModelScope.launch {
             toolResultDao.deleteAll()
         }

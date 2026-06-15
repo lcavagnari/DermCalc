@@ -206,4 +206,18 @@
     <string name="easi_sign_excoriation">Excoriation</string>
     <string name="easi_sign_lichenification">Lichenification</string>
     <string name="pasi_sign_desquamation">Desquamation</string>
+    <plurals name="history_record_count">
+        <item quantity="one">%d record</item>
+        <item quantity="other">%d records</item>
+    </plurals>
+    <string name="nav_history">History</string>
+    <string name="history_empty_short">No records</string>
+    <string name="btn_clear">Clear</string>
+    <string name="btn_clear_all_description">Clear all history records</string>
+    <string name="btn_close_description">Close history overlay</string>
+    <string name="clear_history_title">Clear History</string>
+    <string name="clear_history_body">Are you sure you want to permanently delete all calculation records?</string>
+    <string name="btn_delete">DEL</string>
+    <string name="btn_delete_armed">DEL?</string>
+    <string name="btn_delete_description">Delete this record</string>
 </resources>

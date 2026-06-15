@@ -9,11 +9,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.ViewModelProvider
+import it.lcavagnari.pdm.dermcalc.data.AppDatabase
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import it.lcavagnari.pdm.dermcalc.data.DermCalcViewModelFactory
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
@@ -21,9 +24,6 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.ui.landscape.MainLandscapeActivity
 import it.lcavagnari.pdm.dermcalc.ui.portrait.MainPortraitActivity
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
-import it.lcavagnari.pdm.dermcalc.data.AppDatabase
-import it.lcavagnari.pdm.dermcalc.data.DermCalcViewModelFactory
-import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
 import kotlinx.coroutines.launch
 
 /**

@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.component
+package it.lcavagnari.pdm.dermcalc.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -18,15 +18,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,11 +46,14 @@ import it.lcavagnari.pdm.dermcalc.models.ToolResult
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul
+import it.lcavagnari.pdm.dermcalc.ui.theme.SoulDetermination
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
 import it.lcavagnari.pdm.dermcalc.utils.today
+import kotlinx.coroutines.delay
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -132,13 +140,22 @@ fun HistoryCard(
     val results = remember(rawResults) {
         rawResults.sortedByDescending { it.timestamp }
     }
-    val now = remember { today() }
+    var now by remember { mutableStateOf(today()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(30_000)
+            now = today()
+        }
+    }
     val displayResults = results.take(MAX_HISTORY_VISIBLE)
     val hasMore = results.size > MAX_HISTORY_VISIBLE
     val scrollState = rememberLazyListState()
 
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            enabled = !results.isEmpty(),
+            onClick = onShowAll
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -226,14 +243,21 @@ private fun ShowAllRow(onClick: () -> Unit) {
  *
  * @param result the [ToolResult] to display.
  * @param now the current date/time used as the reference point for [relativeTimestamp].
+ * @param onDelete optional callback invoked when the user confirms record deletion.
  */
 @Composable
-private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
+fun HistoryResultRow(
+    modifier: Modifier = Modifier,
+    result: ToolResult,
+    now: LocalDateTime,
+    onDelete: (() -> Unit)? = null
+) {
     val severity = result.severity()
     val dark = LocalDarkTheme.current
     val color = severityColor(severity)
     val onColor = if (!dark || severity == Severity.SEVERE) Color.White else Color.Black
     val severityLabel = when (severity) {
+        // NONE and MILD share the "Normal" label — only MODERATE and SEVERE get distinct labels
         Severity.NONE -> stringResource(R.string.severity_normal)
         Severity.MILD -> stringResource(R.string.severity_normal)
         Severity.MODERATE -> stringResource(R.string.severity_moderate)
@@ -243,7 +267,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
     val timestamp = relativeTimestamp(result.timestamp, now)
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -263,7 +287,7 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
             }
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
                 text = result.name,
                 style = MaterialTheme.typography.bodyMedium,
@@ -274,6 +298,29 @@ private fun HistoryResultRow(result: ToolResult, now: LocalDateTime) {
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+        }
+
+        if (onDelete != null) {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SoulDetermination),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                ConfirmIconButton(
+                    color = Color.White,
+                    isIconButton = true,
+                    labelDefault = stringResource(R.string.btn_delete),
+                    labelArmed = stringResource(R.string.btn_delete_armed),
+                    labelExecute = stringResource(R.string.btn_delete),
+                    onConfirm = onDelete
+                ) { _, _ ->
+                    Icon(
+                        painter = painterResource(R.drawable.ic_trashcan),
+                        contentDescription = stringResource(R.string.btn_delete_description),
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
         }
     }
 }

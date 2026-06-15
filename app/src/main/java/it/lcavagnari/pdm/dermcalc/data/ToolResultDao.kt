@@ -1,8 +1,8 @@
 ﻿package it.lcavagnari.pdm.dermcalc.data
 
 import androidx.room.Dao
-import androidx.room.Upsert
 import androidx.room.Query
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
