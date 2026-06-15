@@ -185,4 +185,14 @@
     <string name="easi_sign_lichenification">Lichenification</string>
     <string name="pasi_sign_desquamation">Desquamation</string>
     <string name="time_today">Aujourd\'hui</string>
+    <string name="nav_history">Historique</string>
+    <string name="history_empty_short">Aucun enregistrement</string>
+    <string name="btn_clear">Effacer</string>
+    <string name="btn_clear_all_description">Effacer tous les enregistrements</string>
+    <string name="btn_close_description">Fermer l\'historique</string>
+    <string name="clear_history_title">Effacer l\'historique</string>
+    <string name="clear_history_body">Êtes-vous sûr de vouloir supprimer définitivement tous les enregistrements de calculs ?</string>
+    <string name="btn_delete">SUPP</string>
+    <string name="btn_delete_armed">SUPP?</string>
+    <string name="btn_delete_description">Supprimer cet enregistrement</string>
 </resources>
