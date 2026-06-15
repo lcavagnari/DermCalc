@@ -39,6 +39,7 @@ import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
+import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.LoadingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
@@ -76,25 +77,7 @@ fun MainPortraitActivity(
     val pagerState = rememberPagerState(pageCount = { onboardingScreens.size })
 
     when {
-        isOnboardingLoading -> Box(Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(
-                    if (LocalDarkTheme.current) R.drawable.loading_dark
-                    else R.drawable.loading_light
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(120.dp)
-            )
-        }
+        isOnboardingLoading -> LoadingScreen()
 
         !hasSeenOnboarding -> {
             OnboardingScreen(
@@ -153,6 +136,8 @@ fun DermCalcPreview(
         MainPortraitActivity(quoteModel = qm, onboardingModel = vm, toolsModel = tm, bodyScanModel = bm, startingDestination = screen)
     }
 }
+
+
 
 @Composable
 fun DermCalcPreview(
