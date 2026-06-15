@@ -73,7 +73,7 @@ fun AppNavHost(
             navController = navController,
             startDestination = startDestination
         ) {
-            composable<HomeRoute> { HomeScreen(navController, quoteModel, onboardingModel, toolsModel) }
+            composable<HomeRoute> { HomeScreen(quoteModel, onboardingModel, toolsModel) }
             composable<ToolsRoute> { ToolsScreen(toolsModel) }
             composable<ProfileRoute> { ProfileScreen(navController, onboardingModel) }
 

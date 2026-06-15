@@ -1,10 +1,8 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
@@ -24,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Quote
@@ -70,8 +65,6 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.delay
 import kotlinx.datetime.number
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 @Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
     DermCalcPreview(screen = HomeRoute, setupTm = previewBmiResults)
@@ -85,23 +78,23 @@ import java.util.Calendar
  */
 @Composable
 fun HomeScreen(
-    navController: NavHostController,
     quoteModel: QuoteModel,
     onboardingModel: OnboardingModel,
     toolsModel: ToolsModel
 ) {
-    val fullNameField: TextInput = onboardingModel.fields.collectAsState().value[0] as TextInput
-    val welcomeMessage =
+    val fields by onboardingModel.fields.collectAsState()
+    val fullNameField = fields.firstOrNull() as? TextInput
+    val welcomeMessage = if (fullNameField != null) {
         stringResource(R.string.welcome) + ", " + fullNameField.value.split(' ')[0]
+    } else {
+        stringResource(R.string.welcome)
+    }
 
     val todayDate = today().date
     val configuration = LocalConfiguration.current
-    val dateText = remember(configuration) {
-        SimpleDateFormat("EEEE dd MMMM", configuration.locales[0]).format(
-            Calendar.getInstance().apply {
-                set(todayDate.year, todayDate.month.number - 1, todayDate.day)
-            }.time
-        )
+    val dateText = remember(todayDate, configuration) {
+        val javaDate = java.time.LocalDate.of(todayDate.year, todayDate.month.number, todayDate.day)
+        javaDate.format(java.time.format.DateTimeFormatter.ofPattern("EEEE dd MMMM", configuration.locales[0]))
     }
 
     var showHistoryOverlay by remember { mutableStateOf(false) }
@@ -144,7 +137,7 @@ fun HomeScreen(
                 }
             }
 
-            QuoteCard(quoteModel = quoteModel)
+            QuoteCard(modifier = Modifier.fillMaxWidth(0.9f), quoteModel = quoteModel)
 
             HistoryCard(
                 modifier = Modifier.fillMaxWidth(0.9f),
@@ -171,17 +164,10 @@ fun HistoryOverlay(
     val results = remember(rawResults) {
         rawResults.sortedByDescending { it.timestamp }
     }
-    var isLoading by remember { mutableStateOf(true) }
     var showClearConfirm by remember { mutableStateOf(false) }
 
     LaunchedEffect(visible) {
-        if (visible) {
-            isLoading = true
-            delay(500)
-            isLoading = false
-        } else {
-            showClearConfirm = false
-        }
+        if (!visible) showClearConfirm = false
     }
 
     if (showClearConfirm) ActionConfirmDialog(
@@ -247,11 +233,7 @@ fun HistoryOverlay(
                     thickness = 2.dp
                 )
 
-                if (isLoading) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = SoulJustice)
-                    }
-                } else if (results.isEmpty()) {
+                if (results.isEmpty()) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
                             text = stringResource(R.string.history_empty),
@@ -301,7 +283,7 @@ fun QuoteCard(modifier: Modifier = Modifier, quoteModel: QuoteModel) {
     val quote: Quote = quoteModel.homeQuote.collectAsState().value
 
     BorderedCard(
-        modifier = modifier.fillMaxWidth(0.9f),
+        modifier = modifier,
         borderSide = BorderSide.Left,
         borderColor = MaterialTheme.colorScheme.tertiary,
         borderStrokeWidth = 3.dp,
