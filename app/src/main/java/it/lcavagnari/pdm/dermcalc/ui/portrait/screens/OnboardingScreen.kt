@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.ui.component.input.TopTrayButtons
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding.OnboardingPager
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
@@ -244,7 +244,7 @@ fun OnboardingScreen(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.Top
             ) {
-                TopTrayButtons(
+                ButtonsTray(
                     iconTint = MaterialTheme.colorScheme.secondary,
                     onLangClick = onLangClick,
                     onToggleTheme = onToggleTheme

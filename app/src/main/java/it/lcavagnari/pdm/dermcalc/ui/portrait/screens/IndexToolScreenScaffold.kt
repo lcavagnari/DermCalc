@@ -57,9 +57,10 @@ import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ActionConfirmDialog
 import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmTextButton
-import it.lcavagnari.pdm.dermcalc.ui.component.input.ActionConfirmDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ResetButton
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
@@ -309,48 +310,7 @@ fun ScafoldHeader(
     }
 }
 
-@Composable
-private fun ResetButton(
-    modifier: Modifier = Modifier,
-    toolLabel: String = "",
-    soulColor: Color,
-    onReset: () -> Unit
-) {
-    var showDialog by remember { mutableStateOf(false) }
 
-    if (showDialog) {
-        ActionConfirmDialog(
-            title = stringResource(R.string.reset_dialog_title),
-            body = stringResource(R.string.reset_dialog_body, toolLabel),
-            confirmLabel = stringResource(R.string.btn_reset),
-            onConfirm = onReset,
-            onDismiss = { showDialog = false }
-        )
-    }
-
-    IconButton(
-        modifier = modifier.height(64.dp),
-        onClick = { showDialog = true }
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            Icon(
-                painterResource(R.drawable.ic_reset_button),
-                contentDescription = stringResource(R.string.btn_reset),
-                tint = soulColor,
-                modifier = Modifier.size(18.dp)
-            )
-            Text(
-                text = stringResource(R.string.btn_reset),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1
-            )
-        }
-    }
-}
 
 @Composable
 private fun ProgressBar(
