@@ -68,6 +68,21 @@ private data class ResolvedRegion(
     }
 }
 
+/**
+ * Displays an interactive body scan diagram for selecting body regions.
+ * 
+ * Renders a scaled body diagram with tap detection for region selection.
+ * Shows hints for selected regions and their affected percentages.
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param size width and height of the body scan diagram
+ * @param soulColor color theme for selected regions
+ * @param showHints whether to show region hints and tooltips
+ * @param selectedRegion currently selected region (single selection mode)
+ * @param selectedRegions list of selected regions (multi-selection mode)
+ * @param regionValues affected percentages for each body region
+ * @param onRegionSelected callback invoked when a region is tapped
+ */
 @Composable
 fun BodyScan(
     modifier: Modifier = Modifier,
@@ -148,6 +163,15 @@ fun BodyScan(
     }
 }
 
+/**
+ * A [Card] with a colored border drawn on one side only, respecting rounded corners.
+ *
+ * @param modifier optional modifier for layout customization
+ * @param region the [BodyRegion] being adjusted
+ * @param soulColor color theme for the slider (default [MaterialTheme.colorScheme.primary])
+ * @param value current affected percentage (0-100)
+ * @param onValueChange callback invoked when the slider value changes
+ */
 @Composable
 fun BodyRegionSlider(
     modifier: Modifier = Modifier,

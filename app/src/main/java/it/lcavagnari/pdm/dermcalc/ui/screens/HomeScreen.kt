@@ -163,12 +163,15 @@ fun HomeScreen(
     }
 }
 
-@Composable
-fun HistoryOverlay(
-    visible: Boolean = false,
-    toolsModel: ToolsModel,
-    onClose: () -> Unit
-) {
+/**
+     * Full-screen overlay with a bottom sheet listing all ToolResults with delete capability and a clear-all action.
+     */
+    @Composable
+    fun HistoryOverlay(
+        visible: Boolean = false,
+        toolsModel: ToolsModel,
+        onClose: () -> Unit
+    ) {
     val rawResults by toolsModel.toolsResult.collectAsState()
     val results = remember(rawResults) {
         rawResults.sortedByDescending { it.timestamp }

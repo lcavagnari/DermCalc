@@ -154,6 +154,15 @@ fun ToolResultCard(
 }
 
 
+/**
+ * Displays a severity badge card showing the clinical severity tier.
+ * 
+ * Renders a colored card with the severity label in uppercase text.
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param fontSize font size for the severity text
+ * @param severity the [Severity] tier to display
+ */
 @Composable
 fun ToolSeverityCard(
     modifier: Modifier = Modifier,

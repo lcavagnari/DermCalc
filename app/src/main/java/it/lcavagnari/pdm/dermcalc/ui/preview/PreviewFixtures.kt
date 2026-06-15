@@ -77,6 +77,16 @@ val previewBmiResults: (ToolsModel) -> Unit = { tm ->
 }
 
 //  Preview wrapper functions
+/**
+ * Convenience overload that delegates to the 5-param version, rendering a full AppMain preview.
+ *
+ * @param screen starting destination for the preview navigation.
+ * @param darkTheme whether to use dark theme in the preview.
+ * @param setupOm callback to configure the onboarding model.
+ * @param setupQm callback to configure the quote model.
+ * @param setupTm callback to configure the tools model.
+ * @param setupBm callback to configure the body scan model.
+ */
 @Composable
 fun DermCalcPreview(
     screen: AppRoute = HomeRoute,
@@ -93,6 +103,16 @@ fun DermCalcPreview(
 
 
 
+/**
+ * Core preview wrapper that creates stub DAOs, ViewModels, and wraps content in DermCalcTheme.
+ *
+ * @param darkTheme whether to use dark theme in the preview.
+ * @param setupOm callback to configure the onboarding model.
+ * @param setupQm callback to configure the quote model.
+ * @param setupTm callback to configure the tools model.
+ * @param setupBm callback to configure the body scan model.
+ * @param content composable content to render within the preview theme.
+ */
 @Composable
 fun DermCalcPreview(
     darkTheme: Boolean = false,
@@ -103,7 +123,7 @@ fun DermCalcPreview(
     content: @Composable (OnboardingModel, QuoteModel, ToolsModel, BodyScanModel) -> Unit
 ) {
     val context = LocalContext.current
-    val app = remember { context.applicationContext as Application }
+    val app = remember { object : Application() { init { attachBaseContext(context) } } }
     val vm = remember {
         OnboardingModel(
             object : UserProfileDao {
@@ -120,7 +140,7 @@ fun DermCalcPreview(
     val tm = remember {
         ToolsModel(
             object : ToolResultDao {
-                override suspend fun upsert(result: ToolResultEntity): Long = 0L
+                override suspend fun upsert(result: ToolResultEntity) {}
                 override fun getAll() = MutableStateFlow<List<ToolResultEntity>>(emptyList())
                 override suspend fun deleteById(id: Long) {}
                 override suspend fun deleteAll() {}
