@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Icon
@@ -25,8 +24,6 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
  *
  * @param modifier modifier applied to each icon box.
  * @param iconTint tint color applied to all icons.
- * @param showDebug whether the debug bug-report icon is visible.
- * @param onDebugClick callback invoked when the debug icon is tapped.
  * @param onToggleTheme callback invoked when the theme-toggle icon is tapped.
  * @param onLangClick callback invoked when the language icon is tapped.
  */
@@ -34,29 +31,9 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.LocalToggleDarkTheme
 fun TopTrayButtons(
     modifier: Modifier = Modifier,
     iconTint: Color = MaterialTheme.colorScheme.primary,
-    showDebug: Boolean = false,
-    onDebugClick: () -> Unit = {},
     onToggleTheme: () -> Unit,
     onLangClick: () -> Unit) {
     val toggleDarkTheme = LocalToggleDarkTheme.current
-
-    // TODO: Remove this button before release, you dumb cu-
-    if (showDebug) {
-        Box(
-            modifier = modifier
-                .size(40.dp)
-                .padding(end = 15.dp)
-                .clickable(onClick = onDebugClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(35.dp),
-                imageVector = Icons.Outlined.BugReport,
-                contentDescription = "Debug",
-                tint = iconTint
-            )
-        }
-    }
 
     Box(
         modifier = modifier

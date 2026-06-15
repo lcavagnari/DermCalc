@@ -245,10 +245,8 @@ fun OnboardingScreen(
                 verticalAlignment = Alignment.Top
             ) {
                 TopTrayButtons(
-                    showDebug = true,
                     iconTint = MaterialTheme.colorScheme.secondary,
                     onLangClick = onLangClick,
-                    onDebugClick = { onboardingModel.finishOnboarding() },
                     onToggleTheme = onToggleTheme
                 )
             }
