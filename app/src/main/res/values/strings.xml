@@ -23,6 +23,7 @@
     <string name="nav_home">Home</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_tools">Tools</string>
+    <string name="nav_history">History</string>
 
 
     <!-- Onboarding screens -->
@@ -206,4 +207,13 @@
     <string name="easi_sign_excoriation">Excoriation</string>
     <string name="easi_sign_lichenification">Lichenification</string>
     <string name="pasi_sign_desquamation">Desquamation</string>
+    <string name="clear_history_title">Clear History</string>
+    <string name="clear_history_body">Are you sure you want to permanently delete all calculation records?</string>
+    <string name="btn_clear">Clear</string>
+    <string name="btn_clear_all_description">Clear all history records</string>
+    <string name="btn_close_description">Close history overlay</string>
+    <string name="loading_records_placeholder">LOADING RECORDS...</string>
+    <string name="btn_delete">DEL</string>
+    <string name="btn_delete_armed">DEL?</string>
+    <string name="btn_delete_description">Delete this record</string>
 </resources>
