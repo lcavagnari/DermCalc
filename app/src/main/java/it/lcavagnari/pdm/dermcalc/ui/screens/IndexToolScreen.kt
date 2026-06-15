@@ -59,6 +59,15 @@ private val vm:(OnboardingModel) -> Unit = {
 
 /**
  * Screen for the PASI calculator, mirroring the EASI screen structure.
+ *
+ * @param toolLabel label for the tool (e.g., "PASI").
+ * @param score current calculated score.
+ * @param startPage initial page index to display.
+ * @param saveEnabled whether the save button is enabled.
+ * @param onRegionScore callback to get the score for a specific region.
+ * @param onScoreUpdate callback to update the score for a region.
+ * @param onReset callback to reset all scores.
+ * @param onSaveResult callback when a result is saved.
  */
 @Composable
 fun PASIScreen(
@@ -126,7 +135,13 @@ fun PASIScreen(
 
 
 /**
- * Placeholder screen for the EASI calculator.
+ * Row with a label and a ScoreSelector for a single clinical sign (erythema, induration, etc.).
+ *
+ * @param label text label for the clinical sign.
+ * @param soulColor color theme for the component.
+ * @param value current score value.
+ * @param max maximum score value.
+ * @param onValueChange callback when the score value changes.
  */
 @Composable
 private fun SeverityRow(label: String, soulColor: Color, value: Int, max: Int = 3, onValueChange: (Int) -> Unit) {
@@ -136,6 +151,18 @@ private fun SeverityRow(label: String, soulColor: Color, value: Int, max: Int = 
     }
 }
 
+/**
+ * Screen for the EASI calculator with 4 clinical signs per region.
+ *
+ * @param toolLabel label for the tool (e.g., "EASI").
+ * @param score current calculated score.
+ * @param startPage initial page index to display.
+ * @param saveEnabled whether the save button is enabled.
+ * @param onRegionScore callback to get the score for a specific region.
+ * @param onScoreUpdate callback to update the score for a region.
+ * @param onReset callback to reset all scores.
+ * @param onSaveResult callback when a result is saved.
+ */
 @Composable
 fun EASIScreen(
     toolLabel: String = "EASI",
@@ -188,7 +215,7 @@ fun EASIScreen(
 
         Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             signs.forEach { (nameRes, currentScore, withScore) ->
-                SeverityRow(stringResource(nameRes),soulColor, currentScore, max = 4) { commit(withScore(it)) }
+                SeverityRow(stringResource(nameRes),soulColor, currentScore, max = 3) { commit(withScore(it)) }
             }
 
             BodyRegionSlider(

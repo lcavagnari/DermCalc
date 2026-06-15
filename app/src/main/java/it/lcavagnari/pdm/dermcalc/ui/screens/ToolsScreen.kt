@@ -139,6 +139,12 @@ fun ToolsScreen(toolsModel: ToolsModel) {
 
 /**
  * Row of quick-calculator [ToolCard] entries.
+ * 
+ * Displays a horizontal row of calculator cards for quick access to tools (BMI, BSA).
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param toolsList list of [ToolCard] entries to display
+ * @param onClick callback invoked when a tool card is clicked
  */
 @Composable
 fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {
@@ -196,6 +202,12 @@ fun QuickCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, on
 
 /**
  * Column of index-calculator [ToolCard] entries.
+ * 
+ * Displays a vertical column of calculator cards for index-based tools.
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param toolsList list of [ToolCard] entries to display
+ * @param onClick callback invoked when a tool card is clicked
  */
 @Composable
 fun IndexesCalculators(modifier: Modifier = Modifier, toolsList:List<ToolCard>, onClick:(route: AppRoute) -> Unit = {}) {

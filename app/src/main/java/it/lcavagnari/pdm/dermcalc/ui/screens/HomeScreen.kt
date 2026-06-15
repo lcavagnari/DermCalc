@@ -75,8 +75,6 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.delay
 import kotlinx.datetime.number
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
     DermCalcPreview(screen = HomeRoute, setupTm = previewBmiResults)
@@ -104,8 +102,8 @@ fun HomeScreen(
     val todayDate = today().date
     val configuration = LocalConfiguration.current
     val dateText = remember(todayDate, configuration) {
-        val javaDate = LocalDate.of(todayDate.year, todayDate.month.number, todayDate.day)
-        javaDate.format(DateTimeFormatter.ofPattern("EEEE dd MMMM", configuration.locales[0]))
+        val javaDate = java.time.LocalDate.of(todayDate.year, todayDate.month.number, todayDate.dayOfMonth)
+        javaDate.format(java.time.format.DateTimeFormatter.ofPattern("EEEE dd MMMM", configuration.locales[0]))
     }
 
     var showHistoryOverlay by remember { mutableStateOf(false) }
@@ -165,12 +163,15 @@ fun HomeScreen(
     }
 }
 
-@Composable
-fun HistoryOverlay(
-    visible: Boolean = false,
-    toolsModel: ToolsModel,
-    onClose: () -> Unit
-) {
+/**
+     * Full-screen overlay with a bottom sheet listing all ToolResults with delete capability and a clear-all action.
+     */
+    @Composable
+    fun HistoryOverlay(
+        visible: Boolean = false,
+        toolsModel: ToolsModel,
+        onClose: () -> Unit
+    ) {
     val rawResults by toolsModel.toolsResult.collectAsState()
     val results = remember(rawResults) {
         rawResults.sortedByDescending { it.timestamp }

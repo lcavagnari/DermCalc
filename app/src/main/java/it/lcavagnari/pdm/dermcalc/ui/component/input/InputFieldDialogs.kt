@@ -138,6 +138,16 @@ fun InputFieldEditDialog(
     }
 }
 
+/**
+ * Displays a text input dialog for editing a [TextInput] field.
+ * 
+ * Renders an alert dialog with a text field pre-populated with the current field value.
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param field the [TextInput] field being edited
+ * @param onDismiss callback invoked when the dialog is dismissed
+ * @param onConfirm callback invoked when the user confirms the text input
+ */
 @Composable
 fun TextInputDialog(
     modifier: Modifier = Modifier,
@@ -194,6 +204,15 @@ fun TextInputDialog(
     )
 }
 
+/**
+ * Displays a date input dialog for editing a [DateInput] field.
+ * 
+ * Renders a Material 3 date picker dialog with the current field value pre-selected.
+ * 
+ * @param field the [DateInput] field being edited
+ * @param onDismiss callback invoked when the dialog is dismissed
+ * @param onConfirm callback invoked when the user confirms the date selection
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateInputDialog(
@@ -230,6 +249,15 @@ fun DateInputDialog(
     }
 }
 
+/**
+ * Displays a sex input dialog for editing a [SexInput] field.
+ * 
+ * Renders an alert dialog with segmented buttons for selecting biological sex.
+ * 
+ * @param field the [SexInput] field being edited
+ * @param onDismiss callback invoked when the dialog is dismissed
+ * @param onConfirm callback invoked when the user confirms the sex selection
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SexInputDialog(
@@ -286,6 +314,17 @@ fun SexInputDialog(
     )
 }
 
+/**
+ * Displays a weight input picker for editing a [WeightInput] field.
+ * 
+ * Renders a snap wheel picker dialog for selecting weight in kilograms or pounds.
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param field the [WeightInput] field being edited
+ * @param soulColor color theme for the picker (unused in current implementation)
+ * @param onKilosChanged callback invoked when kilograms value changes
+ * @param onPoundsChanged callback invoked when pounds value changes
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeightInputPicker(
@@ -365,6 +404,17 @@ fun WeightInputPicker(
     )
 }
 
+/**
+ * Displays a height input picker for editing a [HeightInput] field.
+ * 
+ * Renders a snap wheel picker dialog for selecting height in centimeters or feet/inches.
+ * 
+ * @param modifier optional modifier for layout customization
+ * @param field the [HeightInput] field being edited
+ * @param soulColor color theme for the picker (unused in current implementation)
+ * @param onMetricChanged callback invoked when metric value changes
+ * @param onImperialChanged callback invoked when imperial value changes
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeightInputPicker(

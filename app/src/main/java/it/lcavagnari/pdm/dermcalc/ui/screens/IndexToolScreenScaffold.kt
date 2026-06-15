@@ -244,6 +244,18 @@ fun IndexToolScaffold(
     }
 }
 
+/**
+ * Header card for index tool screens showing the current district name, a mini body diagram,
+ * progress bar, score, and reset button.
+ *
+ * @param modifier modifier applied to the root container.
+ * @param currentPage index of the current page/district being viewed.
+ * @param soulColor the identity color theme for the specific calculator.
+ * @param formattedScore live or final computed score string (e.g. "12.4").
+ * @param toolMeasurementUnit measurement unit text (e.g. "/ 72").
+ * @param onReset callback when the user requests a progress reset.
+ * @param onPageSelect callback when the user selects a different page via the progress bar.
+ */
 @Composable
 fun ScafoldHeader(
     modifier: Modifier = Modifier,
@@ -382,6 +394,15 @@ private fun ProgressBar(
     }
 }
 
+/**
+ * Row of tappable circles for selecting a severity score value (0 to max).
+ *
+ * @param modifier modifier applied to the root container.
+ * @param value current selected score value.
+ * @param max maximum score value that can be selected.
+ * @param souldColor color theme for the score selector (note: spelling preserved).
+ * @param onValueChange callback when the user selects a new score value.
+ */
 @Composable
 fun ScoreSelector(
     modifier: Modifier = Modifier,

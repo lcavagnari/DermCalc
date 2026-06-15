@@ -81,6 +81,9 @@ private val vm:(OnboardingModel) -> Unit = {
     DermCalcPreview(darkTheme = true, setupOm = vm, screen = ProfileRoute)
 }
 
+/**
+ * Main profile tab screen showing user details and unit preferences.
+ */
 @Composable
 fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingModel) {
     val inputFields by onboardingModel.fields.collectAsState()
@@ -140,6 +143,9 @@ fun ProfileScreen(navController: NavHostController, onboardingModel: OnboardingM
     }
 }
 
+/**
+ * BorderedCard listing all InputFields with edit icons that open InputFieldEditDialog.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>, onboardingModel: OnboardingModel) {
@@ -255,6 +261,9 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>,
     }
 }
 
+/**
+ * BorderedCard with segmented button rows for height (metric/imperial) and weight (kg/lb) unit selection.
+ */
 @Composable
 fun UnitOfMeasurement(
     inputFields: List<InputField>,

@@ -9,11 +9,24 @@ import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 
+/**
+ * Factory for creating DermCalc ViewModels with proper dependency injection.
+ * 
+ * @param database the [AppDatabase] instance for data access
+ * @param context the application context for resource access
+ */
 class DermCalcViewModelFactory(
     private val database: AppDatabase,
     private val context: Context
 ) : ViewModelProvider.Factory {
 
+    /**
+     * Creates a ViewModel instance of the specified class.
+     * 
+     * @param modelClass The ViewModel class to instantiate
+     * @return An instance of the requested ViewModel class
+     * @throws IllegalArgumentException if the requested ViewModel class is not supported
+     */
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {

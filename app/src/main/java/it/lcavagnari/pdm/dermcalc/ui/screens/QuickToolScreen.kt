@@ -92,6 +92,14 @@ private val vm:(BodyScanModel) -> Unit = {
 
 /**
  * BMI calculator screen with height and weight pickers.
+ *
+ * @param modifier Modifier for the screen layout
+ * @param soulColor Color theme for the screen
+ * @param heightCm Height in centimeters (null if not set)
+ * @param weightKg Weight in kilograms (null if not set)
+ * @param isMetric Whether to use metric units for height
+ * @param isKilos Whether to use kilograms for weight
+ * @param onSaveResult Callback invoked when a BMI result is saved
  */
 @Composable
 fun BMIScreen(
@@ -247,6 +255,14 @@ private fun Scaffold(
     }
 }
 
+/**
+ * BSA calculator screen with a body diagram and region slider.
+ *
+ * @param modifier Modifier for the screen layout
+ * @param soulColor Color theme for the screen
+ * @param vm Body scan model for managing BSA calculation state
+ * @param onSaveResult Callback invoked when a BSA result is saved
+ */
 @Composable
 fun BSAScreen(
     modifier: Modifier = Modifier,
