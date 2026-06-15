@@ -107,7 +107,7 @@ fun ToolResultCard(
         modifier = modifier.fillMaxWidth(),
         borderSide = BorderSide.Left,
         borderColor = soulColor,
-        borderStrokeWidth = 2.dp,
+        borderStrokeWidth = 3.dp,
         cornerRadius = 10.dp,
         elevation = CardDefaults.cardElevation(6.dp),
         colors = CardDefaults.cardColors(
