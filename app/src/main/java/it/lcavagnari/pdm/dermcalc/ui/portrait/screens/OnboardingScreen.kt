@@ -209,7 +209,6 @@ fun OnboardingScreen(
     pagerState: PagerState = rememberPagerState(pageCount = { onboardingScreens.size }),
     onboardingModel: OnboardingModel,
     onToggleTheme: () -> Unit = {},
-    onLangClick: () -> Unit = {},
     onFinish: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -239,20 +238,19 @@ fun OnboardingScreen(
                 .navigationBarsPadding()
                 .padding(16.dp)
         ) {
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
                 ButtonsTray(
                     iconTint = MaterialTheme.colorScheme.secondary,
-                    onLangClick = onLangClick,
-                    onToggleTheme = onToggleTheme
+                    onToggleTheme = onToggleTheme,
                 )
             }
 
             Spacer(Modifier.weight(1f))
-
             if (!isBtnEnabled)
                 GoBackButton(modifier = Modifier.padding(bottom = 7.dp, start = 5.dp)) {
                     if (pagerState.currentPage > 0)

@@ -208,7 +208,7 @@ fun TopMenu(navController: NavController, onToggleTheme: () -> Unit = {}) {
                     )
                 }
             }
-            ButtonsTray(iconTint = contentColor, onToggleTheme = onToggleTheme) {}
+            ButtonsTray(iconTint = contentColor, onToggleTheme = onToggleTheme)
         }
     }
 }

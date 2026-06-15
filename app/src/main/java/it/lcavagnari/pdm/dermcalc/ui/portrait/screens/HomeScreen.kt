@@ -28,14 +28,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,7 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -71,7 +68,8 @@ import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryResultRow
-import it.lcavagnari.pdm.dermcalc.ui.component.input.ActionConfirmDialog
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray
+import it.lcavagnari.pdm.dermcalc.ui.component.input.LabelPosition
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
@@ -180,26 +178,13 @@ fun HistoryOverlay(
         rawResults.sortedByDescending { it.timestamp }
     }
     var isLoading by remember { mutableStateOf(true) }
-    var showClearConfirm by remember { mutableStateOf(false) }
 
     LaunchedEffect(visible) {
         if (visible) {
             isLoading = true
             delay(500)
             isLoading = false
-        } else {
-            showClearConfirm = false
         }
-    }
-
-    if (showClearConfirm) {
-        ActionConfirmDialog(
-            title = stringResource(R.string.clear_history_title),
-            body = stringResource(R.string.clear_history_body),
-            confirmLabel = stringResource(R.string.btn_clear),
-            onConfirm = { toolsModel.clearAllResults() },
-            onDismiss = { showClearConfirm = false }
-        )
     }
 
     AnimatedVisibility(
@@ -235,7 +220,7 @@ fun HistoryOverlay(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
+                            .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -260,25 +245,21 @@ fun HistoryOverlay(
                             }
                         }
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AnimatedVisibility(visible = results.isNotEmpty()) {
-                                IconButton(onClick = { showClearConfirm = true }) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_reset_button),
-                                        contentDescription = stringResource(R.string.btn_clear_all_description),
-                                        tint = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
-                            }
-                            IconButton(onClick = onClose) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.btn_close_description),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
+                        ButtonsTray(
+                            iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            onClose = onClose,
+                            onReset = if (results.isNotEmpty()) {
+                                { toolsModel.clearAllResults() }
+                            } else {
+                                null
+                            },
+                            resetLabel = stringResource(R.string.btn_clear),
+                            resetSoulColor = MaterialTheme.colorScheme.error,
+                            resetLabelPosition = LabelPosition.Below,
+                            resetDialogTitle = stringResource(R.string.clear_history_title),
+                            resetDialogBody = stringResource(R.string.clear_history_body),
+                            resetDialogConfirmLabel = stringResource(R.string.btn_clear),
+                        )
                     }
 
                     HorizontalDivider(

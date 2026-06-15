@@ -383,7 +383,11 @@ private fun ProgressBar(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            ResetButton(soulColor = soulColor, onReset = onReset)
+            ResetButton(
+                soulColor = soulColor,
+                onReset = onReset,
+                label = stringResource(R.string.btn_reset),
+            )
         }
     }
 }
