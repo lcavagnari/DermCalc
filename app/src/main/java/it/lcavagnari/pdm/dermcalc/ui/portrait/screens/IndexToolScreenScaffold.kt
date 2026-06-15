@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -58,6 +57,9 @@ import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmTextButton
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ActionConfirmDialog
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
@@ -317,29 +319,12 @@ private fun ResetButton(
     var showDialog by remember { mutableStateOf(false) }
 
     if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = {
-                Text(
-                    stringResource(R.string.reset_dialog_title),
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontSize = 24.sp
-                ) },
-            text = {
-                Text(
-                    stringResource(R.string.reset_dialog_body, toolLabel),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontSize = 16.sp
-                ) },
-            confirmButton = {
-                TextButton(onClick = { showDialog = false; onReset() }
-                ) { Text(stringResource(R.string.btn_confirm)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text(stringResource(R.string.btn_cancel))
-                }
-            }
+        ActionConfirmDialog(
+            title = stringResource(R.string.reset_dialog_title),
+            body = stringResource(R.string.reset_dialog_body, toolLabel),
+            confirmLabel = stringResource(R.string.btn_reset),
+            onConfirm = onReset,
+            onDismiss = { showDialog = false }
         )
     }
 
@@ -358,7 +343,7 @@ private fun ResetButton(
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                stringResource(R.string.btn_reset),
+                text = stringResource(R.string.btn_reset),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1

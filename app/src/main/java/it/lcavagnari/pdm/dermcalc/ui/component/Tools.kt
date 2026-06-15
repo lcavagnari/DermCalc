@@ -41,6 +41,7 @@ import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
 
 /**
  * Save button for calculator results with a two-step confirmation flow.
@@ -62,41 +63,26 @@ fun ToolSaveButton(
     onSaveResult: () -> Unit
 ) {
     val context = LocalContext.current
-    var saveArmedTimes by remember { mutableStateOf(0) }
 
-    // Reset
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        saveArmedTimes = 0
-    }
-
-    Button(
+    ConfirmIconButton(
         modifier = modifier
             .fillMaxWidth(0.9f)
             .semantics { testTag = "tool_btn_save" },
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = soulColor,
-        ),
-        shape = RoundedCornerShape(3.dp),
-        onClick = {
-            if (saveArmedTimes >= 2) {
-                saveArmedTimes = 0
-
-                Toast.makeText(context,
-                    R.string.btn_saved_confirm,
-                    Toast.LENGTH_SHORT
-                ).show()
-                onSaveResult()
-
-            } else saveArmedTimes++
+        soulColor = soulColor,
+        labelDefault = stringResource(R.string.btn_confirm),
+        labelArmed = stringResource(R.string.btn_save) + "?",
+        labelExecute = stringResource(R.string.btn_save),
+        onConfirm = {
+            Toast.makeText(context,
+                R.string.btn_saved_confirm,
+                Toast.LENGTH_SHORT
+            ).show()
+            onSaveResult()
         }
-    ) {
+    ) { text, _ ->
         Text(
-            when {
-                saveArmedTimes > 1 -> stringResource(R.string.btn_save)
-                saveArmedTimes > 0 -> stringResource(R.string.btn_save) + "?"
-                else -> stringResource(R.string.btn_confirm)
-            },
+            text = text,
             fontFamily = DeterminationMono
         )
     }
