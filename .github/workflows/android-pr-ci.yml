@@ -6,6 +6,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pull-requests: read
+
 concurrency:
   group: pr-ci-${{ github.ref }}
   cancel-in-progress: true
@@ -30,6 +34,7 @@ jobs:
         uses: dorny/paths-filter@v3
         with:
           base: ${{ github.event.pull_request.base.sha || github.event.before }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           filters: |
             src_code:
               - 'app/src/main/java/**'
