@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -62,7 +62,7 @@ import it.lcavagnari.pdm.dermcalc.models.toLocalDate
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.input.InputFieldEditDialog
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.utils.today

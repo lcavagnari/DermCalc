@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding
+package it.lcavagnari.pdm.dermcalc.ui.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -53,7 +53,7 @@ import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.ui.component.input.DateInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.utils.today
 
 

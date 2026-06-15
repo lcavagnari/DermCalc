@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -51,7 +51,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.component.input.ResetButton
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.launch
 
@@ -234,7 +234,7 @@ fun IndexToolScaffold(
             ) {
                 ToolResultCard(
                     soulColor = soulColor,
-                    toolLabel = stringResource(it.lcavagnari.pdm.dermcalc.R.string.tool_result_header, toolLabel).uppercase(),
+                    toolLabel = stringResource(R.string.tool_result_header, toolLabel).uppercase(),
                     toolMeasurementUnit = toolMeasurementUnit,
                     formattedScore = formattedScore ?: "--",
                     severity = severity

@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

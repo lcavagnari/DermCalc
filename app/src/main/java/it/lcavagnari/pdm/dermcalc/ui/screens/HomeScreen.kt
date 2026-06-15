@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -68,13 +68,15 @@ import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryResultRow
 import it.lcavagnari.pdm.dermcalc.ui.component.input.ButtonsTray
 import it.lcavagnari.pdm.dermcalc.ui.component.input.LabelPosition
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.preview.previewBmiResults
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.delay
 import kotlinx.datetime.number
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Preview(showBackground = true) @Composable private fun HomeScreenFullPreview() {
     DermCalcPreview(screen = HomeRoute, setupTm = previewBmiResults)
@@ -96,15 +98,14 @@ fun HomeScreen(
     val fullNameField = fields.firstOrNull() as? TextInput
     val welcomeMessage = if (fullNameField != null) {
         stringResource(R.string.welcome) + ", " + fullNameField.value.split(' ')[0]
-    } else {
-        stringResource(R.string.welcome)
-    }
+    } else stringResource(R.string.welcome)
+
 
     val todayDate = today().date
     val configuration = LocalConfiguration.current
     val dateText = remember(todayDate, configuration) {
-        val javaDate = java.time.LocalDate.of(todayDate.year, todayDate.month.number, todayDate.day)
-        javaDate.format(java.time.format.DateTimeFormatter.ofPattern("EEEE dd MMMM", configuration.locales[0]))
+        val javaDate = LocalDate.of(todayDate.year, todayDate.month.number, todayDate.day)
+        javaDate.format(DateTimeFormatter.ofPattern("EEEE dd MMMM", configuration.locales[0]))
     }
 
     var showHistoryOverlay by remember { mutableStateOf(false) }

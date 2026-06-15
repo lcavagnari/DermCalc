@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +50,7 @@ import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulPatience
 import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul

@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -41,7 +41,7 @@ import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulBravery
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulIntegrity

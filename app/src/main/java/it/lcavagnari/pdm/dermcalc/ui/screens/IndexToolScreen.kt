@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
+﻿package it.lcavagnari.pdm.dermcalc.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import it.lcavagnari.pdm.dermcalc.models.PASIToolRoute
 import it.lcavagnari.pdm.dermcalc.models.PasiScore
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyRegionSlider
-import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulFor
 import it.lcavagnari.pdm.dermcalc.utils.today
 

@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.portrait.onboarding
+package it.lcavagnari.pdm.dermcalc.ui.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
+import it.lcavagnari.pdm.dermcalc.ui.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
 
 /**
