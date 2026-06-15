@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
-import it.lcavagnari.pdm.dermcalc.ui.theme.onSoul
 import kotlin.math.roundToInt
 
 private data class RegionDef(

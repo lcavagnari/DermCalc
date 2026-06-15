@@ -3,9 +3,10 @@
 package it.lcavagnari.pdm.dermcalc.models
 
 import androidx.lifecycle.ViewModel
-import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
-import it.lcavagnari.pdm.dermcalc.utils.today
 import androidx.lifecycle.viewModelScope
+import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
+import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
+import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,6 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
 
 /**
  * Clinical severity tier used to color-code tool results throughout the app.

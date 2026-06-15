@@ -1,7 +1,5 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -16,11 +14,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -58,12 +56,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Quote
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.TextInput
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.models.HomeRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderSide
 import it.lcavagnari.pdm.dermcalc.ui.component.BorderedCard
 import it.lcavagnari.pdm.dermcalc.ui.component.HistoryCard

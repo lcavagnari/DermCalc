@@ -5,16 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -22,20 +19,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.rememberNavController
 import it.lcavagnari.pdm.dermcalc.AppNavHost
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
+import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
+import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
+import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
+import it.lcavagnari.pdm.dermcalc.models.AppRoute
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
+import it.lcavagnari.pdm.dermcalc.models.HomeRoute
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
+import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
-import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
-import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
-import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
-import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
-import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
-import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
-import kotlinx.coroutines.flow.MutableStateFlow
-import it.lcavagnari.pdm.dermcalc.models.AppRoute
-import it.lcavagnari.pdm.dermcalc.models.HomeRoute
-import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.NavigationBar
 import it.lcavagnari.pdm.dermcalc.ui.component.TopMenu
@@ -44,6 +40,7 @@ import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.OnboardingScreen
 import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.onboardingScreens
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalDarkTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * Root portrait composable. Switches between the onboarding flow and the main app shell

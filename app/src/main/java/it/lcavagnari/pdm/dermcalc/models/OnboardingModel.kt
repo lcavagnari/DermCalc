@@ -1,9 +1,12 @@
 ﻿package it.lcavagnari.pdm.dermcalc.models
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
+import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
 import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
+import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,10 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import androidx.lifecycle.viewModelScope
 import kotlinx.datetime.LocalDate
-import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
-import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
 
 /** ViewModel holding onboarding state and all user-input update operations. */
 class OnboardingModel(

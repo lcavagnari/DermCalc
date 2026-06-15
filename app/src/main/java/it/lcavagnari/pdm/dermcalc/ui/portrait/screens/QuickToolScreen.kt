@@ -1,5 +1,6 @@
 ﻿package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -31,23 +32,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import androidx.compose.animation.AnimatedVisibility
 import it.lcavagnari.pdm.dermcalc.R
+import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
+import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
-import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
+import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
 import it.lcavagnari.pdm.dermcalc.models.BsaResult
 import it.lcavagnari.pdm.dermcalc.models.HeightInput
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.models.WeightInput
 import it.lcavagnari.pdm.dermcalc.models.formattedScore
 import it.lcavagnari.pdm.dermcalc.models.severity
-import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
-import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolSaveButton
-import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyRegionSlider
+import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyScan
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.portrait.DermCalcPreview

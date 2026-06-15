@@ -28,13 +28,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.Severity
+import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.DeterminationMono
 import it.lcavagnari.pdm.dermcalc.ui.theme.PixelSoft
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulJustice
 import it.lcavagnari.pdm.dermcalc.ui.theme.SoulKindness
 import it.lcavagnari.pdm.dermcalc.ui.theme.severityColor
-import it.lcavagnari.pdm.dermcalc.ui.component.input.ConfirmIconButton
 
 /**
  * Save button for calculator results with a two-step confirmation flow.
