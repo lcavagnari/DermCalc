@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc
+﻿package it.lcavagnari.pdm.dermcalc.navigation
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.AppRoute
 import it.lcavagnari.pdm.dermcalc.models.BMIToolRoute
 import it.lcavagnari.pdm.dermcalc.models.BSAToolRoute
@@ -25,14 +26,14 @@ import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BMIScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.BSAScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.EASIScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.HomeScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.PASIScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ProfileScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.ToolsScreen
-import it.lcavagnari.pdm.dermcalc.ui.portrait.screens.calculatorPages
+import it.lcavagnari.pdm.dermcalc.ui.screens.BMIScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.BSAScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.EASIScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.HomeScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.PASIScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.ProfileScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.ToolsScreen
+import it.lcavagnari.pdm.dermcalc.ui.screens.calculatorPages
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import kotlinx.coroutines.flow.MutableStateFlow
