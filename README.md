@@ -171,5 +171,5 @@ Dark mode is the intended experience. Light mode is fully functional for clinica
 - [x] Phase 6 — PASI multi-step calculator
 - [x] Phase 7 — EASI multi-step calculator
 - [x] Phase 8 — Room profile & result storage
-- [ ] Phase 9 — Full history screen
+- [x] Phase 9 — Full history screen
 - [ ] Phase 10 — Polish (Material 3 theming, transitions, error handling)
