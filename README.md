@@ -4,55 +4,65 @@ An Android app for dermatological score calculation and patient management, buil
 
 ## Features
 
-- **Patient profile** — onboarding flow collecting personal data (name, date of birth, sex); held in-memory for the session (Room dependency included, persistence not yet implemented)
+- **Patient profile** — onboarding flow collecting personal data (name, date of birth, sex); persisted to Room
 - **BMI** — weight/height input, automatic classification (underweight / normal / overweight / obese)
-- **BSA** — body surface area via body region checklist (head, trunk, limbs, genitals)
+- **BSA** — body surface area via interactive body diagram with per-region sliders
 - **PASI** — multi-step calculator across four districts (head, upper limbs, trunk, lower limbs) with erythema, induration, desquamation and area scoring; severity classification (Mild <10 / Moderate 10–20 / Severe ≥20)
 - **EASI** — identical structure to PASI with adjusted parameters (erythema, oedema/papulation, excoriation, lichenification; 0–3 scale)
-- **History** — chronological log of all calculations with type, value, severity and date; full history screen with deletion support when entries exceed 7
+- **History** — chronological log of all calculations with type, value, severity and date; full-screen overlay with per-entry deletion and clear-all
 
 ## Stack
 
 - Kotlin + Jetpack Compose
-- Navigation Compose
+- Navigation Compose (type-safe, kotlinx.serialization)
 - ViewModel + StateFlow
 - Room (KSP)
 - Material 3
 
 ## Architecture
 
-### Entry point & orientation
+### Entry point
 
-`MainActivity` detects portrait/landscape and delegates to `MainPortraitActivity` or `MainLandscapeActivity` (landscape is a stub). Portrait side observes `OnboardingModel.hasSeenOnboarding` and gates between `OnboardingScreen` and the main `Scaffold`.
+`MainActivity` is the single activity. On `onCreate` it creates the Room database singleton, a `DermCalcViewModelFactory`, and all four ViewModels. Theme dark/light state is persisted to `app_settings` via a coroutine collection loop; toggle writes back to Room. The root content is `DermCalcTheme { AppMain(...) }`.
+
+`AppMain` reads `isOnboardingLoading` and `hasSeenOnboarding` from `OnboardingModel` and switches between three rendering paths:
+
+- **Loading** → `LoadingScreen` (spinner while Room loads persisted state on first launch)
+- **Onboarding not seen** → bare `OnboardingScreen` (no chrome, full-screen horizontal pager)
+- **Onboarding complete** → `Box` with background image + transparent `Scaffold` (TopMenu, NavigationBar, AppNavHost)
 
 ### ViewModels
 
-| ViewModel         | Responsibility                                                                                                                         |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `OnboardingModel` | Owns `List<InputField>` state flow; all values normalised to SI (cm, kg) on write; gates the onboarding pager via `isFieldsInputValid` |
-| `ToolsModel`      | In-memory `List<ToolResult>` state flow; `addResult` validates before appending; `deleteResult` removes by equality                    |
-| `QuoteModel`      | Serves a single random dermatology quote; must be explicitly refreshed via `updateQuote()`                                             |
+| ViewModel | Responsibility |
+|---|---|
+| `OnboardingModel` | Owns `List<InputField>` state flow; validates fields per page; persists profile and onboarding flag to Room; exposes `isOnboardingLoading` to gate the loading screen |
+| `ToolsModel` | Persists `List<ToolResult>` to Room via DAO; holds PASI and EASI in-progress draft state across navigation; exposes reactive `pasiScore`, `easiScore`, `pasiHasData`, `easiHasData` flows |
+| `QuoteModel` | Serves a randomly-selected dermatology quote from the string array resource; author parsed by splitting on em-dash |
+| `BodyScanModel` | Holds mutable `BodyScanState` (per-region affected percentages + selected region); derives `BsaResult` on each state read; resets on `ON_STOP` lifecycle event |
 
 ### App startup sequence
 
 ```mermaid
 sequenceDiagram
     participant MA as MainActivity
-    participant MPA as MainPortraitActivity
+    participant AM as AppMain
     participant OM as OnboardingModel
+    participant LS as LoadingScreen
     participant ONB as OnboardingScreen
     participant NH as AppNavHost
 
-    MA->>MPA: portrait detected
-    MPA->>OM: observe hasSeenOnboarding
-    OM-->>MPA: false
-    MPA->>ONB: render onboarding pager
+    MA->>AM: DermCalcTheme { AppMain(...) }
+    AM->>OM: observe isOnboardingLoading
+    OM-->>AM: true
+    AM->>LS: render LoadingScreen
+    OM-->>AM: false, hasSeenOnboarding = false
+    AM->>ONB: render OnboardingScreen (no scaffold)
     ONB->>OM: updateName / updateDateOfBirth / updateHeight / updateWeight
     OM-->>ONB: isFieldsInputValid → true (gates Next button)
     ONB->>OM: finishOnboarding()
-    OM-->>MPA: hasSeenOnboarding = true
-    MPA->>NH: render Scaffold + AppNavHost
-    NH-->>MPA: HomeRoute (initial destination)
+    OM-->>AM: hasSeenOnboarding = true
+    AM->>NH: render Scaffold + AppNavHost
+    NH-->>AM: HomeRoute (initial destination)
 ```
 
 ### Calculator flow (addResult)
@@ -61,20 +71,18 @@ sequenceDiagram
 sequenceDiagram
     participant UI as ToolScreen
     participant TM as ToolsModel
-    participant TR as ToolResult
+    participant DAO as ToolResultDao
 
-    UI->>TR: construct PasiResult / BmiResult / …
     UI->>TM: addResult(result)
-    TM->>TR: isValid()
+    TM->>TM: result.isValid()
     alt valid
-        TR-->>TM: true
-        TM->>TM: _results.update { it + result }
+        TM->>TM: Json.encodeToString(result)
+        TM->>DAO: upsert(ToolResultEntity)
+        DAO-->>TM: Room emits updated list
         TM-->>UI: returns true
     else invalid
-        TR-->>TM: false
         TM-->>UI: returns false (not stored)
     end
-    TM-->>UI: toolsResult StateFlow updated
 ```
 
 ### Onboarding state machine
@@ -106,19 +114,19 @@ stateDiagram-v2
 
 ```
 it.lcavagnari.pdm.dermcalc
-├── MainActivity.kt
-├── models/           — InputField, OnboardingModel, QuoteModel, ToolsModel/ToolResult, AppRoute
-├── utils/            — DateUtils (today() via kotlinx.datetime)
+├── MainActivity.kt               — single activity; theme toggle; ViewModel wiring
+├── data/                         — Room: AppDatabase, DAOs, Entities, Converters, ViewModelFactory
+├── models/                       — InputField, OnboardingModel, QuoteModel, ToolsModel/ToolResult, BodyScanModel, AppRoute
+├── navigation/                   — AppNavHost
+├── utils/                        — DateUtils (today() via kotlinx.datetime)
 └── ui/
-    ├── theme/        — Color, Type, Theme (Material3), LocalDarkTheme, LocalToggleDarkTheme
-    ├── landscape/    — MainLandscapeActivity (stub)
-    ├── shared/
-    │   ├── navigation/   — AppNavHost, BottomNavBar
-    │   └── component/    — SnapWheelPicker, DatePicker, BorderedCard, TopMenu, ButtonsTray, HistoryCard
-    └── portrait/
-        ├── MainPortraitActivity.kt
-        ├── screens/      — HomeScreen, ToolsScreen, ProfileRoute, OnboardingScreen
-        └── onboarding/   — OnboardingPager, OnboardingItem
+    ├── theme/                    — Color, Type, Theme (Material3), Souls, LocalCompositions
+    ├── component/                — BorderedCard, BottomNavBar, HistoryCard, Tools, TopMenu
+    │   └── input/                — BodyScanPicker, ButtonsTray, ConfirmButtons, DatePicker, InputFieldDialogs, SnapWheelPicker
+    ├── onboarding/               — OnboardingItem, OnboardingPager
+    ├── preview/                  — DermCalcPreview wrapper, PreviewFixtures
+    └── screens/                  — HomeScreen, IndexToolScreen, IndexToolScreenScaffold, LoadingScreen,
+                                    OnboardingScreen, ProfileScreen, QuickToolScreen, ToolsScreen
 ```
 
 ## API Reference
@@ -158,7 +166,6 @@ Both modes are supported. The theme adapts as follows:
 | Severity: mild     | green             | green                  |
 | Severity: moderate | amber             | yellow                 |
 | Severity: severe   | red               | red                    |
-
 
 Dark mode is the intended experience. Light mode is fully functional for clinical environments where a dark screen is impractical.
 
