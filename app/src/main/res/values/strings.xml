@@ -216,4 +216,9 @@
     <string name="btn_delete">DEL</string>
     <string name="btn_delete_armed">DEL?</string>
     <string name="btn_delete_description">Delete this record</string>
+    <string name="history_empty_short">No records</string>
+    <plurals name="history_record_count">
+        <item quantity="one">%d record</item>
+        <item quantity="other">%d records</item>
+    </plurals>
 </resources>

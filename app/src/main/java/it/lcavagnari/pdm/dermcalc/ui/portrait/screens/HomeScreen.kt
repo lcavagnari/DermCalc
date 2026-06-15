@@ -1,31 +1,43 @@
 package it.lcavagnari.pdm.dermcalc.ui.portrait.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,8 +48,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -76,6 +90,7 @@ import kotlinx.datetime.number
 /**
  * Home screen. Centered column of three stacked cards at 90% screen width.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     quoteModel: QuoteModel,
@@ -164,109 +179,177 @@ fun HistoryOverlay(
     val results = remember(rawResults) {
         rawResults.sortedByDescending { it.timestamp }
     }
+    var isLoading by remember { mutableStateOf(true) }
     var showClearConfirm by remember { mutableStateOf(false) }
 
     LaunchedEffect(visible) {
-        if (!visible) showClearConfirm = false
+        if (visible) {
+            isLoading = true
+            delay(500)
+            isLoading = false
+        } else {
+            showClearConfirm = false
+        }
     }
 
-    if (showClearConfirm) ActionConfirmDialog(
+    if (showClearConfirm) {
+        ActionConfirmDialog(
             title = stringResource(R.string.clear_history_title),
             body = stringResource(R.string.clear_history_body),
             confirmLabel = stringResource(R.string.btn_clear),
-            onConfirm = { toolsModel.clearResult() },
+            onConfirm = { toolsModel.clearAllResults() },
             onDismiss = { showClearConfirm = false }
         )
-
+    }
 
     AnimatedVisibility(
         visible = visible,
-        // Slides up from bottom instead of growing from top
-        enter = slideInVertically { it } + fadeIn(),
-        exit = slideOutVertically { it } + fadeOut()
+        enter = fadeIn(),
+        exit = fadeOut()
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-                .padding(horizontal = 10.dp).padding(top = 10.dp)
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            Column(
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Scrim
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable(onClick = onClose, indication = null, interactionSource = remember { MutableInteractionSource() })
+            )
+            // Sheet
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.85f)
+                    .align(Alignment.BottomCenter)
+                    .animateEnterExit(
+                        enter = slideInVertically { it },
+                        exit = slideOutVertically { it }
+                    ),
+                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 3.dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.nav_history).uppercase(),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontFamily = DeterminationMono,
-                        color = SoulJustice
+                Column(modifier = Modifier.fillMaxSize()) {
+
+                    // Header
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(
+                                text = stringResource(R.string.nav_history).uppercase(),
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontFamily = DeterminationMono,
+                                color = SoulJustice,
+                                letterSpacing = 2.sp
+                            )
+                            AnimatedContent(
+                                targetState = results.size,
+                                transitionSpec = { fadeIn() togetherWith fadeOut() }
+                            ) { count ->
+                                Text(
+                                    text = if (count == 0) stringResource(R.string.history_empty_short)
+                                    else pluralStringResource(R.plurals.history_record_count, count, count),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AnimatedVisibility(visible = results.isNotEmpty()) {
+                                IconButton(onClick = { showClearConfirm = true }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_reset_button),
+                                        contentDescription = stringResource(R.string.btn_clear_all_description),
+                                        tint = MaterialTheme.colorScheme.error,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                            }
+                            IconButton(onClick = onClose) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.btn_close_description),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                     )
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = { showClearConfirm = true }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_reset_button),
-                                contentDescription = stringResource(R.string.btn_clear_all_description),
-                                tint = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(24.dp)
-                            )
+                    // Content
+                    when {
+                        isLoading -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator(color = SoulJustice, strokeWidth = 2.dp)
+                            }
                         }
 
-                        IconButton(onClick = onClose) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.btn_close_description),
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                    }
-                }
-
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 12.dp),
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    thickness = 2.dp
-                )
-
-                if (results.isEmpty()) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = stringResource(R.string.history_empty),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 32.dp)
-                        )
-                    }
-                } else {
-                    var now by remember { mutableStateOf(today()) }
-                    LaunchedEffect(Unit) {
-                        while (true) {
-                            delay(30_000)
-                            now = today()
-                        }
-                    }
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(results, key = { it.id }) { result ->
-                            HistoryResultRow(
-                                modifier = Modifier.animateItem(),
-                                result = result, now = now,
-                                onDelete = {
-                                    toolsModel.deleteResult(result)
-                                    if (results.isEmpty()) onClose()
+                        results.isEmpty() -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                                    modifier = Modifier.padding(horizontal = 48.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.History,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(48.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.history_empty),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
                                 }
-                            )
+                            }
+                        }
 
-                            if (results.last() != result)
-                                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        else -> {
+                            var now by remember { mutableStateOf(today()) }
+                            LaunchedEffect(Unit) {
+                                while (true) {
+                                    delay(30_000)
+                                    now = today()
+                                }
+                            }
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(results, key = { it.id }) { result ->
+                                    Surface(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .animateItem(),
+                                        shape = RoundedCornerShape(12.dp),
+                                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                                        tonalElevation = 0.dp
+                                    ) {
+                                        HistoryResultRow(
+                                            modifier = Modifier,
+                                            result = result,
+                                            now = now,
+                                            onDelete = {
+                                                toolsModel.deleteResult(result)
+                                                if (results.isEmpty()) onClose()
+                                            }
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
