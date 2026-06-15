@@ -17,14 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import it.lcavagnari.pdm.dermcalc.R
 
 /**
- * A reusable confirmation dialog that implements a 3-tap confirmation sequence
- * (Confirm -> Action? -> Action) on its positive button.
+ * A confirmation dialog whose positive button requires **three taps** to fire [onConfirm]:
+ * tap 1 → label changes from "Confirm" to "$confirmLabel?"
+ * tap 2 → label changes to [confirmLabel]
+ * tap 3 → [onConfirm] fires and the dialog dismisses.
+ * The armed state resets when the activity stops.
  */
 @Composable
 fun ActionConfirmDialog(
@@ -36,8 +38,8 @@ fun ActionConfirmDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title, style = MaterialTheme.typography.headlineLarge, fontSize = 24.sp) },
-        text = { Text(body, style = MaterialTheme.typography.labelMedium, fontSize = 16.sp) },
+        title = { Text(title, style = MaterialTheme.typography.titleLarge) },
+        text = { Text(body, style = MaterialTheme.typography.bodyMedium) },
         confirmButton = {
             ConfirmTextButton(
                 labelDefault = stringResource(R.string.btn_confirm),
@@ -57,6 +59,14 @@ fun ActionConfirmDialog(
     )
 }
 
+/**
+ * A [TextButton] that requires **three taps** to confirm an action, using the same arm/disarm/execute
+ * pattern as [ConfirmIconButton].
+ *
+ * @param labelDefault text shown before any tap.
+ * @param labelArmed text shown after the first tap.
+ * @param labelExecute text shown after the second tap, just before [onConfirm] fires.
+ */
 @Composable
 fun ConfirmTextButton(
     modifier: Modifier = Modifier,
@@ -94,11 +104,22 @@ fun ConfirmTextButton(
     }
 }
 
+/**
+ * A button that requires **three taps** to confirm an action (1-tap arms, 2-tap shows execute label,
+ * 3-tap fires [onConfirm]). The armed state resets when the activity stops ([Lifecycle.Event.ON_STOP]).
+ *
+ * @param color used as the icon tint when [isIconButton] is true, or the container color when false.
+ * @param labelDefault text shown before any tap.
+ * @param labelArmed text shown after the first tap (intended to indicate "are you sure?").
+ * @param labelExecute text shown after the second tap, just before [onConfirm] fires.
+ * @param isIconButton when true renders an [IconButton]; when false renders a filled [Button].
+ * @param content composable receiving the current label and the tint/container [color].
+ */
 @Composable
 fun ConfirmIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    soulColor: Color,
+    color: Color,
     labelDefault: String,
     labelArmed: String,
     labelExecute: String,
@@ -133,17 +154,17 @@ fun ConfirmIconButton(
             enabled = enabled,
             onClick = onClick
         ) {
-            content(currentText, soulColor)
+            content(currentText, color)
         }
     } else {
         Button(
             modifier = modifier,
             enabled = enabled,
-            colors = ButtonDefaults.buttonColors(containerColor = soulColor),
+            colors = ButtonDefaults.buttonColors(containerColor = color),
             shape = RoundedCornerShape(3.dp),
             onClick = onClick
         ) {
-            content(currentText, Color.Unspecified)
+            content(currentText, color)
         }
     }
 }
