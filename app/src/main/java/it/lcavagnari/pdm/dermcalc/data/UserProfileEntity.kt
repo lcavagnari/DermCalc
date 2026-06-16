@@ -2,7 +2,6 @@
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import it.lcavagnari.pdm.dermcalc.models.Sex
 import kotlinx.datetime.LocalDate
 
 /**
@@ -20,7 +19,7 @@ data class UserProfileEntity(
     @PrimaryKey val id: Int = 1,
     val fullName: String? = null,
     val dateOfBirth: LocalDate? = null,
-    val sex: Sex = Sex.Other,
+    val sex: Sex? = null,
     val heightCm: Double = 0.0,
     val weightKg: Double = 0.0
 )
