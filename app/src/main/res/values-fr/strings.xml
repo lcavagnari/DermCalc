@@ -187,6 +187,10 @@
     <string name="time_today">Aujourd\'hui</string>
     <string name="nav_history">Historique</string>
     <string name="history_empty_short">Aucun enregistrement</string>
+    <plurals name="history_record_count">
+        <item quantity="one">%d Enregistrement</item>
+        <item quantity="other">%d Enregistrements</item>
+    </plurals>
     <string name="btn_clear">Effacer</string>
     <string name="btn_clear_all_description">Effacer tous les enregistrements</string>
     <string name="btn_close_description">Fermer l\'historique</string>

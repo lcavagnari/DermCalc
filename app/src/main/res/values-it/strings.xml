@@ -192,6 +192,10 @@
     <string name="btn_close_description">Chiudi cronologia</string>
     <string name="clear_history_title">Cancella Cronologia</string>
     <string name="clear_history_body">Sei sicuro di voler eliminare definitivamente tutti i calcoli?</string>
+    <plurals name="history_record_count">
+        <item quantity="one">%d elementi</item>
+        <item quantity="other">%d elementi</item>
+    </plurals>
     <string name="btn_delete">ELIM</string>
     <string name="btn_delete_armed">ELIM?</string>
     <string name="btn_delete_description">Elimina questo record</string>
