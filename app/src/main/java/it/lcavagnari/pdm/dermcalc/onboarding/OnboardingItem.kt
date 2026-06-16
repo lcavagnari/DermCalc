@@ -43,15 +43,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.DateInput
-import it.lcavagnari.pdm.dermcalc.models.HeightInput
-import it.lcavagnari.pdm.dermcalc.models.HeightMeasurements
+import it.lcavagnari.pdm.dermcalc.data.DateInput
+import it.lcavagnari.pdm.dermcalc.data.HeightInput
+import it.lcavagnari.pdm.dermcalc.data.HeightMeasurements
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
-import it.lcavagnari.pdm.dermcalc.models.Sex
-import it.lcavagnari.pdm.dermcalc.models.SexInput
-import it.lcavagnari.pdm.dermcalc.models.TextInput
-import it.lcavagnari.pdm.dermcalc.models.WeightInput
-import it.lcavagnari.pdm.dermcalc.models.WeightMeasurements
+import it.lcavagnari.pdm.dermcalc.data.Sex
+import it.lcavagnari.pdm.dermcalc.data.SexInput
+import it.lcavagnari.pdm.dermcalc.data.TextInput
+import it.lcavagnari.pdm.dermcalc.data.WeightInput
+import it.lcavagnari.pdm.dermcalc.data.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.ui.component.input.DateInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.HeightInputPicker
 import it.lcavagnari.pdm.dermcalc.ui.component.input.WeightInputPicker
@@ -112,11 +112,10 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
 
         // Sealed interface — adding a new InputField subtype will cause a compile error here,
         // forcing you to handle it before the build passes.
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically)
         ) {
             pageFields.forEach { field ->
                 errorMessage = null
@@ -128,27 +127,21 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                             val focusRequester = remember { FocusRequester() }
                             val focusManager = LocalFocusManager.current
                             OutlinedTextField(
-                                value = field.value,
-                                onValueChange = { onboardingModel.updateName(it) },
                                 modifier = Modifier
-                                    .padding(top = 20.dp)
                                     .semantics { testTag = "input_full_name" }
                                     .focusRequester(focusRequester),
-                                label = {
-                                    Text(
-                                        stringResource(field.label),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
-                                },
+                                value = field.value,
+                                label = { Text(stringResource(field.label), style = MaterialTheme.typography.labelMedium) },
                                 singleLine = true,
-                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                                 shape = RoundedCornerShape(17.dp),
+                                onValueChange = { onboardingModel.updateName(it) },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.Transparent,
                                     unfocusedContainerColor = Color.Transparent,
                                     focusedIndicatorColor = MaterialTheme.colorScheme.primary
-                                )
+                                ),
+                                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
                             )
 
                             if (!field.isValid && field.isRequired && field.value.isNotBlank())
@@ -158,10 +151,7 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                         }
 
                         is DateInput -> {
-                            DateInputPicker(
-                                field = field,
-                                onDateSelected = { onboardingModel.updateDateOfBirth(it) },
-                            )
+                            DateInputPicker(field = field) { onboardingModel.updateDateOfBirth(it) }
 
                             if (!field.isValid && field.isRequired && field.value != null)
                                 errorMessage = stringResource(R.string.error_date)
@@ -173,11 +163,7 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                         }
 
                         is SexInput -> {
-                            SingleChoiceSegmentedButtonRow(
-                                modifier = Modifier.padding(top = 20.dp),
-                            ) {
-
-                                Sex.entries.forEachIndexed { index, sex ->
+                            SingleChoiceSegmentedButtonRow(modifier = Modifier.padding(top = 5.dp)) { Sex.entries.forEachIndexed { index, sex ->
                                     SegmentedButton(
                                         selected = field.value == sex,
                                         onClick = { onboardingModel.updateSex(sex) },
@@ -203,8 +189,7 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                                             inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     )
-                                }
-                            }
+                                } }
 
                             if (!field.isValid && field.isRequired && field.value != null)
                                 errorMessage = stringResource(R.string.error_sex)
@@ -213,10 +198,7 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                         }
 
                         is HeightInput -> {
-                            SingleChoiceSegmentedButtonRow(
-                                modifier = Modifier.padding(top = 30.dp),
-                            ) {
-                                HeightMeasurements.entries.forEachIndexed { index, measurement ->
+                            SingleChoiceSegmentedButtonRow { HeightMeasurements.entries.forEachIndexed { index, measurement ->
                                     SegmentedButton(
                                         selected = measurement == (if (field.isMetric) HeightMeasurements.Metric else HeightMeasurements.Imperial),
                                         onClick = { onboardingModel.updateMeasurements(measurement) },
@@ -241,45 +223,20 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                                             inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     )
-                                }
-                            }
+                                } }
 
-                            HeightInputPicker(
-                                field = field,
-                                onMetricChanged = { height: Int ->
-                                    onboardingModel.updateHeightMetric(
-                                        height
-                                    )
-                                },
+                            HeightInputPicker(field = field,
+                                onMetricChanged = { height: Int -> onboardingModel.updateHeightMetric(height) },
                                 onImperialChanged = { height: Pair<Int, Int> ->
-                                    onboardingModel.updateHeightImperial(
-                                        height.first,
-                                        height.second
-                                    )
+                                    onboardingModel.updateHeightImperial(height.first, height.second)
                                 }
                             )
 
-                            if (!field.isValid && field.isRequired && field.value != null) errorMessage =
-                                stringResource(R.string.error_height)
-                            else if (field.value != null) successMessage = field.value.let {
-                                if (field.isMetric) stringResource(
-                                    R.string.height_display_metric,
-                                    it.toInt()
-                                )
-                                else field.cmToFeetInches(it)
-                                    .let { (ft, inch) ->
-                                        stringResource(
-                                            R.string.height_display_imperial,
-                                            ft.toInt(),
-                                            inch.toInt()
-                                        )
-                                    }
-                            }
+                            if (!field.isValid && field.isRequired && field.value != null) errorMessage = stringResource(R.string.error_height)
                         }
 
                         is WeightInput -> {
-                            SingleChoiceSegmentedButtonRow {
-                                WeightMeasurements.entries.forEachIndexed { index, measurement ->
+                            SingleChoiceSegmentedButtonRow { WeightMeasurements.entries.forEachIndexed { index, measurement ->
                                     SegmentedButton(
                                         selected = measurement == (if (field.isKilos) WeightMeasurements.Kilos else WeightMeasurements.Pounds),
                                         onClick = { onboardingModel.updateMeasurements(measurement) },
@@ -304,67 +261,39 @@ fun OnBoardItem(page: OnboardingScreen, onboardingModel: OnboardingModel) {
                                             inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     )
-                                }
-                            }
+                                } }
 
                             WeightInputPicker(
                                 field = field,
-                                onKilosChanged = { weight: Int ->
-                                    onboardingModel.updateWeightKilos(
-                                        weight
-                                    )
-                                },
-                                onPoundsChanged = { weight: Int ->
-                                    onboardingModel.updateWeightPounds(
-                                        weight
-                                    )
-                                }
+                                onKilosChanged = { weight: Int -> onboardingModel.updateWeightKilos(weight) },
+                                onPoundsChanged = { weight: Int -> onboardingModel.updateWeightPounds(weight) }
                             )
 
-                            if (!field.isValid && field.isRequired && field.value != null) errorMessage =
-                                stringResource(R.string.error_weight)
-                            else if (field.value != null) successMessage = field.value.let {
-                                if (field.isKilos) stringResource(
-                                    R.string.weight_display_metric,
-                                    it
-                                )
-                                else stringResource(
-                                    R.string.weight_display_imperial,
-                                    field.kilosToPounds(it)
-                                )
-                            }
+                            if (!field.isValid && field.isRequired && field.value != null) errorMessage = stringResource(R.string.error_weight)
                         }
                     }
                 }  // key(field.id)
 
-                if (errorMessage != null) {
-                    Text(
-                        errorMessage!!,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontStyle = FontStyle.Italic
-                    )
-                } else if (successMessage != null) {
-                    Text(
-                        successMessage!!,
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontStyle = FontStyle.Italic
-                    )
-                }
+
+                Text(
+                    if (errorMessage != null) errorMessage!! else if(successMessage != null) successMessage!! else "",
+                    modifier = if (errorMessage != null || successMessage != null) Modifier.padding(bottom = 15.dp) else Modifier,
+                    color = if (errorMessage != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontStyle = FontStyle.Italic
+                )
             }
         }
 
-        if (page.description == null) return
-
-        Text(
-            text = stringResource(page.description),
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 20.dp)
-                .wrapContentSize(Alignment.Center),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
+        page.description?.let {
+            Text(stringResource(page.description),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 20.dp)
+                    .wrapContentSize(Alignment.Center),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }

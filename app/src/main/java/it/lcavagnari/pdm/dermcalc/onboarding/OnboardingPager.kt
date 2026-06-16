@@ -44,7 +44,7 @@ fun OnboardingPager(
                 Modifier
                     .fillMaxSize()
                     .navigationBarsPadding()
-                    .padding(bottom = 150.dp)
+                    .padding(bottom = 90.dp)
             ) {
                 OnBoardItem(screen, onboardingModel)
             }
