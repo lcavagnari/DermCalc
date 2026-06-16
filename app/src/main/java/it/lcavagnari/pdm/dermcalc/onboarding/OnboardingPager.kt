@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.onboarding
+package it.lcavagnari.pdm.dermcalc.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
