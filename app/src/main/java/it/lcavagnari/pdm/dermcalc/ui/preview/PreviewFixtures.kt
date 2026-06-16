@@ -11,10 +11,10 @@ import it.lcavagnari.pdm.dermcalc.data.ToolResultDao
 import it.lcavagnari.pdm.dermcalc.data.ToolResultEntity
 import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
 import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
-import it.lcavagnari.pdm.dermcalc.models.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 import it.lcavagnari.pdm.dermcalc.models.BmiResult
 import it.lcavagnari.pdm.dermcalc.models.BodyScanModel
-import it.lcavagnari.pdm.dermcalc.models.HomeRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
