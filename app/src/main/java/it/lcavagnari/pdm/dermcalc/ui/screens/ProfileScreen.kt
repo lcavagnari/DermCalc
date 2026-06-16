@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -181,10 +182,14 @@ fun ProfileDetails(modifier: Modifier = Modifier, inputFields: List<InputField>,
                     Spacer(Modifier.weight(1f))
 
                     Text(
-                        modifier = Modifier.padding(10.dp),
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .height(20.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = if (field is DateInput && field.value == null) 16.sp else MaterialTheme.typography.bodyMedium.fontSize,
                         color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        softWrap = false,
                         text = when (field) {
                             is TextInput -> field.value
                             is DateInput -> field.value?.toString() ?: stringResource(R.string.placeholder_date)
