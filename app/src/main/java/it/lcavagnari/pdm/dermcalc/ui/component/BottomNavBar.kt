@@ -22,10 +22,10 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import it.lcavagnari.pdm.dermcalc.models.AppRoute
-import it.lcavagnari.pdm.dermcalc.models.HomeRoute
-import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
-import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 import it.lcavagnari.pdm.dermcalc.ui.theme.DermCalcTheme
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalBarAlpha
 import it.lcavagnari.pdm.dermcalc.ui.theme.Soul

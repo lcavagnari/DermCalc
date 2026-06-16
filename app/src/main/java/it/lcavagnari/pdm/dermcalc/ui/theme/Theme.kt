@@ -9,7 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import it.lcavagnari.pdm.dermcalc.models.AppRoute
+import it.lcavagnari.pdm.dermcalc.navigation.AppRoute
 
 
 /** Composition local providing the current dark-mode state. Consume with `LocalDarkTheme.current`. */

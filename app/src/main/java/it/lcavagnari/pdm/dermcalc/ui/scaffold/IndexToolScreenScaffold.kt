@@ -44,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.models.BodyRegion
-import it.lcavagnari.pdm.dermcalc.models.EASIToolRoute
+import it.lcavagnari.pdm.dermcalc.navigation.EASIToolRoute
 import it.lcavagnari.pdm.dermcalc.models.OnboardingModel
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.ui.component.ToolResultCard

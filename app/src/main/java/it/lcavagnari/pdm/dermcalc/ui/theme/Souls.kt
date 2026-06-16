@@ -4,10 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.HomeRoute
-import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
+import it.lcavagnari.pdm.dermcalc.navigation.HomeRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.Severity
-import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.navigation.ToolsRoute
 
 /**
  * Undertale soul colors mapped to app destinations and tools.

@@ -1,4 +1,4 @@
-﻿package it.lcavagnari.pdm.dermcalc.models
+﻿package it.lcavagnari.pdm.dermcalc.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import it.lcavagnari.pdm.dermcalc.R
