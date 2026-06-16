@@ -31,9 +31,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.DateInput
-import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
-import it.lcavagnari.pdm.dermcalc.models.toLocalDate
+import it.lcavagnari.pdm.dermcalc.data.DateInput
+import it.lcavagnari.pdm.dermcalc.data.toEpochMillis
+import it.lcavagnari.pdm.dermcalc.data.toLocalDate
 import kotlinx.datetime.LocalDate
 
 /**
@@ -73,7 +73,6 @@ fun DateInputPicker(field: DateInput, onDateSelected: (LocalDate) -> Unit) {
         },
         interactionSource = interactionSource,
         modifier = Modifier
-            .padding(top = 20.dp)
             .semantics { testTag = "input_date_of_birth" },
         shape = RoundedCornerShape(17.dp),
         colors = TextFieldDefaults.colors(

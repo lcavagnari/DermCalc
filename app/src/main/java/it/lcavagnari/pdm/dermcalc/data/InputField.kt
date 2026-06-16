@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.models
+package it.lcavagnari.pdm.dermcalc.data
 
 
 import androidx.annotation.StringRes
@@ -8,6 +8,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
+import kotlin.math.floor
 import kotlin.time.ExperimentalTime
 
 
@@ -32,7 +33,7 @@ fun Long.toLocalDate(): LocalDate {
 fun InputField.isDefaultOrBlank(): Boolean = when (this) {
     is TextInput   -> value.isBlank()
     is DateInput   -> value == null
-    is SexInput    -> value == it.lcavagnari.pdm.dermcalc.models.Sex.Other
+    is SexInput    -> value == Sex.Other
     is HeightInput -> value == null
     is WeightInput -> value == null
 }
@@ -141,7 +142,7 @@ data class HeightInput(
      */
     fun cmToFeetInches(cm: Double = value ?: 0.0): Pair<Double, Double> {
         val totalInches = cm / 2.54
-        val feet = kotlin.math.floor(totalInches / 12.0)
+        val feet = floor(totalInches / 12.0)
         val inches = totalInches - feet * 12.0
         return feet to inches
     }

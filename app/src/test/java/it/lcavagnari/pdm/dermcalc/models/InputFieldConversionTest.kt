@@ -1,10 +1,14 @@
 package it.lcavagnari.pdm.dermcalc.models
 
+import it.lcavagnari.pdm.dermcalc.data.HeightInput
+import it.lcavagnari.pdm.dermcalc.data.WeightInput
+import it.lcavagnari.pdm.dermcalc.data.toEpochMillis
+import it.lcavagnari.pdm.dermcalc.data.toLocalDate
 import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** Unit tests for [HeightInput] and [WeightInput] conversion helpers, and the [LocalDate] epoch roundtrip. */
+/** Unit tests for [it.lcavagnari.pdm.dermcalc.data.HeightInput] and [it.lcavagnari.pdm.dermcalc.data.WeightInput] conversion helpers, and the [LocalDate] epoch roundtrip. */
 class InputFieldConversionTest {
 
     private val height = HeightInput(id = "height", label = 0)

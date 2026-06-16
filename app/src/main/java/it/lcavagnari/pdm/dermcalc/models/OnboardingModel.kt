@@ -5,8 +5,17 @@ import androidx.lifecycle.viewModelScope
 import it.lcavagnari.pdm.dermcalc.R
 import it.lcavagnari.pdm.dermcalc.data.AppSettingsDao
 import it.lcavagnari.pdm.dermcalc.data.AppSettingsEntity
+import it.lcavagnari.pdm.dermcalc.data.DateInput
+import it.lcavagnari.pdm.dermcalc.data.HeightInput
+import it.lcavagnari.pdm.dermcalc.data.HeightMeasurements
+import it.lcavagnari.pdm.dermcalc.data.InputField
+import it.lcavagnari.pdm.dermcalc.data.Sex
+import it.lcavagnari.pdm.dermcalc.data.SexInput
+import it.lcavagnari.pdm.dermcalc.data.TextInput
 import it.lcavagnari.pdm.dermcalc.data.UserProfileDao
 import it.lcavagnari.pdm.dermcalc.data.UserProfileEntity
+import it.lcavagnari.pdm.dermcalc.data.WeightInput
+import it.lcavagnari.pdm.dermcalc.data.WeightMeasurements
 import it.lcavagnari.pdm.dermcalc.utils.today
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,11 +33,11 @@ class OnboardingModel(
 
     private val _inputFields = MutableStateFlow<List<InputField>>(
         listOf<InputField>(
-            TextInput(   id = "full-name",     label = R.string.label_full_name),
-            DateInput(   id = "date-of-birth", label = R.string.label_date_of_birth),
-            SexInput(    id = "sex",           label = R.string.label_sex,    value = Sex.Other),
-            HeightInput( id = "height",        label = R.string.label_height, isMetric = true),
-            WeightInput( id = "weight",        label = R.string.label_weight, isKilos = true)
+            TextInput(id = "full-name", label = R.string.label_full_name),
+            DateInput(id = "date-of-birth", label = R.string.label_date_of_birth),
+            SexInput(id = "sex", label = R.string.label_sex, value = Sex.Other),
+            HeightInput(id = "height", label = R.string.label_height, isMetric = true),
+            WeightInput(id = "weight", label = R.string.label_weight, isKilos = true)
         )
     )
     /** Ordered list of all onboarding [InputField] instances, updated in-place by the update methods. */

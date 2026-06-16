@@ -39,14 +39,14 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import it.lcavagnari.pdm.dermcalc.R
-import it.lcavagnari.pdm.dermcalc.models.DateInput
-import it.lcavagnari.pdm.dermcalc.models.HeightInput
-import it.lcavagnari.pdm.dermcalc.models.InputField
-import it.lcavagnari.pdm.dermcalc.models.Sex
-import it.lcavagnari.pdm.dermcalc.models.SexInput
-import it.lcavagnari.pdm.dermcalc.models.TextInput
-import it.lcavagnari.pdm.dermcalc.models.WeightInput
-import it.lcavagnari.pdm.dermcalc.models.toEpochMillis
+import it.lcavagnari.pdm.dermcalc.data.DateInput
+import it.lcavagnari.pdm.dermcalc.data.HeightInput
+import it.lcavagnari.pdm.dermcalc.data.InputField
+import it.lcavagnari.pdm.dermcalc.data.Sex
+import it.lcavagnari.pdm.dermcalc.data.SexInput
+import it.lcavagnari.pdm.dermcalc.data.TextInput
+import it.lcavagnari.pdm.dermcalc.data.WeightInput
+import it.lcavagnari.pdm.dermcalc.data.toEpochMillis
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 
 /**
