@@ -26,6 +26,7 @@ import it.lcavagnari.pdm.dermcalc.models.ProfileRoute
 import it.lcavagnari.pdm.dermcalc.models.QuoteModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsModel
 import it.lcavagnari.pdm.dermcalc.models.ToolsRoute
+import it.lcavagnari.pdm.dermcalc.ui.scaffold.calculatorPages
 import it.lcavagnari.pdm.dermcalc.ui.screens.BMIScreen
 import it.lcavagnari.pdm.dermcalc.ui.screens.BSAScreen
 import it.lcavagnari.pdm.dermcalc.ui.screens.EASIScreen
@@ -33,7 +34,6 @@ import it.lcavagnari.pdm.dermcalc.ui.screens.HomeScreen
 import it.lcavagnari.pdm.dermcalc.ui.screens.PASIScreen
 import it.lcavagnari.pdm.dermcalc.ui.screens.ProfileScreen
 import it.lcavagnari.pdm.dermcalc.ui.screens.ToolsScreen
-import it.lcavagnari.pdm.dermcalc.ui.screens.calculatorPages
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalIsIdle
 import it.lcavagnari.pdm.dermcalc.ui.theme.LocalNavigate
 import kotlinx.coroutines.flow.MutableStateFlow
