@@ -1,4 +1,4 @@
-package it.lcavagnari.pdm.dermcalc.ui.screens
+package it.lcavagnari.pdm.dermcalc.ui.scaffold
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -183,7 +183,9 @@ fun IndexToolScaffold(
 
         // 3. Navigation Controls
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -229,7 +231,9 @@ fun IndexToolScaffold(
         // 4. Final Result Card & Save Trigger
         AnimatedVisibility(visible = isLastPage && formattedScore != null) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(15.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
                 verticalArrangement = Arrangement.Bottom
             ) {
                 ToolResultCard(
@@ -275,12 +279,17 @@ fun ScafoldHeader(
         ),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).padding(top = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+                .padding(top = 10.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -336,7 +345,9 @@ private fun ProgressBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
@@ -375,9 +386,12 @@ private fun ProgressBar(
                         }
 
                         Box(
-                            modifier = Modifier.weight(1f).height(6.dp)
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(6.dp)
                                 .clip(RoundedCornerShape(3.dp))
-                                .background(segColor).clickable { onPageSelect(index) }
+                                .background(segColor)
+                                .clickable { onPageSelect(index) }
                         )
                     }
                 }
@@ -424,8 +438,14 @@ fun ScoreSelector(
                     .size(25.dp)
                     .clip(CircleShape)
                     .background(if (index <= value) souldColor else Color.Transparent)
-                    .border(2.dp, if (index <= value) souldColor else MaterialTheme.colorScheme.outline, CircleShape)
-                    .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
+                    .border(
+                        2.dp,
+                        if (index <= value) souldColor else MaterialTheme.colorScheme.outline,
+                        CircleShape
+                    )
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }) {
                         onValueChange(index)
                     }
             )

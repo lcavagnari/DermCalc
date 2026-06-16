@@ -27,6 +27,9 @@ import it.lcavagnari.pdm.dermcalc.models.PasiScore
 import it.lcavagnari.pdm.dermcalc.models.Severity
 import it.lcavagnari.pdm.dermcalc.ui.component.input.BodyRegionSlider
 import it.lcavagnari.pdm.dermcalc.ui.preview.DermCalcPreview
+import it.lcavagnari.pdm.dermcalc.ui.scaffold.IndexToolScaffold
+import it.lcavagnari.pdm.dermcalc.ui.scaffold.ScoreSelector
+import it.lcavagnari.pdm.dermcalc.ui.scaffold.calculatorPages
 import it.lcavagnari.pdm.dermcalc.ui.theme.soulFor
 import it.lcavagnari.pdm.dermcalc.utils.today
 
@@ -98,7 +101,7 @@ fun PASIScreen(
             score == 0.0 -> Severity.NONE
             score < 10.0 -> Severity.MILD
             score < 20.0 -> Severity.MODERATE
-            else         -> Severity.SEVERE
+            else -> Severity.SEVERE
         },
         saveEnabled = saveEnabled,
         onReset = onReset,
@@ -112,14 +115,30 @@ fun PASIScreen(
         }
 
         val signs = listOf(
-            Triple(R.string.tool_sign_erythema,     draft.erythema,     { v: Int -> draft.copy(erythema = v) }),
-            Triple(R.string.tool_sign_induration,   draft.induration,   { v: Int -> draft.copy(induration = v) }),
-            Triple(R.string.pasi_sign_desquamation, draft.desquamation, { v: Int -> draft.copy(desquamation = v) }),
+            Triple(
+                R.string.tool_sign_erythema,
+                draft.erythema,
+                { v: Int -> draft.copy(erythema = v) }),
+            Triple(
+                R.string.tool_sign_induration,
+                draft.induration,
+                { v: Int -> draft.copy(induration = v) }),
+            Triple(
+                R.string.pasi_sign_desquamation,
+                draft.desquamation,
+                { v: Int -> draft.copy(desquamation = v) }),
         )
 
-        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             signs.forEach { (nameRes, currentScore, withScore) ->
-                SeverityRow(stringResource(nameRes), soulColor, currentScore, max = 4) { commit(withScore(it)) }
+                SeverityRow(stringResource(nameRes), soulColor, currentScore, max = 4) {
+                    commit(
+                        withScore(it)
+                    )
+                }
             }
 
             BodyRegionSlider(
@@ -147,7 +166,12 @@ fun PASIScreen(
 private fun SeverityRow(label: String, soulColor: Color, value: Int, max: Int = 3, onValueChange: (Int) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(label, modifier = Modifier.weight(1f))
-        ScoreSelector(value = value, max = max, souldColor = soulColor, onValueChange = onValueChange)
+        ScoreSelector(
+            value = value,
+            max = max,
+            souldColor = soulColor,
+            onValueChange = onValueChange
+        )
     }
 }
 
@@ -191,9 +215,9 @@ fun EASIScreen(
         formattedScore = "%.1f".format(score),
         severity = when {
             score == 0.0 -> Severity.NONE
-            score < 7.0  -> Severity.MILD
+            score < 7.0 -> Severity.MILD
             score < 21.0 -> Severity.MODERATE
-            else         -> Severity.SEVERE
+            else -> Severity.SEVERE
         },
         saveEnabled = saveEnabled,
         onReset = onReset,
@@ -207,15 +231,34 @@ fun EASIScreen(
         }
 
         val signs = listOf(
-            Triple(R.string.tool_sign_erythema,        draft.erythema,         { v: Int -> draft.copy(erythema = v) }),
-            Triple(R.string.tool_sign_induration,      draft.induration,       { v: Int -> draft.copy(induration = v) }),
-            Triple(R.string.easi_sign_excoriation,     draft.excoriation,      { v: Int -> draft.copy(excoriation = v) }),
-            Triple(R.string.easi_sign_lichenification, draft.lichenification,  { v: Int -> draft.copy(lichenification = v) }),
+            Triple(
+                R.string.tool_sign_erythema,
+                draft.erythema,
+                { v: Int -> draft.copy(erythema = v) }),
+            Triple(
+                R.string.tool_sign_induration,
+                draft.induration,
+                { v: Int -> draft.copy(induration = v) }),
+            Triple(
+                R.string.easi_sign_excoriation,
+                draft.excoriation,
+                { v: Int -> draft.copy(excoriation = v) }),
+            Triple(
+                R.string.easi_sign_lichenification,
+                draft.lichenification,
+                { v: Int -> draft.copy(lichenification = v) }),
         )
 
-        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             signs.forEach { (nameRes, currentScore, withScore) ->
-                SeverityRow(stringResource(nameRes),soulColor, currentScore, max = 3) { commit(withScore(it)) }
+                SeverityRow(stringResource(nameRes), soulColor, currentScore, max = 3) {
+                    commit(
+                        withScore(it)
+                    )
+                }
             }
 
             BodyRegionSlider(
