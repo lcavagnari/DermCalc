@@ -116,7 +116,7 @@ val onboardingScreens = listOf(
 )
 
 private val vm:(OnboardingModel) -> Unit = {
-    it.updateName("Asriel ")
+    it.updateName("Alessandro Barbero ")
     it.updateDateOfBirth(today().date)
     it.updateHeightMetric(172)
     it.updateWeightKilos(67)

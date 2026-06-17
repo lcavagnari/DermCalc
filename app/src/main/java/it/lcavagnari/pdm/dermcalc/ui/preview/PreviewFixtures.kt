@@ -91,7 +91,7 @@ val previewBmiResults: (ToolsModel) -> Unit = { tm ->
 fun DermCalcPreview(
     screen: AppRoute = HomeRoute,
     darkTheme: Boolean = false,
-    setupOm: (OnboardingModel) -> Unit = { it.finishOnboarding(); it.updateName("Asriel ") },
+    setupOm: (OnboardingModel) -> Unit = { it.finishOnboarding(); it.updateName("Alessandro Barbero ") },
     setupQm: (QuoteModel) -> Unit = { it.updateQuote() },
     setupTm: (ToolsModel) -> Unit = {},
     setupBm: (BodyScanModel) -> Unit = {}

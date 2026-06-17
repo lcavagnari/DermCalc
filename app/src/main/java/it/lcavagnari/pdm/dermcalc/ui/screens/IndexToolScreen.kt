@@ -37,7 +37,7 @@ import it.lcavagnari.pdm.dermcalc.utils.today
 // Setup for the preview viewmodel
 private val vm:(OnboardingModel) -> Unit = {
     it.finishOnboarding()
-    it.updateName("Asriel ")
+    it.updateName("Alessandro Barbero ")
     it.updateDateOfBirth(today().date)
     it.updateHeightMetric(172)
     it.updateWeightKilos(67)
