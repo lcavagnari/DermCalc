@@ -1,5 +1,8 @@
 # DermCalc
 
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
+
 An Android app for dermatological score calculation and patient management, built with Jetpack Compose.
 
 ## Features
@@ -180,3 +183,17 @@ Dark mode is the intended experience. Light mode is fully functional for clinica
 - [x] Phase 8 — Room profile & result storage
 - [x] Phase 9 — Full history screen
 - [x] Phase 10 — Polish (Material 3 theming, transitions, error handling)
+
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0 (AGPLv3).
+
+[LICENCE](LICENSE.md)
+
+This means:
+- You are free to use, modify, and distribute this software
+- Any distributed or network-deployed modifications must also be open source under AGPLv3
+- The source code must remain available under the same license
+
+Copyright (C) 2026 Luca Cavagnari
